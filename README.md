@@ -1,4 +1,4 @@
 sqlite3-cmake
 =============
 
-cmake script to sqlite3 distibution to build with different compilers
+CMake script to sqlite3 distibution to build with different compilers
