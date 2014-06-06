@@ -1,0 +1,52 @@
+version: 3.8.5.{build}
+
+environment:
+  P: "c:/projects/libs"
+  ACCOUNT:
+    secure: haKHy4KWVnBuCd6I3obXGMa9TjRa8oXFm9P+Pw6f5P0=
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# Operating system (build VM template)
+os: Windows Server 2012 R2
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+
+# clone directory
+clone_folder: c:\projects\sqlite
+
+platform: x64
+configuration: Release
+
+install:
+  # by default, all script lines are interpreted as batch
+
+build:
+  project: INSTALL.vcxproj      # path to Visual Studio solution or project
+
+# scripts to run before build
+before_build:
+  - echo Running cmake...
+  - cd c:\projects\sqlite
+  - cmake -G "Visual Studio 12 Win64" -DCMAKE_INSTALL_PREFIX=%P%
+
+# scripts to run after build
+after_build:
+  - cd %P%
+  - 7z a c:\projects\sqlite\sqlite.zip * -tzip
+  - cd c:\projects\sqlite
+
+artifacts:
+  - path: sqlite.zip
+    name: sqlite.zip
+
+deploy_script:
+  - cd c:\projects\sqlite
+  - curl -T sqlite.zip --user %ACCOUNT% https://webdav.yandex.ru/libs/sqlite.zip
