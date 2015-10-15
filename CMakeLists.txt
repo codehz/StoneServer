@@ -8,6 +8,8 @@ set_target_properties(sqlite PROPERTIES OUTPUT_NAME sqlite3)
 
 add_definitions(-DSQLITE_ENABLE_RTREE)
 add_definitions(-DSQLITE_ENABLE_FTS4)
+add_definitions(-DSQLITE_ENABLE_FTS5)
+add_definitions(-DSQLITE_ENABLE_JSON1)
 
 install(FILES src/sqlite3.h src/sqlite3ext.h DESTINATION include)
 install(TARGETS sqlite3 LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
