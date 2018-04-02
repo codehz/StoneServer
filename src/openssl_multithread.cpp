@@ -1,11 +1,11 @@
-#include "../include/openssl_multithread.h"
+#include "openssl_multithread.h"
 
 #include <openssl/crypto.h>
 #include <thread>
 
-std::vector<OpenSSLMultithreadHelper::PThreadMutex> OpenSSLMultithreadHelper::mutexes;
+OpenSSLMultithreadHelper OpenSSLMultithreadHelper::instance;
 
-void OpenSSLMultithreadHelper::init() {
+OpenSSLMultithreadHelper::OpenSSLMultithreadHelper() {
     mutexes = std::vector<PThreadMutex>(CRYPTO_num_locks());
     CRYPTO_set_id_callback([]() {
         return (unsigned long) pthread_self();

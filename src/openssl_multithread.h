@@ -19,9 +19,11 @@ private:
         }
     };
 
-    static std::vector<PThreadMutex> mutexes;
+    static OpenSSLMultithreadHelper instance;
+
+    std::vector<PThreadMutex> mutexes;
 
 public:
-    static void init();
+    OpenSSLMultithreadHelper();
 
 };
