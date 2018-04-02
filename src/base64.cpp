@@ -1,6 +1,6 @@
 #include <cstring>
 #include <stdexcept>
-#include "base64.h"
+#include <base64.h>
 
 char Base64::table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 unsigned char Base64::reverseTable[256];
