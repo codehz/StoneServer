@@ -16,16 +16,12 @@
 #include <minecraft/ImagePickingCallback.h>
 #include <minecraft/FilePickerSettings.h>
 #include <log.h>
-#include <mcpelauncher/common.h>
 #include <mcpelauncher/path_helper.h>
 #ifndef SERVER
 #include <game_window.h>
 #include <file_picker_factory.h>
 #endif
-
-extern "C" {
 #include <hybris/dlfcn.h>
-}
 
 const char* LinuxAppPlatform::TAG = "AppPlatform";
 

@@ -9,7 +9,7 @@
 #include <memory>
 #include <log.h>
 #include <mcpelauncher/path_helper.h>
-#include <mcpelauncher/common.h>
+#include "patch_utils.h"
 #include <minecraft/gl.h>
 #include <minecraft/AppPlatform.h>
 #include <minecraft/ImagePickingCallback.h>
@@ -32,7 +32,7 @@ private:
 
     template <typename T>
     static void replaceVtableEntry(void* lib, void** vtable, const char* sym, T nw) {
-        replaceVtableEntry(lib, vtable, sym, memberFuncCast(nw));
+        replaceVtableEntry(lib, vtable, sym, PatchUtils::memberFuncCast(nw));
     }
 
 #ifndef SERVER
