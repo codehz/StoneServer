@@ -2,9 +2,11 @@
 #include <mcpelauncher/patch_utils.h>
 #include <mcpelauncher/hybris_utils.h>
 #include <mcpelauncher/hook.h>
+#include <mcpelauncher/path_helper.h>
 #include <minecraft/imported/android_symbols.h>
 #include <minecraft/imported/egl_symbols.h>
 #include <minecraft/imported/libm_symbols.h>
+#include <minecraft/imported/fmod_symbols.h>
 #include <log.h>
 #include <hybris/dlfcn.h>
 #include <hybris/hook.h>
@@ -25,6 +27,23 @@ void* MinecraftUtils::loadLibM() {
     return libmLib;
 }
 
+void* MinecraftUtils::loadFMod() {
+#ifdef __APPLE__
+    void* fmodLib = HybrisUtils::loadLibraryOS(PathHelper::findDataFile("libs/native/libfmod.dylib"), fmod_symbols);
+#else
+    void* fmodLib = HybrisUtils::loadLibraryOS(PathHelper::findDataFile("libs/native/libfmod.so.9.6"), fmod_symbols);
+#endif
+    if (fmodLib == nullptr)
+        throw std::runtime_error("Failed to load fmod");
+    return fmodLib;
+}
+
+void MinecraftUtils::stubFMod() {
+    HybrisUtils::stubSymbols(fmod_symbols, (void*) (void (*)()) []() {
+        Log::warn("Launcher", "FMod stub called");
+    });
+}
+
 void MinecraftUtils::setupHybris() {
     loadLibM();
     HybrisUtils::stubSymbols(android_symbols, (void*) (void (*)()) []() {
@@ -43,6 +62,19 @@ void MinecraftUtils::setupHybris() {
     if (!load_empty_library("libmcpelauncher_mod.so"))
         throw std::runtime_error("Failed to load stub libraries");
     load_empty_library("libstdc++.so");
+}
+
+void* MinecraftUtils::loadMinecraftLib() {
+    std::string mcpePath = PathHelper::findDataFile("libs/libminecraftpe.so");
+    void* handle = hybris_dlopen(mcpePath.c_str(), RTLD_LAZY);
+    if (handle == nullptr)
+        throw std::runtime_error(std::string("Failed to load Minecraft: %s") + hybris_dlerror());
+    HookManager::addHookLibrary(handle, mcpePath);
+    return handle;
+}
+
+unsigned int MinecraftUtils::getLibraryBase(void *handle) {
+    return ((soinfo*) handle)->base;
 }
 
 static void workerPoolDestroy(void* th) {
