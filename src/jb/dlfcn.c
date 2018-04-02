@@ -27,7 +27,7 @@
 #include <string.h>
 #endif
 
-#include "linker.h"
+#include "hybris/jb/linker.h"
 #include "linker_format.h"
 
 /* This file hijacks the symbols stubbed out in libdl.so. */

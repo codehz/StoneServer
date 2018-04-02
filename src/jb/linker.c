@@ -46,7 +46,7 @@
 /* special private C library header - see Android.mk */
 //#include "bionic_tls.h"
 
-#include "linker.h"
+#include "hybris/jb/linker.h"
 #include "linker_debug.h"
 #include "linker_environ.h"
 #include "linker_format.h"
