@@ -161,7 +161,7 @@ static int my_scandir(const char *dir,
 
 
 
-static struct _hook dirent_hooks[] = {
+struct _hook dirent_hooks[] = {
     /* dirent.h */
     {"opendir", opendir},
     {"fdopendir", fdopendir},
@@ -180,4 +180,3 @@ static struct _hook dirent_hooks[] = {
     {"alphasort", my_alphasort},
     {NULL, NULL}
 };
-REGISTER_HOOKS(dirent_hooks)

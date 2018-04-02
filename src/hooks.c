@@ -245,7 +245,7 @@ void *my_android_dlsym(void *handle, const char *symbol)
     return android_dlsym(handle, symbol);
 }
 
-static struct _hook main_hooks[] = {
+struct _hook main_hooks[] = {
     {"property_get", property_get },
     {"property_set", property_set },
     {"__system_property_get", my_system_property_get },
@@ -703,7 +703,6 @@ static struct _hook main_hooks[] = {
     {"wcsftime", wcsftime},
     {NULL, NULL},
 };
-REGISTER_HOOKS(main_hooks)
 static struct _hook* user_hooks = NULL;
 static int user_hooks_size = 0;
 static int user_hooks_arr_size = 0;
@@ -776,6 +775,11 @@ void *get_hooked_symbol(const char *sym)
     return NULL;
 }
 
-void android_linker_init()
+#include "hooks_list.h"
+
+// This file will be definitely included and therefore it's safe to use __attribute__((constructor)) here.
+__attribute__((constructor))
+static void android_linker_init()
 {
+    hybris_register_default_hooks();
 }

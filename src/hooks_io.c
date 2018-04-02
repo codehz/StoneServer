@@ -590,7 +590,7 @@ int darwin_my_poll(struct pollfd *fds, nfds_t nfds, int timeout)
 
 #endif
 
-static struct _hook io_hooks[] = {
+struct _hook io_hooks[] = {
     /* fcntl.h */
     {"open", my_open},
 #ifdef __APPLE__
@@ -684,4 +684,3 @@ static struct _hook io_hooks[] = {
     {"select", select},
     {NULL, NULL}
 };
-REGISTER_HOOKS(io_hooks)

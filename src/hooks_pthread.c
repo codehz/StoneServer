@@ -947,7 +947,7 @@ static int darwin_my_pthread_attr_getschedparam(pthread_attr_t const *__attr, st
 
 #endif
 
-static struct _hook pthread_hooks[] = {
+struct _hook pthread_hooks[] = {
     /* pthread.h */
     // {"getauxval", getauxval},
     {"gettid", my_gettid},
@@ -1057,4 +1057,3 @@ static struct _hook pthread_hooks[] = {
     {"__pthread_cleanup_pop", my_pthread_cleanup_pop},
     {NULL, NULL}
 };
-REGISTER_HOOKS(pthread_hooks)

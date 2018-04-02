@@ -30,12 +30,6 @@ struct _hook {
 void hybris_hook(const char *name, void* func);
 void hybris_register_hooks(struct _hook *hooks);
 
-#define REGISTER_HOOKS(name) \
-    __attribute__((constructor)) static void _register_hooks_##name() { \
-        hybris_register_hooks(name); \
-    }
-
-
 #ifdef __cplusplus
 }
 #endif

@@ -335,7 +335,7 @@ int darwin_my_getnameinfo (const struct android_sockaddr *__restrict sa,
 }
 
 
-static struct _hook net_darwin_hooks[] = {
+struct _hook net_darwin_hooks[] = {
     {"socket", darwin_my_socket},
     {"bind", darwin_my_bind},
     {"sendto", darwin_my_sendto},
@@ -348,4 +348,3 @@ static struct _hook net_darwin_hooks[] = {
     {"getnameinfo", darwin_my_getnameinfo},
     {NULL, NULL}
 };
-REGISTER_HOOKS(net_darwin_hooks)

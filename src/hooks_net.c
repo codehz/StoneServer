@@ -105,7 +105,7 @@ int my_getnameinfo (const struct sockaddr *__restrict sa,
 #endif
 
 
-static struct _hook net_hooks[] = {
+struct _hook net_hooks[] = {
     /* net specifics, to avoid __res_get_state */
 #ifndef __APPLE__
     {"getaddrinfo", my_getaddrinfo},
@@ -142,4 +142,3 @@ static struct _hook net_hooks[] = {
     {"shutdown", shutdown},
     {NULL, NULL}
 };
-REGISTER_HOOKS(net_hooks)
