@@ -2,7 +2,7 @@
 // Generated on Sat Mar 31 2018 10:39:35 UTC
 
 #include <hybris/dlfcn.h>
-#include "../common/log.h"
+#include <log.h>
 
 #include "Resource.h"
 static void (*_Resource_registerLoader)(ResourceFileSystem, std::unique_ptr<ResourceLoader>);
