@@ -3,7 +3,9 @@
 class MinecraftUtils {
 
 public:
-    static void setupCommonMinecraftSymbols();
+    static void* loadLibM();
+
+    static void setupHybris();
 
     static void workaroundShutdownCrash(void* handle);
 

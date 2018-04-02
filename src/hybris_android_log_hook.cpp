@@ -6,7 +6,7 @@ extern "C" {
 }
 
 
-typedef enum AndroidLogPriority {
+enum class AndroidLogPriority {
     ANDROID_LOG_UNKNOWN = 0,
     ANDROID_LOG_DEFAULT,
     ANDROID_LOG_VERBOSE,
@@ -19,15 +19,15 @@ typedef enum AndroidLogPriority {
 };
 
 static LogLevel convertAndroidLogLevel(int level) {
-    if (level <= AndroidLogPriority::ANDROID_LOG_VERBOSE)
+    if (level <= (int) AndroidLogPriority::ANDROID_LOG_VERBOSE)
         return LogLevel::LOG_TRACE;
-    if (level == AndroidLogPriority::ANDROID_LOG_DEBUG)
+    if (level == (int) AndroidLogPriority::ANDROID_LOG_DEBUG)
         return LogLevel::LOG_DEBUG;
-    if (level == AndroidLogPriority::ANDROID_LOG_INFO)
+    if (level == (int) AndroidLogPriority::ANDROID_LOG_INFO)
         return LogLevel::LOG_INFO;
-    if (level == AndroidLogPriority::ANDROID_LOG_WARN)
+    if (level == (int) AndroidLogPriority::ANDROID_LOG_WARN)
         return LogLevel::LOG_WARN;
-    if (level >= AndroidLogPriority::ANDROID_LOG_ERROR)
+    if (level >= (int) AndroidLogPriority::ANDROID_LOG_ERROR)
         return LogLevel::LOG_ERROR;
     return LogLevel::LOG_ERROR;
 }
