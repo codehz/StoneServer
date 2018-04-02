@@ -4,7 +4,7 @@ project(mcpelauncher-common LANGUAGES CXX)
 
 find_library(OpenSSL OPTIONAL)
 
-set(MCPELAUNCHER_COMMON_SOURCES include/path_helper.h src/path_helper.cpp)
+set(MCPELAUNCHER_COMMON_SOURCES include/mcpelauncher/path_helper.h src/path_helper.cpp)
 if (OPENSSL_FOUND)
     set(MCPELAUNCHER_COMMON_SOURCES ${MCPELAUNCHER_COMMON_SOURCES} src/openssl_multithread.h src/openssl_multithread.cpp)
 endif()

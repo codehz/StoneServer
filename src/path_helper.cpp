@@ -1,4 +1,4 @@
-#include "../include/path_helper.h"
+#include <mcpelauncher/path_helper.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <pwd.h>
