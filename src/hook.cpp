@@ -1,27 +1,15 @@
 #include <mcpelauncher/hook.h>
 
-#include <elf.h>
-#include <stdio.h>
 #include <string.h>
-#include <vector>
-#include <sys/mman.h>
-#include <map>
 #include "log.h"
 
 extern "C" {
-#include <hybris/dlfcn.h>
 #include <hybris/jb/linker.h>
 }
 
-struct soinfo_hookinfo {
-    struct hook_section {
-        Elf32_Off addr, size;
-    };
-    std::vector<hook_section> hookSections;
-};
-std::map<soinfo*, soinfo_hookinfo> hookLibraries;
+std::map<void*, HookManager::soinfo_hookinfo> HookManager::hookLibraries;
 
-void addHookLibrary(void* ptr, std::string const& fileName) {
+void HookManager::addHookLibrary(void* ptr, std::string const& fileName) {
     soinfo* lib = (soinfo*) ptr;
 
     if (hookLibraries.count(lib) > 0)
@@ -82,7 +70,7 @@ void addHookLibrary(void* ptr, std::string const& fileName) {
     delete[] strtab;
 }
 
-inline bool patchSection(Elf32_Addr base, Elf32_Word off, Elf32_Word size, void* sym, void* override) {
+bool HookManager::patchSection(Elf32_Addr base, Elf32_Word off, Elf32_Word size, void* sym, void* override) {
     bool foundEntry = false;
     unsigned long addr = base + off + 4;
     while (addr < base + off + size) {
@@ -94,7 +82,7 @@ inline bool patchSection(Elf32_Addr base, Elf32_Word off, Elf32_Word size, void*
     }
     return foundEntry;
 }
-bool patchLibrary(void* lib, void* sym, void* override) {
+bool HookManager::patchLibrary(void* lib, void* sym, void* override) {
     soinfo* si = (soinfo*) lib;
     if (si == nullptr || hookLibraries.count(si) <= 0)
         return false;
@@ -107,7 +95,7 @@ bool patchLibrary(void* lib, void* sym, void* override) {
     return foundEntry;
 }
 
-int hookFunction(void* symbol, void* hook, void** original) {
+int HookManager::hookFunction(void* symbol, void* hook, void** original) {
     *original = symbol;
     bool foundEntry = false;
     for (auto& handle : hookLibraries)
