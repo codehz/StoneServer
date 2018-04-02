@@ -7,14 +7,14 @@
 #include <vector>
 #include <mutex>
 #include <memory>
-#include "../common/common.h"
-#include "../common/log.h"
-#include "../common/path_helper.h"
-#include "../minecraft/gl.h"
-#include "../minecraft/AppPlatform.h"
-#include "../minecraft/ImagePickingCallback.h"
-#include "../minecraft/MultiplayerService.h"
-#include "../minecraft/std/function.h"
+#include <log.h>
+#include <mcpelauncher/path_helper.h>
+#include <mcpelauncher/common.h>
+#include <minecraft/gl.h>
+#include <minecraft/AppPlatform.h>
+#include <minecraft/ImagePickingCallback.h>
+#include <minecraft/MultiplayerService.h>
+#include <minecraft/std/function.h>
 
 class ImageData;
 class ImagePickingCallback;
@@ -27,8 +27,6 @@ class LinuxAppPlatform : public AppPlatform {
 
 private:
     static const char* TAG;
-
-    static std::string _pickFile(std::string commandLine);
 
     static void replaceVtableEntry(void* lib, void** vtable, const char* sym, void* nw);
 

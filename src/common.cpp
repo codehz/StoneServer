@@ -1,5 +1,5 @@
-#include "common.h"
-#include "path_helper.h"
+#include <mcpelauncher/common.h>
+#include <mcpelauncher/path_helper.h>
 
 #include <cstdio>
 #include <cstdarg>

@@ -1,4 +1,4 @@
-#include "modloader.h"
+#include <mcpelauncher/modloader.h>
 #include "log.h"
 #include <hybris/dlfcn.h>
 #include <dirent.h>

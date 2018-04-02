@@ -1,4 +1,4 @@
-#include "hook.h"
+#include <mcpelauncher/hook.h>
 
 #include <elf.h>
 #include <stdio.h>
@@ -10,7 +10,7 @@
 
 extern "C" {
 #include <hybris/dlfcn.h>
-#include "../../libs/hybris/src/jb/linker.h"
+#include <hybris/jb/linker.h>
 }
 
 struct soinfo_hookinfo {

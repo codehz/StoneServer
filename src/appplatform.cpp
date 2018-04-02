@@ -1,4 +1,4 @@
-#include "appplatform.h"
+#include <mcpelauncher/appplatform.h>
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -13,14 +13,14 @@
 #include <execinfo.h>
 #include <cxxabi.h>
 #include <dlfcn.h>
-#include "../minecraft/ImagePickingCallback.h"
-#include "../minecraft/FilePickerSettings.h"
-#include "../common/log.h"
-#include "../common/common.h"
-#include "../common/path_helper.h"
+#include <minecraft/ImagePickingCallback.h>
+#include <minecraft/FilePickerSettings.h>
+#include <log.h>
+#include <mcpelauncher/common.h>
+#include <mcpelauncher/path_helper.h>
 #ifndef SERVER
-#include "../ui/game_window/window.h"
-#include "../ui/file_picker/file_picker_factory.h"
+#include <game_window.h>
+#include <file_picker_factory.h>
 #endif
 
 extern "C" {
