@@ -62,8 +62,8 @@ public:
         return assetsDir;
     }
 
-    virtual void hideMousePointer() {}
-    virtual void showMousePointer() {}
+    void hideMousePointer() {}
+    void showMousePointer() {}
 
     void swapBuffers() {
         //printf("swap buffers\n");
@@ -77,9 +77,9 @@ public:
         return false;
     }
 
-    virtual void pickImage(ImagePickingCallback& callback) {}
-    virtual void pickFile(FilePickerSettings& callback) {}
-    virtual bool supportsFilePicking() { return false; }
+    void pickImage(ImagePickingCallback& callback) {}
+    void pickFile(FilePickerSettings& callback) {}
+    bool supportsFilePicking() { return false; }
     mcpe::string& getExternalStoragePath() {
         Log::trace(TAG, "getExternalStoragePath: %s", externalStorage.c_str());
         return externalStorage;
@@ -132,7 +132,7 @@ public:
         Log::trace(TAG, "isTablet: true");
         return true;
     }
-    virtual void setFullscreenMode(int mode) {}
+    void setFullscreenMode(int mode) {}
     mcpe::string getEdition() {
         if (enablePocketGuis)
             return "pocket";
