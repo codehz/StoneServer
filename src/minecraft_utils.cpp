@@ -89,7 +89,7 @@ void MinecraftUtils::initSymbolBindings(void* handle) {
 }
 
 static void workerPoolDestroy(void* th) {
-    Log::trace("Launcher", "WorkerPool-related class destroy %uli", (unsigned long) th);
+    Log::trace("Launcher", "WorkerPool-related class destroy %lu", (unsigned long) th);
 }
 void MinecraftUtils::workaroundShutdownCrash(void* handle) {
     // this is an ugly hack to workaround the close app crashes MCPE causes
