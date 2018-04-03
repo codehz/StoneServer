@@ -6,6 +6,8 @@ private:
     static void* loadLibM();
 
 public:
+    static void workaroundLocaleBug();
+
     static void setupHybris();
 
     static void* loadMinecraftLib();
@@ -14,6 +16,8 @@ public:
     static void stubFMod();
 
     static unsigned int getLibraryBase(void* handle);
+
+    static void initSymbolBindings(void* handle);
 
     static void workaroundShutdownCrash(void* handle);
 

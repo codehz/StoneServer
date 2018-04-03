@@ -7,6 +7,8 @@
 #include <minecraft/imported/egl_symbols.h>
 #include <minecraft/imported/libm_symbols.h>
 #include <minecraft/imported/fmod_symbols.h>
+#include <minecraft/symbols.h>
+#include <minecraft/std/string.h>
 #include <log.h>
 #include <hybris/dlfcn.h>
 #include <hybris/hook.h>
@@ -14,6 +16,10 @@
 
 extern "C" {
 #include <hybris/jb/linker.h>
+}
+
+void MinecraftUtils::workaroundLocaleBug() {
+    setenv("LC_ALL", "C", 1); // HACK: Force set locale to one recognized by MCPE so that the outdated C++ standard library MCPE uses doesn't fail to find one
 }
 
 void* MinecraftUtils::loadLibM() {
@@ -75,6 +81,11 @@ void* MinecraftUtils::loadMinecraftLib() {
 
 unsigned int MinecraftUtils::getLibraryBase(void *handle) {
     return ((soinfo*) handle)->base;
+}
+
+void MinecraftUtils::initSymbolBindings(void* handle) {
+    mcpe::string::empty = (mcpe::string*) hybris_dlsym(handle, "_ZN4Util12EMPTY_STRINGE");
+    minecraft_symbols_init(handle);
 }
 
 static void workerPoolDestroy(void* th) {
