@@ -12,7 +12,6 @@
 #include "patch_utils.h"
 #include <minecraft/gl.h>
 #include <minecraft/AppPlatform.h>
-#include <minecraft/ImagePickingCallback.h>
 #include <minecraft/MultiplayerService.h>
 #include <minecraft/std/function.h>
 
@@ -23,7 +22,7 @@ class GameWindow;
 
 extern bool enablePocketGuis;
 
-class LinuxAppPlatform : public AppPlatform {
+class LauncherAppPlatform : public AppPlatform {
 
 private:
     static const char* TAG;
@@ -34,10 +33,6 @@ private:
     static void replaceVtableEntry(void* lib, void** vtable, const char* sym, T nw) {
         replaceVtableEntry(lib, vtable, sym, PatchUtils::memberFuncCast(nw));
     }
-
-#ifndef SERVER
-    GameWindow* window;
-#endif
 
 public:
     static void** myVtable;
@@ -52,11 +47,7 @@ public:
 
     std::mutex runOnMainThreadMutex;
 
-    LinuxAppPlatform();
-
-#ifndef SERVER
-    void setWindow(GameWindow* window) { this->window = window; }
-#endif
+    LauncherAppPlatform();
 
     mcpe::string getDataUrl() { // this is used only for sounds
         Log::trace(TAG, "getDataUrl: %s", assetsDir.c_str());
@@ -71,8 +62,8 @@ public:
         return assetsDir;
     }
 
-    void hideMousePointer();
-    void showMousePointer();
+    virtual void hideMousePointer() {}
+    virtual void showMousePointer() {}
 
     void swapBuffers() {
         //printf("swap buffers\n");
@@ -86,11 +77,9 @@ public:
         return false;
     }
 
-    void pickImage(ImagePickingCallback& callback);
-    void pickFile(FilePickerSettings& callback);
-    bool supportsFilePicking() {
-        return true;
-    }
+    virtual void pickImage(ImagePickingCallback& callback) {}
+    virtual void pickFile(FilePickerSettings& callback) {}
+    virtual bool supportsFilePicking() { return false; }
     mcpe::string& getExternalStoragePath() {
         Log::trace(TAG, "getExternalStoragePath: %s", externalStorage.c_str());
         return externalStorage;
@@ -143,7 +132,7 @@ public:
         Log::trace(TAG, "isTablet: true");
         return true;
     }
-    void setFullscreenMode(int mode);
+    virtual void setFullscreenMode(int mode) {}
     mcpe::string getEdition() {
         if (enablePocketGuis)
             return "pocket";
