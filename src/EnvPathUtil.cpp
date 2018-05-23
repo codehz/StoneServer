@@ -4,6 +4,12 @@
 #include <pwd.h>
 #include <stdexcept>
 
+std::string EnvPathUtil::getWorkingDir() {
+    char _cwd[256];
+    getcwd(_cwd, 256);
+    return std::string(_cwd);
+}
+
 std::string EnvPathUtil::getHomeDir() {
     char* env = getenv("HOME");
     if (env != nullptr)
