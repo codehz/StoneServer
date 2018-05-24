@@ -5,6 +5,8 @@
 class EnvPathUtil {
 
 public:
+    static std::string getAppDir();
+
     static std::string getWorkingDir();
 
     static std::string getHomeDir();

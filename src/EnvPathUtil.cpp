@@ -1,8 +1,33 @@
 #include <EnvPathUtil.h>
 
+#include <stdexcept>
+#include <cstring>
+#include <climits>
 #include <unistd.h>
 #include <pwd.h>
-#include <stdexcept>
+
+std::string EnvPathUtil::getAppDir() {
+#ifdef __APPLE__
+    char buf[MAXPATHLEN];
+    char tbuf[MAXPATHLEN];
+    uint32_t size = sizeof(tbuf) - 1;
+    if (_NSGetExecutablePath(tbuf, &size) || size <= 0)
+        return std::string();
+    if (!realpath(tbuf, buf))
+        return std::string();
+    size = strlen(buf);
+#else
+    char buf[PATH_MAX];
+    ssize_t size = readlink("/proc/self/exe", buf, sizeof(buf) - 1);
+    if (size <= 0)
+        return std::string();
+#endif
+    buf[size] = '\0';
+    char* dirs = strrchr(buf, '/');
+    if (dirs != nullptr)
+        dirs[0] = '\0';
+    return std::string(buf);
+}
 
 std::string EnvPathUtil::getWorkingDir() {
     char _cwd[256];
