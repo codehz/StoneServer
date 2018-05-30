@@ -74,9 +74,10 @@ void LauncherAppPlatform::initVtable(void* lib) {
     replaceVtableEntry(lib, vta, "_ZN11AppPlatform20getAssetFileFullPathERKSs", &LauncherAppPlatform::getAssetFileFullPath);
     replaceVtableEntry(lib, vta, "_ZNK11AppPlatform14useCenteredGUIEv", &LauncherAppPlatform::useCenteredGUI);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android16getApplicationIdEv", &LauncherAppPlatform::getApplicationId);
-    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android25_updateUsedMemorySnapshotEv", &LauncherAppPlatform::_updateUsedMemorySnapshot);
-    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android30_updateAvailableMemorySnapshotEv", &LauncherAppPlatform::_updateAvailableMemorySnapshot);
-    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android26_updateTotalMemorySnapshotEv", &LauncherAppPlatform::_updateTotalMemorySnapshot);
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android13getFreeMemoryEv", &LauncherAppPlatform::getFreeMemory);
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android13getUsedMemoryEv", &LauncherAppPlatform::getUsedMemory);
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android22getTotalPhysicalMemoryEv", &LauncherAppPlatform::getTotalPhysicalMemory);
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android14getMemoryLimitEv", &LauncherAppPlatform::getMemoryLimit);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android11getDeviceIdEv", &LauncherAppPlatform::getDeviceId);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android18isFirstSnoopLaunchEv", &LauncherAppPlatform::isFirstSnoopLaunch);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android29hasHardwareInformationChangedEv", &LauncherAppPlatform::hasHardwareInformationChanged);
@@ -92,6 +93,7 @@ void LauncherAppPlatform::initVtable(void* lib) {
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android18queueForMainThreadESt8functionIFvvEE", &LauncherAppPlatform::queueForMainThread);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", &LauncherAppPlatform::getMultiplayerServiceListToRegister);
     replaceVtableEntry(lib, vta, "_ZN11AppPlatform16allowSplitScreenEv", &LauncherAppPlatform::allowSplitScreen);
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android21calculateHardwareTierEv", &LauncherAppPlatform::calculateHardwareTier);
 }
 
 long long LauncherAppPlatform::calculateAvailableDiskFreeSpace() {
@@ -100,35 +102,39 @@ long long LauncherAppPlatform::calculateAvailableDiskFreeSpace() {
     return (long long int) buf.f_bsize * buf.f_bfree;
 }
 
-void LauncherAppPlatform::_updateUsedMemorySnapshot() {
+long long LauncherAppPlatform::getUsedMemory() {
     FILE* file = fopen("/proc/self/statm", "r");
     if (file == nullptr)
-        return;
+        return 0L;
     int pageSize = getpagesize();
     long long pageCount = 0L;
     fscanf(file, "%lld", &pageCount);
     fclose(file);
-    usedMemory = pageCount * pageSize;
+    return pageCount * pageSize;
 }
 
-void LauncherAppPlatform::_updateAvailableMemorySnapshot() {
-#ifndef __APPLE__
+long long LauncherAppPlatform::getFreeMemory() {
     struct sysinfo memInfo;
     sysinfo (&memInfo);
     long long total = memInfo.freeram;
     total += memInfo.freeswap;
     total *= memInfo.mem_unit;
-    availableMemory = total;
-#endif
+    return total;
 }
 
-void LauncherAppPlatform::_updateTotalMemorySnapshot() {
-#ifndef __APPLE__
+long long LauncherAppPlatform::getTotalPhysicalMemory() {
     struct sysinfo memInfo;
     sysinfo (&memInfo);
     long long total = memInfo.totalram;
     total += memInfo.totalswap;
     total *= memInfo.mem_unit;
-    totalMemory = total;
-#endif
+    return total;
+}
+
+long long LauncherAppPlatform::getMemoryLimit() {
+    return getTotalPhysicalMemory();
+}
+
+void LauncherAppPlatform::calculateHardwareTier() {
+    hardwareTier = 3;
 }
