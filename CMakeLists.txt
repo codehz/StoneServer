@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 
-project(file_util LANGUAGES CXX)
+project(file-util LANGUAGES CXX)
 
-add_library(file_util include/FileUtil.h src/FileUtil.cpp include/EnvPathUtil.h src/EnvPathUtil.cpp)
-target_include_directories(file_util PUBLIC include/)
+add_library(file-util include/FileUtil.h src/FileUtil.cpp include/EnvPathUtil.h src/EnvPathUtil.cpp)
+target_include_directories(file-util PUBLIC include/)
