@@ -93,7 +93,7 @@ public:
         return currentStorage;
     }
     mcpe::string& getUserdataPath() {
-        Log::trace(TAG, "getUserdataPath: %s", userdata.c_str());
+        // Log::trace(TAG, "getUserdataPath: %s", userdata.c_str());
         return userdata;
     }
     mcpe::string& getUserdataPathForLevels() {
