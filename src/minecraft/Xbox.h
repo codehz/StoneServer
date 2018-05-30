@@ -37,6 +37,14 @@ struct java_interop {
 
 };
 
+struct xbox_live_app_config {
+
+    uint32_t title_id();
+
+    static std::shared_ptr<xbox::services::xbox_live_app_config> get_app_config_singleton();
+
+};
+
 struct local_config {
 
     void** vtable;
@@ -76,7 +84,7 @@ struct java_rps_ticket {
 struct auth_flow_result {
 
     int code;
-    mcpe::string s1, xbox_user_id, gamertag, age_group, privileges, user_settings_restrictions, user_enforcement_restrictions, user_title_restrictions, cid, s7;
+    mcpe::string s1, xbox_user_id, gamertag, age_group, privileges, user_settings_restrictions, user_enforcement_restrictions, user_title_restrictions, cid, event_token;
 
     auth_flow_result() {}
     auth_flow_result(auth_flow_result const& c) {
@@ -90,7 +98,7 @@ struct auth_flow_result {
         user_enforcement_restrictions = c.user_enforcement_restrictions;
         user_title_restrictions = c.user_title_restrictions;
         cid = c.cid;
-        s7 = c.s7;
+        event_token = c.event_token;
     }
 
 };
@@ -197,6 +205,8 @@ struct auth_manager {
     void set_rps_ticket(mcpe::string const&);
     /// @symbol _ZN4xbox8services6system12auth_manager23initialize_default_nsalEN4pplx18cancellation_tokenE
     pplx::task_xbox_live_result_void initialize_default_nsal(pplx::cancellation_token t = pplx::cancellation_token::none());
+    /// @symbol _ZN4xbox8services6system12auth_manager21initialize_title_nsalERKSsN4pplx18cancellation_tokenE
+    pplx::task_xbox_live_result_void initialize_title_nsal(mcpe::string const&, pplx::cancellation_token t = pplx::cancellation_token::none());
     /// @symbol _ZN4xbox8services6system12auth_manager32internal_get_token_and_signatureESsRKSsS4_SsRKSt6vectorIhSaIhEEbbS4_N4pplx18cancellation_tokenE
     pplx::task_xbox_live_result_token_and_signature_result internal_get_token_and_signature(mcpe::string, mcpe::string const&, mcpe::string const&, mcpe::string, std::vector<unsigned char> const&, bool, bool, mcpe::string const&, pplx::cancellation_token t = pplx::cancellation_token::none());
     std::shared_ptr<xbox::services::system::auth_config> get_auth_config();
