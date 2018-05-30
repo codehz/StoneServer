@@ -54,6 +54,7 @@ mcpe::string& mcpe::string::operator=(const mcpe::string &str) {
     } else {
         new (this)std::string(*((std::string*)&str));
     }
+    return *this;
 }
 
 const char *mcpe::string::c_str() const {
