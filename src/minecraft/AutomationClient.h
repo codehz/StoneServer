@@ -1,5 +1,7 @@
 #pragma once
 
+class IMinecraftApp;
+
 namespace Automation {
 
 class AutomationClient {

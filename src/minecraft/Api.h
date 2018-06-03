@@ -1,5 +1,7 @@
 #pragma once
 
+#include "std/string.h"
+
 namespace minecraft {
 namespace api {
 
