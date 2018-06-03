@@ -10,6 +10,8 @@ class property_base {
 public:
     virtual void parse_value(std::string const& value) = 0;
 
+    virtual std::string serialize_value() = 0;
+
 };
 
 class property_list {
@@ -44,6 +46,11 @@ public:
                 continue;
             set_property(line.substr(0, i), line.substr(i + 1));
         }
+    }
+
+    void save(std::ostream& stream) {
+        for (auto const& p : prop)
+            stream << p.first << '=' << p.second->serialize_value() << '\n';
     }
 
 };
