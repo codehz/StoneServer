@@ -27,4 +27,6 @@ public:
     LevelSettings();
     LevelSettings(LevelSettings const& org);
 
+    static int parseSeedString(mcpe::string const&, unsigned int);
+
 };
