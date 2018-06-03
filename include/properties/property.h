@@ -55,6 +55,15 @@ inline std::string property<int>::serialize_value() {
 }
 
 template<>
+inline void property<float>::parse_value(std::string const& value) {
+    this->value = std::stof(value);
+}
+template<>
+inline std::string property<float>::serialize_value() {
+    return std::to_string(value);
+}
+
+template<>
 inline void property<bool>::parse_value(std::string const& value) {
     const char* v = value.c_str();
     if (strcmp(v, "1") == 0 || strcasecmp(v, "true") == 0 || strcasecmp(v, "on") == 0 || strcasecmp(v, "yes") == 0)
