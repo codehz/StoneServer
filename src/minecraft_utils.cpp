@@ -79,6 +79,15 @@ void* MinecraftUtils::loadMinecraftLib() {
     return handle;
 }
 
+void MinecraftUtils::setupForHeadless() {
+    setupHybris();
+    stubFMod();
+
+    hybris_hook("eglGetProcAddress", (void*) (void (*)()) []() {
+        Log::warn("Launcher", "EGL stub called");
+    });
+}
+
 unsigned int MinecraftUtils::getLibraryBase(void *handle) {
     return ((soinfo*) handle)->base;
 }

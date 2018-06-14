@@ -15,6 +15,8 @@ public:
     static void* loadFMod();
     static void stubFMod();
 
+    static void setupForHeadless();
+
     static unsigned int getLibraryBase(void* handle);
 
     static void initSymbolBindings(void* handle);
