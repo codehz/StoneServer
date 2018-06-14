@@ -8,14 +8,16 @@
 namespace properties {
 
 template<typename T>
-class property : public property_base {
+class property {
 
 private:
     T value;
 
 public:
     property(property_list& p, std::string const& name, T def) : value(def) {
-        p.register_property(name, this);
+        using std::placeholders::_1;
+        p.register_property(name, std::bind(&property<T>::parse_value, this, _1),
+                            std::bind(&property<T>::serialize_value, this));
     }
 
     T const& get() const {
@@ -30,9 +32,9 @@ public:
         this->value = std::move(val);
     }
 
-    void parse_value(std::string const& value) override;
+    void parse_value(std::string const& value);
 
-    std::string serialize_value() override;
+    std::string serialize_value();
 
 };
 

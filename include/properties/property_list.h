@@ -5,26 +5,23 @@
 
 namespace properties {
 
-class property_base {
-
-public:
-    virtual void parse_value(std::string const& value) = 0;
-
-    virtual std::string serialize_value() = 0;
-
-};
-
 class property_list {
 
 private:
-    std::unordered_map<std::string, property_base*> prop;
+    struct property_def {
+        std::function<void (std::string const&)> parse_value;
+        std::function<std::string ()> serialize_value;
+    };
+
+    std::unordered_map<std::string, property_def> prop;
     std::unordered_map<std::string, std::string> unknown_props;
 
 public:
     property_list() {}
 
-    void register_property(std::string name, property_base* prop) {
-        this->prop.insert({name, prop});
+    void register_property(std::string name, std::function<void (std::string const&)> parse_value,
+                           std::function<std::string ()> serialize_value) {
+        this->prop.insert({name, {parse_value, serialize_value}});
     }
 
     void set_property(std::string const& name, std::string const& value) {
@@ -32,7 +29,7 @@ public:
         if (it == prop.end()) {
             unknown_props[name] = value;
         } else {
-            it->second->parse_value(value);
+            it->second.parse_value(value);
         }
     }
 
@@ -50,7 +47,7 @@ public:
 
     void save(std::ostream& stream) {
         for (auto const& p : prop)
-            stream << p.first << '=' << p.second->serialize_value() << '\n';
+            stream << p.first << '=' << p.second.serialize_value() << '\n';
     }
 
 };
