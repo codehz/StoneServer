@@ -6,6 +6,11 @@
 #include <unistd.h>
 #include <pwd.h>
 
+#ifdef __APPLE__
+#include <sys/param.h>
+#include <mach-o/dyld.h>
+#endif
+
 std::string EnvPathUtil::getAppDir() {
 #ifdef __APPLE__
     char buf[MAXPATHLEN];
