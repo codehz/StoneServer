@@ -5,11 +5,17 @@
 #include <sstream>
 #include <algorithm>
 #include <sys/types.h>
-#ifndef __APPLE__
-#include <sys/sysinfo.h>
-#endif
 #include <sys/statvfs.h>
 #include <hybris/dlfcn.h>
+
+#ifdef __APPLE__
+#include <stdint.h>
+#include <sys/sysctl.h>
+#include <mach/host_info.h>
+#include <mach/mach_host.h>
+#else
+#include <sys/sysinfo.h>
+#endif
 
 const char* LauncherAppPlatform::TAG = "AppPlatform";
 
@@ -103,6 +109,18 @@ long long LauncherAppPlatform::calculateAvailableDiskFreeSpace() {
 }
 
 long long LauncherAppPlatform::getUsedMemory() {
+#ifdef __APPLE__
+    uint64_t page_size;
+    size_t len = sizeof(page_size);
+    sysctlbyname("hw.pagesize", &page_size, &len, NULL, 0);
+
+    struct vm_statistics64 stat;
+    mach_msg_type_number_t count = HOST_VM_INFO64_COUNT;
+    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info64_t) &stat, &count);
+
+    double page_K = page_size / (double) 1024;
+    return (stat.active_count + stat.wire_count) * page_K * 1000;
+#else
     FILE* file = fopen("/proc/self/statm", "r");
     if (file == nullptr)
         return 0L;
@@ -111,24 +129,43 @@ long long LauncherAppPlatform::getUsedMemory() {
     fscanf(file, "%lld", &pageCount);
     fclose(file);
     return pageCount * pageSize;
+#endif
 }
 
 long long LauncherAppPlatform::getFreeMemory() {
+#ifdef __APPLE__
+    uint64_t page_size;
+    size_t len = sizeof(page_size);
+    sysctlbyname("hw.pagesize", &page_size, &len, NULL, 0);
+
+    struct vm_statistics64 stat;
+    mach_msg_type_number_t count = HOST_VM_INFO64_COUNT;
+    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info64_t) &stat, &count);
+
+    double page_K = page_size / (double) 1024;
+    return stat.free_count * page_K * 1000;
+#else
     struct sysinfo memInfo;
     sysinfo (&memInfo);
     long long total = memInfo.freeram;
-    total += memInfo.freeswap;
     total *= memInfo.mem_unit;
     return total;
+#endif
 }
 
 long long LauncherAppPlatform::getTotalPhysicalMemory() {
+#ifdef __APPLE__
+    uint64_t memsize;
+    size_t len = sizeof(memsize);
+    sysctlbyname("hw.memsize", &memsize, &len, NULL, 0);
+    return memsize;
+#else
     struct sysinfo memInfo;
     sysinfo (&memInfo);
     long long total = memInfo.totalram;
-    total += memInfo.totalswap;
     total *= memInfo.mem_unit;
     return total;
+#endif
 }
 
 long long LauncherAppPlatform::getMemoryLimit() {
