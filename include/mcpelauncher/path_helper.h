@@ -54,6 +54,12 @@ public:
         return getPrimaryDataDirectory();
     }
 
+    static std::string findGameFile(std::string const& path) {
+        if (!pathInfo.gameDir.empty())
+            return pathInfo.gameDir + path;
+        return findDataFile(path);
+    }
+
     static void setGameDir(std::string gameDir) {
         if (!gameDir.empty() && gameDir[gameDir.length() - 1] != '/')
             gameDir += '/';
