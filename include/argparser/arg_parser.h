@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <cstring>
 #include "arg_list.h"
 
 namespace argparser {

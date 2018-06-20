@@ -41,6 +41,11 @@ void arg<int>::handle_value(arg_list& list) {
 }
 
 template <>
+void arg<float>::handle_value(arg_list& list) {
+    value = std::stof(list.next());
+}
+
+template <>
 void arg<bool>::handle_value(arg_list& list) {
     const char* v = list.next_value_or_null();
     if (v == nullptr ||
