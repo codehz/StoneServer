@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mcpelauncher/path_helper.h>
+
 class MinecraftUtils {
 
 private:
@@ -10,7 +12,7 @@ public:
 
     static void setupHybris();
 
-    static void* loadMinecraftLib();
+    static void* loadMinecraftLib(std::string const& path = PathHelper::findGameFile("libs/libminecraftpe.so"));
 
     static void* loadFMod();
     static void stubFMod();

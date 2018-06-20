@@ -25,7 +25,7 @@ bool enablePocketGuis = false;
 LauncherAppPlatform::LauncherAppPlatform() : AppPlatform() {
     this->vtable = myVtable;
     dataDir = PathHelper::getPrimaryDataDirectory();
-    assetsDir = PathHelper::findDataFile("assets/");
+    assetsDir = PathHelper::findGameFile("assets/");
     tmpPath = PathHelper::getCacheDirectory();
     internalStorage = dataDir;
     externalStorage = dataDir;

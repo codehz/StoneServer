@@ -70,12 +70,11 @@ void MinecraftUtils::setupHybris() {
     load_empty_library("libstdc++.so");
 }
 
-void* MinecraftUtils::loadMinecraftLib() {
-    std::string mcpePath = PathHelper::findDataFile("libs/libminecraftpe.so");
-    void* handle = hybris_dlopen(mcpePath.c_str(), RTLD_LAZY);
+void* MinecraftUtils::loadMinecraftLib(std::string const& path) {
+    void* handle = hybris_dlopen(path.c_str(), RTLD_LAZY);
     if (handle == nullptr)
         throw std::runtime_error(std::string("Failed to load Minecraft: %s") + hybris_dlerror());
-    HookManager::addHookLibrary(handle, mcpePath);
+    HookManager::addHookLibrary(handle, path);
     return handle;
 }
 
