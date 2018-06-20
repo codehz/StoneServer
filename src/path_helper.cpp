@@ -115,6 +115,15 @@ std::string PathHelper::findDataFile(std::string const& path) {
             return p;
         throw std::runtime_error("Failed to find data file: " + path);
     }
+#ifdef DEV_EXTRA_PATHS
+    for (const char* p = DEV_EXTRA_PATHS, *pn = p; pn != nullptr; p = pn + 1) {
+        pn = strchr(p, ':');
+        std::string s (p, (pn != nullptr ? (size_t) (pn - p) : strlen(p)));
+        std::string sp = s + "/" + path;
+        if (fileExists(sp))
+            return sp;
+    }
+#endif
     std::string p = pathInfo.appDir + "/" + path;
     if (fileExists(p))
         return p;
