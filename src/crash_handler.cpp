@@ -50,6 +50,7 @@ void CrashHandler::handleSignal(int signal, void *aptr) {
         }
         ptr++;
     }
+    fflush(stdout);
     abort();
 }
 
