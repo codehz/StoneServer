@@ -15,6 +15,7 @@ private:
         std::vector<std::string> dataDirs;
         std::string cacheHome;
         std::string overrideDataDir;
+        std::string overrideCacheDir;
         std::string gameDir;
 
         PathInfo();
@@ -43,8 +44,8 @@ public:
     }
 
     static std::string getCacheDirectory() {
-        if (!pathInfo.overrideDataDir.empty())
-            return pathInfo.overrideDataDir;
+        if (!pathInfo.overrideCacheDir.empty())
+            return pathInfo.overrideCacheDir;
         return pathInfo.cacheHome + "/" + appDirName + "/";
     }
 
@@ -64,6 +65,14 @@ public:
         if (!gameDir.empty() && gameDir[gameDir.length() - 1] != '/')
             gameDir += '/';
         pathInfo.gameDir = std::move(gameDir);
+    }
+
+    static void setDataDir(std::string dataDir) {
+        pathInfo.overrideDataDir = std::move(dataDir);
+    }
+
+    static void setCacheDir(std::string cacheDir) {
+        pathInfo.overrideCacheDir = std::move(cacheDir);
     }
 
     static std::string getIconPath() {

@@ -109,11 +109,11 @@ bool PathHelper::fileExists(std::string const& path) {
 }
 
 std::string PathHelper::findDataFile(std::string const& path) {
+    std::string p;
     if (!pathInfo.overrideDataDir.empty()) {
-        std::string p = pathInfo.overrideDataDir + path;
+        p = pathInfo.overrideDataDir + path;
         if (fileExists(p))
             return p;
-        throw std::runtime_error("Failed to find data file: " + path);
     }
 #ifdef DEV_EXTRA_PATHS
     for (const char* p = DEV_EXTRA_PATHS, *pn = p; pn != nullptr; p = pn + 1) {
@@ -124,12 +124,14 @@ std::string PathHelper::findDataFile(std::string const& path) {
             return sp;
     }
 #endif
-    std::string p = pathInfo.appDir + "/" + path;
-    if (fileExists(p))
-        return p;
-    p = pathInfo.dataHome + "/" + appDirName + "/" + path;
-    if (fileExists(p))
-        return p;
+    if (pathInfo.overrideDataDir.empty()) {
+        p = pathInfo.appDir + "/" + path;
+        if (fileExists(p))
+            return p;
+        p = pathInfo.dataHome + "/" + appDirName + "/" + path;
+        if (fileExists(p))
+            return p;
+    }
     for (const auto& dir : pathInfo.dataDirs) {
         p = dir + "/" + appDirName + "/" + path;
         if (fileExists(p))
