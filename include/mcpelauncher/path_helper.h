@@ -68,10 +68,14 @@ public:
     }
 
     static void setDataDir(std::string dataDir) {
+        if (!dataDir.empty() && dataDir[dataDir.length() - 1] != '/')
+            dataDir += '/';
         pathInfo.overrideDataDir = std::move(dataDir);
     }
 
     static void setCacheDir(std::string cacheDir) {
+        if (!cacheDir.empty() && cacheDir[cacheDir.length() - 1] != '/')
+            cacheDir += '/';
         pathInfo.overrideCacheDir = std::move(cacheDir);
     }
 
