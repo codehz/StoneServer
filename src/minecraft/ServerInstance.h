@@ -27,7 +27,7 @@ class ServerInstance {
 
 public:
 
-    char filler[0x10];
+    char filler[0xC];
     Minecraft* minecraft;
     char filler2[0x200];
 
