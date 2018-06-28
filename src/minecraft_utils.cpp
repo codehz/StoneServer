@@ -107,4 +107,6 @@ void MinecraftUtils::workaroundShutdownCrash(void* handle) {
     PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
     patchOff = (unsigned int) hybris_dlsym(handle, "_ZN9SchedulerD2Ev");
     PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
+    patchOff = (unsigned int) hybris_dlsym(handle, "_ZN19AppPlatform_androidD2Ev");
+    PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
 }
