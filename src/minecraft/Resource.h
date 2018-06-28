@@ -8,7 +8,7 @@ enum class ResourceFileSystem;
 class ResourceLoader {
 };
 
-class Resource {
+class ResourceLoaders {
 
 public:
     static void registerLoader(ResourceFileSystem, std::unique_ptr<ResourceLoader>);
