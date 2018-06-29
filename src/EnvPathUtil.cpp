@@ -63,12 +63,16 @@ std::string EnvPathUtil::getDataHome() {
     return getHomeDir() + "/.local/share";
 }
 
-bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const char* path) {
+bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const char* path, const char* cwd) {
     if (path == nullptr) {
         path = getenv("PATH");
         if (path == nullptr || strlen(path) == 0)
             path = "/bin:/usr/bin";
     }
+    size_t cwdLen = cwd == nullptr ? 0 : strlen(cwd);
+    bool willAppendSlashCwd = cwdLen == 0 ? false : cwd[cwdLen -1] != '/';
+    size_t cwdWithSlashLen = cwdLen + (willAppendSlashCwd ? 1 : 0);
+
     auto appDir = EnvPathUtil::getAppDir() + "/";
     std::string buf;
     while (path != nullptr) {
@@ -76,16 +80,28 @@ bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const
         size_t len = (pathn - path);
         if (pathn == nullptr)
             len = strlen(path);
-        // length 0 should be handled as '.' - in this case, we'll need to append a slash as well
-        bool willAppendSlash = (len == 0 || path[len - 1] != '/');
-        buf.resize(len + (willAppendSlash ? 1 : 0) + (len == 0 ? 1 : 0) + what.size());
-        memcpy(&buf[0], path, len);
-        size_t o = len;
-        if (len == 0)
+        bool willPrefixWithCwd = len == 0 || path[0] != '/';
+        bool willReplaceWithDot = len == 0 && cwdLen == 0;
+        bool willAppendSlash = (willReplaceWithDot ? true : (len != 0 && path[len - 1] != '/'));
+        buf.resize((willPrefixWithCwd ? cwdWithSlashLen : 0) + (willReplaceWithDot ? 1 : len) +
+                           (willAppendSlash ? 1 : 0) + what.size());
+        size_t o = 0;
+        if (willPrefixWithCwd) {
+            memcpy(&buf[o], cwd, cwdLen);
+            o += cwdLen;
+            if (willAppendSlashCwd)
+                buf[o++] = '/';
+        }
+        if (willReplaceWithDot) {
             buf[o++] = '.';
+        } else {
+            memcpy(&buf[o], path, len);
+            o += len;
+        }
         if (willAppendSlash)
             buf[o++] = '/';
         memcpy(&buf[o], what.data(), what.size());
+        printf("looking in: %s\n", buf.c_str());
         if (access(buf.c_str(), X_OK) == 0) {
             result = std::move(buf);
             return true;

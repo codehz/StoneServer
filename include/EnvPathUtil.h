@@ -13,6 +13,7 @@ public:
 
     static std::string getDataHome();
 
-    static bool findInPath(std::string const& what, std::string& result, const char* path = nullptr);
+    static bool findInPath(std::string const& what, std::string& result, const char* path = nullptr,
+                           const char* cwd = nullptr);
 
 };
