@@ -62,3 +62,37 @@ std::string EnvPathUtil::getDataHome() {
         return env;
     return getHomeDir() + "/.local/share";
 }
+
+bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const char* path) {
+    if (path == nullptr) {
+        path = getenv("PATH");
+        if (path == nullptr || strlen(path) == 0)
+            path = "/bin:/usr/bin";
+    }
+    auto appDir = EnvPathUtil::getAppDir() + "/";
+    std::string buf;
+    while (path != nullptr) {
+        const char* pathn = strchr(path, ':');
+        size_t len = (pathn - path);
+        if (pathn == nullptr)
+            len = strlen(path);
+        // length 0 should be handled as '.' - in this case, we'll need to append a slash as well
+        bool willAppendSlash = (len == 0 || path[len - 1] != '/');
+        buf.resize(len + (willAppendSlash ? 1 : 0) + (len == 0 ? 1 : 0) + what.size());
+        memcpy(&buf[0], path, len);
+        size_t o = len;
+        if (len == 0)
+            buf[o++] = '.';
+        if (willAppendSlash)
+            buf[o++] = '/';
+        memcpy(&buf[o], what.data(), what.size());
+        if (access(buf.c_str(), X_OK) == 0) {
+            result = std::move(buf);
+            return true;
+        }
+        path = pathn;
+        if (path)
+            path++;
+    }
+    return false;
+}
