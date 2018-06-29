@@ -78,7 +78,6 @@ bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const
     bool willAppendSlashCwd = cwdLen == 0 ? false : cwd[cwdLen -1] != '/';
     size_t cwdWithSlashLen = cwdLen + (willAppendSlashCwd ? 1 : 0);
 
-    auto appDir = EnvPathUtil::getAppDir() + "/";
     std::string buf;
     while (path != nullptr) {
         const char* pathn = strchr(path, ':');
@@ -106,7 +105,6 @@ bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const
         if (willAppendSlash)
             buf[o++] = '/';
         memcpy(&buf[o], what.data(), what.size());
-        printf("looking in: %s\n", buf.c_str());
         if (access(buf.c_str(), X_OK) == 0) {
             result = std::move(buf);
             return true;
