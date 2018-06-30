@@ -80,7 +80,7 @@ public:
     }
 
     static std::string getIconPath() {
-        return findDataFile("mcpelauncher-icon.png");
+        return findGameFile("assets/icon.png");
     }
 
 };
