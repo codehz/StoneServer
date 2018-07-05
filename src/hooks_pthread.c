@@ -278,7 +278,7 @@ static int my_pthread_mutex_init(pthread_mutex_t *__mutex,
 {
     pthread_mutex_t *realmutex = NULL;
 
-#ifdef APPLE
+#ifdef __APPLE__
     __mutexattr = hybris_get_real_mutexattr(__mutexattr);
 #endif
 
