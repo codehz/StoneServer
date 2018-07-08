@@ -121,6 +121,7 @@ struct _hook net_hooks[] = {
 #ifndef __APPLE__
     {"socket", socket},
     {"bind", bind},
+    {"connect", connect},
     {"sendto", sendto},
     {"recvfrom", recvfrom},
     {"getsockname", getsockname},
@@ -128,7 +129,6 @@ struct _hook net_hooks[] = {
     {"setsockopt", setsockopt},
 #endif
     {"socketpair", socketpair},
-    {"connect", connect},
     {"getpeername", getpeername},
     {"send", send},
     {"recv", recv},

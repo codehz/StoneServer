@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
 #include <netdb.h>
 #include "hooks_net.h"
 
@@ -217,6 +220,14 @@ int darwin_my_bind(int sockfd, const struct android_sockaddr *addr, socklen_t ad
     return bind(sockfd, conv_addr, addrlen);
 }
 
+int darwin_my_connect(int sockfd, const struct android_sockaddr *addr, socklen_t addrlen)
+{
+    struct sockaddr *conv_addr = alloca(darwin_get_addr_size(addr));
+    if (!darwin_convert_addr_to_native(addr, conv_addr))
+        return -1;
+    return connect(sockfd, conv_addr, addrlen);
+}
+
 ssize_t darwin_my_sendto(int socket, const void *buffer, size_t length, int flags,
                          const struct android_sockaddr *dest_addr, socklen_t dest_len)
 {
@@ -263,7 +274,11 @@ struct android_addrinfo* darwin_convert_addrinfo(struct addrinfo* res)
     ares->ai_socktype = res->ai_socktype;
     ares->ai_protocol = res->ai_protocol;
     ares->ai_addrlen = res->ai_addrlen;
-    ares->ai_canonname = NULL; //res->ai_canonname;
+    ares->ai_canonname = NULL;
+    if (ares->ai_canonname) {
+        ares->ai_canonname = malloc(strlen(res->ai_canonname) + 1);
+        strcpy(ares->ai_canonname, res->ai_canonname);
+    }
     size_t conv_addrlen = res->ai_addrlen;
     struct android_sockaddr *conv_addr = malloc(conv_addrlen);
     darwin_convert_addr_from_native(res->ai_addr, conv_addr, conv_addrlen);
@@ -338,6 +353,7 @@ int darwin_my_getnameinfo (const struct android_sockaddr *__restrict sa,
 struct _hook net_darwin_hooks[] = {
     {"socket", darwin_my_socket},
     {"bind", darwin_my_bind},
+    {"connect", darwin_my_connect},
     {"sendto", darwin_my_sendto},
     {"recvfrom", darwin_my_recvfrom},
     {"getsockname", darwin_my_getsockname},

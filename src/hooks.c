@@ -181,6 +181,21 @@ int darwin_my_clock_gettime(clockid_t clk_id, struct timespec *tp) {
     return clock_gettime(clk_id, tp);
 }
 
+int darwin_my_ioctl(int s, int cmd, void* arg) {
+    unsigned long mcmd = cmd;
+    if (cmd == 0x5421)
+        mcmd = FIONBIO;
+    else
+        printf("potentially unsupported ioctl: %x\n", cmd);
+    return ioctl(s, mcmd, arg);
+}
+
+int* darwin_my_errno() {
+    int* ret = &errno;
+    if (*ret == EAGAIN) *ret = 11;
+    else if (*ret == EINPROGRESS) *ret = 115;
+    return ret;
+}
 #endif
 
 static int my_set_errno(int oi_errno)
@@ -263,11 +278,12 @@ struct _hook main_hooks[] = {
     {"ldexp", ldexp},
 #ifdef __APPLE__
     {"getrlimit", darwin_my_getrlimit},
+    {"ioctl", darwin_my_ioctl},
 #else
     {"getrlimit", getrlimit},
+    {"ioctl", ioctl},
 #endif
     {"gettimeofday", gettimeofday},
-    {"ioctl", ioctl},
     {"utime", utime},
     {"setlocale", setlocale},
     {"__umoddi3", __umoddi3},
@@ -440,7 +456,7 @@ struct _hook main_hooks[] = {
     {"strncasecmp",strncasecmp},
     /* errno.h */
 #ifdef __APPLE__
-    {"__errno", __error},
+    {"__errno", darwin_my_errno},
 #else
     {"__errno", __errno_location},
 #endif
