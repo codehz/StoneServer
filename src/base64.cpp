@@ -53,7 +53,7 @@ std::string Base64::decode(const std::string& input, const char* skip_chars) {
                     break;
                 }
                 if (strchr(skip_chars, input[p]) == NULL)
-                    throw std::runtime_error("Invalid character at " + p);
+                    throw std::runtime_error("Invalid character at " + std::to_string(p));
                 if (++p == input.size())
                     throw std::runtime_error("Unexpected end of input");
             }
