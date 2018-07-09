@@ -11,7 +11,7 @@ mcpe::string::_Rep* mcpe::string::createRep(const char* data, size_t length, siz
     rp->refcount = -1;
     char* rp_data = (char*) (rp + 1);
     memcpy((void*) rp_data, data, length);
-    rp_data[length + 1] = '\0';
+    rp_data[length] = '\0';
     return rp;
 }
 
