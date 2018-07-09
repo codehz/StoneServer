@@ -12,7 +12,6 @@
 #include "patch_utils.h"
 #include <minecraft/gl.h>
 #include <minecraft/AppPlatform.h>
-#include <minecraft/MultiplayerService.h>
 #include <minecraft/std/function.h>
 
 class ImageData;
@@ -139,7 +138,7 @@ public:
         return "win10";
     }
     int getBuildPlatform() const {
-        return 7; // Win10
+        return 1;
     }
     int getPlatformUIScalingRules() {
         return enablePocketGuis ? 2 : 0;
@@ -162,12 +161,6 @@ public:
     mcpe::string createDeviceID(std::string const& c) {
         Log::trace(TAG, "createDeviceID: %s", c.c_str());
         return "linux";
-    }
-
-    std::vector<std::shared_ptr<Social::MultiplayerService>> getMultiplayerServiceListToRegister() {
-        std::vector<std::shared_ptr<Social::MultiplayerService>> ret;
-        ret.push_back(std::shared_ptr<Social::MultiplayerService>(new Social::MultiplayerXBL()));
-        return ret;
     }
 
     bool allowSplitScreen() {

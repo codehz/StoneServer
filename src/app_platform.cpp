@@ -97,9 +97,10 @@ void LauncherAppPlatform::initVtable(void* lib) {
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android14createDeviceIDEv", &LauncherAppPlatform::createDeviceID_old);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android14createDeviceIDERSs", &LauncherAppPlatform::createDeviceID);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android18queueForMainThreadESt8functionIFvvEE", &LauncherAppPlatform::queueForMainThread);
-    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", &LauncherAppPlatform::getMultiplayerServiceListToRegister);
     replaceVtableEntry(lib, vta, "_ZN11AppPlatform16allowSplitScreenEv", &LauncherAppPlatform::allowSplitScreen);
     replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android21calculateHardwareTierEv", &LauncherAppPlatform::calculateHardwareTier);
+
+    replaceVtableEntry(lib, vta, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", hybris_dlsym(lib, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv"));
 }
 
 long long LauncherAppPlatform::calculateAvailableDiskFreeSpace() {
