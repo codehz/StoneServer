@@ -10,6 +10,8 @@ private:
 public:
     static void workaroundLocaleBug();
 
+    static void setMallocZero();
+
     static void setupHybris();
 
     static void* loadMinecraftLib(std::string const& path = PathHelper::findGameFile("libs/libminecraftpe.so"));

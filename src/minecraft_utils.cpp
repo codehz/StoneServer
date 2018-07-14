@@ -22,6 +22,14 @@ void MinecraftUtils::workaroundLocaleBug() {
     setenv("LC_ALL", "C", 1); // HACK: Force set locale to one recognized by MCPE so that the outdated C++ standard library MCPE uses doesn't fail to find one
 }
 
+void MinecraftUtils::setMallocZero() {
+    hybris_hook("malloc", (void*) (void* (*)(size_t)) [](size_t n) {
+        void* ret = malloc(n);
+        memset(ret, 0, n);
+        return ret;
+    });
+}
+
 void* MinecraftUtils::loadLibM() {
 #ifdef __APPLE__
     void* libmLib = HybrisUtils::loadLibraryOS("libm.dylib", libm_symbols);
