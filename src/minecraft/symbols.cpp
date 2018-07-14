@@ -1,13 +1,13 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Jun 03 2018 20:49:22 UTC
+// Generated on Wed Jun 27 2018 13:44:19 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
 
 #include "Resource.h"
-static void (*_Resource_registerLoader)(ResourceFileSystem, std::unique_ptr<ResourceLoader>);
-void Resource::registerLoader(ResourceFileSystem p1, std::unique_ptr<ResourceLoader> p2) {
-    _Resource_registerLoader(p1, std::move(p2));
+static void (*_ResourceLoaders_registerLoader)(ResourceFileSystem, std::unique_ptr<ResourceLoader>);
+void ResourceLoaders::registerLoader(ResourceFileSystem p1, std::unique_ptr<ResourceLoader> p2) {
+    _ResourceLoaders_registerLoader(p1, std::move(p2));
 }
 
 #include "UserManager.h"
@@ -284,13 +284,13 @@ std::vector<CommandOutputMessage> const & CommandOutput::getMessages() const {
 }
 
 #include "Scheduler.h"
-static Scheduler * (*_Scheduler_client)();
-Scheduler * Scheduler::client() {
-    return _Scheduler_client();
-}
 static void (Scheduler::*_Scheduler_processCoroutines)(std::chrono::duration<long long>);
 void Scheduler::processCoroutines(std::chrono::duration<long long> p1) {
     (this->*_Scheduler_processCoroutines)(p1);
+}
+static Scheduler * (*_MinecraftScheduler_client)();
+Scheduler * MinecraftScheduler::client() {
+    return _MinecraftScheduler_client();
 }
 
 #include "FilePathManager.h"
@@ -504,8 +504,8 @@ mcpe::string Common::getGameVersionStringNet() {
 }
 
 void minecraft_symbols_init(void* handle) {
-    ((void*&) _Resource_registerLoader) = hybris_dlsym(handle, "_ZN8Resource14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
-    if (_Resource_registerLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Resource14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
+    ((void*&) _ResourceLoaders_registerLoader) = hybris_dlsym(handle, "_ZN15ResourceLoaders14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
+    if (_ResourceLoaders_registerLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ResourceLoaders14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
     ((void*&) _Social_UserManager_CreateUserManager) = hybris_dlsym(handle, "_ZN6Social11UserManager17CreateUserManagerEv");
     if (_Social_UserManager_CreateUserManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Social11UserManager17CreateUserManagerEv");
     ((void*&) _xbox_services_xbox_services_error_code_category) = hybris_dlsym(handle, "_ZN4xbox8services33xbox_services_error_code_categoryEv");
@@ -634,10 +634,10 @@ void minecraft_symbols_init(void* handle) {
     if (_Keyboard_feedText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard8feedTextERKSsbh");
     ((void*&) _CommandOutput_getMessages) = hybris_dlsym(handle, "_ZNK13CommandOutput11getMessagesEv");
     if (_CommandOutput_getMessages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOutput11getMessagesEv");
-    ((void*&) _Scheduler_client) = hybris_dlsym(handle, "_ZN9Scheduler6clientEv");
-    if (_Scheduler_client == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Scheduler6clientEv");
     ((void*&) _Scheduler_processCoroutines) = hybris_dlsym(handle, "_ZN9Scheduler17processCoroutinesENSt6chrono8durationIxSt5ratioILx1ELx1000000000EEEE");
     if (_Scheduler_processCoroutines == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Scheduler17processCoroutinesENSt6chrono8durationIxSt5ratioILx1ELx1000000000EEEE");
+    ((void*&) _MinecraftScheduler_client) = hybris_dlsym(handle, "_ZN18MinecraftScheduler6clientEv");
+    if (_MinecraftScheduler_client == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN18MinecraftScheduler6clientEv");
     ((void*&) _FilePathManager_FilePathManager) = hybris_dlsym(handle, "_ZN15FilePathManagerC2ESsb");
     if (_FilePathManager_FilePathManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15FilePathManagerC2ESsb");
     ((void*&) _FilePathManager_getRootPath) = hybris_dlsym(handle, "_ZNK15FilePathManager11getRootPathEv");
