@@ -2,6 +2,8 @@ environment:
   P: "c:/projects/libs"
   ACCOUNT:
       secure: F8Xu4syZJRRLmTnPDOUjr5bG7Lk6UburldIUuxZ/OJQ=
+  githubtk:
+      secure: qrVq5CxwKaOg2SohTmLQL6H6llxcxg1IJbF4r7Cx0Q7xxOsCPc49l2DzmlQIkui8
 
 # branches to build
 branches:
@@ -45,6 +47,19 @@ artifacts:
   - path: sqlite.zip
     name: sqlite.zip
 
-deploy_script:
-  - cd c:\projects\sqlite
-  - curl -T sqlite.zip --user %ACCOUNT% https://webdav.yandex.ru/libs/sqlite.zip
+#@deploy_script:
+#  - cd c:\projects\sqlite
+#  - curl -T sqlite.zip --user %ACCOUNT% https://webdav.yandex.ru/libs/sqlite.zip
+
+deploy:
+  release: sqlite-v$(appveyor_build_version)
+  description: 'Automatic release by Appveyor.com'
+  provider: GitHub
+  auth_token:
+    secure: qrVq5CxwKaOg2SohTmLQL6H6llxcxg1IJbF4r7Cx0Q7xxOsCPc49l2DzmlQIkui8
+  artifact: /.*\.zip/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
