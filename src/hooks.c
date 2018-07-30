@@ -736,13 +736,16 @@ void user_hooks_resize() {
     }
 }
 
-void add_user_hook(struct _hook h) {
+void add_user_hook(struct _hook h, int user) {
     if (user_hooks_size + 1 >= user_hooks_arr_size)
         user_hooks_resize();
 
     for (int i = 0; i < user_hooks_size; i++) {
         if (strcmp(user_hooks[i].name, h.name) == 0) {
-            printf("warn: duplicate hook: %s\n", h.name);
+            if (!user)
+                printf("warn: duplicate hook: %s\n", h.name);
+            user_hooks[i] = h;
+            return;
         }
     }
     user_hooks[user_hooks_size++] = h;
@@ -752,7 +755,7 @@ void hybris_register_hooks(struct _hook *hooks) {
     struct _hook *ptr = &hooks[0];
     while (ptr->name != NULL)
     {
-        add_user_hook(*ptr);
+        add_user_hook(*ptr, 0);
         ptr++;
     }
 }
@@ -761,7 +764,7 @@ void hybris_hook(const char *name, void* func) {
     struct _hook h;
     h.name = name;
     h.func = func;
-    add_user_hook(h);
+    add_user_hook(h, 1);
 }
 
 void *get_hooked_symbol(const char *sym)
