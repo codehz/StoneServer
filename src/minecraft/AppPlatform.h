@@ -18,4 +18,6 @@ public:
 
     void initialize();
 
+    void teardown();
+
 };
