@@ -109,12 +109,6 @@ static void workerPoolDestroy(void* th) {
 }
 void MinecraftUtils::workaroundShutdownCrash(void* handle) {
     // this is an ugly hack to workaround the close app crashes MCPE causes
-    unsigned int patchOff = (unsigned int) hybris_dlsym(handle, "_ZN9TaskGroupD2Ev");
-    PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
-    patchOff = (unsigned int) hybris_dlsym(handle, "_ZN10WorkerPoolD2Ev");
-    PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
-    patchOff = (unsigned int) hybris_dlsym(handle, "_ZN9SchedulerD2Ev");
-    PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
-    patchOff = (unsigned int) hybris_dlsym(handle, "_ZN19AppPlatform_androidD2Ev");
+    unsigned int patchOff = (unsigned int) hybris_dlsym(handle, "_ZN19AppPlatform_androidD2Ev");
     PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
 }
