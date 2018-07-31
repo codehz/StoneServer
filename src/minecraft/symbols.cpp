@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Jul 30 2018 20:23:00 UTC
+// Generated on Tue Jul 31 2018 10:14:37 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -241,6 +241,14 @@ void MinecraftEventing::init() {
 #include "Api.h"
 
 #include "MinecraftGame.h"
+static void (ClientInstance::*_ClientInstance__startLeaveGame)();
+void ClientInstance::_startLeaveGame() {
+    (this->*_ClientInstance__startLeaveGame)();
+}
+static void (ClientInstance::*_ClientInstance__syncDestroyGame)();
+void ClientInstance::_syncDestroyGame() {
+    (this->*_ClientInstance__syncDestroyGame)();
+}
 static void (MinecraftGame::*_MinecraftGame_MinecraftGame)(int, char * *);
 MinecraftGame::MinecraftGame(int p1, char * * p2) {
     (this->*_MinecraftGame_MinecraftGame)(p1, p2);
@@ -248,6 +256,10 @@ MinecraftGame::MinecraftGame(int p1, char * * p2) {
 static void (MinecraftGame::*_MinecraftGame_destructor)();
 MinecraftGame::~MinecraftGame() {
     (this->*_MinecraftGame_destructor)();
+}
+static void (MinecraftGame::*_MinecraftGame_requestLeaveGame)(bool, bool);
+void MinecraftGame::requestLeaveGame(bool p1, bool p2) {
+    (this->*_MinecraftGame_requestLeaveGame)(p1, p2);
 }
 static void (MinecraftGame::*_MinecraftGame_update)();
 void MinecraftGame::update() {
@@ -264,6 +276,18 @@ void MinecraftGame::setUISizeAndScale(int p1, int p2, float p3) {
 static std::shared_ptr<Options> (MinecraftGame::*_MinecraftGame_getPrimaryUserOptions)();
 std::shared_ptr<Options> MinecraftGame::getPrimaryUserOptions() {
     return (this->*_MinecraftGame_getPrimaryUserOptions)();
+}
+static ClientInstance * (MinecraftGame::*_MinecraftGame_getPrimaryClientInstance)();
+ClientInstance * MinecraftGame::getPrimaryClientInstance() {
+    return (this->*_MinecraftGame_getPrimaryClientInstance)();
+}
+static void (MinecraftGame::*_MinecraftGame_startLeaveGame)();
+void MinecraftGame::startLeaveGame() {
+    (this->*_MinecraftGame_startLeaveGame)();
+}
+static void (MinecraftGame::*_MinecraftGame_continueLeaveGame)();
+void MinecraftGame::continueLeaveGame() {
+    (this->*_MinecraftGame_continueLeaveGame)();
 }
 
 #include "Keyboard.h"
@@ -618,10 +642,16 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftEventing_MinecraftEventing == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventingC2ERKSs");
     ((void*&) _MinecraftEventing_init) = hybris_dlsym(handle, "_ZN17MinecraftEventing4initEv");
     if (_MinecraftEventing_init == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventing4initEv");
+    ((void*&) _ClientInstance__startLeaveGame) = hybris_dlsym(handle, "_ZN14ClientInstance15_startLeaveGameEv");
+    if (_ClientInstance__startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance15_startLeaveGameEv");
+    ((void*&) _ClientInstance__syncDestroyGame) = hybris_dlsym(handle, "_ZN14ClientInstance16_syncDestroyGameEv");
+    if (_ClientInstance__syncDestroyGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance16_syncDestroyGameEv");
     ((void*&) _MinecraftGame_MinecraftGame) = hybris_dlsym(handle, "_ZN13MinecraftGameC2EiPPc");
     if (_MinecraftGame_MinecraftGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGameC2EiPPc");
     ((void*&) _MinecraftGame_destructor) = hybris_dlsym(handle, "_ZN13MinecraftGameD2Ev");
     if (_MinecraftGame_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGameD2Ev");
+    ((void*&) _MinecraftGame_requestLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame16requestLeaveGameEbb");
+    if (_MinecraftGame_requestLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame16requestLeaveGameEbb");
     ((void*&) _MinecraftGame_update) = hybris_dlsym(handle, "_ZN13MinecraftGame6updateEv");
     if (_MinecraftGame_update == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame6updateEv");
     ((void*&) _MinecraftGame_setRenderingSize) = hybris_dlsym(handle, "_ZN13MinecraftGame16setRenderingSizeEii");
@@ -630,6 +660,12 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_setUISizeAndScale == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17setUISizeAndScaleEiif");
     ((void*&) _MinecraftGame_getPrimaryUserOptions) = hybris_dlsym(handle, "_ZN13MinecraftGame21getPrimaryUserOptionsEv");
     if (_MinecraftGame_getPrimaryUserOptions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame21getPrimaryUserOptionsEv");
+    ((void*&) _MinecraftGame_getPrimaryClientInstance) = hybris_dlsym(handle, "_ZN13MinecraftGame24getPrimaryClientInstanceEv");
+    if (_MinecraftGame_getPrimaryClientInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame24getPrimaryClientInstanceEv");
+    ((void*&) _MinecraftGame_startLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame14startLeaveGameEv");
+    if (_MinecraftGame_startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14startLeaveGameEv");
+    ((void*&) _MinecraftGame_continueLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame17continueLeaveGameEv");
+    if (_MinecraftGame_continueLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17continueLeaveGameEv");
     ((void*&) Keyboard::_states) = hybris_dlsym(handle, "_ZN8Keyboard7_statesE");
     if (Keyboard::_states == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard7_statesE");
     ((void*&) _Keyboard_feed) = hybris_dlsym(handle, "_ZN8Keyboard4feedEhi");

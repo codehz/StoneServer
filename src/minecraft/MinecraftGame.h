@@ -5,6 +5,16 @@
 
 class Options;
 
+class ClientInstance {
+
+public:
+
+    void _startLeaveGame();
+
+    void _syncDestroyGame();
+
+};
+
 class MinecraftGame : public App {
 
 public:
@@ -15,6 +25,8 @@ public:
 
     ~MinecraftGame();
 
+    void requestLeaveGame(bool, bool);
+
     void update();
 
     void setRenderingSize(int, int);
@@ -22,5 +34,11 @@ public:
     void setUISizeAndScale(int, int, float);
 
     std::shared_ptr<Options> getPrimaryUserOptions();
+
+    ClientInstance* getPrimaryClientInstance();
+
+    void startLeaveGame();
+
+    void continueLeaveGame();
 
 };
