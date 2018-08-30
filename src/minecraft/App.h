@@ -14,12 +14,10 @@ public:
 
     void init(AppContext& ctx);
 
-    void quit() {
-        ((void (*)(App*)) vtable[25])(this);
-    }
+    /// @vtable App _ZN3App4quitEv
+    void quit();
 
-    bool wantToQuit() {
-        return ((bool (*)(App*)) vtable[26])(this);
-    }
+    /// @vtable App _ZN3App10wantToQuitEv
+    bool wantToQuit();
 
 };

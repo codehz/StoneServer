@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Jul 31 2018 10:14:37 UTC
+// Generated on Thu Aug 30 2018 19:26:59 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -356,6 +356,20 @@ static void (App::*_App_init)(AppContext &);
 void App::init(AppContext & p1) {
     (this->*_App_init)(p1);
 }
+static int vti_App_quit;
+void App::quit() {
+    union { void* voidp; void (App::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_App_quit];
+    (this->*u.funcp)();
+}
+static int vti_App_wantToQuit;
+bool App::wantToQuit() {
+    union { void* voidp; bool (App::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_App_wantToQuit];
+    return (this->*u.funcp)();
+}
 
 #include "ImagePickingCallback.h"
 
@@ -531,6 +545,14 @@ mcpe::string Common::getGameVersionStringNet() {
     return _Common_getGameVersionStringNet();
 }
 
+static int resolve_vtable_func(void** vtable, void* what) {
+    for (int i = 0; ; i++) {
+        if (vtable[i] == nullptr)
+            return -1;
+        if (vtable[i] == what)
+            return i;
+    }
+}
 void minecraft_symbols_init(void* handle) {
     ((void*&) _ResourceLoaders_registerLoader) = hybris_dlsym(handle, "_ZN15ResourceLoaders14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
     if (_ResourceLoaders_registerLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ResourceLoaders14registerLoaderE18ResourceFileSystemSt10unique_ptrI14ResourceLoaderSt14default_deleteIS2_EE");
@@ -696,6 +718,11 @@ void minecraft_symbols_init(void* handle) {
     if (_FilePathManager_getSettingsPath == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15FilePathManager15getSettingsPathEv");
     ((void*&) _App_init) = hybris_dlsym(handle, "_ZN3App4initER10AppContext");
     if (_App_init == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3App4initER10AppContext");
+    void** vt_App = (void**) hybris_dlsym(handle, "_ZTV3App") + 2;
+    vti_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
+    if (vti_App_quit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App4quitEv");
+    vti_App_wantToQuit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App10wantToQuitEv"));
+    if (vti_App_wantToQuit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App10wantToQuitEv");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
     if (AppPlatform::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11AppPlatform");
     ((void*&) _AppPlatform_AppPlatform) = hybris_dlsym(handle, "_ZN11AppPlatformC2Ev");

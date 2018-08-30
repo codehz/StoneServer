@@ -30,7 +30,7 @@ def get_method_path(method):
 def get_method_wrapper_name(method):
     method_name = method["name"]
     if method["destructor"]:
-        method_name = "destructor";
+        method_name = "destructor"
     name = "_" + get_method_path(method).replace("::", "_") + "_" + method_name
     if name in wrapper_name_counter:
         wrapper_name_counter[name] += 1
@@ -149,7 +149,7 @@ def get_mangled_method(method):
     return ret
 
 def get_mangled_member(member, path):
-    ret = "_ZN";
+    ret = "_ZN"
     ret += get_mangled_type_name(path, [])
     ret += str(len(member["name"])) + member["name"] + "E"
     return ret
@@ -174,10 +174,13 @@ def process_method(method, is_class):
     wrapper_name = get_method_wrapper_name(method)
     mangled_name = get_mangled_method(method)
 
+    vtable_name = None
     if "doxygen" in method:
         props = get_doxygen_properties(method["doxygen"])
         if "symbol" in props:
             mangled_name = props["symbol"]
+        if "vtable" in props:
+            vtable_name, _, mangled_name = props["vtable"].partition(" ")
 
     params_str = ""
     params_with_names = ""
@@ -204,20 +207,28 @@ def process_method(method, is_class):
     ret_type = method["rtnType"]
     if ret_type.startswith("static "):
         ret_type = ret_type[len("static "):]
-    if method["static"] or not is_class:
+    if vtable_name is not None:
+        output("static int vti" + wrapper_name + ";")
+    elif method["static"] or not is_class:
         output("static " + ret_type + " (*" + wrapper_name + ")(" + params_str + ");")
     else:
         output("static " + ret_type + " (" + method_path + "::*" + wrapper_name + ")(" + params_str + ")" + (" const" if method["const"] else "") + ";")
     output((ret_type + " " if not method["constructor"] and not method["destructor"] else "") + method_path + "::" + ("~" if method["destructor"] else "") + method["name"] + "(" + params_with_names + ")" + (" const" if method["const"] else "") + " {")
     has_return = ret_type != "void" and ret_type != ""
-    if method["static"] or not is_class:
+    if vtable_name is not None:
+        output("    union { void* voidp; " + ret_type + " (" + method_path + "::*funcp)(" + params_str + "); } u;")
+        output("    u.funcp = nullptr;")
+        output("    u.voidp = vtable[vti" + wrapper_name + "];")
+        output("    " + ("return " if has_return else "") + "(this->*u.funcp)(" + params_for_call + ");")
+    elif method["static"] or not is_class:
         output("    " + ("return " if has_return else "") + wrapper_name + "(" + params_for_call + ");")
     else:
         output("    " + ("return " if has_return else "") + "(this->*" + wrapper_name + ")(" + params_for_call + ");")
     output("}")
     symbol_list.append({
         "name": wrapper_name,
-        "symbol": mangled_name
+        "symbol": mangled_name,
+        "vtable_name": vtable_name
     })
 
 
@@ -264,8 +275,18 @@ def process_header(file):
 
                 
 def generate_init_func():
+    vtables = {}
+
     output("void minecraft_symbols_init(void* handle) {")
     for symbol in symbol_list:
+        if "vtable_name" in symbol and symbol["vtable_name"] is not None:
+            vt_var_name = "vt_" + symbol["vtable_name"].replace("::", "_")
+            if symbol["vtable_name"] not in vtables:
+                output("    void** " + vt_var_name + " = (void**) hybris_dlsym(handle, \"_ZTV" + get_mangled_type_name(symbol["vtable_name"], []) + "\") + 2;")
+                vtables[symbol["vtable_name"]] = True
+            output("    vti" + symbol["name"] + " = resolve_vtable_func(" + vt_var_name + ", hybris_dlsym(handle, \"" + symbol["symbol"] + "\"));")
+            output("    if (vti" + symbol["name"] + " == -1) Log::error(\"MinecraftSymbols\", \"Unresolved vtable symbol: %s\", \"" + symbol["symbol"] + "\");")
+            continue
         output("    ((void*&) " + symbol["name"] + ") = hybris_dlsym(handle, \"" + symbol["symbol"] + "\");")
         output("    if (" + symbol["name"] + " == nullptr) Log::error(\"MinecraftSymbols\", \"Unresolved symbol: %s\", \"" + symbol["symbol"] + "\");")
     output("}")
@@ -287,6 +308,14 @@ for file in os.listdir(header_dir):
     output("#include \"" + file + "\"")
     process_header(file_path)
     output("")
+output("static int resolve_vtable_func(void** vtable, void* what) {")
+output("    for (int i = 0; ; i++) {")
+output("        if (vtable[i] == nullptr)")
+output("            return -1;")
+output("        if (vtable[i] == what)")
+output("            return i;")
+output("    }")
+output("}")
 generate_init_func()
 out_file.close()
 
