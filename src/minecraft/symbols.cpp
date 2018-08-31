@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Aug 30 2018 19:26:59 UTC
+// Generated on Fri Aug 31 2018 10:48:56 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -256,6 +256,10 @@ MinecraftGame::MinecraftGame(int p1, char * * p2) {
 static void (MinecraftGame::*_MinecraftGame_destructor)();
 MinecraftGame::~MinecraftGame() {
     (this->*_MinecraftGame_destructor)();
+}
+static bool (MinecraftGame::*_MinecraftGame_isInGame)() const;
+bool MinecraftGame::isInGame() const {
+    return (this->*_MinecraftGame_isInGame)();
 }
 static void (MinecraftGame::*_MinecraftGame_requestLeaveGame)(bool, bool);
 void MinecraftGame::requestLeaveGame(bool p1, bool p2) {
@@ -672,6 +676,8 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_MinecraftGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGameC2EiPPc");
     ((void*&) _MinecraftGame_destructor) = hybris_dlsym(handle, "_ZN13MinecraftGameD2Ev");
     if (_MinecraftGame_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGameD2Ev");
+    ((void*&) _MinecraftGame_isInGame) = hybris_dlsym(handle, "_ZNK13MinecraftGame8isInGameEv");
+    if (_MinecraftGame_isInGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13MinecraftGame8isInGameEv");
     ((void*&) _MinecraftGame_requestLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame16requestLeaveGameEbb");
     if (_MinecraftGame_requestLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame16requestLeaveGameEbb");
     ((void*&) _MinecraftGame_update) = hybris_dlsym(handle, "_ZN13MinecraftGame6updateEv");

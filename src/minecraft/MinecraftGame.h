@@ -25,6 +25,8 @@ public:
 
     ~MinecraftGame();
 
+    bool isInGame() const;
+
     void requestLeaveGame(bool, bool);
 
     void update();
