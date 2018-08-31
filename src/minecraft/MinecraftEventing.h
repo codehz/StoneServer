@@ -4,7 +4,11 @@
 
 class IPackTelemetry {};
 
-class MinecraftEventing : public IPackTelemetry {
+class IMinecraftEventing : public IPackTelemetry {
+public:
+};
+
+class MinecraftEventing : public IMinecraftEventing {
 
 public:
 

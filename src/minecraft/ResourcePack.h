@@ -59,7 +59,7 @@ public:
     ResourcePack* vanillaPack;
     char filler2[0x100];
 
-    ResourcePackRepository(MinecraftEventing&, PackManifestFactory&, IContentAccessibilityProvider&, FilePathManager*, PackSourceFactory&);
+    ResourcePackRepository(IMinecraftEventing&, PackManifestFactory&, IContentAccessibilityProvider&, FilePathManager*, PackSourceFactory&);
 
     void addWorldResourcePacks(mcpe::string const&);
 
