@@ -620,6 +620,7 @@ struct _hook io_hooks[] = {
     {"popen", popen},
     {"puts", puts},
     {"sprintf", sprintf},
+    {"__sprintf_chk", sprintf},
     {"asprintf", asprintf},
     {"vasprintf", vasprintf},
     {"snprintf", snprintf},
