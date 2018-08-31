@@ -10,7 +10,7 @@ public:
 
     static mce::UUID fromString(mcpe::string const&);
 
-    char filler[0x14];
+    char filler[0x10];
 
 };
 

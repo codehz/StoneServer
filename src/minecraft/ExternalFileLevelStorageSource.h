@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "SaveTransactionManager.h"
+#include "ContentIdentity.h"
 class FilePathManager;
 class Scheduler;
 
@@ -17,7 +18,7 @@ public:
 
     ExternalFileLevelStorageSource(FilePathManager*, std::shared_ptr<SaveTransactionManager>);
 
-    /// @symbol _ZN30ExternalFileLevelStorageSource18createLevelStorageER9SchedulerRKSsS3_RK19IContentKeyProvider
-    std::unique_ptr<LevelStorage> createLevelStorage(Scheduler&, mcpe::string const&, mcpe::string const&, IContentKeyProvider const&);
+    /// @symbol _ZN30ExternalFileLevelStorageSource18createLevelStorageER9SchedulerRKSsRK15ContentIdentityRK19IContentKeyProvider
+    std::unique_ptr<LevelStorage> createLevelStorage(Scheduler&, mcpe::string const&, ContentIdentity const&, IContentKeyProvider const&);
 
 };
