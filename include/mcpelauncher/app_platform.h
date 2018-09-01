@@ -26,15 +26,9 @@ class LauncherAppPlatform : public AppPlatform {
 private:
     static const char* TAG;
 
-    static void replaceVtableEntry(void* lib, void** vtable, const char* sym, void* nw);
-
-    template <typename T>
-    static void replaceVtableEntry(void* lib, void** vtable, const char* sym, T nw) {
-        replaceVtableEntry(lib, vtable, sym, PatchUtils::memberFuncCast(nw));
-    }
-
 public:
     static void** myVtable;
+    static size_t myVtableSize;
     static void initVtable(void* lib);
 
     mcpe::string region;
@@ -155,12 +149,12 @@ public:
     }
 
     mcpe::string createDeviceID_old() {
-        return "linux";
+        return "3f9ac4bea0012efa";
     }
 
     mcpe::string createDeviceID(std::string const& c) {
         Log::trace(TAG, "createDeviceID: %s", c.c_str());
-        return "linux";
+        return "3f9ac4bea0012efa";
     }
 
     bool allowSplitScreen() {
