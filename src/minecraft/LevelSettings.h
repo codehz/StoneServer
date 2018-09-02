@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string.h>
-
 class LevelSettings {
 
 public:
@@ -20,9 +19,11 @@ public:
     int xblLanBroadcastMode; // 34
     bool commandsEnabled; // 35
     bool texturepacksRequired, lockedBehaviourPack, lockedResourcePack, fromLockedTemplate; // 36, 37, 38, 39
-    bool overrideSavedSettings; // 40
-    bool bonusChestEnabled, startWithMap; // 41, 42
-    char filler[0x300];
+    bool overrideSavedSettings; // 3A
+    bool bonusChestEnabled, startWithMap; // 3B, 3C
+    char filler[0x90 - 0x3C];
+    int defaultSpawnX, defaultSpawnY, defaultSpawnZ;
+    char filler2[0x300];
 
     LevelSettings();
     LevelSettings(LevelSettings const& org);
