@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Fri Aug 31 2018 13:24:36 UTC
+// Generated on Thu Sep 06 2018 16:12:09 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -193,6 +193,12 @@ void I18n::chooseLanguage(mcpe::string const & p1) {
 static void (*_I18n_loadLanguages)(ResourcePackManager &, mcpe::string const &);
 void I18n::loadLanguages(ResourcePackManager & p1, mcpe::string const & p2) {
     _I18n_loadLanguages(p1, p2);
+}
+
+#include "MinecraftScreenModel.h"
+static void (MinecraftScreenModel::*_MinecraftScreenModel_navigateToXblConsoleSignInScreen)(mcpe::string const &, mcpe::string const &);
+void MinecraftScreenModel::navigateToXblConsoleSignInScreen(mcpe::string const & p1, mcpe::string const & p2) {
+    (this->*_MinecraftScreenModel_navigateToXblConsoleSignInScreen)(p1, p2);
 }
 
 #include "gl.h"
@@ -651,6 +657,8 @@ void minecraft_symbols_init(void* handle) {
     if (_I18n_chooseLanguage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4I18n14chooseLanguageERKSs");
     ((void*&) _I18n_loadLanguages) = hybris_dlsym(handle, "_ZN4I18n13loadLanguagesER19ResourcePackManagerRKSs");
     if (_I18n_loadLanguages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4I18n13loadLanguagesER19ResourcePackManagerRKSs");
+    ((void*&) _MinecraftScreenModel_navigateToXblConsoleSignInScreen) = hybris_dlsym(handle, "_ZN20MinecraftScreenModel32navigateToXblConsoleSignInScreenERKSsS1_");
+    if (_MinecraftScreenModel_navigateToXblConsoleSignInScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel32navigateToXblConsoleSignInScreenERKSsS1_");
     ((void*&) _gl_getOpenGLVendor) = hybris_dlsym(handle, "_ZN2gl15getOpenGLVendorEv");
     if (_gl_getOpenGLVendor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl15getOpenGLVendorEv");
     ((void*&) _gl_getOpenGLRenderer) = hybris_dlsym(handle, "_ZN2gl17getOpenGLRendererEv");
