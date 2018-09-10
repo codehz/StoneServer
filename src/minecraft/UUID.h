@@ -12,6 +12,8 @@ public:
 
     char filler[0x10];
 
+    mcpe::string asString() const;
+
 };
 
 }

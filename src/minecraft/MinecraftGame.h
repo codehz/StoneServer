@@ -4,16 +4,7 @@
 #include "App.h"
 
 class Options;
-
-class ClientInstance {
-
-public:
-
-    void _startLeaveGame();
-
-    void _syncDestroyGame();
-
-};
+class ClientInstance;
 
 class MinecraftGame : public App {
 

@@ -4,6 +4,37 @@
 #include <vector>
 #include "std/string.h"
 
+namespace web {
+namespace json {
+
+class value {
+
+private:
+    int filler;
+
+public:
+    value();
+    value(mcpe::string);
+    /// @symbol _ZN3web4json5valueC2ERKS1_
+    value(web::json::value const&);
+    /// @symbol _ZN3web4json5valueC2EOS1_
+    value(web::json::value&&);
+
+    /// @symbol _ZN3web4json5valueixERKSs
+    web::json::value& operator[](mcpe::string const&);
+
+    /// @symbol _ZN3web4json5valueaSEOS1_
+    web::json::value& operator=(web::json::value&&);
+
+    mcpe::string to_string() const;
+
+    void erase(mcpe::string const&);
+
+};
+
+}
+}
+
 namespace xbox {
 namespace services {
 
@@ -16,6 +47,9 @@ struct xbox_live_result {
     int code;
     void* error_code_category;
     mcpe::string message;
+
+    xbox_live_result() {}
+    xbox_live_result(xbox_live_result<T> const& t) : data(t.data), code(t.code), error_code_category(t.error_code_category), message(t.message) {}
 
 };
 
@@ -105,6 +139,13 @@ struct auth_flow_result {
 
 struct token_and_signature_result {
     mcpe::string token, signature, xbox_user_id, gamertag, xbox_user_hash, age_group, privileges, user_settings_restrictions, user_enforcement_restrictions, user_title_restrictions, web_account_id, reserved;
+};
+
+enum sign_in_status { success, interaction_required, cancelled };
+
+struct sign_in_result {
+    sign_in_status result;
+    bool new_account;
 };
 
 struct user_impl {
@@ -219,6 +260,9 @@ struct user_auth_android {
     static pplx::task_completion_event_xbox_live_result_void* s_signOutCompleteEvent;
 
     static std::shared_ptr<xbox::services::system::user_auth_android> get_instance();
+
+    /// @symbol _ZN4xbox8services6system17user_auth_android24complete_sign_in_with_uiERKNS1_16auth_flow_resultE
+    void complete_sign_in_with_ui(xbox::services::system::auth_flow_result const& result);
 
     char filler[0x8]; // 8
     mcpe::string xbox_user_id; // c

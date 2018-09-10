@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Sep 06 2018 16:12:09 UTC
+// Generated on Mon Sep 10 2018 20:09:36 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -20,6 +20,38 @@ std::unique_ptr<Social::UserManager> Social::UserManager::CreateUserManager() {
 static void * (*_xbox_services_xbox_services_error_code_category)();
 void * xbox::services::xbox_services_error_code_category() {
     return _xbox_services_xbox_services_error_code_category();
+}
+static void (web::json::value::*_web_json_value_value)();
+web::json::value::value() {
+    (this->*_web_json_value_value)();
+}
+static void (web::json::value::*_web_json_value_value2)(mcpe::string);
+web::json::value::value(mcpe::string p1) {
+    (this->*_web_json_value_value2)(p1);
+}
+static void (web::json::value::*_web_json_value_value3)(web::json::value const &);
+web::json::value::value(web::json::value const & p1) {
+    (this->*_web_json_value_value3)(p1);
+}
+static void (web::json::value::*_web_json_value_value4)(web::json::value &&);
+web::json::value::value(web::json::value && p1) {
+    (this->*_web_json_value_value4)(std::move(p1));
+}
+static web::json::value & (web::json::value::*_web_json_value_operator)(mcpe::string const &);
+web::json::value & web::json::value::operator[](mcpe::string const & p1) {
+    return (this->*_web_json_value_operator)(p1);
+}
+static web::json::value & (web::json::value::*_web_json_value_operator2)(web::json::value &&);
+web::json::value & web::json::value::operator=(web::json::value && p1) {
+    return (this->*_web_json_value_operator2)(std::move(p1));
+}
+static mcpe::string (web::json::value::*_web_json_value_to_string)() const;
+mcpe::string web::json::value::to_string() const {
+    return (this->*_web_json_value_to_string)();
+}
+static void (web::json::value::*_web_json_value_erase)(mcpe::string const &);
+void web::json::value::erase(mcpe::string const & p1) {
+    (this->*_web_json_value_erase)(p1);
 }
 static std::shared_ptr<xbox::services::java_interop> (*_xbox_services_java_interop_get_java_interop_singleton)();
 std::shared_ptr<xbox::services::java_interop> xbox::services::java_interop::get_java_interop_singleton() {
@@ -106,6 +138,10 @@ pplx::task_completion_event_xbox_live_result_void * xbox::services::system::user
 static std::shared_ptr<xbox::services::system::user_auth_android> (*_xbox_services_system_user_auth_android_get_instance)();
 std::shared_ptr<xbox::services::system::user_auth_android> xbox::services::system::user_auth_android::get_instance() {
     return _xbox_services_system_user_auth_android_get_instance();
+}
+static void (xbox::services::system::user_auth_android::*_xbox_services_system_user_auth_android_complete_sign_in_with_ui)(xbox::services::system::auth_flow_result const &);
+void xbox::services::system::user_auth_android::complete_sign_in_with_ui(xbox::services::system::auth_flow_result const & p1) {
+    (this->*_xbox_services_system_user_auth_android_complete_sign_in_with_ui)(p1);
 }
 
 #include "ServerInstance.h"
@@ -200,6 +236,10 @@ static void (MinecraftScreenModel::*_MinecraftScreenModel_navigateToXblConsoleSi
 void MinecraftScreenModel::navigateToXblConsoleSignInScreen(mcpe::string const & p1, mcpe::string const & p2) {
     (this->*_MinecraftScreenModel_navigateToXblConsoleSignInScreen)(p1, p2);
 }
+static void (MinecraftScreenModel::*_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen)(Social::SignInResult const &, mcpe::function<void ( Social::SignInResult )>, bool);
+void MinecraftScreenModel::navigateToXblConsoleSignInSucceededScreen(Social::SignInResult const & p1, mcpe::function<void ( Social::SignInResult )> p2, bool p3) {
+    (this->*_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen)(p1, p2, p3);
+}
 
 #include "gl.h"
 static mcpe::string (*_gl_getOpenGLVendor)();
@@ -247,14 +287,6 @@ void MinecraftEventing::init() {
 #include "Api.h"
 
 #include "MinecraftGame.h"
-static void (ClientInstance::*_ClientInstance__startLeaveGame)();
-void ClientInstance::_startLeaveGame() {
-    (this->*_ClientInstance__startLeaveGame)();
-}
-static void (ClientInstance::*_ClientInstance__syncDestroyGame)();
-void ClientInstance::_syncDestroyGame() {
-    (this->*_ClientInstance__syncDestroyGame)();
-}
 static void (MinecraftGame::*_MinecraftGame_MinecraftGame)(int, char * *);
 MinecraftGame::MinecraftGame(int p1, char * * p2) {
     (this->*_MinecraftGame_MinecraftGame)(p1, p2);
@@ -298,6 +330,20 @@ void MinecraftGame::startLeaveGame() {
 static void (MinecraftGame::*_MinecraftGame_continueLeaveGame)();
 void MinecraftGame::continueLeaveGame() {
     (this->*_MinecraftGame_continueLeaveGame)();
+}
+
+#include "ClientInstance.h"
+static std::shared_ptr<Social::User> (ClientInstance::*_ClientInstance_getUser)();
+std::shared_ptr<Social::User> ClientInstance::getUser() {
+    return (this->*_ClientInstance_getUser)();
+}
+static void (ClientInstance::*_ClientInstance__startLeaveGame)();
+void ClientInstance::_startLeaveGame() {
+    (this->*_ClientInstance__startLeaveGame)();
+}
+static void (ClientInstance::*_ClientInstance__syncDestroyGame)();
+void ClientInstance::_syncDestroyGame() {
+    (this->*_ClientInstance__syncDestroyGame)();
 }
 
 #include "Keyboard.h"
@@ -389,6 +435,7 @@ bool App::wantToQuit() {
 
 #include "AppPlatform.h"
 void * * AppPlatform::myVtable;
+AppPlatform * * AppPlatform::instance;
 static void (AppPlatform::*_AppPlatform_AppPlatform)();
 AppPlatform::AppPlatform() {
     (this->*_AppPlatform_AppPlatform)();
@@ -438,6 +485,16 @@ void CommandOutputSender::send(CommandOrigin const & p1, CommandOutput const & p
 static void (CommandOutputSender::*_CommandOutputSender_registerOutputCallback)();
 void CommandOutputSender::registerOutputCallback() {
     (this->*_CommandOutputSender_registerOutputCallback)();
+}
+
+#include "Social.h"
+static Social::XboxLiveUser * (Social::User::*_Social_User_getLiveUser)() const;
+Social::XboxLiveUser * Social::User::getLiveUser() const {
+    return (this->*_Social_User_getLiveUser)();
+}
+static void (Social::XboxLiveUser::*_Social_XboxLiveUser__handleUISignInNoError)(xbox::services::system::sign_in_result &, mcpe::function<void ( Social::SignInResult, bool )>);
+void Social::XboxLiveUser::_handleUISignInNoError(xbox::services::system::sign_in_result & p1, mcpe::function<void ( Social::SignInResult, bool )> p2) {
+    (this->*_Social_XboxLiveUser__handleUISignInNoError)(p1, p2);
 }
 
 #include "FilePickerSettings.h"
@@ -508,6 +565,10 @@ static mce::UUID (*_mce_UUID_fromString)(mcpe::string const &);
 mce::UUID mce::UUID::fromString(mcpe::string const & p1) {
     return _mce_UUID_fromString(p1);
 }
+static mcpe::string (mce::UUID::*_mce_UUID_asString)() const;
+mcpe::string mce::UUID::asString() const {
+    return (this->*_mce_UUID_asString)();
+}
 
 #include "ExternalFileLevelStorageSource.h"
 static void (ExternalFileLevelStorageSource::*_ExternalFileLevelStorageSource_ExternalFileLevelStorageSource)(FilePathManager *, std::shared_ptr<SaveTransactionManager>);
@@ -549,6 +610,12 @@ void Options::setFullscreen(bool p1) {
     (this->*_Options_setFullscreen)(p1);
 }
 
+#include "Crypto.h"
+static mce::UUID (*_Crypto_Random_generateUUID)();
+mce::UUID Crypto::Random::generateUUID() {
+    return _Crypto_Random_generateUUID();
+}
+
 #include "ContentIdentity.h"
 ContentIdentity * ContentIdentity::EMPTY;
 
@@ -573,6 +640,22 @@ void minecraft_symbols_init(void* handle) {
     if (_Social_UserManager_CreateUserManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Social11UserManager17CreateUserManagerEv");
     ((void*&) _xbox_services_xbox_services_error_code_category) = hybris_dlsym(handle, "_ZN4xbox8services33xbox_services_error_code_categoryEv");
     if (_xbox_services_xbox_services_error_code_category == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services33xbox_services_error_code_categoryEv");
+    ((void*&) _web_json_value_value) = hybris_dlsym(handle, "_ZN3web4json5valueC2Ev");
+    if (_web_json_value_value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2Ev");
+    ((void*&) _web_json_value_value2) = hybris_dlsym(handle, "_ZN3web4json5valueC2ESs");
+    if (_web_json_value_value2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2ESs");
+    ((void*&) _web_json_value_value3) = hybris_dlsym(handle, "_ZN3web4json5valueC2ERKS1_");
+    if (_web_json_value_value3 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2ERKS1_");
+    ((void*&) _web_json_value_value4) = hybris_dlsym(handle, "_ZN3web4json5valueC2EOS1_");
+    if (_web_json_value_value4 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2EOS1_");
+    ((void*&) _web_json_value_operator) = hybris_dlsym(handle, "_ZN3web4json5valueixERKSs");
+    if (_web_json_value_operator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueixERKSs");
+    ((void*&) _web_json_value_operator2) = hybris_dlsym(handle, "_ZN3web4json5valueaSEOS1_");
+    if (_web_json_value_operator2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueaSEOS1_");
+    ((void*&) _web_json_value_to_string) = hybris_dlsym(handle, "_ZNK3web4json5value9to_stringEv");
+    if (_web_json_value_to_string == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3web4json5value9to_stringEv");
+    ((void*&) _web_json_value_erase) = hybris_dlsym(handle, "_ZN3web4json5value5eraseERKSs");
+    if (_web_json_value_erase == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5value5eraseERKSs");
     ((void*&) _xbox_services_java_interop_get_java_interop_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12java_interop26get_java_interop_singletonEv");
     if (_xbox_services_java_interop_get_java_interop_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12java_interop26get_java_interop_singletonEv");
     ((void*&) _xbox_services_xbox_live_app_config_title_id) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config8title_idEv");
@@ -619,6 +702,8 @@ void minecraft_symbols_init(void* handle) {
     if (xbox::services::system::user_auth_android::s_signOutCompleteEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android22s_signOutCompleteEventE");
     ((void*&) _xbox_services_system_user_auth_android_get_instance) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android12get_instanceEv");
     if (_xbox_services_system_user_auth_android_get_instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android12get_instanceEv");
+    ((void*&) _xbox_services_system_user_auth_android_complete_sign_in_with_ui) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android24complete_sign_in_with_uiERKNS1_16auth_flow_resultE");
+    if (_xbox_services_system_user_auth_android_complete_sign_in_with_ui == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android24complete_sign_in_with_uiERKNS1_16auth_flow_resultE");
     ((void*&) _ServerInstance_ServerInstance) = hybris_dlsym(handle, "_ZN14ServerInstanceC2ER13IMinecraftAppR9WhitelistRK14PermissionsMapP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsibiiibRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISZ_EER9SchedulerEERKSsP9LevelDataP22TextFilteringProcessorPSV_SX_IFvS18_EES1F_");
     if (_ServerInstance_ServerInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServerInstanceC2ER13IMinecraftAppR9WhitelistRK14PermissionsMapP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsibiiibRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISZ_EER9SchedulerEERKSsP9LevelDataP22TextFilteringProcessorPSV_SX_IFvS18_EES1F_");
     ((void*&) _ServerInstance_destructor) = hybris_dlsym(handle, "_ZN14ServerInstanceD2Ev");
@@ -659,6 +744,8 @@ void minecraft_symbols_init(void* handle) {
     if (_I18n_loadLanguages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4I18n13loadLanguagesER19ResourcePackManagerRKSs");
     ((void*&) _MinecraftScreenModel_navigateToXblConsoleSignInScreen) = hybris_dlsym(handle, "_ZN20MinecraftScreenModel32navigateToXblConsoleSignInScreenERKSsS1_");
     if (_MinecraftScreenModel_navigateToXblConsoleSignInScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel32navigateToXblConsoleSignInScreenERKSsS1_");
+    ((void*&) _MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen) = hybris_dlsym(handle, "_ZN20MinecraftScreenModel41navigateToXblConsoleSignInSucceededScreenERKN6Social12SignInResultESt8functionIFvS1_EEb");
+    if (_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel41navigateToXblConsoleSignInSucceededScreenERKN6Social12SignInResultESt8functionIFvS1_EEb");
     ((void*&) _gl_getOpenGLVendor) = hybris_dlsym(handle, "_ZN2gl15getOpenGLVendorEv");
     if (_gl_getOpenGLVendor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl15getOpenGLVendorEv");
     ((void*&) _gl_getOpenGLRenderer) = hybris_dlsym(handle, "_ZN2gl17getOpenGLRendererEv");
@@ -679,10 +766,6 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftEventing_MinecraftEventing == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventingC2ERKSs");
     ((void*&) _MinecraftEventing_init) = hybris_dlsym(handle, "_ZN17MinecraftEventing4initEv");
     if (_MinecraftEventing_init == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventing4initEv");
-    ((void*&) _ClientInstance__startLeaveGame) = hybris_dlsym(handle, "_ZN14ClientInstance15_startLeaveGameEv");
-    if (_ClientInstance__startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance15_startLeaveGameEv");
-    ((void*&) _ClientInstance__syncDestroyGame) = hybris_dlsym(handle, "_ZN14ClientInstance16_syncDestroyGameEv");
-    if (_ClientInstance__syncDestroyGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance16_syncDestroyGameEv");
     ((void*&) _MinecraftGame_MinecraftGame) = hybris_dlsym(handle, "_ZN13MinecraftGameC2EiPPc");
     if (_MinecraftGame_MinecraftGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGameC2EiPPc");
     ((void*&) _MinecraftGame_destructor) = hybris_dlsym(handle, "_ZN13MinecraftGameD2Ev");
@@ -705,6 +788,12 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14startLeaveGameEv");
     ((void*&) _MinecraftGame_continueLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame17continueLeaveGameEv");
     if (_MinecraftGame_continueLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17continueLeaveGameEv");
+    ((void*&) _ClientInstance_getUser) = hybris_dlsym(handle, "_ZN14ClientInstance7getUserEv");
+    if (_ClientInstance_getUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance7getUserEv");
+    ((void*&) _ClientInstance__startLeaveGame) = hybris_dlsym(handle, "_ZN14ClientInstance15_startLeaveGameEv");
+    if (_ClientInstance__startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance15_startLeaveGameEv");
+    ((void*&) _ClientInstance__syncDestroyGame) = hybris_dlsym(handle, "_ZN14ClientInstance16_syncDestroyGameEv");
+    if (_ClientInstance__syncDestroyGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance16_syncDestroyGameEv");
     ((void*&) Keyboard::_states) = hybris_dlsym(handle, "_ZN8Keyboard7_statesE");
     if (Keyboard::_states == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard7_statesE");
     ((void*&) _Keyboard_feed) = hybris_dlsym(handle, "_ZN8Keyboard4feedEhi");
@@ -742,6 +831,8 @@ void minecraft_symbols_init(void* handle) {
     if (vti_App_wantToQuit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App10wantToQuitEv");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
     if (AppPlatform::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11AppPlatform");
+    ((void*&) AppPlatform::instance) = hybris_dlsym(handle, "_ZN14ServiceLocatorI11AppPlatformE15mDefaultServiceE");
+    if (AppPlatform::instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServiceLocatorI11AppPlatformE15mDefaultServiceE");
     ((void*&) _AppPlatform_AppPlatform) = hybris_dlsym(handle, "_ZN11AppPlatformC2Ev");
     if (_AppPlatform_AppPlatform == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatformC2Ev");
     ((void*&) _AppPlatform__fireAppFocusGained) = hybris_dlsym(handle, "_ZN11AppPlatform19_fireAppFocusGainedEv");
@@ -764,6 +855,10 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutputSender_send == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender4sendERK13CommandOriginRK13CommandOutput");
     ((void*&) _CommandOutputSender_registerOutputCallback) = hybris_dlsym(handle, "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
     if (_CommandOutputSender_registerOutputCallback == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
+    ((void*&) _Social_User_getLiveUser) = hybris_dlsym(handle, "_ZNK6Social4User11getLiveUserEv");
+    if (_Social_User_getLiveUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Social4User11getLiveUserEv");
+    ((void*&) _Social_XboxLiveUser__handleUISignInNoError) = hybris_dlsym(handle, "_ZN6Social12XboxLiveUser22_handleUISignInNoErrorERN4xbox8services6system14sign_in_resultESt8functionIFvNS_12SignInResultEbEE");
+    if (_Social_XboxLiveUser__handleUISignInNoError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Social12XboxLiveUser22_handleUISignInNoErrorERN4xbox8services6system14sign_in_resultESt8functionIFvNS_12SignInResultEbEE");
     ((void*&) _Automation_AutomationClient_AutomationClient) = hybris_dlsym(handle, "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     if (_Automation_AutomationClient_AutomationClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     ((void*&) _SkinPackKeyProvider_SkinPackKeyProvider) = hybris_dlsym(handle, "_ZN19SkinPackKeyProviderC2Ev");
@@ -794,6 +889,8 @@ void minecraft_symbols_init(void* handle) {
     if (mce::UUID::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce4UUID5EMPTYE");
     ((void*&) _mce_UUID_fromString) = hybris_dlsym(handle, "_ZN3mce4UUID10fromStringERKSs");
     if (_mce_UUID_fromString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce4UUID10fromStringERKSs");
+    ((void*&) _mce_UUID_asString) = hybris_dlsym(handle, "_ZNK3mce4UUID8asStringEv");
+    if (_mce_UUID_asString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3mce4UUID8asStringEv");
     ((void*&) _ExternalFileLevelStorageSource_ExternalFileLevelStorageSource) = hybris_dlsym(handle, "_ZN30ExternalFileLevelStorageSourceC2EP15FilePathManagerSt10shared_ptrI22SaveTransactionManagerE");
     if (_ExternalFileLevelStorageSource_ExternalFileLevelStorageSource == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN30ExternalFileLevelStorageSourceC2EP15FilePathManagerSt10shared_ptrI22SaveTransactionManagerE");
     ((void*&) _ExternalFileLevelStorageSource_createLevelStorage) = hybris_dlsym(handle, "_ZN30ExternalFileLevelStorageSource18createLevelStorageER9SchedulerRKSsRK15ContentIdentityRK19IContentKeyProvider");
@@ -810,6 +907,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Options_getFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7Options13getFullscreenEv");
     ((void*&) _Options_setFullscreen) = hybris_dlsym(handle, "_ZN7Options13setFullscreenEb");
     if (_Options_setFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7Options13setFullscreenEb");
+    ((void*&) _Crypto_Random_generateUUID) = hybris_dlsym(handle, "_ZN6Crypto6Random12generateUUIDEv");
+    if (_Crypto_Random_generateUUID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Crypto6Random12generateUUIDEv");
     ((void*&) ContentIdentity::EMPTY) = hybris_dlsym(handle, "_ZN15ContentIdentity5EMPTYE");
     if (ContentIdentity::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ContentIdentity5EMPTYE");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
