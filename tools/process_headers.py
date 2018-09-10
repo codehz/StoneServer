@@ -31,6 +31,8 @@ def get_method_wrapper_name(method):
     method_name = method["name"]
     if method["destructor"]:
         method_name = "destructor"
+    if method_name.startswith("operator"):
+        method_name = "operator"
     name = "_" + get_method_path(method).replace("::", "_") + "_" + method_name
     if name in wrapper_name_counter:
         wrapper_name_counter[name] += 1
@@ -199,7 +201,7 @@ def process_method(method, is_class):
             params_with_names += ", "
         params_str += param["type"]
         params_with_names += param["type"] + " p" + str(param_no)
-        if param["type"].startswith("std::unique_ptr"):
+        if param["type"].startswith("std::unique_ptr") or param["type"].endswith("&&"):
             params_for_call += "std::move(p" + str(param_no) + ")"
         else:
             params_for_call += "p" + str(param_no)

@@ -806,6 +806,7 @@ class CppMethod( _CppMethod ):
         self["rtnType"] = self["rtnType"].replace(" <","<")
         self["rtnType"] = self["rtnType"].replace(" >",">").replace(">>", "> >").replace(">>", "> >")
         self["rtnType"] = self["rtnType"].replace(" ,",",")
+        self["rtnType"] = self["rtnType"].replace("& &,","&&")
         
         for spec in ["const", "final", "override"]:
             self[spec] = False
@@ -1015,6 +1016,7 @@ class CppVariable( _CppVariable ):
         self["type"] = self["type"].replace(" <","<")
         self["type"] = self["type"].replace(" >",">").replace(">>", "> >").replace(">>", "> >")
         self["type"] = self["type"].replace(" ,",",")
+        self["type"] = self["type"].replace("& &","&&")
         #Optional doxygen description
         try:
             self["desc"] = kwargs["doxyVarDesc"][self["name"]]
