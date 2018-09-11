@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Sep 10 2018 20:09:36 UTC
+// Generated on Mon Sep 10 2018 20:42:03 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -64,6 +64,20 @@ uint32_t xbox::services::xbox_live_app_config::title_id() {
 static std::shared_ptr<xbox::services::xbox_live_app_config> (*_xbox_services_xbox_live_app_config_get_app_config_singleton)();
 std::shared_ptr<xbox::services::xbox_live_app_config> xbox::services::xbox_live_app_config::get_app_config_singleton() {
     return _xbox_services_xbox_live_app_config_get_app_config_singleton();
+}
+static int vti_xbox_services_local_config_get_value_from_local_storage;
+mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1) {
+    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_xbox_services_local_config_get_value_from_local_storage];
+    return (this->*u.funcp)(p1);
+}
+static int vti_xbox_services_local_config_write_value_to_local_storage;
+xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2) {
+    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_xbox_services_local_config_write_value_to_local_storage];
+    return (this->*u.funcp)(p1, p2);
 }
 static std::shared_ptr<xbox::services::local_config> (*_xbox_services_local_config_get_local_config_singleton)();
 std::shared_ptr<xbox::services::local_config> xbox::services::local_config::get_local_config_singleton() {
@@ -662,6 +676,11 @@ void minecraft_symbols_init(void* handle) {
     if (_xbox_services_xbox_live_app_config_title_id == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config8title_idEv");
     ((void*&) _xbox_services_xbox_live_app_config_get_app_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
     if (_xbox_services_xbox_live_app_config_get_app_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
+    void** vt_xbox_services_local_config = (void**) hybris_dlsym(handle, "_ZTVN4xbox8services12local_configE") + 2;
+    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
+    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs");
+    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_"));
+    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_");
     ((void*&) _xbox_services_local_config_get_local_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     if (_xbox_services_local_config_get_local_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     ((void*&) _xbox_services_xsapi_singleton_destructor) = hybris_dlsym(handle, "_ZN4xbox8services15xsapi_singletonD2Ev");

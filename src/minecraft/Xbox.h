@@ -83,10 +83,11 @@ struct local_config {
 
     void** vtable;
 
-    mcpe::string get_value_from_local_storage(mcpe::string const& value) {
-        mcpe::string (*func)(void*, mcpe::string const&) = (mcpe::string (*)(void*, mcpe::string const&)) vtable[0x34/4];
-        return func(this, value);
-    }
+    /// @vtable xbox::services::local_config _ZN4xbox8services12local_config28get_value_from_local_storageERKSs
+    mcpe::string get_value_from_local_storage(mcpe::string const& value);
+
+    /// @vtable xbox::services::local_config _ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_
+    xbox::services::xbox_live_result<void> write_value_to_local_storage(mcpe::string const& name, mcpe::string const& value);
 
     static std::shared_ptr<xbox::services::local_config> get_local_config_singleton();
 

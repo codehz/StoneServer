@@ -284,7 +284,10 @@ def generate_init_func():
         if "vtable_name" in symbol and symbol["vtable_name"] is not None:
             vt_var_name = "vt_" + symbol["vtable_name"].replace("::", "_")
             if symbol["vtable_name"] not in vtables:
-                output("    void** " + vt_var_name + " = (void**) hybris_dlsym(handle, \"_ZTV" + get_mangled_type_name(symbol["vtable_name"], []) + "\") + 2;")
+                vt_sym_name = get_mangled_type_name(symbol["vtable_name"], [])
+                if "::" in symbol["vtable_name"]:
+                    vt_sym_name = "N" + vt_sym_name + "E"
+                output("    void** " + vt_var_name + " = (void**) hybris_dlsym(handle, \"_ZTV" + vt_sym_name + "\") + 2;")
                 vtables[symbol["vtable_name"]] = True
             output("    vti" + symbol["name"] + " = resolve_vtable_func(" + vt_var_name + ", hybris_dlsym(handle, \"" + symbol["symbol"] + "\"));")
             output("    if (vti" + symbol["name"] + " == -1) Log::error(\"MinecraftSymbols\", \"Unresolved vtable symbol: %s\", \"" + symbol["symbol"] + "\");")
