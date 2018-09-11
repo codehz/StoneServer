@@ -61,6 +61,9 @@ public:
         *this = std::move(func);
     }
 
+    function(nullptr_t) : manager(nullptr) {
+    }
+
     template<typename Functor>
     function(Functor func) {
         initFunctor(functor, std::move(func));
