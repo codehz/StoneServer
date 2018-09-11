@@ -17,4 +17,6 @@ public:
     /// @symbol _ZN20MinecraftScreenModel41navigateToXblConsoleSignInSucceededScreenERKN6Social12SignInResultESt8functionIFvS1_EEb
     void navigateToXblConsoleSignInSucceededScreen(Social::SignInResult const&, mcpe::function<void (Social::SignInResult)>, bool);
 
+    void leaveScreen();
+
 };

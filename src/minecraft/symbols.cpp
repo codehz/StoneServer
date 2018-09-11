@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Sep 10 2018 20:42:03 UTC
+// Generated on Tue Sep 11 2018 16:14:17 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -253,6 +253,10 @@ void MinecraftScreenModel::navigateToXblConsoleSignInScreen(mcpe::string const &
 static void (MinecraftScreenModel::*_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen)(Social::SignInResult const &, mcpe::function<void ( Social::SignInResult )>, bool);
 void MinecraftScreenModel::navigateToXblConsoleSignInSucceededScreen(Social::SignInResult const & p1, mcpe::function<void ( Social::SignInResult )> p2, bool p3) {
     (this->*_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen)(p1, p2, p3);
+}
+static void (MinecraftScreenModel::*_MinecraftScreenModel_leaveScreen)();
+void MinecraftScreenModel::leaveScreen() {
+    (this->*_MinecraftScreenModel_leaveScreen)();
 }
 
 #include "gl.h"
@@ -765,6 +769,8 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftScreenModel_navigateToXblConsoleSignInScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel32navigateToXblConsoleSignInScreenERKSsS1_");
     ((void*&) _MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen) = hybris_dlsym(handle, "_ZN20MinecraftScreenModel41navigateToXblConsoleSignInSucceededScreenERKN6Social12SignInResultESt8functionIFvS1_EEb");
     if (_MinecraftScreenModel_navigateToXblConsoleSignInSucceededScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel41navigateToXblConsoleSignInSucceededScreenERKN6Social12SignInResultESt8functionIFvS1_EEb");
+    ((void*&) _MinecraftScreenModel_leaveScreen) = hybris_dlsym(handle, "_ZN20MinecraftScreenModel11leaveScreenEv");
+    if (_MinecraftScreenModel_leaveScreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20MinecraftScreenModel11leaveScreenEv");
     ((void*&) _gl_getOpenGLVendor) = hybris_dlsym(handle, "_ZN2gl15getOpenGLVendorEv");
     if (_gl_getOpenGLVendor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl15getOpenGLVendorEv");
     ((void*&) _gl_getOpenGLRenderer) = hybris_dlsym(handle, "_ZN2gl17getOpenGLRendererEv");
