@@ -41,6 +41,9 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <stdarg.h>
+#include <semaphore.h>
+#include <sys/prctl.h>
+#include <sys/resource.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -70,6 +73,8 @@
 #include <utime.h>
 #include <wctype.h>
 #include <ctype.h>
+#include <setjmp.h>
+#include <malloc.h>
 
 #ifdef __APPLE__
 #include <xlocale.h>
@@ -268,7 +273,7 @@ struct _hook main_hooks[] = {
     {"__stack_chk_guard", &_hybris_stack_chk_guard},
     {"printf", printf },
     {"malloc", my_malloc },
-    // {"memalign", memalign },
+    {"memalign", posix_memalign },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
     // {"__assert", __assert },
@@ -286,6 +291,8 @@ struct _hook main_hooks[] = {
     {"gettimeofday", gettimeofday},
     {"utime", utime},
     {"setlocale", setlocale},
+    {"setjmp", _setjmp},
+    {"longjmp", longjmp},
     {"__umoddi3", __umoddi3},
     {"__udivdi3", __udivdi3},
     {"__divdi3", __divdi3},
@@ -396,6 +403,7 @@ struct _hook main_hooks[] = {
     {"wctomb", wctomb},
     {"mbstowcs", mbstowcs},
     {"wcstombs", wcstombs},
+    {"wcsrtombs", wcsrtombs},
     // {"rpmatch", rpmatch},
     {"getsubopt", getsubopt},
     {"posix_openpt", posix_openpt},
@@ -642,6 +650,7 @@ struct _hook main_hooks[] = {
     {"mmap", mmap},
     {"munmap", munmap},
     {"mprotect", mprotect},
+    {"madvise", madvise},
     {"msync", msync},
     {"mlock", mlock},
     {"munlock", munlock},
@@ -717,6 +726,16 @@ struct _hook main_hooks[] = {
     {"wcscoll", wcscoll},
     {"wcsxfrm", wcsxfrm},
     {"wcsftime", wcsftime},
+    /* semaphore.h */
+    {"sem_init", sem_init},
+    {"sem_destroy", sem_destroy},
+    {"sem_wait", sem_wait},
+    {"sem_timedwait", sem_timedwait},
+    {"sem_post", sem_post},
+    /* sys/prctl.h */
+    {"prctl", prctl},
+    /* sys/resource.h */
+    {"getrusage", getrusage},
     {NULL, NULL},
 };
 static struct _hook* user_hooks = NULL;

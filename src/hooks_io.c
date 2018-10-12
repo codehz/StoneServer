@@ -619,6 +619,7 @@ struct _hook io_hooks[] = {
     {"fdopen", my_fdopen},
     {"popen", popen},
     {"puts", puts},
+    {"vprintf", vprintf},
     {"sprintf", sprintf},
     {"__sprintf_chk", sprintf},
     {"asprintf", asprintf},
@@ -671,6 +672,7 @@ struct _hook io_hooks[] = {
     {"setbuffer", my_setbuffer},
     {"setlinebuf", my_setlinebuf},
     {"putchar", putchar},
+    {"tmpfile", tmpfile},
     {"remove", remove},
     {"rename", rename},
     /* wchar.t */
