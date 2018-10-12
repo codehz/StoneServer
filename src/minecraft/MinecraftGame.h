@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "std/function.h"
 #include "App.h"
 
 class Options;
@@ -25,6 +26,9 @@ public:
     void setRenderingSize(int, int);
 
     void setUISizeAndScale(int, int, float);
+
+    /// @symbol _ZN13MinecraftGame24doPrimaryClientReadyWorkESt8functionIFvvEE
+    void doPrimaryClientReadyWork(mcpe::function<void ()>);
 
     std::shared_ptr<Options> getPrimaryUserOptions();
 

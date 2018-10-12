@@ -1,5 +1,7 @@
 #pragma once
 
+#include "std/string.h"
+
 class AppPlatform;
 struct AppContext {
     char filler[0x10];
@@ -14,8 +16,8 @@ public:
 
     void init(AppContext& ctx);
 
-    /// @vtable App _ZN3App4quitEv
-    void quit();
+    /// @vtable App _ZN3App4quitERKSsS1_
+    void quit(mcpe::string const&, mcpe::string const&);
 
     /// @vtable App _ZN3App10wantToQuitEv
     bool wantToQuit();

@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Sep 11 2018 16:14:17 UTC
+// Generated on Fri Oct 12 2018 13:11:38 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -66,18 +66,18 @@ std::shared_ptr<xbox::services::xbox_live_app_config> xbox::services::xbox_live_
     return _xbox_services_xbox_live_app_config_get_app_config_singleton();
 }
 static int vti_xbox_services_local_config_get_value_from_local_storage;
-mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1) {
-    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &); } u;
+mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3) {
+    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_xbox_services_local_config_get_value_from_local_storage];
-    return (this->*u.funcp)(p1);
+    return (this->*u.funcp)(p1, p2, p3);
 }
 static int vti_xbox_services_local_config_write_value_to_local_storage;
-xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2) {
-    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &); } u;
+xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_xbox_services_local_config_write_value_to_local_storage];
-    return (this->*u.funcp)(p1, p2);
+    return (this->*u.funcp)(p1, p2, p3, p4);
 }
 static std::shared_ptr<xbox::services::local_config> (*_xbox_services_local_config_get_local_config_singleton)();
 std::shared_ptr<xbox::services::local_config> xbox::services::local_config::get_local_config_singleton() {
@@ -333,6 +333,10 @@ static void (MinecraftGame::*_MinecraftGame_setUISizeAndScale)(int, int, float);
 void MinecraftGame::setUISizeAndScale(int p1, int p2, float p3) {
     (this->*_MinecraftGame_setUISizeAndScale)(p1, p2, p3);
 }
+static void (MinecraftGame::*_MinecraftGame_doPrimaryClientReadyWork)(mcpe::function<void ( )>);
+void MinecraftGame::doPrimaryClientReadyWork(mcpe::function<void ( )> p1) {
+    (this->*_MinecraftGame_doPrimaryClientReadyWork)(p1);
+}
 static std::shared_ptr<Options> (MinecraftGame::*_MinecraftGame_getPrimaryUserOptions)();
 std::shared_ptr<Options> MinecraftGame::getPrimaryUserOptions() {
     return (this->*_MinecraftGame_getPrimaryUserOptions)();
@@ -391,6 +395,9 @@ Scheduler * MinecraftScheduler::client() {
     return _MinecraftScheduler_client();
 }
 
+#include "NullTextToSpeechClient.h"
+void * * NullTextToSpeechClient::myVtable;
+
 #include "FilePathManager.h"
 static void (FilePathManager::*_FilePathManager_FilePathManager)(mcpe::string, bool);
 FilePathManager::FilePathManager(mcpe::string p1, bool p2) {
@@ -431,11 +438,11 @@ void App::init(AppContext & p1) {
     (this->*_App_init)(p1);
 }
 static int vti_App_quit;
-void App::quit() {
-    union { void* voidp; void (App::*funcp)(); } u;
+void App::quit(mcpe::string const & p1, mcpe::string const & p2) {
+    union { void* voidp; void (App::*funcp)(mcpe::string const &, mcpe::string const &); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_App_quit];
-    (this->*u.funcp)();
+    (this->*u.funcp)(p1, p2);
 }
 static int vti_App_wantToQuit;
 bool App::wantToQuit() {
@@ -681,10 +688,10 @@ void minecraft_symbols_init(void* handle) {
     ((void*&) _xbox_services_xbox_live_app_config_get_app_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
     if (_xbox_services_xbox_live_app_config_get_app_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
     void** vt_xbox_services_local_config = (void**) hybris_dlsym(handle, "_ZTVN4xbox8services12local_configE") + 2;
-    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
-    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs");
-    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_"));
-    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_");
+    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_"));
+    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_");
+    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_"));
+    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_");
     ((void*&) _xbox_services_local_config_get_local_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     if (_xbox_services_local_config_get_local_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     ((void*&) _xbox_services_xsapi_singleton_destructor) = hybris_dlsym(handle, "_ZN4xbox8services15xsapi_singletonD2Ev");
@@ -805,6 +812,8 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_setRenderingSize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame16setRenderingSizeEii");
     ((void*&) _MinecraftGame_setUISizeAndScale) = hybris_dlsym(handle, "_ZN13MinecraftGame17setUISizeAndScaleEiif");
     if (_MinecraftGame_setUISizeAndScale == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17setUISizeAndScaleEiif");
+    ((void*&) _MinecraftGame_doPrimaryClientReadyWork) = hybris_dlsym(handle, "_ZN13MinecraftGame24doPrimaryClientReadyWorkESt8functionIFvvEE");
+    if (_MinecraftGame_doPrimaryClientReadyWork == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame24doPrimaryClientReadyWorkESt8functionIFvvEE");
     ((void*&) _MinecraftGame_getPrimaryUserOptions) = hybris_dlsym(handle, "_ZN13MinecraftGame21getPrimaryUserOptionsEv");
     if (_MinecraftGame_getPrimaryUserOptions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame21getPrimaryUserOptionsEv");
     ((void*&) _MinecraftGame_getPrimaryClientInstance) = hybris_dlsym(handle, "_ZN13MinecraftGame24getPrimaryClientInstanceEv");
@@ -831,6 +840,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Scheduler_processCoroutines == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Scheduler17processCoroutinesENSt6chrono8durationIxSt5ratioILx1ELx1000000000EEEE");
     ((void*&) _MinecraftScheduler_client) = hybris_dlsym(handle, "_ZN18MinecraftScheduler6clientEv");
     if (_MinecraftScheduler_client == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN18MinecraftScheduler6clientEv");
+    ((void*&) NullTextToSpeechClient::myVtable) = hybris_dlsym(handle, "_ZTV22NullTextToSpeechClient");
+    if (NullTextToSpeechClient::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV22NullTextToSpeechClient");
     ((void*&) _FilePathManager_FilePathManager) = hybris_dlsym(handle, "_ZN15FilePathManagerC2ESsb");
     if (_FilePathManager_FilePathManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15FilePathManagerC2ESsb");
     ((void*&) _FilePathManager_getRootPath) = hybris_dlsym(handle, "_ZNK15FilePathManager11getRootPathEv");
@@ -850,8 +861,8 @@ void minecraft_symbols_init(void* handle) {
     ((void*&) _App_init) = hybris_dlsym(handle, "_ZN3App4initER10AppContext");
     if (_App_init == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3App4initER10AppContext");
     void** vt_App = (void**) hybris_dlsym(handle, "_ZTV3App") + 2;
-    vti_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
-    if (vti_App_quit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App4quitEv");
+    vti_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitERKSsS1_"));
+    if (vti_App_quit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App4quitERKSsS1_");
     vti_App_wantToQuit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App10wantToQuitEv"));
     if (vti_App_wantToQuit == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN3App10wantToQuitEv");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
