@@ -13,6 +13,14 @@ bool CrashHandler::hasCrashed = false;
 
 void CrashHandler::handleSignal(int signal, void *aptr) {
     printf("Signal %i received\n", signal);
+
+    struct sigaction act;
+    act.sa_handler = nullptr;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    sigaction(SIGSEGV, &act, 0);
+    sigaction(SIGABRT, &act, 0);
+
     if (hasCrashed)
         return;
     hasCrashed = true;
