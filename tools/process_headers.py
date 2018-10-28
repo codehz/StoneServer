@@ -171,7 +171,7 @@ def get_doxygen_properties(doxygen):
 
     return properties
 
-def process_method(method, is_class):
+def process_method(method, is_class, is_legacy):
     method_path = get_method_path(method)
     wrapper_name = get_method_wrapper_name(method)
     mangled_name = get_mangled_method(method)
@@ -230,16 +230,17 @@ def process_method(method, is_class):
     symbol_list.append({
         "name": wrapper_name,
         "symbol": mangled_name,
-        "vtable_name": vtable_name
+        "vtable_name": vtable_name,
+        "is_legacy": is_legacy
     })
 
 
-def process_header(file):
+def process_header(file, is_legacy=False):
     print("Processing file " + file)
     cpp_header = cppheaderparser.CppHeader(file)
 
     for function in cpp_header.functions:
-        process_method(function, False)
+        process_method(function, False, is_legacy)
 
     for class_name in cpp_header.classes:
         print("Processing class " + class_name)
@@ -266,14 +267,15 @@ def process_header(file):
                 output(m_type + " " + class_name_with_namespace + "::" + member["name"] + ";")
                 symbol_list.append({
                     "name": class_name_with_namespace + "::" + member["name"],
-                    "symbol": mangled_name
+                    "symbol": mangled_name,
+                    "is_legacy": is_legacy
                 })
 
         for method_vis in class_data["methods"]:
             for method in class_data["methods"][method_vis]:
                 if method["defined"] or method["pure_virtual"]:
                     continue
-                process_method(method, True)
+                process_method(method, True, is_legacy)
 
                 
 def generate_init_func():
@@ -290,10 +292,12 @@ def generate_init_func():
                 output("    void** " + vt_var_name + " = (void**) hybris_dlsym(handle, \"_ZTV" + vt_sym_name + "\") + 2;")
                 vtables[symbol["vtable_name"]] = True
             output("    vti" + symbol["name"] + " = resolve_vtable_func(" + vt_var_name + ", hybris_dlsym(handle, \"" + symbol["symbol"] + "\"));")
-            output("    if (vti" + symbol["name"] + " == -1) Log::error(\"MinecraftSymbols\", \"Unresolved vtable symbol: %s\", \"" + symbol["symbol"] + "\");")
+            if not symbol["is_legacy"]:
+                output("    if (vti" + symbol["name"] + " == -1) Log::error(\"MinecraftSymbols\", \"Unresolved vtable symbol: %s\", \"" + symbol["symbol"] + "\");")
             continue
         output("    ((void*&) " + symbol["name"] + ") = hybris_dlsym(handle, \"" + symbol["symbol"] + "\");")
-        output("    if (" + symbol["name"] + " == nullptr) Log::error(\"MinecraftSymbols\", \"Unresolved symbol: %s\", \"" + symbol["symbol"] + "\");")
+        if not symbol["is_legacy"]:
+            output("    if (" + symbol["name"] + " == nullptr) Log::error(\"MinecraftSymbols\", \"Unresolved symbol: %s\", \"" + symbol["symbol"] + "\");")
     output("}")
 
 out_file = open("../src/minecraft/symbols.cpp", "w")
@@ -312,6 +316,14 @@ for file in os.listdir(header_dir):
         continue
     output("#include \"" + file + "\"")
     process_header(file_path)
+    output("")
+legacy_header_dir = header_dir + "legacy/"
+for file in os.listdir(legacy_header_dir):
+    file_path = os.path.join(legacy_header_dir, file)
+    if not os.path.isfile(file_path) or not file.endswith(".h"):
+        continue
+    output("#include \"legacy/" + file + "\"")
+    process_header(file_path, True)
     output("")
 output("static int resolve_vtable_func(void** vtable, void* what) {")
 output("    for (int i = 0; ; i++) {")

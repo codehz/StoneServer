@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Fri Oct 12 2018 13:11:38 UTC
+// Generated on Sun Oct 28 2018 15:49:36 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -484,6 +484,12 @@ SaveTransactionManager::SaveTransactionManager(std::function<void ( bool )> p1) 
     (this->*_SaveTransactionManager_SaveTransactionManager)(p1);
 }
 
+#include "SharedConstants.h"
+int * SharedConstants::MajorVersion;
+int * SharedConstants::MinorVersion;
+int * SharedConstants::PatchVersion;
+int * SharedConstants::RevisionVersion;
+
 #include "AppResourceLoader.h"
 static void (AppResourceLoader::*_AppResourceLoader_AppResourceLoader)(std::function<mcpe::string ( )>);
 AppResourceLoader::AppResourceLoader(std::function<mcpe::string ( )> p1) {
@@ -648,6 +654,24 @@ ContentIdentity * ContentIdentity::EMPTY;
 static mcpe::string (*_Common_getGameVersionStringNet)();
 mcpe::string Common::getGameVersionStringNet() {
     return _Common_getGameVersionStringNet();
+}
+
+#include "legacy/Xbox.h"
+static int vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage;
+mcpe::string Legacy::Pre_1_8::xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1) {
+    union { void* voidp; mcpe::string (Legacy::Pre_1_8::xbox::services::local_config::*funcp)(mcpe::string const &); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage];
+    return (this->*u.funcp)(p1);
+}
+
+#include "legacy/App.h"
+static int vti_Legacy_Pre_1_8_App_quit;
+void Legacy::Pre_1_8::App::quit() {
+    union { void* voidp; void (Legacy::Pre_1_8::App::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_Legacy_Pre_1_8_App_quit];
+    (this->*u.funcp)();
 }
 
 static int resolve_vtable_func(void** vtable, void* what) {
@@ -879,6 +903,14 @@ void minecraft_symbols_init(void* handle) {
     if (_AppPlatform_teardown == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform8teardownEv");
     ((void*&) _SaveTransactionManager_SaveTransactionManager) = hybris_dlsym(handle, "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
     if (_SaveTransactionManager_SaveTransactionManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
+    ((void*&) SharedConstants::MajorVersion) = hybris_dlsym(handle, "_ZN15SharedConstants12MajorVersionE");
+    if (SharedConstants::MajorVersion == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15SharedConstants12MajorVersionE");
+    ((void*&) SharedConstants::MinorVersion) = hybris_dlsym(handle, "_ZN15SharedConstants12MinorVersionE");
+    if (SharedConstants::MinorVersion == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15SharedConstants12MinorVersionE");
+    ((void*&) SharedConstants::PatchVersion) = hybris_dlsym(handle, "_ZN15SharedConstants12PatchVersionE");
+    if (SharedConstants::PatchVersion == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15SharedConstants12PatchVersionE");
+    ((void*&) SharedConstants::RevisionVersion) = hybris_dlsym(handle, "_ZN15SharedConstants15RevisionVersionE");
+    if (SharedConstants::RevisionVersion == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15SharedConstants15RevisionVersionE");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _CommandOutputSender_translate) = hybris_dlsym(handle, "_ZN19CommandOutputSender9translateERKSt6vectorISsSaISsEE");
@@ -949,4 +981,6 @@ void minecraft_symbols_init(void* handle) {
     if (ContentIdentity::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ContentIdentity5EMPTYE");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
+    vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
+    vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
 }
