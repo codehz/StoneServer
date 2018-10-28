@@ -55,7 +55,8 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN19AppPlatform_android11swapBuffersEv", &LauncherAppPlatform::swapBuffers);
     vtr.replace("_ZNK19AppPlatform_android15getSystemRegionEv", &LauncherAppPlatform::getSystemRegion);
     vtr.replace("_ZN19AppPlatform_android25getGraphicsTearingSupportEv", &LauncherAppPlatform::getGraphicsTearingSupport);
-    vtr.replace("_ZN19AppPlatform_android9pickImageER20ImagePickingCallback", &LauncherAppPlatform::pickImage);
+    vtr.replace("_ZN19AppPlatform_android9pickImageESt10shared_ptrI20ImagePickingCallbackE", &LauncherAppPlatform::pickImage);
+    vtr.replace("_ZN19AppPlatform_android9pickImageER20ImagePickingCallback", &LauncherAppPlatform::pickImageOld);
     vtr.replace("_ZN11AppPlatform8pickFileER18FilePickerSettings", &LauncherAppPlatform::pickFile);
     vtr.replace("_ZNK11AppPlatform19supportsFilePickingEv", &LauncherAppPlatform::supportsFilePicking);
     vtr.replace("_ZN19AppPlatform_android22getExternalStoragePathEv", &LauncherAppPlatform::getExternalStoragePath);
