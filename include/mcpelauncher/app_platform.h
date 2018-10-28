@@ -74,15 +74,15 @@ public:
     void pickFile(FilePickerSettings& callback) {}
     bool supportsFilePicking() { return false; }
     mcpe::string& getExternalStoragePath() {
-        Log::trace(TAG, "getExternalStoragePath: %s", externalStorage.c_str());
+        // Log::trace(TAG, "getExternalStoragePath: %s", externalStorage.c_str());
         return externalStorage;
     }
     mcpe::string& getInternalStoragePath() {
-        Log::trace(TAG, "getInternalStoragePath: %s", internalStorage.c_str());
+        // Log::trace(TAG, "getInternalStoragePath: %s", internalStorage.c_str());
         return internalStorage;
     }
     mcpe::string& getCurrentStoragePath() {
-        Log::trace(TAG, "getCurrentStoragePath: %s", currentStorage.c_str());
+        // Log::trace(TAG, "getCurrentStoragePath: %s", currentStorage.c_str());
         return currentStorage;
     }
     mcpe::string& getUserdataPath() {
@@ -90,11 +90,11 @@ public:
         return userdata;
     }
     mcpe::string& getUserdataPathForLevels() {
-        Log::trace(TAG, "getUserdataPathForLevels: %s", userdataPathForLevels.c_str());
+        // Log::trace(TAG, "getUserdataPathForLevels: %s", userdataPathForLevels.c_str());
         return userdataPathForLevels;
     }
     mcpe::string getAssetFileFullPath(mcpe::string const& s) {
-        Log::trace(TAG, "getAssetFileFullPath: %s", s.c_str());
+        // Log::trace(TAG, "getAssetFileFullPath: %s", s.c_str());
         return mcpe::string(assetsDir + s.std());
     }
     int getScreenType() {
