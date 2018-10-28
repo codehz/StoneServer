@@ -38,4 +38,6 @@ public:
 
     void continueLeaveGame();
 
+    void setTextboxText(mcpe::string const&, int);
+
 };

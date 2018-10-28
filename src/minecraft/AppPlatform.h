@@ -1,5 +1,8 @@
 #pragma once
 
+#include "std/string.h"
+class Vec2;
+
 class AppPlatform {
 
 public:
@@ -22,5 +25,11 @@ public:
     void initialize();
 
     void teardown();
+
+    void showKeyboard(mcpe::string const&, int, bool, bool, bool, int, Vec2 const&);
+
+    void hideKeyboard();
+
+    bool isKeyboardVisible();
 
 };

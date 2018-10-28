@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Oct 28 2018 15:49:36 UTC
+// Generated on Sun Oct 28 2018 19:57:17 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -353,6 +353,10 @@ static void (MinecraftGame::*_MinecraftGame_continueLeaveGame)();
 void MinecraftGame::continueLeaveGame() {
     (this->*_MinecraftGame_continueLeaveGame)();
 }
+static void (MinecraftGame::*_MinecraftGame_setTextboxText)(mcpe::string const &, int);
+void MinecraftGame::setTextboxText(mcpe::string const & p1, int p2) {
+    (this->*_MinecraftGame_setTextboxText)(p1, p2);
+}
 
 #include "ClientInstance.h"
 static std::shared_ptr<Social::User> (ClientInstance::*_ClientInstance_getUser)();
@@ -370,6 +374,7 @@ void ClientInstance::_syncDestroyGame() {
 
 #include "Keyboard.h"
 int * Keyboard::_states;
+std::vector<int> * Keyboard::_inputCaretLocation;
 static void (*_Keyboard_feed)(unsigned char, int);
 void Keyboard::feed(unsigned char p1, int p2) {
     _Keyboard_feed(p1, p2);
@@ -476,6 +481,18 @@ void AppPlatform::initialize() {
 static void (AppPlatform::*_AppPlatform_teardown)();
 void AppPlatform::teardown() {
     (this->*_AppPlatform_teardown)();
+}
+static void (AppPlatform::*_AppPlatform_showKeyboard)(mcpe::string const &, int, bool, bool, bool, int, Vec2 const &);
+void AppPlatform::showKeyboard(mcpe::string const & p1, int p2, bool p3, bool p4, bool p5, int p6, Vec2 const & p7) {
+    (this->*_AppPlatform_showKeyboard)(p1, p2, p3, p4, p5, p6, p7);
+}
+static void (AppPlatform::*_AppPlatform_hideKeyboard)();
+void AppPlatform::hideKeyboard() {
+    (this->*_AppPlatform_hideKeyboard)();
+}
+static bool (AppPlatform::*_AppPlatform_isKeyboardVisible)();
+bool AppPlatform::isKeyboardVisible() {
+    return (this->*_AppPlatform_isKeyboardVisible)();
 }
 
 #include "SaveTransactionManager.h"
@@ -846,6 +863,8 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_startLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14startLeaveGameEv");
     ((void*&) _MinecraftGame_continueLeaveGame) = hybris_dlsym(handle, "_ZN13MinecraftGame17continueLeaveGameEv");
     if (_MinecraftGame_continueLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17continueLeaveGameEv");
+    ((void*&) _MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSsi");
+    if (_MinecraftGame_setTextboxText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14setTextboxTextERKSsi");
     ((void*&) _ClientInstance_getUser) = hybris_dlsym(handle, "_ZN14ClientInstance7getUserEv");
     if (_ClientInstance_getUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance7getUserEv");
     ((void*&) _ClientInstance__startLeaveGame) = hybris_dlsym(handle, "_ZN14ClientInstance15_startLeaveGameEv");
@@ -854,6 +873,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ClientInstance__syncDestroyGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance16_syncDestroyGameEv");
     ((void*&) Keyboard::_states) = hybris_dlsym(handle, "_ZN8Keyboard7_statesE");
     if (Keyboard::_states == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard7_statesE");
+    ((void*&) Keyboard::_inputCaretLocation) = hybris_dlsym(handle, "_ZN8Keyboard19_inputCaretLocationE");
+    if (Keyboard::_inputCaretLocation == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard19_inputCaretLocationE");
     ((void*&) _Keyboard_feed) = hybris_dlsym(handle, "_ZN8Keyboard4feedEhi");
     if (_Keyboard_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard4feedEhi");
     ((void*&) _Keyboard_feedText) = hybris_dlsym(handle, "_ZN8Keyboard8feedTextERKSsbh");
@@ -901,6 +922,12 @@ void minecraft_symbols_init(void* handle) {
     if (_AppPlatform_initialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform10initializeEv");
     ((void*&) _AppPlatform_teardown) = hybris_dlsym(handle, "_ZN11AppPlatform8teardownEv");
     if (_AppPlatform_teardown == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform8teardownEv");
+    ((void*&) _AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbiRK4Vec2");
+    if (_AppPlatform_showKeyboard == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform12showKeyboardERKSsibbbiRK4Vec2");
+    ((void*&) _AppPlatform_hideKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12hideKeyboardEv");
+    if (_AppPlatform_hideKeyboard == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform12hideKeyboardEv");
+    ((void*&) _AppPlatform_isKeyboardVisible) = hybris_dlsym(handle, "_ZN11AppPlatform17isKeyboardVisibleEv");
+    if (_AppPlatform_isKeyboardVisible == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform17isKeyboardVisibleEv");
     ((void*&) _SaveTransactionManager_SaveTransactionManager) = hybris_dlsym(handle, "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
     if (_SaveTransactionManager_SaveTransactionManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
     ((void*&) SharedConstants::MajorVersion) = hybris_dlsym(handle, "_ZN15SharedConstants12MajorVersionE");
