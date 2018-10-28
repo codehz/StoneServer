@@ -149,12 +149,12 @@ public:
     }
 
     mcpe::string createDeviceID_old() {
-        return "3f9ac4bea0012efa";
+        return "linux";
     }
 
     mcpe::string createDeviceID(std::string const& c) {
         Log::trace(TAG, "createDeviceID: %s", c.c_str());
-        return "3f9ac4bea0012efa";
+        return "linux";
     }
 
     bool allowSplitScreen() {
@@ -175,5 +175,9 @@ public:
     }
 
     void calculateHardwareTier();
+
+    bool supportsScripting() {
+        return true;
+    }
 
 };
