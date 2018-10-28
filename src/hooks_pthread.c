@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <signal.h>
+#include <semaphore.h>
 #ifdef __APPLE__
 #include "hooks_darwin_pthread_once.h"
 #else
@@ -947,6 +948,41 @@ static int darwin_my_pthread_attr_getschedparam(pthread_attr_t const *__attr, st
 
 #endif
 
+static int my_sem_init(sem_t **sem, int pshared, unsigned int value) {
+    *sem = (sem_t*) malloc(sizeof(sem_t));
+    if (!(*sem)) {
+        errno = ENOMEM;
+        return -1;
+    }
+    int ret = sem_init(*sem, pshared, value);
+    if (!ret) {
+        free(*sem);
+        *sem = NULL;
+    }
+    return ret;
+}
+
+static int my_sem_destroy(sem_t **sem) {
+    if (!(*sem))
+        return 0;
+    int ret = sem_destroy(*sem);
+    free(*sem);
+    *sem = NULL;
+    return ret;
+}
+
+static int my_sem_wait(sem_t **sem) {
+    return sem_wait(*sem);
+}
+
+static int my_sem_timedwait(sem_t **sem, const struct timespec *abs_timeout) {
+    return sem_timedwait(*sem, abs_timeout);
+}
+
+static int my_sem_post(sem_t **sem) {
+    return sem_post(*sem);
+}
+
 struct _hook pthread_hooks[] = {
     /* pthread.h */
     // {"getauxval", getauxval},
@@ -1055,5 +1091,11 @@ struct _hook pthread_hooks[] = {
 #endif
     {"__pthread_cleanup_push", my_pthread_cleanup_push},
     {"__pthread_cleanup_pop", my_pthread_cleanup_pop},
+    /* semaphore.h */
+    {"sem_init", my_sem_init},
+    {"sem_destroy", my_sem_destroy},
+    {"sem_wait", my_sem_wait},
+    {"sem_timedwait", my_sem_timedwait},
+    {"sem_post", my_sem_post},
     {NULL, NULL}
 };

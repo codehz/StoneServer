@@ -115,7 +115,7 @@ static void __attribute__((constructor)) __init_stack_check_guard() {
 
 static void *my_malloc(size_t size)
 {
-    return malloc(size);
+    return (char*)malloc(size);
 }
 
 static void *my_memcpy(void *dst, const void *src, size_t len)
@@ -273,7 +273,7 @@ struct _hook main_hooks[] = {
     {"__stack_chk_guard", &_hybris_stack_chk_guard},
     {"printf", printf },
     {"malloc", my_malloc },
-    {"memalign", posix_memalign },
+    {"memalign", memalign },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
     // {"__assert", __assert },
@@ -726,12 +726,6 @@ struct _hook main_hooks[] = {
     {"wcscoll", wcscoll},
     {"wcsxfrm", wcsxfrm},
     {"wcsftime", wcsftime},
-    /* semaphore.h */
-    {"sem_init", sem_init},
-    {"sem_destroy", sem_destroy},
-    {"sem_wait", sem_wait},
-    {"sem_timedwait", sem_timedwait},
-    {"sem_post", sem_post},
     /* sys/prctl.h */
     {"prctl", prctl},
     /* sys/resource.h */
