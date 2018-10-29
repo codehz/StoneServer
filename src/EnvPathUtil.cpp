@@ -61,12 +61,14 @@ std::string EnvPathUtil::getHomeDir() {
     return ret;
 }
 
+#ifndef __APPLE__
 std::string EnvPathUtil::getDataHome() {
     char* env = getenv("XDG_DATA_HOME");
     if (env != nullptr)
         return env;
     return getHomeDir() + "/.local/share";
 }
+#endif
 
 bool EnvPathUtil::findInPath(std::string const& what, std::string& result, const char* path, const char* cwd) {
     if (path == nullptr) {
