@@ -948,6 +948,8 @@ static int darwin_my_pthread_attr_getschedparam(pthread_attr_t const *__attr, st
 
 #endif
 
+#ifndef __APPLE__
+
 static int my_sem_init(sem_t **sem, int pshared, unsigned int value) {
     *sem = (sem_t*) malloc(sizeof(sem_t));
     if (!(*sem)) {
@@ -982,6 +984,51 @@ static int my_sem_timedwait(sem_t **sem, const struct timespec *abs_timeout) {
 static int my_sem_post(sem_t **sem) {
     return sem_post(*sem);
 }
+
+#else
+
+struct darwin_my_sem_info {
+    pthread_cond_t cond;
+    pthread_mutex_t mutex;
+};
+static int darwin_my_sem_init(struct darwin_my_sem_info **sem, int pshared, unsigned int value) {
+    if (pshared) {
+        printf("sem_init: pshared not supported\n");
+    }
+    *sem = malloc(sizeof(struct darwin_my_sem_info));
+    if (!*sem) {
+        return ENOMEM;
+    }
+    int ret = pthread_cond_init(&(*sem)->cond, NULL);
+    if (ret) {
+        free(*sem);
+        *sem = NULL;
+    }
+    ret = pthread_mutex_init(&(*sem)->mutex, NULL);
+    if (ret) {
+        pthread_cond_destroy(&(*sem)->cond);
+        free(*sem);
+        *sem = NULL;
+    }
+    return ret;
+}
+static int darwin_my_sem_destroy(struct darwin_my_sem_info **sem) {
+    pthread_cond_destroy(&(*sem)->cond);
+    pthread_mutex_destroy(&(*sem)->mutex);
+    free(*sem);
+    return 0;
+}
+static int darwin_my_sem_wait(struct darwin_my_sem_info **sem) {
+    return pthread_cond_wait(&(*sem)->cond, &(*sem)->mutex);
+}
+static int darwin_my_sem_timedwait(struct darwin_my_sem_info **sem, const struct timespec *abs_timeout) {
+    return pthread_cond_timedwait(&(*sem)->cond, &(*sem)->mutex, abs_timeout);
+}
+static int darwin_my_sem_post(struct darwin_my_sem_info **sem) {
+    return pthread_cond_signal(&(*sem)->cond);
+}
+
+#endif
 
 struct _hook pthread_hooks[] = {
     /* pthread.h */
@@ -1092,10 +1139,18 @@ struct _hook pthread_hooks[] = {
     {"__pthread_cleanup_push", my_pthread_cleanup_push},
     {"__pthread_cleanup_pop", my_pthread_cleanup_pop},
     /* semaphore.h */
+#ifndef __APPLE__
     {"sem_init", my_sem_init},
     {"sem_destroy", my_sem_destroy},
     {"sem_wait", my_sem_wait},
     {"sem_timedwait", my_sem_timedwait},
     {"sem_post", my_sem_post},
+#else
+    {"sem_init", darwin_my_sem_init},
+    {"sem_destroy", darwin_my_sem_destroy},
+    {"sem_wait", darwin_my_sem_wait},
+    {"sem_timedwait", darwin_my_sem_timedwait},
+    {"sem_post", darwin_my_sem_post},
+#endif
     {NULL, NULL}
 };

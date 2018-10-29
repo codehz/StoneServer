@@ -42,7 +42,6 @@
 #include <sys/uio.h>
 #include <stdarg.h>
 #include <semaphore.h>
-#include <sys/prctl.h>
 #include <sys/resource.h>
 
 #include <sys/ipc.h>
@@ -56,6 +55,8 @@
 #ifndef __APPLE__
 #include <sys/syscall.h>
 #include <sys/auxv.h>
+#include <sys/prctl.h>
+#include <malloc.h>
 #endif
 
 #include <arpa/inet.h>
@@ -74,7 +75,6 @@
 #include <wctype.h>
 #include <ctype.h>
 #include <setjmp.h>
-#include <malloc.h>
 
 #ifdef __APPLE__
 #include <xlocale.h>
@@ -201,6 +201,18 @@ int* darwin_my_errno() {
     else if (*ret == EINPROGRESS) *ret = 115;
     return ret;
 }
+
+void* darwin_my_memalign(size_t alignment, size_t size) {
+    void* ret;
+    if (posix_memalign(&ret, alignment, size) != 0)
+        return NULL;
+    return ret;
+}
+
+int darwin_my_prctl(int opt) {
+    printf("unsupported prctl %i\n", opt);
+    return 0;
+}
 #endif
 
 static int my_set_errno(int oi_errno)
@@ -273,7 +285,6 @@ struct _hook main_hooks[] = {
     {"__stack_chk_guard", &_hybris_stack_chk_guard},
     {"printf", printf },
     {"malloc", my_malloc },
-    {"memalign", memalign },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
     // {"__assert", __assert },
@@ -284,9 +295,11 @@ struct _hook main_hooks[] = {
 #ifdef __APPLE__
     {"getrlimit", darwin_my_getrlimit},
     {"ioctl", darwin_my_ioctl},
+    {"memalign", darwin_my_memalign},
 #else
     {"getrlimit", getrlimit},
     {"ioctl", ioctl},
+    {"memalign", memalign},
 #endif
     {"gettimeofday", gettimeofday},
     {"utime", utime},
@@ -727,7 +740,11 @@ struct _hook main_hooks[] = {
     {"wcsxfrm", wcsxfrm},
     {"wcsftime", wcsftime},
     /* sys/prctl.h */
+#ifdef __APPLE__
+    {"prctl", darwin_my_prctl},
+#else
     {"prctl", prctl},
+#endif
     /* sys/resource.h */
     {"getrusage", getrusage},
     {NULL, NULL},
