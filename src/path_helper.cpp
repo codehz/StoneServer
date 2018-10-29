@@ -20,6 +20,9 @@ PathHelper::PathInfo::PathInfo() {
         overrideDataDir = getWorkingDir();
         return;
     }
+#ifdef __APPLE__
+    findAppleDirectories();
+#endif
     char* env = getenv("XDG_DATA_HOME");
     if (env != nullptr)
         dataHome = std::string(env);
@@ -39,7 +42,7 @@ PathHelper::PathInfo::PathInfo() {
             s = r + 1;
         }
     }
-    if (dataDirs.empty())
+    if (dataDirs.empty() || env == nullptr)
         dataDirs = {"/usr/local/share/", "/usr/share/"};
     env = getenv("XDG_CACHE_HOME");
     if (env != nullptr)

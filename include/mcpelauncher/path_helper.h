@@ -19,6 +19,8 @@ private:
         std::string gameDir;
 
         PathInfo();
+
+        void findAppleDirectories();
     };
 
     static PathInfo pathInfo;
