@@ -108,6 +108,12 @@ public:
         new (refCount) RefCount(deleter, alloc, ptr);
     }
 
+    void reset() {
+        refCount->release();
+        ptr = nullptr;
+        refCount = nullptr;
+    }
+
 };
 
 }
