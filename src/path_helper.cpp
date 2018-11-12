@@ -140,7 +140,7 @@ std::string PathHelper::findDataFile(std::string const& path) {
         if (fileExists(p))
             return p;
     }
-    p = getParentDir(pathInfo.appDir) + "/" + path;
+    p = getParentDir(pathInfo.appDir) + "/share/mcpelauncher/" + path;
     if (fileExists(p))
         return p;
     throw std::runtime_error("Failed to find data file: " + path);
