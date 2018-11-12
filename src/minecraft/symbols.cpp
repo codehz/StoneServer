@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Oct 28 2018 19:57:17 UTC
+// Generated on Mon Nov 12 2018 16:55:14 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -682,6 +682,12 @@ mcpe::string Legacy::Pre_1_8::xbox::services::local_config::get_value_from_local
     return (this->*u.funcp)(p1);
 }
 
+#include "legacy/MinecraftGame.h"
+static void (Legacy::Pre_1_2_10::MinecraftGame::*_Legacy_Pre_1_2_10_MinecraftGame_setTextboxText)(mcpe::string const &);
+void Legacy::Pre_1_2_10::MinecraftGame::setTextboxText(mcpe::string const & p1) {
+    (this->*_Legacy_Pre_1_2_10_MinecraftGame_setTextboxText)(p1);
+}
+
 #include "legacy/App.h"
 static int vti_Legacy_Pre_1_8_App_quit;
 void Legacy::Pre_1_8::App::quit() {
@@ -689,6 +695,12 @@ void Legacy::Pre_1_8::App::quit() {
     u.funcp = nullptr;
     u.voidp = vtable[vti_Legacy_Pre_1_8_App_quit];
     (this->*u.funcp)();
+}
+
+#include "legacy/AppPlatform.h"
+static void (Legacy::Pre_1_2_10::AppPlatform::*_Legacy_Pre_1_2_10_AppPlatform_showKeyboard)(mcpe::string const &, int, bool, bool, bool, Vec2 const &);
+void Legacy::Pre_1_2_10::AppPlatform::showKeyboard(mcpe::string const & p1, int p2, bool p3, bool p4, bool p5, Vec2 const & p6) {
+    (this->*_Legacy_Pre_1_2_10_AppPlatform_showKeyboard)(p1, p2, p3, p4, p5, p6);
 }
 
 static int resolve_vtable_func(void** vtable, void* what) {
@@ -1009,5 +1021,7 @@ void minecraft_symbols_init(void* handle) {
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
     vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
+    ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
+    ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");
 }
