@@ -41,9 +41,10 @@ PathHelper::PathInfo::PathInfo() {
             dataDirs.push_back(std::string(s, r - s));
             s = r + 1;
         }
+    } else {
+        dataDirs.push_back("/usr/local/share/");
+        dataDirs.push_back("/usr/share/");
     }
-    if (dataDirs.empty() || env == nullptr)
-        dataDirs = {"/usr/local/share/", "/usr/share/"};
     env = getenv("XDG_CACHE_HOME");
     if (env != nullptr)
         cacheHome = std::string(env);

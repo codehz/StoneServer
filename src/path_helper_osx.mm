@@ -14,6 +14,10 @@ void PathHelper::PathInfo::findAppleDirectories() {
         else
             dataDirs.push_back(dirPath);
     }
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* resPathNS = [bundle resourcePath];
+    std::string resPath ([resPathNS UTF8String], [resPathNS lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+    dataDirs.push_back(resPath);
     appSupportDir = [fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
     for (NSURL* url in appSupportDir) {
         if (![url isFileURL])
