@@ -1365,7 +1365,8 @@ static int reloc_library(soinfo *si, Elf32_Rel *rel, unsigned count)
             } else {
                s = _do_lookup(si, sym_name, &base);
             }
-            if(!sym_addr && s == NULL) {
+            if(!sym_addr) {
+            if(s == NULL) {
                 /* We only allow an undefined symbol if this is a weak
                    reference..   */
                 s = &symtab[sym];
@@ -1432,7 +1433,8 @@ static int reloc_library(soinfo *si, Elf32_Rel *rel, unsigned count)
             }
 #endif
                 sym_addr = (unsigned)(s->st_value + base);
-	    }
+	        }
+            }
             COUNT_RELOC(RELOC_SYMBOL);
         } else {
             s = NULL;
