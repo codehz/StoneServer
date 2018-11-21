@@ -30,6 +30,8 @@ struct _hook {
 void hybris_hook(const char *name, void* func);
 void hybris_register_hooks(struct _hook *hooks);
 
+void *get_hooked_symbol(const char *sym);
+
 #ifdef __cplusplus
 }
 #endif
