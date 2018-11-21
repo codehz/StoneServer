@@ -47,6 +47,7 @@
 //#include "bionic_tls.h"
 
 #include "hybris/jb/linker.h"
+#include "hybris/hook.h"
 #include "linker_debug.h"
 #include "linker_environ.h"
 #include "linker_format.h"
@@ -1357,15 +1358,14 @@ static int reloc_library(soinfo *si, Elf32_Rel *rel, unsigned count)
         if(sym != 0) {
             sym_name = (char *)(strtab + symtab[sym].st_name);
             INFO("HYBRIS: '%s' checking hooks for sym '%s'\n", si->name, sym_name);
-            sym_addr = get_hooked_symbol(sym_name);
-            if (sym_addr != NULL) {
+            sym_addr = (unsigned int) get_hooked_symbol(sym_name);
+            if (sym_addr) {
                 INFO("HYBRIS: '%s' hooked symbol %s to %x\n", si->name,
                                                   sym_name, sym_addr);
             } else {
                s = _do_lookup(si, sym_name, &base);
             }
-            if(sym_addr == NULL)
-            if(s == NULL) {
+            if(!sym_addr && s == NULL) {
                 /* We only allow an undefined symbol if this is a weak
                    reference..   */
                 s = &symtab[sym];
