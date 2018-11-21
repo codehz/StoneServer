@@ -10,4 +10,5 @@ std::string EnvPathUtil::getDataHome() {
         NSString* dirPathNS = [url path];
         return std::string ([dirPathNS UTF8String], [dirPathNS lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
     }
+    return std::string();
 }
