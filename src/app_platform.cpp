@@ -67,10 +67,13 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN11AppPlatform20getAssetFileFullPathERKSs", &LauncherAppPlatform::getAssetFileFullPath);
     vtr.replace("_ZNK11AppPlatform14useCenteredGUIEv", &LauncherAppPlatform::useCenteredGUI);
     vtr.replace("_ZN19AppPlatform_android16getApplicationIdEv", &LauncherAppPlatform::getApplicationId);
-    vtr.replace("_ZN19AppPlatform_android13getFreeMemoryEv", &LauncherAppPlatform::getFreeMemory);
+    vtr.replace("_ZN19AppPlatform_android13getFreeMemoryEv", &LauncherAppPlatform::getFreeMemory); // legacy
+    vtr.replace("_ZNK19AppPlatform_android13getFreeMemoryEv", &LauncherAppPlatform::getFreeMemory);
     vtr.replace("_ZN19AppPlatform_android13getUsedMemoryEv", &LauncherAppPlatform::getUsedMemory);
-    vtr.replace("_ZN19AppPlatform_android22getTotalPhysicalMemoryEv", &LauncherAppPlatform::getTotalPhysicalMemory);
-    vtr.replace("_ZN19AppPlatform_android14getMemoryLimitEv", &LauncherAppPlatform::getMemoryLimit);
+    vtr.replace("_ZN19AppPlatform_android22getTotalPhysicalMemoryEv", &LauncherAppPlatform::getTotalPhysicalMemory); // legacy
+    vtr.replace("_ZNK19AppPlatform_android22getTotalPhysicalMemoryEv", &LauncherAppPlatform::getTotalPhysicalMemory);
+    vtr.replace("_ZN19AppPlatform_android14getMemoryLimitEv", &LauncherAppPlatform::getMemoryLimit); // legacy
+    vtr.replace("_ZNK19AppPlatform_android14getMemoryLimitEv", &LauncherAppPlatform::getMemoryLimit);
     vtr.replace("_ZN19AppPlatform_android11getDeviceIdEv", &LauncherAppPlatform::getDeviceId);
     vtr.replace("_ZN19AppPlatform_android18isFirstSnoopLaunchEv", &LauncherAppPlatform::isFirstSnoopLaunch);
     vtr.replace("_ZN19AppPlatform_android29hasHardwareInformationChangedEv", &LauncherAppPlatform::hasHardwareInformationChanged);
