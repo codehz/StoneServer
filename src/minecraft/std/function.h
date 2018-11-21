@@ -152,6 +152,8 @@ private:
                 else
                     getFunctorPointer<Functor>(dest)->~Functor();
                 break;
+            default:
+                break;
         }
         return false;
     }
