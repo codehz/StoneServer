@@ -326,6 +326,8 @@ for file in os.listdir(legacy_header_dir):
     process_header(file_path, True)
     output("")
 output("static int resolve_vtable_func(void** vtable, void* what) {")
+output("    if (vtable - 2 == nullptr)")
+output("        return -1;")
 output("    for (int i = 0; ; i++) {")
 output("        if (vtable[i] == nullptr)")
 output("            return -1;")

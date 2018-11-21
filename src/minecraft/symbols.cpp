@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Nov 12 2018 16:55:14 UTC
+// Generated on Wed Nov 21 2018 18:18:46 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -66,18 +66,18 @@ std::shared_ptr<xbox::services::xbox_live_app_config> xbox::services::xbox_live_
     return _xbox_services_xbox_live_app_config_get_app_config_singleton();
 }
 static int vti_xbox_services_local_config_get_value_from_local_storage;
-mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3) {
-    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
+mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1) {
+    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_xbox_services_local_config_get_value_from_local_storage];
-    return (this->*u.funcp)(p1, p2, p3);
+    return (this->*u.funcp)(p1);
 }
 static int vti_xbox_services_local_config_write_value_to_local_storage;
-xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
-    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
+xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2) {
+    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_xbox_services_local_config_write_value_to_local_storage];
-    return (this->*u.funcp)(p1, p2, p3, p4);
+    return (this->*u.funcp)(p1, p2);
 }
 static std::shared_ptr<xbox::services::local_config> (*_xbox_services_local_config_get_local_config_singleton)();
 std::shared_ptr<xbox::services::local_config> xbox::services::local_config::get_local_config_singleton() {
@@ -674,12 +674,12 @@ mcpe::string Common::getGameVersionStringNet() {
 }
 
 #include "legacy/Xbox.h"
-static int vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage;
-mcpe::string Legacy::Pre_1_8::xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1) {
-    union { void* voidp; mcpe::string (Legacy::Pre_1_8::xbox::services::local_config::*funcp)(mcpe::string const &); } u;
+static int vti_Legacy_Beta_1_8_xbox_services_local_config_get_value_from_local_storage;
+mcpe::string Legacy::Beta_1_8::xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3) {
+    union { void* voidp; mcpe::string (Legacy::Beta_1_8::xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
     u.funcp = nullptr;
-    u.voidp = vtable[vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage];
-    return (this->*u.funcp)(p1);
+    u.voidp = vtable[vti_Legacy_Beta_1_8_xbox_services_local_config_get_value_from_local_storage];
+    return (this->*u.funcp)(p1, p2, p3);
 }
 
 #include "legacy/MinecraftGame.h"
@@ -704,6 +704,8 @@ void Legacy::Pre_1_2_10::AppPlatform::showKeyboard(mcpe::string const & p1, int 
 }
 
 static int resolve_vtable_func(void** vtable, void* what) {
+    if (vtable - 2 == nullptr)
+        return -1;
     for (int i = 0; ; i++) {
         if (vtable[i] == nullptr)
             return -1;
@@ -741,10 +743,10 @@ void minecraft_symbols_init(void* handle) {
     ((void*&) _xbox_services_xbox_live_app_config_get_app_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
     if (_xbox_services_xbox_live_app_config_get_app_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
     void** vt_xbox_services_local_config = (void**) hybris_dlsym(handle, "_ZTVN4xbox8services12local_configE") + 2;
-    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_"));
-    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_");
-    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_"));
-    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_");
+    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
+    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs");
+    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_"));
+    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_");
     ((void*&) _xbox_services_local_config_get_local_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     if (_xbox_services_local_config_get_local_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12local_config26get_local_config_singletonEv");
     ((void*&) _xbox_services_xsapi_singleton_destructor) = hybris_dlsym(handle, "_ZN4xbox8services15xsapi_singletonD2Ev");
@@ -1020,7 +1022,7 @@ void minecraft_symbols_init(void* handle) {
     if (ContentIdentity::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ContentIdentity5EMPTYE");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
-    vti_Legacy_Pre_1_8_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSs"));
+    vti_Legacy_Beta_1_8_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");
