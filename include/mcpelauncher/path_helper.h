@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 class PathHelper {
 
@@ -38,6 +39,8 @@ public:
     static std::string getWorkingDir();
 
     static std::string findDataFile(std::string const& path);
+
+    static void findAllDataFiles(std::string const& path, std::function<void (std::string)> f);
 
     static std::string getPrimaryDataDirectory() {
         if (!pathInfo.overrideDataDir.empty())

@@ -123,9 +123,10 @@ std::string PathHelper::findDataFile(std::string const& path) {
     for (const char* p = DEV_EXTRA_PATHS, *pn = p; pn != nullptr; p = pn + 1) {
         pn = strchr(p, ':');
         std::string s (p, (pn != nullptr ? (size_t) (pn - p) : strlen(p)));
-        std::string sp = s + "/" + path;
-        if (fileExists(sp))
-            return sp;
+        s.push_back('/');
+        s.append(path);
+        if (fileExists(s))
+            return s;
     }
 #endif
     if (pathInfo.overrideDataDir.empty()) {
@@ -145,4 +146,39 @@ std::string PathHelper::findDataFile(std::string const& path) {
     if (fileExists(p))
         return p;
     throw std::runtime_error("Failed to find data file: " + path);
+}
+
+void PathHelper::findAllDataFiles(std::string const& path, std::function<void(std::string)> f) {
+    std::string p;
+    if (!pathInfo.overrideDataDir.empty()) {
+        p = pathInfo.overrideDataDir + path;
+        if (fileExists(p))
+            f(p);
+    }
+#ifdef DEV_EXTRA_PATHS
+    for (const char *p = DEV_EXTRA_PATHS, *pn = p; pn != nullptr; p = pn + 1) {
+        pn = strchr(p, ':');
+        std::string s(p, (pn != nullptr ? (size_t) (pn - p) : strlen(p)));
+        s.push_back('/');
+        s.append(path);
+        if (fileExists(s))
+            f(s);
+    }
+#endif
+    if (pathInfo.overrideDataDir.empty()) {
+        p = pathInfo.appDir + "/" + path;
+        if (fileExists(p))
+            f(p);
+        p = pathInfo.dataHome + "/" + appDirName + "/" + path;
+        if (fileExists(p))
+            f(p);
+    }
+    for (const auto& dir : pathInfo.dataDirs) {
+        p = dir + "/" + appDirName + "/" + path;
+        if (fileExists(p))
+            f(p);
+    }
+    p = getParentDir(pathInfo.appDir) + "/share/mcpelauncher/" + path;
+    if (fileExists(p))
+        f(p);
 }
