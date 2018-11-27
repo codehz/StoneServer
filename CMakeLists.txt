@@ -8,4 +8,8 @@ target_link_libraries(mcpelauncher-core mcpelauncher-common logger hybris minecr
 
 if(APPLE)
     target_link_libraries(mcpelauncher-core osx-elf-header)
-endif(APPLE)
+endif()
+
+if (IS_ARMHF_BUILD)
+    target_compile_definitions(mcpelauncher-core PRIVATE USE_BIONIC_LIBC)
+endif()
