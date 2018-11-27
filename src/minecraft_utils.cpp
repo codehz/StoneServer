@@ -53,8 +53,9 @@ void* MinecraftUtils::loadFMod() {
 }
 
 void MinecraftUtils::stubFMod() {
-    HybrisUtils::stubSymbols(fmod_symbols, (void*) (void (*)()) []() {
+    HybrisUtils::stubSymbols(fmod_symbols, (void*) (void* (*)()) []() {
         Log::warn("Launcher", "FMod stub called");
+        return (void*) nullptr;
     });
 }
 
