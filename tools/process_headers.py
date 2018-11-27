@@ -3,6 +3,11 @@ from pprint import pprint
 import datetime
 import re
 import os
+import argparse
+
+parser = argparse.ArgumentParser(description='Generates symbols.cpp')
+parser.add_argument('--armhf', help='Sets the system abi as armhf', action='store_true')
+args = parser.parse_args()
 
 symbol_list = []
 wrapper_name_counter = {}
@@ -199,6 +204,12 @@ def process_method(method, is_class, is_legacy):
             params_for_call += ", "
         if len(params_with_names) > 0:
             params_with_names += ", "
+        if args.armhf and param["type"] == "float":
+            params_str += "int"
+            params_with_names += param["type"] + " p" + str(param_no)
+            params_for_call += "(int&) p" + str(param_no)
+            param_no += 1
+            continue
         params_str += param["type"]
         params_with_names += param["type"] + " p" + str(param_no)
         if param["type"].startswith("std::unique_ptr") or param["type"].endswith("&&"):
