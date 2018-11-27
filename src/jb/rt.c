@@ -26,11 +26,37 @@
  * SUCH DAMAGE.
  */
 
+#include <stdlib.h>
+#include <dlfcn.h>
+#include <link.h>
+
+void* dl_library = NULL;
+void (*dl_dlactivity_symbol)() = NULL;
+
+static void* open_dl_library() {
+    if (dl_library == NULL)
+        dl_library = dlopen("libdl.so", RTLD_LAZY);
+    return dl_library;
+}
+
 /*
  * This function is an empty stub where GDB locates a breakpoint to get notified
  * about linker activity.
  */
 void __attribute__((noinline)) rtld_db_dlactivity(void)
 {
+    if (dl_dlactivity_symbol == NULL) {
+        if (!open_dl_library())
+            return;
+        dl_dlactivity_symbol = dlsym(dl_library, "_dl_debug_state");
+    }
+    dl_dlactivity_symbol();
 }
 
+static struct r_debug p_r_debug = {};
+
+struct r_debug* rtld_r_debug_loc(void) {
+    if (!open_dl_library())
+        return NULL;
+    return (struct r_debug*) dlsym(dl_library, "_r_debug");
+}
