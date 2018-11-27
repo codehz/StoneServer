@@ -181,11 +181,16 @@ int android_dlclose(void *handle)
 
 int android_dl_iterate_phdr(int (*cb)(struct dl_phdr_info *info, size_t size, void *data),void *data);
 
+static int android_get_application_target_sdk_version() {
+    return 0;
+}
+
 #if defined(ANDROID_ARM_LINKER)
 //                     0000000 00011111 111112 22222222 2333333 333344444444445555555
 //                     0123456 78901234 567890 12345678 9012345 678901234567890123456
 #define ANDROID_LIBDL_STRTAB \
-                      "dlopen\0dlclose\0dlsym\0dlerror\0dladdr\0dl_unwind_find_exidx\0dl_iterate_phdr\0"
+                      "dlopen\0dlclose\0dlsym\0dlerror\0dladdr\0dl_unwind_find_exidx\0dl_iterate_phdr\0" \
+                      "android_get_application_target_sdk_version\0"
 
 _Unwind_Ptr android_dl_unwind_find_exidx(_Unwind_Ptr pc, int *pcount);
 
@@ -203,7 +208,6 @@ _Unwind_Ptr android_dl_unwind_find_exidx(_Unwind_Ptr pc, int *pcount);
 #else /* !defined(ANDROID_ARM_LINKER) && !defined(ANDROID_X86_LINKER) */
 #error Unsupported architecture. Only ARM and x86 are presently supported.
 #endif
-
 
 static Elf32_Sym libdl_symtab[] = {
       // total length of libdl_info.strtab, including trailing 0
@@ -251,6 +255,13 @@ static Elf32_Sym libdl_symtab[] = {
       st_info: STB_GLOBAL << 4,
       st_shndx: 1,
     },
+#ifdef ANDROID_ARM_LINKER
+    { st_name: 73,
+      st_value: (Elf32_Addr) &android_get_application_target_sdk_version,
+      st_info: STB_GLOBAL << 4,
+      st_shndx: 1,
+    },
+#endif
 };
 
 /* Fake out a hash table with a single bucket.
