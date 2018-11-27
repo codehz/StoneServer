@@ -316,13 +316,17 @@ struct _hook main_hooks[] = {
     {"__divdi3", __divdi3},
     /* stdlib.h */
     // {"__ctype_get_mb_cur_max", __ctype_get_mb_cur_max},
+#ifndef AVOID_FLOAT_POINT_HOOKS
     {"atof", atof},
+#endif
     {"atoi", atoi},
     {"atol", atol},
     {"atoll", atoll},
+#ifndef AVOID_FLOAT_POINT_HOOKS
     {"strtod", strtod},
     {"strtof", strtof},
     {"strtold", strtold},
+#endif
     {"strtol", strtol},
     {"strtoul", strtoul},
     {"strtoq", strtoq},
@@ -334,8 +338,10 @@ struct _hook main_hooks[] = {
     // {"strtoll_l", strtoll_l},
     // {"strtoull_l", strtoull_l},
     // {"strtod_l", strtod_l},
+#ifndef AVOID_FLOAT_POINT_HOOKS
     {"strtof_l", strtof_l},
     {"strtold_l", strtold_l},
+#endif
     // {"l64a", l64a},
     // {"a64l", a64l},
     {"random", random},
@@ -406,9 +412,11 @@ struct _hook main_hooks[] = {
     {"div", div},
     {"ldiv", ldiv},
     {"lldiv", lldiv},
+#ifndef AVOID_FLOAT_POINT_HOOKS
     {"ecvt", ecvt},
     {"fcvt", fcvt},
     {"gcvt", gcvt},
+#endif
     // {"qecvt", qecvt},
     // {"qfcvt", qfcvt},
     // {"qgcvt", qgcvt},

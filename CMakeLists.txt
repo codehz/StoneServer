@@ -14,8 +14,16 @@ endif(APPLE)
 
 add_library(hybris ${HYBRIS_SOURCES})
 target_include_directories(hybris PUBLIC include/)
-target_compile_definitions(hybris PRIVATE ANDROID_X86_LINKER _GNU_SOURCE LINKER_TEXT_BASE=0xB0000100 LINKER_AREA_SIZE=0x01000000 LINKER_DEBUG=1)
 target_link_libraries(hybris Threads::Threads)
+
+if (${IS_ARM_BUILD})
+    target_compile_definitions(hybris PRIVATE HAVE_ARM_TLS_REGISTER ANDROID_ARM_LINKER _GNU_SOURCE LINKER_TEXT_BASE=0xB0000100 LINKER_AREA_SIZE=0x01000000 LINKER_DEBUG=1)
+    if (${IS_ARMHF_BUILD})
+        target_compile_definitions(hybris PRIVATE AVOID_FLOAT_POINT_HOOKS)
+    endif()
+else()
+    target_compile_definitions(hybris PRIVATE ANDROID_X86_LINKER _GNU_SOURCE LINKER_TEXT_BASE=0xB0000100 LINKER_AREA_SIZE=0x01000000 LINKER_DEBUG=1)
+endif()
 
 if(APPLE)
     target_link_libraries(hybris epoll-shim osx-elf-header)
