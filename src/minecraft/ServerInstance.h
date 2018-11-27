@@ -12,7 +12,6 @@ class IMinecraftApp;
 class Minecraft;
 class Whitelist;
 class PermissionsMap;
-namespace minecraft { namespace api { class Api; } }
 namespace mce { class UUID; }
 class IMinecraftEventing;
 class ResourcePackRepository;

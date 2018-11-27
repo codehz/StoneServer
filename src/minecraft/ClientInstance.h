@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace Social { class User; }
 
 class ClientInstance {

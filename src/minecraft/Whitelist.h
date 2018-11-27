@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 struct Whitelist {
 
     struct Entry {

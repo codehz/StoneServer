@@ -4,7 +4,6 @@
 #include "std/string.h"
 
 class ResourcePackManager;
-class SkinRepository;
 
 class I18n {
 

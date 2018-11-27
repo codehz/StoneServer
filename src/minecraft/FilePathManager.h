@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include "std/string.h"
 
 class FilePathManager {
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <string>
+#include "std/string.h"
 #include <functional>
 #include <unordered_map>
 #include "Resource.h"
 #include "UUID.h"
-class MinecraftEventing;
+class IMinecraftEventing;
 class IPackTelemetry;
 class FilePathManager;
 class Options;

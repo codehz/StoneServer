@@ -1,5 +1,7 @@
 #pragma once
 
+#include "std/string.h"
+
 namespace mce {
 
 class UUID {

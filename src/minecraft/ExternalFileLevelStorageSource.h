@@ -1,10 +1,12 @@
 #pragma once
 
 #include <memory>
+#include "std/string.h"
 #include "SaveTransactionManager.h"
 #include "ContentIdentity.h"
 class FilePathManager;
 class Scheduler;
+class IContentKeyProvider;
 
 class LevelStorage {
 public:

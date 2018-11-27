@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include "std/string.h"
+
 class CommandOrigin;
 class CommandOutput;
 namespace Automation { class AutomationClient; }
