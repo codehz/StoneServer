@@ -285,7 +285,7 @@ static Elf32_Sym libdl_symtab[] = {
  */
 static unsigned libdl_buckets[1] = { 1 };
 #if defined(ANDROID_ARM_LINKER)
-static unsigned libdl_chains[8] = { 0, 2, 3, 4, 5, 6, 7, 0 };
+static unsigned libdl_chains[9] = { 0, 2, 3, 4, 5, 6, 7, 8, 0 };
 #else
 static unsigned libdl_chains[7] = { 0, 2, 3, 4, 5, 6, 0 };
 #endif
