@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Nov 21 2018 18:18:46 UTC
+// Generated on Wed Nov 28 2018 16:43:04 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -219,6 +219,12 @@ unsigned int Level::createRandomSeed() {
 static void (PermissionsMap::*_PermissionsMap_PermissionsMap)(bool);
 PermissionsMap::PermissionsMap(bool p1) {
     (this->*_PermissionsMap_PermissionsMap)(p1);
+}
+
+#include "Multitouch.h"
+static void (*_Multitouch_feed)(char, char, short, short, int);
+void Multitouch::feed(char p1, char p2, short p3, short p4, int p5) {
+    _Multitouch_feed(p1, p2, p3, p4, p5);
 }
 
 #include "MinecraftCommands.h"
@@ -817,6 +823,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Level_createRandomSeed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level16createRandomSeedEv");
     ((void*&) _PermissionsMap_PermissionsMap) = hybris_dlsym(handle, "_ZN14PermissionsMapC2Eb");
     if (_PermissionsMap_PermissionsMap == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14PermissionsMapC2Eb");
+    ((void*&) _Multitouch_feed) = hybris_dlsym(handle, "_ZN10Multitouch4feedEccssi");
+    if (_Multitouch_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Multitouch4feedEccssi");
     ((void*&) _MinecraftCommands_setOutputSender) = hybris_dlsym(handle, "_ZN17MinecraftCommands15setOutputSenderESt10unique_ptrI19CommandOutputSenderSt14default_deleteIS1_EE");
     if (_MinecraftCommands_setOutputSender == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftCommands15setOutputSenderESt10unique_ptrI19CommandOutputSenderSt14default_deleteIS1_EE");
     ((void*&) _MinecraftCommands_requestCommandExecution) = hybris_dlsym(handle, "_ZNK17MinecraftCommands23requestCommandExecutionESt10unique_ptrI13CommandOriginSt14default_deleteIS1_EERKSsib");
