@@ -73,7 +73,8 @@ void MinecraftUtils::setupHybris() {
     hybris_hook("mcpelauncher_hook", (void*) HookManager::hookFunction);
     // load stub libraries
 #ifdef USE_BIONIC_LIBC
-    if (!hybris_dlopen(PathHelper::findDataFile("libs/hybris/libc.so").c_str(), 0) ||
+    if (!load_empty_library("ld-android.so") ||
+        !hybris_dlopen(PathHelper::findDataFile("libs/hybris/libc.so").c_str(), 0) ||
         !hybris_dlopen(PathHelper::findDataFile("libs/hybris/libm.so").c_str(), 0))
         throw std::runtime_error("Failed to load Android libc.so/libm.so libraries");
 #else
