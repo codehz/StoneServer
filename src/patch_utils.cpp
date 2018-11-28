@@ -3,6 +3,7 @@
 #include <log.h>
 #include <cstring>
 #include <hybris/dlfcn.h>
+#include <stdexcept>
 
 const char* PatchUtils::TAG = "Patch";
 
