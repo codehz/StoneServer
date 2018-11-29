@@ -6,7 +6,7 @@
 class CommandOrigin;
 class CommandOutputSender;
 
-enum class MCCATEGORY {
+enum class MCCATEGORY : unsigned char {
     //
 };
 
