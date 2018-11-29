@@ -55,11 +55,11 @@ class ResourcePackRepository {
 
 public:
 
-    char filler[0x28];
+    char filler[0x2C];
     ResourcePack* vanillaPack;
     char filler2[0x100];
 
-    ResourcePackRepository(IMinecraftEventing&, PackManifestFactory&, IContentAccessibilityProvider&, FilePathManager*, PackSourceFactory&);
+    ResourcePackRepository(IMinecraftEventing&, PackManifestFactory&, IContentAccessibilityProvider&, FilePathManager*, PackSourceFactory&, bool);
 
     void addWorldResourcePacks(mcpe::string const&);
 
