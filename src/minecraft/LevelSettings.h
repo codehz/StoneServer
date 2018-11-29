@@ -20,9 +20,10 @@ public:
     int xblLanBroadcastMode; // 34
     bool commandsEnabled; // 35
     bool texturepacksRequired, lockedBehaviourPack, lockedResourcePack, fromLockedTemplate; // 36, 37, 38, 39
-    bool overrideSavedSettings; // 3A
-    bool bonusChestEnabled, startWithMap; // 3B, 3C
-    char filler[0x90 - 0x3C];
+    bool msaGamertagsOnly; // 3A
+    bool overrideSavedSettings; // 3B
+    bool bonusChestEnabled, startWithMap; // 3C, 3D
+    char filler[0x94 - 0x3D];
     int defaultSpawnX, defaultSpawnY, defaultSpawnZ;
     char filler2[0x300];
 
