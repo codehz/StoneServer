@@ -147,8 +147,6 @@ struct soinfo
     Elf32_Addr gnu_relro_start;
     unsigned gnu_relro_len;
 
-    const char* ext_path;
-
 };
 
 
