@@ -1,0 +1,33 @@
+[submodule "deps/logger"]
+	path = deps/logger
+	url = https://github.com/minecraft-linux/logger
+[submodule "deps/base64"]
+	path = deps/base64
+	url = https://github.com/minecraft-linux/base64
+[submodule "deps/file-util"]
+	path = deps/file-util
+	url = https://github.com/minecraft-linux/file-util
+[submodule "deps/properties-parser"]
+	path = deps/properties-parser
+	url = https://github.com/minecraft-linux/properties-parser
+[submodule "deps/arg-parser"]
+	path = deps/arg-parser
+	url = https://github.com/minecraft-linux/arg-parser
+[submodule "deps/libhybris"]
+	path = deps/libhybris
+	url = https://github.com/minecraft-linux/libhybris
+[submodule "deps/minecraft-symbols"]
+	path = deps/minecraft-symbols
+	url = https://github.com/minecraft-linux/minecraft-symbols
+[submodule "deps/minecraft-imported-symbols"]
+	path = deps/minecraft-imported-symbols
+	url = https://github.com/minecraft-linux/minecraft-imported-symbols
+[submodule "deps/mcpelauncher-common"]
+	path = deps/mcpelauncher-common
+	url = https://github.com/minecraft-linux/mcpelauncher-common
+[submodule "deps/mcpelauncher-core"]
+	path = deps/mcpelauncher-core
+	url = https://github.com/minecraft-linux/mcpelauncher-core
+[submodule "deps/mcpelauncher-just"]
+	path = deps/mcpelauncher-just
+	url = https://github.com/minecraft-linux/mcpelauncher-just
