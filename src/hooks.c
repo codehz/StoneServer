@@ -277,9 +277,6 @@ void *my_android_dlsym(void *handle, const char *symbol)
     return android_dlsym(handle, symbol);
 }
 
-extern void _Znwj();
-extern void _ZdlPv();
-
 struct _hook main_hooks[] = {
     {"property_get", property_get },
     {"property_set", property_set },
@@ -288,8 +285,6 @@ struct _hook main_hooks[] = {
     {"__stack_chk_guard", &_hybris_stack_chk_guard},
     {"printf", printf },
     {"malloc", my_malloc },
-    {"_ZdlPv", _ZdlPv },
-    {"_Znwj", _Znwj },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
     // {"__assert", __assert },
