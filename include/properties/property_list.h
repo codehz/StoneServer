@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <iostream>
+#include <functional>
 
 namespace properties {
 
