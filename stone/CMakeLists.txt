@@ -13,7 +13,7 @@ add_executable(stone
 )
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 20)
-target_compile_options(stone PRIVATE -Wall -Wno-reorder)
-target_link_libraries(stone logger mcpelauncher-core properties-parser uintl)
+target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
+target_link_libraries(stone logger mcpelauncher-core properties-parser uintl rpc)
 
 install(TARGETS stone RUNTIME DESTINATION bin)

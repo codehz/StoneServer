@@ -22,6 +22,10 @@
 #include <minecraft/ServerInstance.h>
 #include <minecraft/Whitelist.h>
 
+#include <rpc/server.h>
+
+#include <csignal>
+
 #include "server_minecraft_app.h"
 #include "server_properties.h"
 #include "stub_key_provider.h"
@@ -39,7 +43,8 @@ void hack(void *handle, char const *symbol) {
   PatchUtils::patchCallInstruction(ptr, (void *)(void (*)())[]{}, true);
 }
 
-//_ZN16BackgroundWorker12requestPauseEv
+static rpc::server *rpc_ref = nullptr;
+
 int main() {
   using namespace uintl;
   CrashHandler::registerCrashHandler();
@@ -52,6 +57,7 @@ int main() {
   PathHelper::setGameDir(GAME_DIR);
   PathHelper::setDataDir(DATA_DIR);
   PathHelper::setCacheDir(CACHE_DIR);
+  Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
   MinecraftUtils::setupForHeadless();
@@ -76,7 +82,7 @@ int main() {
   Log::trace("StoneServer", "Initializing AppPlatform (create instance)");
   std::unique_ptr<LauncherAppPlatform> appPlatform(new LauncherAppPlatform());
   // Try to use i18n
-  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_intl;
+  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_static_intl;
   Log::trace("StoneServer", "Initializing AppPlatform (initialize call)");
   appPlatform->initialize();
 
@@ -169,11 +175,25 @@ int main() {
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
   Log::trace("StoneServer", "Loading language data");
-  I18n::loadLanguages(*resourcePackManager, "en_US"_intl);
+  I18n::loadLanguages(*resourcePackManager, "en_US"_static_intl);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
+
+  Log::info("StoneServer", "Initializing rpc");
+  rpc::server srv{ 1984 };
+  srv.suppress_exceptions(true);
+  rpc_ref = &srv;
+
+  std::signal(SIGINT, [](int) {
+    if (rpc_ref) rpc_ref->stop();
+  });
+
+  Log::info("StoneServer", "Starting server thread");
   instance.startServerThread();
+  Log::info("StoneServer", "Server is running");
+  srv.run();
+
   instance.leaveGameSync();
 
   MinecraftUtils::workaroundShutdownCrash(handle);
