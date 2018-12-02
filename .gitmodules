@@ -31,3 +31,6 @@
 [submodule "exts/sqlite3"]
 	path = exts/sqlite3
 	url = https://github.com/alex85k/sqlite3-cmake
+[submodule "exts/rpclib"]
+	path = exts/rpclib
+	url = https://github.com/rpclib/rpclib
