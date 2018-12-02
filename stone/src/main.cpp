@@ -88,7 +88,7 @@ int main() {
 
   Log::trace("StoneServer", "Loading server properties");
   ServerProperties props;
-  props.load(DATA_DIR);
+  props.load();
 
   Log::trace("StoneServer", "Loading whitelist and operator list");
   Whitelist whitelist;

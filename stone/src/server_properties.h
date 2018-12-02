@@ -44,8 +44,8 @@ public:
       , onlineMode(properties, "online-mode", true)
       , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {}
 
-  void load(std::string base) {
-    std::ifstream propertiesFile(base + "server.properties");
+  void load() {
+    std::ifstream propertiesFile(PathHelper::getPrimaryDataDirectory() + "server.properties");
     if (propertiesFile) {
       properties.load(propertiesFile);
     } else {
