@@ -180,16 +180,17 @@ int main() {
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
 
-  Log::info("StoneServer", "Initializing rpc");
+  Log::trace("StoneServer", "Initializing rpc");
   rpc::server srv{ 1984 };
   srv.suppress_exceptions(true);
   rpc_ref = &srv;
+  srv.bind("shutdown", [&]() { srv.stop(); });
 
   std::signal(SIGINT, [](int) {
     if (rpc_ref) rpc_ref->stop();
   });
 
-  Log::info("StoneServer", "Starting server thread");
+  Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
   Log::info("StoneServer", "Server is running");
   srv.run();
