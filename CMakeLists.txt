@@ -20,9 +20,11 @@ file(GLOB DEPS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/
 file(GLOB EXTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/exts/*)
 
 foreach(dep ${DEPS})
+  message("Found DEP: " ${dep})
   add_subdirectory(${dep})
 endforeach()
 foreach(ext ${EXTS})
+  message("Found EXT: " ${ext})
   add_subdirectory(${ext})
 endforeach()
 
