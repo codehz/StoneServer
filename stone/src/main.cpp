@@ -185,6 +185,12 @@ int main() {
   srv.suppress_exceptions(true);
   rpc_ref = &srv;
   srv.bind("shutdown", [&]() { srv.stop(); });
+  srv.bind("execute", [&](std::string origin, std::string command) {
+    instance.queueForServerThread([&]() {
+      std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
+      instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+    });
+  });
 
   std::signal(SIGINT, [](int) {
     if (rpc_ref) rpc_ref->stop();
