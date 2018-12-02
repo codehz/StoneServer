@@ -91,7 +91,7 @@ void MinecraftUtils::setupHybris() {
 void* MinecraftUtils::loadMinecraftLib(std::string const& path) {
     void* handle = hybris_dlopen(path.c_str(), RTLD_LAZY);
     if (handle == nullptr)
-        throw std::runtime_error(std::string("Failed to load Minecraft: %s") + hybris_dlerror());
+        throw std::runtime_error(std::string("Failed to load Minecraft: ") + hybris_dlerror());
     HookManager::addHookLibrary(handle, path);
     return handle;
 }
