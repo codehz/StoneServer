@@ -7,5 +7,5 @@ add_library(uintl
   "include/uintl.h"
 )
 
-target_include_directories(uintl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(uintl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/../exts/sqlite3/src)
 target_link_libraries(uintl sqlite3 mcpelauncher-common)

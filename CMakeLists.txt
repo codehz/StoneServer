@@ -13,19 +13,19 @@ endif()
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S" UTC)
 
-add_subdirectory(uintl)
-add_subdirectory(logger)
+add_subdirectory(uintl EXCLUDE_FROM_ALL)
+add_subdirectory(logger EXCLUDE_FROM_ALL)
 
 file(GLOB DEPS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/deps/*)
 file(GLOB EXTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/exts/*)
 
 foreach(dep ${DEPS})
   message("Found DEP: " ${dep})
-  add_subdirectory(${dep})
+  add_subdirectory(${dep} EXCLUDE_FROM_ALL)
 endforeach()
 foreach(ext ${EXTS})
   message("Found EXT: " ${ext})
-  add_subdirectory(${ext})
+  add_subdirectory(${ext} EXCLUDE_FROM_ALL)
 endforeach()
 
 add_subdirectory(stone)

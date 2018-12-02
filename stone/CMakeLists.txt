@@ -12,7 +12,7 @@ add_executable(stone
   "src/stub_key_provider.h"
 )
 
-set_property(TARGET stone PROPERTY CXX_STANDARD 20)
+set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 target_link_libraries(stone logger mcpelauncher-core properties-parser uintl rpc)
 
