@@ -1,6 +1,3 @@
-[submodule "deps/logger"]
-	path = deps/logger
-	url = https://github.com/minecraft-linux/logger
 [submodule "deps/base64"]
 	path = deps/base64
 	url = https://github.com/minecraft-linux/base64
@@ -31,3 +28,6 @@
 [submodule "deps/mcpelauncher-just"]
 	path = deps/mcpelauncher-just
 	url = https://github.com/minecraft-linux/mcpelauncher-just
+[submodule "exts/sqlite3"]
+	path = exts/sqlite3
+	url = https://github.com/alex85k/sqlite3-cmake
