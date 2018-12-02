@@ -8,6 +8,8 @@ add_executable(stone
   "src/utils.cpp"
   "src/utils.h"
   "src/server_properties.h"
+  "src/server_minecraft_app.h"
+  "src/stub_key_provider.h"
 )
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 20)
