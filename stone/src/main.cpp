@@ -23,6 +23,7 @@
 #include <minecraft/Whitelist.h>
 
 #include <rpc/server.h>
+#include <rpc/this_server.h>
 
 #include <csignal>
 
@@ -184,7 +185,7 @@ int main() {
   rpc::server srv{ 1984 };
   srv.suppress_exceptions(true);
   rpc_ref = &srv;
-  srv.bind("shutdown", [&]() { srv.stop(); });
+  srv.bind("shutdown", []() { rpc::this_server().stop(); });
   srv.bind("execute", [&](std::string origin, std::string command) {
     instance.queueForServerThread([&]() {
       std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
