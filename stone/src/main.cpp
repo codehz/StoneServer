@@ -22,13 +22,17 @@
 #include <minecraft/ServerInstance.h>
 #include <minecraft/Whitelist.h>
 
-#include <rpc/server.h>
-#include <rpc/this_server.h>
+#define SIMPPL_HAVE_INTROSPECTION true
+#include <simppl/dispatcher.h>
+#include <simppl/skeleton.h>
+#include <simppl/string.h>
+#include <simppl/stub.h>
 
 #include <csignal>
 
 #include "server_minecraft_app.h"
 #include "server_properties.h"
+#include "services.h"
 #include "stub_key_provider.h"
 #include "utils.h"
 #include <uintl.h>
@@ -44,10 +48,24 @@ void hack(void *handle, char const *symbol) {
   PatchUtils::patchCallInstruction(ptr, (void *)(void (*)())[]{}, true);
 }
 
-static rpc::server *rpc_ref = nullptr;
+struct CoreServiceImpl : simppl::dbus::Skeleton<one::codehz::stone::CoreService> {
+  CoreServiceImpl(simppl::dbus::Dispatcher &disp)
+      : simppl::dbus::Skeleton<one::codehz::stone::CoreService>(disp, "core") {
+    stop >> [&] { disp.stop(); };
+  }
+};
+
+struct CommandServiceImpl : simppl::dbus::Skeleton<one::codehz::stone::CommandService> {
+  CommandServiceImpl(simppl::dbus::Dispatcher &disp)
+      : simppl::dbus::Skeleton<one::codehz::stone::CommandService>(disp, "command") {
+    execute >> [&](const std::string &origin, const std::string &command) { respond_with(execute(origin + ": " + command)); };
+  }
+};
 
 int main() {
   using namespace uintl;
+  using namespace simppl::dbus;
+  using namespace one::codehz::stone;
   CrashHandler::registerCrashHandler();
   MinecraftUtils::setMallocZero();
   auto cwd = PathHelper::getWorkingDir();
@@ -178,25 +196,17 @@ int main() {
   modLoader.onServerInstanceInitialized(&instance);
 
   Log::trace("StoneServer", "Initializing rpc");
-  rpc::server srv{ 1984 };
-  srv.suppress_exceptions(true);
-  rpc_ref = &srv;
-  srv.bind("shutdown", []() { rpc::this_server().stop(); });
-  srv.bind("execute", [&](std::string origin, std::string command) {
-    instance.queueForServerThread([&]() {
-      std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
-      instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
-    });
-  });
+  static Dispatcher disp("bus:session");
 
-  std::signal(SIGINT, [](int) {
-    if (rpc_ref) rpc_ref->stop();
-  });
+  CoreServiceImpl srv_core(disp);
+  CommandServiceImpl srv_command(disp);
+
+  std::signal(SIGINT, [](int) { disp.stop(); });
 
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
   Log::info("StoneServer", "Server is running");
-  srv.run();
+  disp.run();
 
   instance.leaveGameSync();
 

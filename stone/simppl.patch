@@ -1,0 +1,10 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 18d2dfa..8805aa3 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-add_library(simppl SHARED
++add_library(simppl STATIC
+    callstate.cpp
+    dispatcher.cpp 
+    error.cpp 
