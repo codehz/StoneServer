@@ -181,8 +181,9 @@ int main() {
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
 
-  Log::trace("StoneServer", "Initializing rpc");
-  Dispatcher disp("bus:session");
+  LOAD_ENV(TARGET_BUS, "bus:session");
+  Log::trace("StoneServer", "Initializing rpc (%s)", TARGET_BUS.c_str());
+  Dispatcher disp(TARGET_BUS.c_str());
   static Dispatcher *pdisp = &disp;
 
   Skeleton<CoreService> srv_core(disp, "daemon");
