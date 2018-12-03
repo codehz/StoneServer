@@ -3,7 +3,7 @@ stages:
   - build
 
 before_script:
-  - &ins pacman -Sy cmake git
+  - &ins pacman -Sy cmake git --noconfirm --needed
 
 job_build:
   before_script:
