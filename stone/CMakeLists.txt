@@ -7,8 +7,6 @@ include(ExternalProject)
 add_executable(stone
   "src/main.cpp"
 
-  "src/utils.cpp"
-  "src/utils.h"
   "src/server_properties.h"
   "src/server_minecraft_app.h"
   "src/stub_key_provider.h"
@@ -79,6 +77,6 @@ endif()
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
-target_link_libraries(stone logger mcpelauncher-core properties-parser uintl simppl dbus-1)
+target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl dbus-1)
 
 install(TARGETS stone RUNTIME DESTINATION bin)

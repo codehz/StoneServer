@@ -1,4 +1,5 @@
 #include <sqlite3.h>
+#include <stone/utils.h>
 #include <uintl.h>
 
 #include <clocale>
@@ -22,7 +23,6 @@ namespace uintl {
 static thread_local char const *domain = "stone";
 
 class UIntl {
-  std::locale loc;
   sqlite3 *db;
   sqlite3_stmt *select_stmt;
   sqlite3_stmt *insert_stmt;
@@ -43,9 +43,10 @@ UIntl::UIntl() {
   if (sqlite3_exec(db, create_table, nullptr, nullptr, &err) != SQLITE_OK) { throw std::runtime_error("Cannot create table: "s + err); }
   sqlite3_exec(db, "PRAGMA journal_mode=WAL", nullptr, nullptr, nullptr);
   sqlite3_exec(db, "PRAGMA synchronous=NORMAL", nullptr, nullptr, nullptr);
-  setlocale(LC_ALL, "");
-  std::string select = ("select value from uintl where lang='"s + setlocale(LC_MESSAGES, nullptr) + "' and domain=? and key=?;"s).c_str();
-  std::string insert = ("insert into uintl values (?, ?, '"s + setlocale(LC_MESSAGES, nullptr) + "', ?);"s).c_str();
+  const auto LANG = GetEnvironmentVariableOrDefault(
+      "STONE_LANG", GetEnvironmentVariableOrDefault("LC_MESSAGES", GetEnvironmentVariableOrDefault("LC_ALL", "en_US.UTF-8")));
+  std::string select = ("select value from uintl where lang='"s + LANG + "' and domain=? and key=?;"s).c_str();
+  std::string insert = ("insert into uintl values (?, ?, '"s + LANG + "', ?);"s).c_str();
   if (sqlite3_prepare_v2(db, select.c_str(), -1, &select_stmt, nullptr) != SQLITE_OK) {
     throw std::runtime_error("Cannot create select stmt: "s + sqlite3_errmsg(db));
   }
@@ -81,8 +82,6 @@ char const *operator""_intl(char const *inp, std::size_t) {
   static UIntl intl;
   return intl[inp];
 }
-char const *gettext(char const *inp) {
-  return operator""_intl(inp, -1);
-}
+char const *gettext(char const *inp) { return operator""_intl(inp, -1); }
 void intl_domain(char const *new_domain) { domain = new_domain; }
 } // namespace uintl

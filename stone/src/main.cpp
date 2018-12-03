@@ -28,14 +28,15 @@
 #include <simppl/string.h>
 #include <simppl/stub.h>
 
+#include <stone/utils.h>
+#include <uintl.h>
+
 #include <csignal>
 
 #include "server_minecraft_app.h"
 #include "server_properties.h"
 #include "services.h"
 #include "stub_key_provider.h"
-#include "utils.h"
-#include <uintl.h>
 
 #ifndef BUILD_VERSION
 #define BUILD_VERSION "UNKNOWN VERSION"
@@ -53,6 +54,7 @@ int main() {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
   CrashHandler::registerCrashHandler();
+  MinecraftUtils::workaroundLocaleBug();
   MinecraftUtils::setMallocZero();
   auto cwd = PathHelper::getWorkingDir();
   PathHelper::setGameDir(cwd + "game/");

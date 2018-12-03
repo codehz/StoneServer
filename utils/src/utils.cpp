@@ -1,4 +1,4 @@
-#include "utils.h"
+#include <stone/utils.h>
 #include <cstdlib>
 
 std::string GetEnvironmentVariableOrDefault(const std::string &variable_name, const std::string &default_value) {

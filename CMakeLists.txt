@@ -15,6 +15,7 @@ endif()
 
 string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S" UTC)
 
+add_subdirectory(utils EXCLUDE_FROM_ALL)
 add_subdirectory(uintl EXCLUDE_FROM_ALL)
 add_subdirectory(logger EXCLUDE_FROM_ALL)
 

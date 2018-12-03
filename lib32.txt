@@ -1,4 +1,3 @@
-locale/locale-archive
 libc.so.6
 libdbus-1.so.3
 libdl.so.2
