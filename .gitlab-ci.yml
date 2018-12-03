@@ -23,4 +23,6 @@ job_package:
   artifacts:
     paths:
       - output
+  dependencies:
+    - job_build
   stage: package
