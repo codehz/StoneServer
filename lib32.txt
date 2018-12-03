@@ -1,0 +1,17 @@
+gconv
+locale
+libc.so.6
+libdbus-1.so.3
+libdl.so.2
+libgcc_s.so.1
+libgcrypt.so.20
+libgpg-error.so.0
+liblzma.so.5
+libm.so.6
+libnss_files.so.2
+libnss_myhostname.so.2
+libnss_mymachines.so.2
+libpthread.so.0
+librt.so.1
+libstdc++.so.6
+libsystemd.so.0
