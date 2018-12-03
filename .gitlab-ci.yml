@@ -1,4 +1,4 @@
-image: base/devel
+image: archlinux/base
 stages:
   - build
 
