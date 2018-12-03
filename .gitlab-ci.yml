@@ -12,6 +12,10 @@ job_build:
     - cd build
     - cmake .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
     - make
+  artifacts:
+    paths:
+      - build/stone/stone
+    expire_in: 20min
   stage: build
 
 job_package:
