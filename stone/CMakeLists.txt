@@ -18,7 +18,7 @@ add_executable(stone
 ExternalProject_Add(
   simppl_ext
   PREFIX "simppl"
-  GIT_REPOSITORY "${CMAKE_CURRENT_SOURCE_DIR}/../cached-exts/simppl"
+  GIT_REPOSITORY "${CMAKE_ROOT_SOURCE_DIR}/cached-exts/simppl"
   GIT_TAG "master"
   PATCH_COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/simppl.patch
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
