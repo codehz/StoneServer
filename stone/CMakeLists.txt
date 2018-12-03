@@ -22,8 +22,6 @@ ExternalProject_Add(
   GIT_TAG "master"
   PATCH_COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/simppl.patch
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
-  # INSTALL_COMMAND ""
-  # CMAKE_ARGS -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/simppl
 )
 ExternalProject_Get_Property(simppl_ext INSTALL_DIR)
 
@@ -31,7 +29,6 @@ add_library(simppl STATIC IMPORTED)
 set_property(TARGET simppl PROPERTY IMPORTED_LOCATION ${INSTALL_DIR}/lib/libsimppl.a)
 target_include_directories(simppl INTERFACE ${INSTALL_DIR}/include)
 
-# boost fusion available?
 find_path(BOOST_INCLUDE_DIR
      boost/fusion/adapted.hpp
      PATHS /usr/include /usr/local/include
@@ -39,7 +36,6 @@ find_path(BOOST_INCLUDE_DIR
      NO_DEFAULT_PATH
 )
 
-# DBus includes
 find_path(DBUS_INCLUDE_DIR
     dbus/dbus-bus.h
     PATHS /usr/include /usr/local/include
@@ -64,28 +60,24 @@ find_path(DBUS_LIBDIR
 )
 
 if(DBUS_INCLUDE_DIR)
-    message("Found DBus include dir under '${DBUS_INCLUDE_DIR}'")
     target_include_directories(simppl INTERFACE ${DBUS_INCLUDE_DIR})
 else()
     message(FATAL_ERROR "Didn't find dbus directory")
 endif()
 
 if(DBUS_ARCHDEPS_INCLUDE_DIR)
-    message("Found DBus arch-deps include dir under '${DBUS_ARCHDEPS_INCLUDE_DIR}'")
     target_include_directories(simppl INTERFACE ${DBUS_ARCHDEPS_INCLUDE_DIR})
 else()
     message(FATAL_ERROR "Didn't find dbus arch-deps directory")
 endif()
 
 if(DBUS_LIBDIR)
-    message("Found DBus library in '${DBUS_LIBDIR}'")
     link_directories(${DBUS_LIBDIR})
 else()
     message(FATAL_ERROR "Didn't find dbus-1 shared library")
 endif()
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
-# target_include_directories(stone PRIVATE ${INSTALL_DIR}/include ${BOOST_INCLUDE_DIR} ${DBUS_ARCHDEPS_INCLUDE_DIR} ${DBUS_INCLUDE_DIR})
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 target_link_libraries(stone logger mcpelauncher-core properties-parser uintl simppl dbus-1)
 
