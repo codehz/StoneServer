@@ -1,0 +1,11 @@
+image: base/devel
+stages:
+  - build
+
+job_build:
+  script:
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+  stage: build
