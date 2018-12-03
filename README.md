@@ -12,7 +12,7 @@ Removed features:
 2. Custom arguments
 
 Added features:
-1. GRPC based interface for command and remote control
+1. D-Bus interface for command and remote control
 2. Designed for container
 
 # COPYRIGHT
