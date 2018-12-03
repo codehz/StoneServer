@@ -48,20 +48,6 @@ void hack(void *handle, char const *symbol) {
   PatchUtils::patchCallInstruction(ptr, (void *)(void (*)())[]{}, true);
 }
 
-struct CoreServiceImpl : simppl::dbus::Skeleton<one::codehz::stone::CoreService> {
-  CoreServiceImpl(simppl::dbus::Dispatcher &disp)
-      : simppl::dbus::Skeleton<one::codehz::stone::CoreService>(disp, "core") {
-    stop >> [&] { disp.stop(); };
-  }
-};
-
-struct CommandServiceImpl : simppl::dbus::Skeleton<one::codehz::stone::CommandService> {
-  CommandServiceImpl(simppl::dbus::Dispatcher &disp)
-      : simppl::dbus::Skeleton<one::codehz::stone::CommandService>(disp, "command") {
-    execute >> [&](const std::string &origin, const std::string &command) { respond_with(execute(origin + ": " + command)); };
-  }
-};
-
 int main() {
   using namespace uintl;
   using namespace simppl::dbus;
@@ -196,20 +182,30 @@ int main() {
   modLoader.onServerInstanceInitialized(&instance);
 
   Log::trace("StoneServer", "Initializing rpc");
-  static Dispatcher disp("bus:session");
+  Dispatcher disp("bus:session");
+  static Dispatcher *pdisp = &disp;
 
-  CoreServiceImpl srv_core(disp);
-  CommandServiceImpl srv_command(disp);
+  Skeleton<CoreService> srv_core(disp, "daemon");
+  srv_core.stop >> [&] {
+    srv_core.respond_with(srv_core.stop());
+    disp.stop();
+  };
+  Skeleton<CommandService> srv_command(disp, "daemon");
+  srv_command.execute >>
+      [&](std::string const &origin, std::string const &command) { srv_command.respond_with(srv_command.execute(origin + ": " + command)); };
 
-  std::signal(SIGINT, [](int) { disp.stop(); });
+  std::signal(SIGINT, [](int) { pdisp->stop(); });
 
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
   Log::info("StoneServer", "Server is running");
   disp.run();
 
+  Log::info("StoneServer", "Server is stopping");
   instance.leaveGameSync();
 
   MinecraftUtils::workaroundShutdownCrash(handle);
+  Log::info("StoneServer", "Server stopped");
+  pdisp = nullptr;
   return 0;
 }
