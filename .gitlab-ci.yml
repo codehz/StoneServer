@@ -5,6 +5,8 @@ stages:
 job_build:
   before_script:
     - pacman -Sy base-devel cmake make git lib32-glibc lib32-gcc-libs --noconfirm --needed
+    - git config --global user.email "codehz@outlook.com"
+    - git config --global user.name "CodeHz"
     - git submodule sync --recursive
     - git submodule update --init --recursive
   script:
