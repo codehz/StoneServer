@@ -3,7 +3,7 @@ stages:
   - build
 
 before_script:
-  - &ins pacman -Sy base-devel cmake git lib32-glibc --noconfirm --needed
+  - &ins pacman -Sy base-devel cmake git lib32-glibc glibc --noconfirm --needed
 
 job_build:
   before_script:
