@@ -50,14 +50,10 @@ int main() {
   using namespace uintl;
   CrashHandler::registerCrashHandler();
   MinecraftUtils::setMallocZero();
-  // MinecraftUtils::workaroundLocaleBug();
   auto cwd = PathHelper::getWorkingDir();
-  LOAD_ENV(GAME_DIR, cwd + "/game");
-  LOAD_ENV(DATA_DIR, cwd + "/data");
-  LOAD_ENV(CACHE_DIR, cwd + "/cache");
-  PathHelper::setGameDir(GAME_DIR);
-  PathHelper::setDataDir(DATA_DIR);
-  PathHelper::setCacheDir(CACHE_DIR);
+  PathHelper::setGameDir(cwd + "game/");
+  PathHelper::setDataDir(cwd + "data/");
+  PathHelper::setCacheDir(cwd + "cache/");
   Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
