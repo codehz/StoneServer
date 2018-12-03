@@ -21,8 +21,8 @@ job_build:
 job_package:
   script:
     - mkdir -p output/support/locale && cd output
-    - cat ../lib32.txt | xargs -I {} cp -Prv /usr/lib32/{} support
-    - cp /usr/lib32/ld-*.so support/ld.so
+    - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support
+    - cp -Lv /usr/lib32/ld-*.so support/ld.so
     - cp ../build/stone/stone .
   artifacts:
     paths:
