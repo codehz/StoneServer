@@ -15,7 +15,7 @@
 	url = https://github.com/minecraft-linux/libhybris
 [submodule "deps/minecraft-symbols"]
 	path = deps/minecraft-symbols
-	url = https://github.com/minecraft-linux/minecraft-symbols
+	url = https://github.com/codehz/minecraft-symbols
 [submodule "deps/minecraft-imported-symbols"]
 	path = deps/minecraft-imported-symbols
 	url = https://github.com/minecraft-linux/minecraft-imported-symbols
