@@ -3,10 +3,11 @@ stages:
   - build
 
 before_script:
-  - pacman -Su cmake git
+  - &ins pacman -Su cmake git
 
 job_build:
   before_script:
+    - *ins
     - git submodule sync --recursive
     - git submodule update --init --recursive
   script:
