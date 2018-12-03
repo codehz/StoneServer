@@ -3,7 +3,7 @@ stages:
   - build
 
 before_script:
-  - pacman -Su cmake
+  - pacman -Su cmake git
 
 job_build:
   before_script:
