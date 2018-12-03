@@ -13,6 +13,6 @@ job_build:
   script:
     - mkdir build
     - cd build
-    - cmake ..
+    - cmake .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
     - make
   stage: build
