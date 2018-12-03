@@ -27,7 +27,7 @@ ExternalProject_Get_Property(simppl_ext INSTALL_DIR)
 
 add_library(simppl STATIC IMPORTED)
 set_property(TARGET simppl PROPERTY IMPORTED_LOCATION ${INSTALL_DIR}/lib/libsimppl.a)
-target_include_directories(simppl INTERFACE ${INSTALL_DIR}/include)
+include_directories(simppl INTERFACE ${INSTALL_DIR}/include)
 
 find_path(BOOST_INCLUDE_DIR
      boost/fusion/adapted.hpp
