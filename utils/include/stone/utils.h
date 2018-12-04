@@ -1,9 +1,12 @@
+#pragma once
 #include <minecraft/ServerInstance.h>
 
 #include <condition_variable>
 #include <functional>
 #include <mutex>
 #include <string>
+
+void *&MinecraftHandle();
 
 std::string GetEnvironmentVariableOrDefault(const std::string &variable_name, const std::string &default_value);
 template <typename T> T EvalInServerThread(ServerInstance &instance, std::function<T()> const &fn) {
