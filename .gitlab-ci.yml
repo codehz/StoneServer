@@ -3,10 +3,10 @@ stages:
   - build
   - package
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 job_build:
-  before_script:
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
   script:
     - mkdir build
     - cd build
