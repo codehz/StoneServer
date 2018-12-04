@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 set(CMAKE_ROOT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(CMAKE_SKIP_RPATH TRUE)
 
 include(GetGitRevisionDescription)
 git_describe(VERSION --always --tags --dirty=-modified --long --abbrev=40)
