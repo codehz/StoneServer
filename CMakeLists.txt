@@ -22,6 +22,7 @@ add_subdirectory(logger EXCLUDE_FROM_ALL)
 
 file(GLOB DEPS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/deps/*)
 file(GLOB EXTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/exts/*)
+file(GLOB TOOLS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/tools/*)
 
 foreach(dep ${DEPS})
   message("Found DEP: " ${dep})
@@ -30,6 +31,10 @@ endforeach()
 foreach(ext ${EXTS})
   message("Found EXT: " ${ext})
   add_subdirectory(${ext} EXCLUDE_FROM_ALL)
+endforeach()
+foreach(tool ${TOOLS})
+  message("Found TOOL: " ${tool})
+  add_subdirectory(${tool})
 endforeach()
 
 add_subdirectory(stone)

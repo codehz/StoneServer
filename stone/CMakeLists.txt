@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.7)
 
 project(stone LANGUAGES CXX)
 
-include(ExternalProject)
-
 add_executable(stone
   "src/main.cpp"
 
