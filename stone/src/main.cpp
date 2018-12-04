@@ -31,7 +31,9 @@
 #include <stone/utils.h>
 #include <uintl.h>
 
+#include <condition_variable>
 #include <csignal>
+#include <mutex>
 
 #include "server_minecraft_app.h"
 #include "server_properties.h"
@@ -194,8 +196,14 @@ int main() {
     disp.stop();
   };
   Skeleton<CommandService> srv_command(disp, "daemon");
-  srv_command.execute >>
-      [&](std::string const &origin, std::string const &command) { srv_command.respond_with(srv_command.execute(origin + ": " + command)); };
+  srv_command.execute >> [&](std::string const &origin, std::string const &command) {
+    auto ret = EvalInServerThread<std::string>(instance, [&] {
+      std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
+      instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+      return origin + ": " + command;
+    });
+    srv_command.respond_with(srv_command.execute(ret));
+  };
 
   std::signal(SIGINT, [](int) { pdisp->stop(); });
 
