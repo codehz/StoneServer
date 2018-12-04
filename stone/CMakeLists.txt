@@ -9,6 +9,7 @@ add_executable(stone
   "src/server_minecraft_app.h"
   "src/stub_key_provider.h"
   "src/services.h"
+  "src/patched.hpp"
 )
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)

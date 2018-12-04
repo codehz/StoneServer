@@ -41,6 +41,7 @@
 #include "server_properties.h"
 #include "services.h"
 #include "stub_key_provider.h"
+#include "patched.hpp"
 
 #ifndef BUILD_VERSION
 #define BUILD_VERSION "UNKNOWN VERSION"
@@ -201,17 +202,10 @@ int main() {
   Skeleton<CommandService> srv_command(disp, "daemon");
   srv_command.execute >> [&](std::string const &origin, std::string const &command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
-      struct __attribute__((__packed__)) mov {
-        char ins_mov = 0xB8;
-        ostream *stream;
-        char nop = 0x90;
-      };
-      static_assert(sizeof(mov) == 6);
-      std::stringstream ss;
-      auto patch = BUILD_HELPER(TempReplace, mov, 68, "_ZN19CommandOutputSender4sendERK13CommandOriginRK13CommandOutput")(mov{ .stream = &ss });
-      std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
-      instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
-      return ss.str();
+      return patched::withCommandOutput([&] {
+        std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
+        instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+      });
     });
     srv_command.respond_with(srv_command.execute(ret));
   };
