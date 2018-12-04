@@ -34,6 +34,3 @@
 [submodule "exts/simppl"]
 	path = exts/simppl
 	url = https://github.com/codehz/simppl
-[submodule "tools/proot/source"]
-	path = tools/proot/source
-	url = https://github.com/proot-me/PRoot
