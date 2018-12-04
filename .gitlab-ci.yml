@@ -15,6 +15,7 @@ job_build:
   artifacts:
     paths:
       - build/stone/stone
+      - build/tools/proot/proot
     expire_in: 20min
   stage: build
 
@@ -24,6 +25,7 @@ job_package:
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support/{}
     - cp -Lv /usr/lib32/ld-*.so support/ld.so
     - cp ../build/stone/stone .
+    - cp ../build/tools/proot/proot .
   artifacts:
     paths:
       - output
