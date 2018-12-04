@@ -31,6 +31,6 @@
 [submodule "exts/sqlite3"]
 	path = exts/sqlite3
 	url = https://github.com/alex85k/sqlite3-cmake
-[submodule "cached-exts/simppl"]
-	path = cached-exts/simppl
-	url = https://github.com/martinhaefner/simppl
+[submodule "exts/simppl"]
+	path = exts/simppl
+	url = https://github.com/codehz/simppl
