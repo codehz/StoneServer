@@ -222,7 +222,6 @@ int main() {
     std::vector<structs::AutoCompleteOption> results;
     results.reserve(options->list.size());
     for (auto option : options->list) {
-
       results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
                                                      option.offset, option.eat, option.item.id });
     }
