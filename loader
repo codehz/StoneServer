@@ -1,0 +1,5 @@
+#!/bin/bash
+target="$(dirname "$(readlink -f "$0")")"
+tempdir=$(mktemp -d -t stone.XXXXXXXX)
+trap "rm -rf $tempdir" EXIT
+PROOT_NO_SECCOMP=1 ./proot -w /run -r "$tempdir" -b $target:/run -b $target/support:/usr/lib32 -b $target/support/ld.so:/ld.so -b /proc -b /etc -b /usr/share/locale -b /sys -b /dev/urandom $@
