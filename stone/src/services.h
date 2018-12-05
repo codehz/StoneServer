@@ -18,7 +18,7 @@ struct AutoCompleteOption {
 } // namespace structs
 
 INTERFACE(CoreService) {
-  Method<> stop;
+  Method<oneway> stop;
   Signal<int, string, string> log;
 
   CoreService()

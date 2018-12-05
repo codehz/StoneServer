@@ -203,7 +203,6 @@ int main() {
   modLoader.onServerInstanceInitialized(&instance);
 
   srv_core.stop >> [&] {
-    srv_core.respond_with(srv_core.stop());
     disp.stop();
   };
 
