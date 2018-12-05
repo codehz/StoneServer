@@ -13,6 +13,9 @@ services:
       - ./dbus:/dbus:rw
     environment:
       DBUS_SESSION_BUS_ADDRESS: unix:path=/dbus/session
+    ports:
+      - "19132/udp"
+      - "19133/udp"
     depends_on:
       - dbus-daemon
 
