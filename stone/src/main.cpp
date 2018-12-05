@@ -213,6 +213,7 @@ int main() {
   };
 
   std::signal(SIGINT, [](int) { pdisp->stop(); });
+  std::signal(SIGTERM, [](int) { pdisp->stop(); });
 
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
