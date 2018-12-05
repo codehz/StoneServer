@@ -20,6 +20,8 @@ Added features:
 ### Interface: *one.codehz.stone.CoreService.\<SUFFIX>*
 #### Method: *stop* () ↦ ()
 Stop the server.
+#### Signal: *log* (Int32 *level*, String *tag*, String *content*)
+Server log signal.
 ### Interface: *one.codehz.stone.CommandService.\<SUFFIX>*
 #### Method: *complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *eat*, Int32 *item_id*)] *options*)
 Get the list of the auto-complete options.

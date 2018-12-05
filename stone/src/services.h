@@ -19,9 +19,11 @@ struct AutoCompleteOption {
 
 INTERFACE(CoreService) {
   Method<> stop;
+  Signal<int, string, string> log;
 
   CoreService()
-      : INIT(stop) {}
+      : INIT(stop)
+      , INIT(log) {}
 };
 
 INTERFACE(CommandService) {

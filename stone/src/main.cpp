@@ -49,12 +49,14 @@
 #define BUILD_VERSION "UNKNOWN VERSION"
 #endif
 
-#define LOAD_ENV(env, def) const auto env = GetEnvironmentVariableOrDefault(#env, def)
+#define LOAD_ENV(env, def) static const auto env = GetEnvironmentVariableOrDefault(#env, def)
 
 void hack(void *handle, char const *symbol) {
   void *ptr = hybris_dlsym(handle, symbol);
   PatchUtils::patchCallInstruction(ptr, (void *)(void (*)())[]{}, true);
 }
+
+LOAD_ENV(BUSNAME_SUFFIX, "default");
 
 int main() {
   using namespace uintl;
@@ -64,11 +66,20 @@ int main() {
   CrashHandler::registerCrashHandler();
   MinecraftUtils::workaroundLocaleBug();
   MinecraftUtils::setMallocZero();
+
   auto cwd = PathHelper::getWorkingDir();
   PathHelper::setGameDir(cwd + "game/");
   PathHelper::setDataDir(cwd + "data/");
   PathHelper::setCacheDir(cwd + "cache/");
   Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
+  Log::trace("StoneServer", "Initializing rpc");
+  Dispatcher disp("bus:session");
+  static Dispatcher *pdisp = &disp;
+
+  Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
+  Skeleton<CoreService> srv_core(disp, BUSNAME_SUFFIX.c_str());
+  Skeleton<CommandService> srv_command(disp, BUSNAME_SUFFIX.c_str());
+  Log::addHook([&](auto level, auto tag, auto content) { srv_core.log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
   MinecraftUtils::setupForHeadless();
@@ -191,19 +202,11 @@ int main() {
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
 
-  Log::trace("StoneServer", "Initializing rpc");
-  Dispatcher disp("bus:session");
-  static Dispatcher *pdisp = &disp;
-
-  LOAD_ENV(BUSNAME_SUFFIX, "default");
-  Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
-
-  Skeleton<CoreService> srv_core(disp, BUSNAME_SUFFIX.c_str());
   srv_core.stop >> [&] {
     srv_core.respond_with(srv_core.stop());
     disp.stop();
   };
-  Skeleton<CommandService> srv_command(disp, BUSNAME_SUFFIX.c_str());
+
   srv_command.execute >> [&](std::string const &origin, std::string const &command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
@@ -239,6 +242,7 @@ int main() {
 
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
+  Log::clearHooks();
   pdisp = nullptr;
   return 0;
 }

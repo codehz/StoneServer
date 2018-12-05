@@ -2,6 +2,7 @@
 
 #include <cstdarg>
 #include <cstdlib>
+#include <functional>
 #include <uintl.h>
 #include <vector>
 
@@ -15,14 +16,16 @@
 
 enum class LogLevel { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_MAX };
 
-
-
 class Log {
+  static std::vector<std::function<void(int, std::string, std::string)>> hooks;
 
 public:
+  static inline void addHook(std::function<void(int, std::string, std::string)> fn) { hooks.push_back(fn); }
+  static inline void clearHooks() { hooks.clear(); }
+
   static inline const char *getLogLevelString(LogLevel lvl) {
     using namespace uintl;
-    static char const *lvmap[] = {"Trace"_static_intl, "Debug"_static_intl, "Info "_static_intl, "Warn "_static_intl, "Error"_static_intl};
+    static char const *lvmap[] = { "Trace"_static_intl, "Debug"_static_intl, "Info "_static_intl, "Warn "_static_intl, "Error"_static_intl };
     if (lvl >= LogLevel::LOG_MAX) return "?";
     return lvmap[(int)lvl];
   }
@@ -36,8 +39,13 @@ public:
     va_end(args);
   }
 
-  LogFuncDef(trace, LogLevel::LOG_TRACE) LogFuncDef(debug, LogLevel::LOG_DEBUG) LogFuncDef(info, LogLevel::LOG_INFO)
-      LogFuncDef(warn, LogLevel::LOG_WARN) LogFuncDef(error, LogLevel::LOG_ERROR)
+  // clang-format off
+  LogFuncDef(trace, LogLevel::LOG_TRACE)
+  LogFuncDef(debug, LogLevel::LOG_DEBUG)
+  LogFuncDef(info, LogLevel::LOG_INFO)
+  LogFuncDef(warn, LogLevel::LOG_WARN)
+  LogFuncDef(error, LogLevel::LOG_ERROR)
+  // clang-format on
 };
 
 #undef LogFuncDef
