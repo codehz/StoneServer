@@ -30,8 +30,6 @@ job_package:
   artifacts:
     paths:
       - output
-  only:
-    - master@codehz/StoneServer
   dependencies:
     - job_build
   stage: package
