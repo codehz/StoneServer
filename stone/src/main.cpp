@@ -6,6 +6,7 @@
 #include <mcpelauncher/mod_loader.h>
 #include <minecraft/AppResourceLoader.h>
 #include <minecraft/AutomationClient.h>
+#include <minecraft/CommandRegistry.h>
 #include <minecraft/Common.h>
 #include <minecraft/DedicatedServerCommandOrigin.h>
 #include <minecraft/ExternalFileLevelStorageSource.h>
@@ -27,6 +28,7 @@
 #include <simppl/skeleton.h>
 #include <simppl/string.h>
 #include <simppl/stub.h>
+#include <simppl/vector.h>
 
 #include <stone/hook_helper.h>
 #include <stone/symbol.h>
@@ -37,11 +39,11 @@
 #include <csignal>
 #include <mutex>
 
+#include "patched.hpp"
 #include "server_minecraft_app.h"
 #include "server_properties.h"
 #include "services.h"
 #include "stub_key_provider.h"
-#include "patched.hpp"
 
 #ifndef BUILD_VERSION
 #define BUILD_VERSION "UNKNOWN VERSION"
@@ -210,6 +212,18 @@ int main() {
       });
     });
     srv_command.respond_with(srv_command.execute(ret));
+  };
+  srv_command.complete >> [&](std::string const &input, unsigned const &pos) {
+    std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin("server", *instance.minecraft));
+    auto options = instance.minecraft->getCommands()->getRegistry().getAutoCompleteOptions(*commandOrigin, input, pos);
+    std::vector<structs::AutoCompleteOption> results;
+    results.reserve(options->list.size());
+    for (auto option : options->list) {
+
+      results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
+                                                     option.offset, option.eat, option.item.id });
+    }
+    srv_command.respond_with(srv_command.complete(results));
   };
 
   std::signal(SIGINT, [](int) { pdisp->stop(); });
