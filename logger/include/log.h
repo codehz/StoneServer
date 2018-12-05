@@ -25,7 +25,7 @@ public:
 
   static inline const char *getLogLevelString(LogLevel lvl) {
     using namespace uintl;
-    static char const *lvmap[] = { "Trace"_static_intl, "Debug"_static_intl, "Info "_static_intl, "Warn "_static_intl, "Error"_static_intl };
+    static char const *lvmap[] = { "Trace"_intl, "Debug"_intl, "Info "_intl, "Warn "_intl, "Error"_intl };
     if (lvl >= LogLevel::LOG_MAX) return "?";
     return lvmap[(int)lvl];
   }

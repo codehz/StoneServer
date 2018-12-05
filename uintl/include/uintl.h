@@ -8,13 +8,12 @@
 #include <mcpelauncher/path_helper.h>
 
 namespace uintl {
-char const *operator""_intl(char const *inp, std::size_t);
-template <char... X> char const *operator""_static_intl_in() {
+char const *gettext(char const *inp);
+template <char... X> char const *operator""_intl_in() {
   static char data[] = { X..., 0 };
-  static std::string converted = operator""_intl(data, -1);
+  static std::string converted = gettext(data);
   return converted.c_str();
 }
-template <typename T, T... X> char const *operator""_static_intl() { return operator""_static_intl_in<X...>(); }
-char const *gettext(char const *inp);
+template <typename T, T... X> char const *operator""_intl() { return operator""_intl_in<X...>(); }
 void intl_domain(char const *domain);
 } // namespace uintl

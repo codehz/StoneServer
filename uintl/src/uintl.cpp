@@ -22,7 +22,7 @@ namespace uintl {
 
 static thread_local char const *domain = "stone";
 
-class UIntl {
+struct UIntl {
   sqlite3 *db;
   sqlite3_stmt *select_stmt;
   sqlite3_stmt *insert_stmt;
@@ -30,8 +30,6 @@ class UIntl {
   UIntl();
   ~UIntl();
   char const *operator[](char const *);
-
-  friend char const *operator""_intl(char const *inp, std::size_t);
 };
 
 UIntl::UIntl() {
@@ -78,10 +76,9 @@ char const *UIntl::operator[](char const *inp) {
   throw std::runtime_error("Cannot query from uintl db: "s + sqlite3_errmsg(db));
 }
 
-char const *operator""_intl(char const *inp, std::size_t) {
+char const *gettext(char const *inp) {
   static UIntl intl;
   return intl[inp];
 }
-char const *gettext(char const *inp) { return operator""_intl(inp, -1); }
 void intl_domain(char const *new_domain) { domain = new_domain; }
 } // namespace uintl

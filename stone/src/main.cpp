@@ -104,7 +104,7 @@ int main() {
   Log::trace("StoneServer", "Initializing AppPlatform (create instance)");
   std::unique_ptr<LauncherAppPlatform> appPlatform(new LauncherAppPlatform());
   // Try to use i18n
-  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_static_intl;
+  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_intl;
   Log::trace("StoneServer", "Initializing AppPlatform (initialize call)");
   appPlatform->initialize();
 
@@ -197,7 +197,7 @@ int main() {
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
   Log::trace("StoneServer", "Loading language data");
-  I18n::loadLanguages(*resourcePackManager, "en_US"_static_intl);
+  I18n::loadLanguages(*resourcePackManager, "en_US"_intl);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
