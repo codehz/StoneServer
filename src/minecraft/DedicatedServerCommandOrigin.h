@@ -1,11 +1,9 @@
 #pragma once
 
 #include "std/string.h"
+#include "CommandOrigin.h"
 
 class Minecraft;
-
-class CommandOrigin {
-};
 
 class DedicatedServerCommandOrigin : public CommandOrigin {
 

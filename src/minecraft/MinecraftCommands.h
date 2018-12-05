@@ -5,6 +5,7 @@
 
 class CommandOrigin;
 class CommandOutputSender;
+class CommandRegistry;
 
 enum class MCCATEGORY : unsigned char {
     //
@@ -24,4 +25,5 @@ public:
 
     MCRESULT requestCommandExecution(std::unique_ptr<CommandOrigin> o, mcpe::string const& s, int i, bool b) const;
 
+    CommandRegistry &getRegistry();
 };

@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Dec 05 2018 09:32:55 UTC
+// Generated on Wed Dec 05 2018 10:16:06 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -12,6 +12,16 @@ void MinecraftCommands::setOutputSender(std::unique_ptr<CommandOutputSender> p1)
 static MCRESULT (MinecraftCommands::*_MinecraftCommands_requestCommandExecution)(std::unique_ptr<CommandOrigin>, mcpe::string const &, int, bool) const;
 MCRESULT MinecraftCommands::requestCommandExecution(std::unique_ptr<CommandOrigin> p1, mcpe::string const & p2, int p3, bool p4) const {
     return (this->*_MinecraftCommands_requestCommandExecution)(std::move(p1), p2, p3, p4);
+}
+static CommandRegistry & (MinecraftCommands::*_MinecraftCommands_getRegistry)();
+CommandRegistry & MinecraftCommands::getRegistry() {
+    return (this->*_MinecraftCommands_getRegistry)();
+}
+
+#include "CommandRegistry.h"
+static std::unique_ptr<AutoCompleteInformation> (CommandRegistry::*_CommandRegistry_getAutoCompleteOptions)(CommandOrigin const &, mcpe::string const &, unsigned int) const;
+std::unique_ptr<AutoCompleteInformation> CommandRegistry::getAutoCompleteOptions(CommandOrigin const & p1, mcpe::string const & p2, unsigned int p3) const {
+    return (this->*_CommandRegistry_getAutoCompleteOptions)(p1, p2, p3);
 }
 
 #include "CommandOutput.h"
@@ -39,6 +49,8 @@ static void (Options::*_Options_setFullscreen)(bool);
 void Options::setFullscreen(bool p1) {
     (this->*_Options_setFullscreen)(p1);
 }
+
+#include "AutoComplete.h"
 
 #include "ContentIdentity.h"
 ContentIdentity * ContentIdentity::EMPTY;
@@ -436,6 +448,8 @@ void ResourcePackManager::onLanguageChanged() {
     (this->*_ResourcePackManager_onLanguageChanged)();
 }
 
+#include "CommandOrigin.h"
+
 #include "gl.h"
 static mcpe::string (*_gl_getOpenGLVendor)();
 mcpe::string gl::getOpenGLVendor() {
@@ -718,6 +732,10 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftCommands_setOutputSender == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftCommands15setOutputSenderESt10unique_ptrI19CommandOutputSenderSt14default_deleteIS1_EE");
     ((void*&) _MinecraftCommands_requestCommandExecution) = hybris_dlsym(handle, "_ZNK17MinecraftCommands23requestCommandExecutionESt10unique_ptrI13CommandOriginSt14default_deleteIS1_EERKSsib");
     if (_MinecraftCommands_requestCommandExecution == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK17MinecraftCommands23requestCommandExecutionESt10unique_ptrI13CommandOriginSt14default_deleteIS1_EERKSsib");
+    ((void*&) _MinecraftCommands_getRegistry) = hybris_dlsym(handle, "_ZN17MinecraftCommands11getRegistryEv");
+    if (_MinecraftCommands_getRegistry == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftCommands11getRegistryEv");
+    ((void*&) _CommandRegistry_getAutoCompleteOptions) = hybris_dlsym(handle, "_ZNK15CommandRegistry22getAutoCompleteOptionsERK13CommandOriginRKSsj");
+    if (_CommandRegistry_getAutoCompleteOptions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry22getAutoCompleteOptionsERK13CommandOriginRKSsj");
     ((void*&) _CommandOutput_getMessages) = hybris_dlsym(handle, "_ZNK13CommandOutput11getMessagesEv");
     if (_CommandOutput_getMessages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOutput11getMessagesEv");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
