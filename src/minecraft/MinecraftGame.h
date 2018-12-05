@@ -27,9 +27,6 @@ public:
 
     void setUISizeAndScale(int, int, float);
 
-    /// @symbol _ZN13MinecraftGame24doPrimaryClientReadyWorkESt8functionIFvvEE
-    void doPrimaryClientReadyWork(mcpe::function<void ()>);
-
     std::shared_ptr<Options> getPrimaryUserOptions();
 
     ClientInstance* getPrimaryClientInstance();
