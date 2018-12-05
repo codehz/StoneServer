@@ -1,0 +1,18 @@
+version: '3'
+services:
+  dbus-daemon:
+    image: codehz/dbus-daemon
+    volumes:
+      - ./dbus:/dbus:rw
+  server:
+    build: .
+    image: codehz/stoneserver
+    volumes:
+      - ./game:/run/game:ro
+      - ./data:/run/data:rw
+      - ./dbus:/dbus:rw
+    environment:
+      DBUS_SESSION_BUS_ADDRESS: unix:path=/dbus/session
+    depends_on:
+      - dbus-daemon
+
