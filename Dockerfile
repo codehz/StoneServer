@@ -11,7 +11,8 @@ RUN mkdir -p output/{usr/lib32,lib,run} && \
   cp -Lv /usr/lib32/ld-linux.so.2 lib && \
   cp -v {../build/stone/stone,/usr/bin/proot} run
 
-FROM busybox
+FROM alpine
 COPY --from=builder /data/output /
-VOLUME ["/run/game", "/run/data"]
+VOLUME ["/run/game", "/run/data","/dbus"]
 WORKDIR /run
+CMD ["/run/stone"]
