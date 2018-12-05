@@ -189,17 +189,19 @@ int main() {
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
 
-  LOAD_ENV(TARGET_BUS, "bus:session");
-  Log::trace("StoneServer", "Initializing rpc (%s)", TARGET_BUS.c_str());
-  Dispatcher disp(TARGET_BUS.c_str());
+  Log::trace("StoneServer", "Initializing rpc");
+  Dispatcher disp("bus:session");
   static Dispatcher *pdisp = &disp;
 
-  Skeleton<CoreService> srv_core(disp, "daemon");
+  LOAD_ENV(BUSNAME_SUFFIX, "default");
+  Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
+
+  Skeleton<CoreService> srv_core(disp, BUSNAME_SUFFIX.c_str());
   srv_core.stop >> [&] {
     srv_core.respond_with(srv_core.stop());
     disp.stop();
   };
-  Skeleton<CommandService> srv_command(disp, "daemon");
+  Skeleton<CommandService> srv_command(disp, BUSNAME_SUFFIX.c_str());
   srv_command.execute >> [&](std::string const &origin, std::string const &command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
