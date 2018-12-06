@@ -278,6 +278,18 @@ static void initDependencies() {
       }
       Locator<Skeleton<CoreService>>()->players = vec;
     };
+    list->onPlayerAdded >> [](Player *player) {
+      auto name = PlayerName[*player];
+      auto uuid = PlayerUUID[*player];
+      auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+      Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
+    };
+    list->onPlayerRemoved >> [](Player *player) {
+      auto name = PlayerName[*player];
+      auto uuid = PlayerUUID[*player];
+      auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+      Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
+    };
     list->onPlayerAdded >> updateDBus;
     list->onPlayerRemoved >> updateDBus;
     Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](char const &type, std::string const &query) {

@@ -32,12 +32,16 @@ INTERFACE(CoreService) {
   Method<oneway> stop;
   Method<in<char>, in<string>, out<map<string, simppl::Variant<string, int, unsigned, double>>>> getPlayerInfo;
   Property<std::vector<structs::PlayerInfo>, ReadWrite | Notifying> players;
+  Signal<structs::PlayerInfo> playerAdded;
+  Signal<structs::PlayerInfo> playerRemoved;
   Signal<int, string, string> log;
 
   CoreService()
       : INIT(stop)
       , INIT(getPlayerInfo)
       , INIT(players)
+      , INIT(playerAdded)
+      , INIT(playerRemoved)
       , INIT(log) {}
 };
 
