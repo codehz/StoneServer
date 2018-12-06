@@ -15,7 +15,7 @@ public:
   inline T *operator=(T *input) {
     if (input == raw_pointer) return input;
     auto &tlist = input ? setNotifyList : unsetNotifyList;
-    for (auto fn : tlist) fn(input);
+    for (auto fn : tlist) fn(input ?: raw_pointer);
     tlist.clear();
     for (auto fn : updateNotifyList) fn(input);
     return (raw_pointer = input);
