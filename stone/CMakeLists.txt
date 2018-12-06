@@ -13,6 +13,7 @@ add_executable(stone
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"
+  "src/patched/BedrockLog.cpp"
   "src/patched/Player.h"
 )
 
@@ -20,6 +21,6 @@ target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 add_dependencies(stone simppl)
-target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl interface)
+target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl interface dbus-api)
 
 install(TARGETS stone RUNTIME DESTINATION bin)

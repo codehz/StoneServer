@@ -11,8 +11,8 @@
 #include <minecraft/Minecraft.h>
 
 #include <simppl/skeleton.h>
-#include <simppl/struct.h>
 #include <simppl/string.h>
+#include <simppl/struct.h>
 #include <simppl/vector.h>
 
 void initDependencies() {
@@ -24,12 +24,17 @@ void initDependencies() {
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
   Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
   Locator<PlayerList>() >> [](PlayerList *list) {
-    list->list = Locator<Level>()->getUsers();
-    list->onPlayerAdded >> [](Player *player) { Log::info("PlayerList", "Player %s joined", PlayerName[*player].c_str()); };
-    list->onPlayerRemoved >> [](Player *player) { Log::info("PlayerList", "Player %s left", PlayerName[*player].c_str()); };
+    list->onPlayerAdded >> [](Player *player) {
+      Locator<PlayerList>()->set.insert(player);
+      Log::info("PlayerList", "Player %s joined", PlayerName[*player].c_str());
+    };
+    list->onPlayerRemoved >> [](Player *player) {
+      Locator<PlayerList>()->set.erase(player);
+      Log::info("PlayerList", "Player %s left", PlayerName[*player].c_str());
+    };
     auto updateDBus = [](Player *) {
       std::vector<structs::PlayerInfo> vec;
-      for (auto player : *Locator<PlayerList>()->list) {
+      for (auto player : Locator<PlayerList>()->set) {
         auto name = PlayerName[*player];
         auto uuid = PlayerUUID[*player];
         auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
@@ -63,7 +68,7 @@ void initDependencies() {
         Locator<Skeleton<CoreService>>()->respond_with(Error("query_type.unknown", strformat("Unknown query type: %d"_intl, type).c_str()));
         return;
       }
-      for (auto player : *Locator<PlayerList>()->list) {
+      for (auto player : Locator<PlayerList>()->set) {
         if (test(player, query)) {
           map<string, simppl::Variant<string, int, unsigned, double>> ret;
           auto [x, y, z]    = player->getPos();
