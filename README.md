@@ -26,6 +26,8 @@ Retrieve the detail information of the selected player. (type: 0=name 1=uuid 2=x
 Retrieve the players list.
 #### Signal: *log* (Int32 *level*, String *tag*, String *content*)
 Server log signal.
+#### Signal: *playerAdded*/*playerRemoved* Struct of (String *name*, String *uuid*, String *xuid*)
+Notify if a player joined/left.
 ### Interface: *one.codehz.stone.CommandService.\<SUFFIX>*
 #### Method: *complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *eat*, Int32 *item_id*)] *options*)
 Get the list of the auto-complete options.
