@@ -11,3 +11,6 @@ target_include_directories(dbus-api INTERFACE "include")
 
 add_executable(dbus-api-test src/test.cpp)
 target_link_libraries(dbus-api-test PRIVATE dbus-api)
+
+install(FILES ${src} DESTINATION include/dbus-api)
+install(TARGETS dbus-api-test RUNTIME DESTINATION bin)
