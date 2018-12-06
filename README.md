@@ -20,6 +20,8 @@ Added features:
 ### Interface: *one.codehz.stone.CoreService.\<SUFFIX>*
 #### Method: *stop* () ↦ ()
 Stop the server.
+#### Method: *getPlayerInfo* (Byte *type*, String *query*) ↦ (Dict of {String, Variant} *result*)
+Retrieve the detail information of the selected player. (type: 0=name 1=uuid 2=xuid)
 #### Property: *players* Array of [Struct of (String *name*, String *uuid*, String *xuid*)]
 Retrieve the players list.
 #### Signal: *log* (Int32 *level*, String *tag*, String *content*)
