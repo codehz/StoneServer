@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Dec 06 2018 10:31:39 UTC
+// Generated on Thu Dec 06 2018 16:43:36 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -572,13 +572,21 @@ static Certificate * (Player::*_Player_getCertificate)() const;
 Certificate * Player::getCertificate() const {
     return (this->*_Player_getCertificate)();
 }
-static std::tuple<float, float, float> (Player::*_Player_getPos)();
-std::tuple<float, float, float> Player::getPos() {
+static std::tuple<float, float, float> & (Player::*_Player_getPos)() const;
+std::tuple<float, float, float> & Player::getPos() const {
     return (this->*_Player_getPos)();
+}
+static std::pair<float, float> (Player::*_Player_getRotation)() const;
+std::pair<float, float> Player::getRotation() const {
+    return (this->*_Player_getRotation)();
 }
 static bool (Player::*_Player_isCreative)();
 bool Player::isCreative() {
     return (this->*_Player_isCreative)();
+}
+static float (Player::*_Player_getLevelProgress)() const;
+float Player::getLevelProgress() const {
+    return (this->*_Player_getLevelProgress)();
 }
 
 #include "Xbox.h"
@@ -1019,8 +1027,12 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_getCertificate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player14getCertificateEv");
     ((void*&) _Player_getPos) = hybris_dlsym(handle, "_ZNK5Actor6getPosEv");
     if (_Player_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
+    ((void*&) _Player_getRotation) = hybris_dlsym(handle, "_ZNK5Actor11getRotationEv");
+    if (_Player_getRotation == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getRotationEv");
     ((void*&) _Player_isCreative) = hybris_dlsym(handle, "_ZNK5Actor10isCreativeEv");
     if (_Player_isCreative == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10isCreativeEv");
+    ((void*&) _Player_getLevelProgress) = hybris_dlsym(handle, "_ZNK6Player16getLevelProgressEv");
+    if (_Player_getLevelProgress == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player16getLevelProgressEv");
     ((void*&) _xbox_services_xbox_services_error_code_category) = hybris_dlsym(handle, "_ZN4xbox8services33xbox_services_error_code_categoryEv");
     if (_xbox_services_xbox_services_error_code_category == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services33xbox_services_error_code_categoryEv");
     ((void*&) _web_json_value_value) = hybris_dlsym(handle, "_ZN3web4json5valueC2Ev");
