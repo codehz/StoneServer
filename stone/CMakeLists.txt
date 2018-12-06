@@ -8,6 +8,7 @@ add_executable(stone
   "src/server_properties.h"
   "src/server_minecraft_app.h"
   "src/stub_key_provider.h"
+  "src/dependency.cpp"
   "src/services.h"
   "src/patched.h"
   "src/patched.cpp"
@@ -15,6 +16,7 @@ add_executable(stone
   "src/patched/Player.h"
 )
 
+target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 add_dependencies(stone simppl)
