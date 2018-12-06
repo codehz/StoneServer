@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Dec 06 2018 16:43:36 UTC
+// Generated on Thu Dec 06 2018 18:40:42 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -150,10 +150,6 @@ void MinecraftGame::setTextboxText(mcpe::string const & p1, int p2) {
 static unsigned int (*_Level_createRandomSeed)();
 unsigned int Level::createRandomSeed() {
     return _Level_createRandomSeed();
-}
-static std::vector<Player *> * (Level::*_Level_getUsers)();
-std::vector<Player *> * Level::getUsers() {
-    return (this->*_Level_getUsers)();
 }
 static void (Level::*_Level__setServerLevelEventCoordinator)(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > &&);
 void Level::_setServerLevelEventCoordinator(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > && p1) {
@@ -837,8 +833,6 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_setTextboxText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14setTextboxTextERKSsi");
     ((void*&) _Level_createRandomSeed) = hybris_dlsym(handle, "_ZN5Level16createRandomSeedEv");
     if (_Level_createRandomSeed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level16createRandomSeedEv");
-    ((void*&) _Level_getUsers) = hybris_dlsym(handle, "_ZN5Level8getUsersEv");
-    if (_Level_getUsers == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level8getUsersEv");
     ((void*&) _Level__setServerLevelEventCoordinator) = hybris_dlsym(handle, "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
     if (_Level__setServerLevelEventCoordinator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
