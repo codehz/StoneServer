@@ -24,7 +24,13 @@ public:
   inline T *operator->() { return raw_pointer; }
   inline T &operator*() { return *raw_pointer; }
 
-  template <typename F> inline void operator>>(F const &f) { setNotifyList.emplace_back(f); }
+  template <typename F> inline void operator>>(F const &f) {
+    if (raw_pointer)
+      f(raw_pointer);
+    else
+      setNotifyList.emplace_back(f);
+  }
+  template <typename F> inline void operator>>=(F const &f) { setNotifyList.emplace_back(f); }
   template <typename F> inline void operator|=(F const &f) { unsetNotifyList.emplace_back(f); }
   template <typename F> inline void operator>=(F const &f) { updateNotifyList.emplace_back(f); }
 
@@ -41,14 +47,13 @@ template <typename T> inline ReferenceHolder<T> &Locator() {
 };
 
 template <typename T> struct plain_type { using type = T; };
-template <typename T> struct plain_type<T*> { using type = typename plain_type<T>::type; };
-template <typename T> struct plain_type<T**> { using type = typename plain_type<T>::type; };
-template <typename T> struct plain_type<T&> { using type = typename plain_type<T>::type; };
+template <typename T> struct plain_type<T *> { using type = typename plain_type<T>::type; };
+template <typename T> struct plain_type<T &> { using type = typename plain_type<T>::type; };
+template <typename T> struct plain_type<T &&> { using type = typename plain_type<T>::type; };
 template <typename T> struct plain_type<T const> { using type = typename plain_type<T>::type; };
 template <typename T> struct plain_type<T volatile> { using type = typename plain_type<T>::type; };
 
-template <typename T> 
-using plain_type_t = typename plain_type<T>::type;
+template <typename T> using plain_type_t = typename plain_type<T>::type;
 
 template <typename T, typename R> inline auto FieldRef(R(T::*field)) {
   return [=](T *t) { Locator<plain_type_t<R>>() = t->*field; };

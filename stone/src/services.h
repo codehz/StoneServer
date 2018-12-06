@@ -1,7 +1,12 @@
 #pragma once
 
 #include <simppl/interface.h>
+#include <simppl/map.h>
 #include <simppl/struct.h>
+#include <simppl/pair.h>
+#include <simppl/variant.h>
+
+#include <map>
 #include <string>
 #include <vector>
 
@@ -21,22 +26,17 @@ struct PlayerInfo {
   bool operator!=(PlayerInfo const &rhs) const { return name != rhs.name; }
   bool operator==(PlayerInfo const &rhs) const { return name == rhs.name; }
 };
-struct PlayerDetailsInfo {
-  using serializer_type = make_serializer<PlayerInfo, double, double, double, bool>::type;
-  PlayerInfo base;
-  double x, y, z;
-  bool creative;
-  bool operator!=(PlayerDetailsInfo const &rhs) const { return base != rhs.base || x != rhs.x || y != rhs.y || z != rhs.z || creative != rhs.creative; }
-};
 } // namespace structs
 
 INTERFACE(CoreService) {
   Method<oneway> stop;
+  Method<in<char>, in<string>, out<map<string, simppl::Variant<string, int, unsigned, double>>>> getPlayerInfo;
   Property<std::vector<structs::PlayerInfo>, ReadWrite | Notifying> players;
   Signal<int, string, string> log;
 
   CoreService()
       : INIT(stop)
+      , INIT(getPlayerInfo)
       , INIT(players)
       , INIT(log) {}
 };
