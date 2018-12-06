@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Dec 05 2018 10:16:06 UTC
+// Generated on Thu Dec 06 2018 10:31:39 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -151,6 +151,14 @@ static unsigned int (*_Level_createRandomSeed)();
 unsigned int Level::createRandomSeed() {
     return _Level_createRandomSeed();
 }
+static std::vector<Player *> * (Level::*_Level_getUsers)();
+std::vector<Player *> * Level::getUsers() {
+    return (this->*_Level_getUsers)();
+}
+static void (Level::*_Level__setServerLevelEventCoordinator)(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > &&);
+void Level::_setServerLevelEventCoordinator(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > && p1) {
+    (this->*_Level__setServerLevelEventCoordinator)(std::move(p1));
+}
 
 #include "AppResourceLoader.h"
 static void (AppResourceLoader::*_AppResourceLoader_AppResourceLoader)(std::function<mcpe::string ( )>);
@@ -243,6 +251,10 @@ static MinecraftCommands * (Minecraft::*_Minecraft_getCommands)();
 MinecraftCommands * Minecraft::getCommands() {
     return (this->*_Minecraft_getCommands)();
 }
+static Level * (Minecraft::*_Minecraft_getLevel)() const;
+Level * Minecraft::getLevel() const {
+    return (this->*_Minecraft_getLevel)();
+}
 
 #include "AutomationClient.h"
 static void (Automation::AutomationClient::*_Automation_AutomationClient_AutomationClient)(IMinecraftApp &);
@@ -330,6 +342,12 @@ Social::XboxLiveUser * Social::User::getLiveUser() const {
 static void (Social::XboxLiveUser::*_Social_XboxLiveUser__handleUISignInNoError)(xbox::services::system::sign_in_result &, mcpe::function<void ( Social::SignInResult, bool )>);
 void Social::XboxLiveUser::_handleUISignInNoError(xbox::services::system::sign_in_result & p1, mcpe::function<void ( Social::SignInResult, bool )> p2) {
     (this->*_Social_XboxLiveUser__handleUISignInNoError)(p1, p2);
+}
+
+#include "ExtendedCertificate.h"
+static mcpe::string (*_ExtendedCertificate_getXuid)(Certificate const &);
+mcpe::string ExtendedCertificate::getXuid(Certificate const & p1) {
+    return _ExtendedCertificate_getXuid(p1);
 }
 
 #include "ClientInstance.h"
@@ -543,6 +561,24 @@ void GameControllerManager::feedTrigger(int p1, int p2, float p3) {
 static void (GameControllerManager::*_GameControllerManager_feedJoinGame)(int, bool);
 void GameControllerManager::feedJoinGame(int p1, bool p2) {
     (this->*_GameControllerManager_feedJoinGame)(p1, p2);
+}
+
+#include "Player.h"
+static mcpe::string * (Player::*_Player_getPlatformOnlineId)() const;
+mcpe::string * Player::getPlatformOnlineId() const {
+    return (this->*_Player_getPlatformOnlineId)();
+}
+static Certificate * (Player::*_Player_getCertificate)() const;
+Certificate * Player::getCertificate() const {
+    return (this->*_Player_getCertificate)();
+}
+static std::tuple<float, float, float> (Player::*_Player_getPos)();
+std::tuple<float, float, float> Player::getPos() {
+    return (this->*_Player_getPos)();
+}
+static bool (Player::*_Player_isCreative)();
+bool Player::isCreative() {
+    return (this->*_Player_isCreative)();
 }
 
 #include "Xbox.h"
@@ -793,6 +829,10 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_setTextboxText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14setTextboxTextERKSsi");
     ((void*&) _Level_createRandomSeed) = hybris_dlsym(handle, "_ZN5Level16createRandomSeedEv");
     if (_Level_createRandomSeed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level16createRandomSeedEv");
+    ((void*&) _Level_getUsers) = hybris_dlsym(handle, "_ZN5Level8getUsersEv");
+    if (_Level_getUsers == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level8getUsersEv");
+    ((void*&) _Level__setServerLevelEventCoordinator) = hybris_dlsym(handle, "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
+    if (_Level__setServerLevelEventCoordinator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _EducationOptions_EducationOptions) = hybris_dlsym(handle, "_ZN16EducationOptionsC2EP19ResourcePackManager");
@@ -837,6 +877,8 @@ void minecraft_symbols_init(void* handle) {
     if (_AppPlatform_isKeyboardVisible == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform17isKeyboardVisibleEv");
     ((void*&) _Minecraft_getCommands) = hybris_dlsym(handle, "_ZN9Minecraft11getCommandsEv");
     if (_Minecraft_getCommands == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Minecraft11getCommandsEv");
+    ((void*&) _Minecraft_getLevel) = hybris_dlsym(handle, "_ZNK9Minecraft8getLevelEv");
+    if (_Minecraft_getLevel == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9Minecraft8getLevelEv");
     ((void*&) _Automation_AutomationClient_AutomationClient) = hybris_dlsym(handle, "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     if (_Automation_AutomationClient_AutomationClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     ((void*&) _FilePathManager_FilePathManager) = hybris_dlsym(handle, "_ZN15FilePathManagerC2ESsb");
@@ -873,6 +915,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Social_User_getLiveUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Social4User11getLiveUserEv");
     ((void*&) _Social_XboxLiveUser__handleUISignInNoError) = hybris_dlsym(handle, "_ZN6Social12XboxLiveUser22_handleUISignInNoErrorERN4xbox8services6system14sign_in_resultESt8functionIFvNS_12SignInResultEbEE");
     if (_Social_XboxLiveUser__handleUISignInNoError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Social12XboxLiveUser22_handleUISignInNoErrorERN4xbox8services6system14sign_in_resultESt8functionIFvNS_12SignInResultEbEE");
+    ((void*&) _ExtendedCertificate_getXuid) = hybris_dlsym(handle, "_ZN19ExtendedCertificate7getXuidERK11Certificate");
+    if (_ExtendedCertificate_getXuid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     ((void*&) _ClientInstance_getUser) = hybris_dlsym(handle, "_ZN14ClientInstance7getUserEv");
     if (_ClientInstance_getUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ClientInstance7getUserEv");
     ((void*&) _ClientInstance__startLeaveGame) = hybris_dlsym(handle, "_ZN14ClientInstance15_startLeaveGameEv");
@@ -969,6 +1013,14 @@ void minecraft_symbols_init(void* handle) {
     if (_GameControllerManager_feedTrigger == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN21GameControllerManager11feedTriggerEiif");
     ((void*&) _GameControllerManager_feedJoinGame) = hybris_dlsym(handle, "_ZN21GameControllerManager12feedJoinGameEib");
     if (_GameControllerManager_feedJoinGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN21GameControllerManager12feedJoinGameEib");
+    ((void*&) _Player_getPlatformOnlineId) = hybris_dlsym(handle, "_ZNK6Player19getPlatformOnlineIdEv");
+    if (_Player_getPlatformOnlineId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player19getPlatformOnlineIdEv");
+    ((void*&) _Player_getCertificate) = hybris_dlsym(handle, "_ZNK6Player14getCertificateEv");
+    if (_Player_getCertificate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player14getCertificateEv");
+    ((void*&) _Player_getPos) = hybris_dlsym(handle, "_ZNK5Actor6getPosEv");
+    if (_Player_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
+    ((void*&) _Player_isCreative) = hybris_dlsym(handle, "_ZNK5Actor10isCreativeEv");
+    if (_Player_isCreative == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10isCreativeEv");
     ((void*&) _xbox_services_xbox_services_error_code_category) = hybris_dlsym(handle, "_ZN4xbox8services33xbox_services_error_code_categoryEv");
     if (_xbox_services_xbox_services_error_code_category == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services33xbox_services_error_code_categoryEv");
     ((void*&) _web_json_value_value) = hybris_dlsym(handle, "_ZN3web4json5valueC2Ev");
