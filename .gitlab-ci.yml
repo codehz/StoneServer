@@ -8,13 +8,14 @@ variables:
 
 job_build:
   script:
-    - mkdir build
+    - mkdir build install
     - cd build
-    - cmake .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
+    - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
     - make
+    - make install
   artifacts:
     paths:
-      - build/stone/stone
+      - install/
     expire_in: 20min
   stage: build
 
@@ -23,7 +24,7 @@ job_package:
     - mkdir -p output/support && cd output
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support/{}
     - cp -Lv /usr/lib32/ld-*.so support/ld.so
-    - cp ../build/stone/stone .
+    - cp ../install/* .
     - cp /usr/bin/proot .
     - cp ../loader .
     - strip stone
