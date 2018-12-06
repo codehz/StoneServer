@@ -9,6 +9,7 @@
 #include <minecraft/CommandRegistry.h>
 #include <minecraft/Common.h>
 #include <minecraft/DedicatedServerCommandOrigin.h>
+#include <minecraft/ExtendedCertificate.h>
 #include <minecraft/ExternalFileLevelStorageSource.h>
 #include <minecraft/FilePathManager.h>
 #include <minecraft/I18n.h>
@@ -22,7 +23,6 @@
 #include <minecraft/SaveTransactionManager.h>
 #include <minecraft/ServerInstance.h>
 #include <minecraft/Whitelist.h>
-#include <minecraft/ExtendedCertificate.h>
 
 #define SIMPPL_HAVE_INTROSPECTION true
 #include <simppl/dispatcher.h>
