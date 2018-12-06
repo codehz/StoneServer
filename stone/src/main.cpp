@@ -22,6 +22,7 @@
 #include <minecraft/SaveTransactionManager.h>
 #include <minecraft/ServerInstance.h>
 #include <minecraft/Whitelist.h>
+#include <minecraft/ExtendedCertificate.h>
 
 #define SIMPPL_HAVE_INTROSPECTION true
 #include <simppl/dispatcher.h>
@@ -31,15 +32,20 @@
 #include <simppl/vector.h>
 
 #include <stone/hook_helper.h>
+#include <stone/server_hook.h>
 #include <stone/symbol.h>
 #include <stone/utils.h>
 #include <uintl.h>
+
+#include <interface/locator.hpp>
+#include <interface/player_list.h>
 
 #include <condition_variable>
 #include <csignal>
 #include <mutex>
 
-#include "patched.hpp"
+#include "patched.h"
+#include "patched/Player.h"
 #include "server_minecraft_app.h"
 #include "server_properties.h"
 #include "services.h"
@@ -58,10 +64,40 @@ void hack(void *handle, char const *symbol) {
 
 LOAD_ENV(BUSNAME_SUFFIX, "default");
 
+static void initDependencies() {
+  using namespace interface;
+  using namespace patched;
+  using namespace one::codehz::stone;
+
+  Locator<ServerInstance>() >> FieldRef(&ServerInstance::minecraft);
+  Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
+  Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
+  Locator<PlayerList>() >> [](PlayerList *list) {
+    list->list = Locator<Level>()->getUsers();
+    list->onPlayerAdded >> [](Player *player) { Log::info("PlayerList", "Player %s joined", PlayerName[*player].c_str()); };
+    list->onPlayerRemoved >> [](Player *player) { Log::info("PlayerList", "Player %s left", PlayerName[*player].c_str()); };
+    auto updateDBus = [](Player *) {
+      std::vector<structs::PlayerInfo> vec;
+      for (auto player : *Locator<PlayerList>()->list) {
+        auto name = PlayerName[*player];
+        auto uuid = PlayerUUID[*player];
+        auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+        vec.emplace_back(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
+      }
+      Locator<Skeleton<CoreService>>()->players = vec;
+    };
+    list->onPlayerAdded >> updateDBus;
+    list->onPlayerRemoved >> updateDBus;
+  };
+}
+
 int main() {
   using namespace uintl;
+  using namespace interface;
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
+
+  initDependencies();
 
   CrashHandler::registerCrashHandler();
   MinecraftUtils::workaroundLocaleBug();
@@ -73,12 +109,12 @@ int main() {
   PathHelper::setCacheDir(cwd + "cache/");
   Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
   Log::trace("StoneServer", "Initializing rpc");
-  Dispatcher disp("bus:session");
-  static Dispatcher *pdisp = &disp;
+  auto &disp = Locator<Dispatcher>().generate("bus:session");
 
   Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
-  Skeleton<CoreService> srv_core(disp, BUSNAME_SUFFIX.c_str());
-  Skeleton<CommandService> srv_command(disp, BUSNAME_SUFFIX.c_str());
+  auto &srv_core = Locator<Skeleton<CoreService>>().generate<Skeleton<CoreService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
+  auto &srv_command =
+      Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Log::addHook([&](auto level, auto tag, auto content) { srv_core.log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
@@ -95,6 +131,7 @@ int main() {
   Log::info("StoneServer", "Applying patches");
   hack(handle, "_ZN5Level17_checkUserStorageEv");
   *reinterpret_cast<void **>(hybris_dlsym(handle, "_ZN6RakNet19rakDebugLogCallbackE")) = nullptr;
+  RegisterServerHook::InitHooks();
 
   ModLoader modLoader;
   modLoader.loadModsFromDirectory(PathHelper::getPrimaryDataDirectory() + "mods/");
@@ -196,15 +233,15 @@ int main() {
                           pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
                           [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
+  Locator<ServerInstance>() = &instance;
   Log::trace("StoneServer", "Loading language data");
   I18n::loadLanguages(*resourcePackManager, "en_US"_intl);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
+  patched::init();
 
-  srv_core.stop >> [&] {
-    disp.stop();
-  };
+  srv_core.stop >> [&] { disp.stop(); };
 
   srv_command.execute >> [&](std::string const &origin, std::string const &command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
@@ -227,8 +264,8 @@ int main() {
     srv_command.respond_with(srv_command.complete(results));
   };
 
-  std::signal(SIGINT, [](int) { pdisp->stop(); });
-  std::signal(SIGTERM, [](int) { pdisp->stop(); });
+  std::signal(SIGINT, [](int) { Locator<Dispatcher>()->stop(); });
+  std::signal(SIGTERM, [](int) { Locator<Dispatcher>()->stop(); });
 
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
@@ -241,6 +278,5 @@ int main() {
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
-  pdisp = nullptr;
   return 0;
 }

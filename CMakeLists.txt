@@ -22,6 +22,7 @@ string(TIMESTAMP BUILD_TIMESTAMP "%Y%m%d-%H%M%S" UTC)
 add_subdirectory(utils EXCLUDE_FROM_ALL)
 add_subdirectory(uintl EXCLUDE_FROM_ALL)
 add_subdirectory(logger EXCLUDE_FROM_ALL)
+add_subdirectory(interface)
 
 file(GLOB DEPS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/deps/*)
 file(GLOB EXTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/exts/*)

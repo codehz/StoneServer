@@ -22,4 +22,12 @@ template <typename F> std::string withCommandOutput(F f) {
   return ss.str();
 }
 
+namespace details {
+  struct RegisterPatchInit {
+    RegisterPatchInit(void (*)());
+  };
+}
+
+void init();
+
 } // namespace patched

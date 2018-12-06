@@ -15,14 +15,29 @@ struct AutoCompleteOption {
   string source, title, desc;
   int offset, eat, item;
 };
+struct PlayerInfo {
+  using serializer_type = make_serializer<string, string, string>::type;
+  string name, uuid, xuid;
+  bool operator!=(PlayerInfo const &rhs) const { return name != rhs.name; }
+  bool operator==(PlayerInfo const &rhs) const { return name == rhs.name; }
+};
+struct PlayerDetailsInfo {
+  using serializer_type = make_serializer<PlayerInfo, double, double, double, bool>::type;
+  PlayerInfo base;
+  double x, y, z;
+  bool creative;
+  bool operator!=(PlayerDetailsInfo const &rhs) const { return base != rhs.base || x != rhs.x || y != rhs.y || z != rhs.z || creative != rhs.creative; }
+};
 } // namespace structs
 
 INTERFACE(CoreService) {
   Method<oneway> stop;
+  Property<std::vector<structs::PlayerInfo>, ReadWrite | Notifying> players;
   Signal<int, string, string> log;
 
   CoreService()
       : INIT(stop)
+      , INIT(players)
       , INIT(log) {}
 };
 

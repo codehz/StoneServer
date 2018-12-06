@@ -9,12 +9,15 @@ add_executable(stone
   "src/server_minecraft_app.h"
   "src/stub_key_provider.h"
   "src/services.h"
-  "src/patched.hpp"
+  "src/patched.h"
+  "src/patched.cpp"
+  "src/patched/ServerLevelEventCoordinator.cpp"
+  "src/patched/Player.h"
 )
 
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 add_dependencies(stone simppl)
-target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl)
+target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl interface)
 
 install(TARGETS stone RUNTIME DESTINATION bin)
