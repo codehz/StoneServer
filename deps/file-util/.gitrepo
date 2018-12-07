@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/minecraft-linux/file-util
+	branch = master
+	commit = 2e0d2f911144cae16e8f59e8ca63064dac6c8997
+	parent = c9f41a3846e7f1f7df1c08be6091d4e6c30f30ae
+	method = merge
+	cmdver = 0.4.0
