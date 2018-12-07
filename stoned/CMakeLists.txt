@@ -7,6 +7,6 @@ add_executable(stoned
 
 set_property(TARGET stoned PROPERTY CXX_STANDARD 17)
 
-target_link_libraries(stoned dbus-api)
+target_link_libraries(stoned dbus-api seasocks)
 
 install(TARGETS stoned RUNTIME DESTINATION bin)

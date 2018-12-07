@@ -3,54 +3,11 @@ set(SEASOCKS_SOURCE_FILES
         HybiAccept.cpp
         HybiPacketDecoder.cpp
         internal/Base64.cpp
-        internal/Base64.h
-        internal/ConcreteResponse.h
-        internal/Debug.h
-        internal/Embedded.h
-        internal/HeaderMap.h
-        internal/HybiAccept.h
-        internal/HybiPacketDecoder.h
-        internal/LogStream.h
-        internal/PageRequest.h
         Logger.cpp
         md5/md5.cpp
         md5/md5.h
         PageRequest.cpp
         Response.cpp
-        seasocks/Connection.h
-        seasocks/Credentials.h
-        seasocks/IgnoringLogger.h
-        seasocks/Logger.h
-        seasocks/PageHandler.h
-        seasocks/PrintfLogger.h
-        seasocks/Request.cpp
-        seasocks/Request.h
-        seasocks/ResponseBuilder.cpp
-        seasocks/ResponseBuilder.h
-        seasocks/ResponseCode.cpp
-        seasocks/ResponseCodeDefs.h
-        seasocks/ResponseCode.h
-        seasocks/Response.h
-        seasocks/ResponseWriter.h
-        seasocks/Server.h
-        seasocks/ServerImpl.h
-        seasocks/SimpleResponse.h
-        seasocks/StreamingResponse.cpp
-        seasocks/StreamingResponse.h
-        seasocks/StringUtil.h
-        seasocks/SynchronousResponse.cpp
-        seasocks/SynchronousResponse.h
-        seasocks/ToString.h
-        seasocks/TransferEncoding.h
-        seasocks/util/CrackedUri.h
-        seasocks/util/CrackedUriPageHandler.h
-        seasocks/util/Html.h
-        seasocks/util/Json.h
-        seasocks/util/PathHandler.h
-        seasocks/util/RootPageHandler.h
-        seasocks/util/StaticResponseHandler.h
-        seasocks/WebSocket.h
-        seasocks/ZlibContext.h
         Server.cpp
         sha1/sha1.cpp
         sha1/sha1.h
@@ -61,26 +18,23 @@ set(SEASOCKS_SOURCE_FILES
         util/RootPageHandler.cpp
         )
 
-if (DEFLATE_SUPPORT)
-    set(SEASOCKS_SOURCE_FILES ${SEASOCKS_SOURCE_FILES} seasocks/ZlibContext.cpp)
-else()
-    set(SEASOCKS_SOURCE_FILES ${SEASOCKS_SOURCE_FILES} seasocks/ZlibContextDisabled.cpp)
-endif()
 
 add_library(seasocks_obj OBJECT ${SEASOCKS_SOURCE_FILES})
-target_include_directories(seasocks_obj PUBLIC .)
+target_include_directories(seasocks_obj PRIVATE . ${SEASOCKS_ROOT_PATH} $<TARGET_PROPERTY:seasocks_header,INTERFACE_INCLUDE_DIRECTORIES>)
 set_property(TARGET seasocks_obj PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 
 add_library(seasocks STATIC $<TARGET_OBJECTS:seasocks_obj> $<TARGET_OBJECTS:embedded>)
-target_include_directories(seasocks PUBLIC .)
+target_include_directories(seasocks PRIVATE .)
 target_link_libraries(seasocks PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(seasocks PUBLIC seasocks_header)
 
 add_library(seasocks_so SHARED $<TARGET_OBJECTS:seasocks_obj> $<TARGET_OBJECTS:embedded>)
-target_include_directories(seasocks_so PUBLIC ${ZLIB_INCLUDE_DIRS} .)
-if (DEFLATE_SUPPORT)
+target_include_directories(seasocks_so PRIVATE ${ZLIB_INCLUDE_DIRS} .)
+if (SEASOCKS_DEFLATE_SUPPORT)
     target_link_libraries(seasocks_so PRIVATE ${CMAKE_THREAD_LIBS_INIT} "${ZLIB_LIBRARIES}")
 endif()
-set_target_properties(seasocks_so PROPERTIES OUTPUT_NAME seasocks VERSION ${PROJECT_VERSION})
+set_target_properties(seasocks_so PROPERTIES OUTPUT_NAME seasocks VERSION ${VERSION})
+target_link_libraries(seasocks_so PUBLIC seasocks_header)
 
 install(TARGETS seasocks seasocks_so
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
