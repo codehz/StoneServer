@@ -10,7 +10,7 @@ job_build:
   script:
     - mkdir build install
     - cd build
-    - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install -DCMAKE_BUILD_TYPE=Release .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
+    - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install -DCMAKE_BUILD_TYPE=Release -DUSE_COTIRE=OFF .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
     - make
     - make install
   artifacts:
@@ -34,3 +34,24 @@ job_package:
   dependencies:
     - job_build
   stage: package
+
+build_docker_image:
+  stage: package
+  tags:
+    - docker
+  before_script:
+    - docker info
+  script:
+    - mkdir -p image/{usr/lib32,lib,run} && cd image
+    - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} usr/lib32/{}
+    - cp -Lv /usr/lib32/ld-linux.so.2 lib
+    - cp -v ../install/bin/* run
+    - strip run/*
+    - |
+      docker build -t codehz/stoneserver <<EOF
+      FROM scratch
+      ADD . /
+      WORKDIR /run
+      CMD ["/run/stone"]
+      EOF
+    - docker push codehz/stoneserver

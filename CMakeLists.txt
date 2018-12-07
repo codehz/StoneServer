@@ -5,6 +5,8 @@ set(CMAKE_ROOT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(CMAKE_SKIP_RPATH TRUE)
 
+option(USE_COTIRE ON)
+
 include(cotire)
 
 include(GetGitRevisionDescription)
