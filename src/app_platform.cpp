@@ -7,6 +7,10 @@
 #include <sys/types.h>
 #include <sys/statvfs.h>
 #include <hybris/dlfcn.h>
+#include <ifaddrs.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <net/if.h>
 
 #ifdef __APPLE__
 #include <stdint.h>
@@ -15,10 +19,6 @@
 #include <mach/mach_host.h>
 #else
 #include <sys/sysinfo.h>
-#include <ifaddrs.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <net/if.h>
 #endif
 
 const char* LauncherAppPlatform::TAG = "AppPlatform";
@@ -175,9 +175,6 @@ void LauncherAppPlatform::calculateHardwareTier() {
 }
 
 std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
-#ifdef __APPLE__
-    return std::vector<mcpe::string>();
-#else
     struct ifaddrs *ifaddrs = nullptr;
     if (getifaddrs(&ifaddrs) != 0)
         return std::vector<mcpe::string>();
@@ -185,7 +182,11 @@ std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
     for (struct ifaddrs *ifaddr = ifaddrs; ifaddr; ifaddr = ifaddr->ifa_next) {
         if (!(ifaddr->ifa_flags & IFF_BROADCAST))
             continue;
+#ifdef __APPLE__
+        auto addr = ifaddr->ifa_dstaddr;
+#else
         auto addr = ifaddr->ifa_ifu.ifu_broadaddr;
+#endif
         if (addr == nullptr)
             continue;
         if (addr->sa_family == AF_INET) {
@@ -203,5 +204,4 @@ std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
     }
     freeifaddrs(ifaddrs);
     return retval;
-#endif
 }
