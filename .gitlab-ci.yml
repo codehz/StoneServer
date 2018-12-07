@@ -41,7 +41,7 @@ build_docker_image:
     - host-docker
   before_script:
     - docker info
-    - whoami
+    - ls ~/.docker
   script:
     - mkdir -p image/{usr/lib32,lib,run} && cd image
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} usr/lib32/{}
