@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/minecraft-linux/mcpelauncher-core
+	branch = master
+	commit = b10b1d7e26cbf424ec063dbb211aab99d3812245
+	parent = 9663454acaeb51abc8d8ecfae90811297611a757
+	method = merge
+	cmdver = 0.4.0
