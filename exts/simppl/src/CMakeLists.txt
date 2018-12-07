@@ -1,4 +1,4 @@
-add_library(simppl SHARED
+add_library(simppl STATIC
    callstate.cpp
    dispatcher.cpp 
    error.cpp 
@@ -19,6 +19,10 @@ add_library(simppl SHARED
    bool.cpp
 )
 
+target_include_directories(simppl PUBLIC
+   ../include
+   ${DBUS_INCLUDE_DIR}
+   ${DBUS_ARCHDEPS_INCLUDE_DIR})
 target_link_libraries(simppl dbus-1)
 
 install(TARGETS simppl DESTINATION lib)

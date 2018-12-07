@@ -5,8 +5,8 @@
 ;
 [subrepo]
 	remote = https://github.com/codehz/simppl
-	branch = master
-	commit = a8f91f7818ce74bd456314c3a87e070f64531ddd
-	parent = e6de81d281b8aa514c3fa2717ce195c86e3a99c8
+	branch = stone
+	commit = 52e8cb65aa8ebab4063404f39703b135cc7098f6
+	parent = ac6da570cadb08d2875d765a51ac51ddfc15fde8
 	method = merge
 	cmdver = 0.4.0

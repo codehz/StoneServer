@@ -65,14 +65,14 @@ find_path(DBUS_LIBDIR
 
 if(DBUS_INCLUDE_DIR)
     message("Found DBus include dir under '${DBUS_INCLUDE_DIR}'")
-    include_directories(${DBUS_INCLUDE_DIR})
+    # include_directories(${DBUS_INCLUDE_DIR})
 else()
     message(FATAL_ERROR "Didn't find dbus directory")
 endif()
 
 if(DBUS_ARCHDEPS_INCLUDE_DIR)
     message("Found DBus arch-deps include dir under '${DBUS_ARCHDEPS_INCLUDE_DIR}'")
-    include_directories(${DBUS_ARCHDEPS_INCLUDE_DIR})
+    # include_directories(${DBUS_ARCHDEPS_INCLUDE_DIR})
 else()
     message(FATAL_ERROR "Didn't find dbus arch-deps directory")
 endif()
