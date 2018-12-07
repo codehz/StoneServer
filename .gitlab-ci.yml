@@ -41,7 +41,6 @@ build_docker_image:
     - host-docker
   before_script:
     - docker info
-    - ls ~/.docker
   script:
     - mkdir -p image/{usr/lib32,lib,run} && cd image
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} usr/lib32/{}
@@ -55,4 +54,4 @@ build_docker_image:
       WORKDIR /run
       CMD ["/run/stone"]
       EOF
-    - docker push codehz/stoneserver
+    - docker push codehz/stoneserver:latest
