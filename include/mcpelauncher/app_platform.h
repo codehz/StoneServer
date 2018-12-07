@@ -181,4 +181,6 @@ public:
         return true;
     }
 
+    std::vector<mcpe::string> getBroadcastAddresses();
+
 };

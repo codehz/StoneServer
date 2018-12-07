@@ -15,6 +15,10 @@
 #include <mach/mach_host.h>
 #else
 #include <sys/sysinfo.h>
+#include <ifaddrs.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <net/if.h>
 #endif
 
 const char* LauncherAppPlatform::TAG = "AppPlatform";
@@ -90,6 +94,7 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN11AppPlatform16allowSplitScreenEv", &LauncherAppPlatform::allowSplitScreen);
     vtr.replace("_ZN19AppPlatform_android21calculateHardwareTierEv", &LauncherAppPlatform::calculateHardwareTier);
     vtr.replace("_ZNK11AppPlatform17supportsScriptingEv", &LauncherAppPlatform::supportsScripting);
+    vtr.replace("_ZN19AppPlatform_android21getBroadcastAddressesEv", &LauncherAppPlatform::getBroadcastAddresses);
 
     vtr.replace("_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", hybris_dlsym(lib, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv"));
     vtr.replace("_ZN19AppPlatform_android36getBroadcastingMultiplayerServiceIdsEbb", hybris_dlsym(lib, "_ZN19AppPlatform_android36getBroadcastingMultiplayerServiceIdsEbb"));
@@ -167,4 +172,36 @@ long long LauncherAppPlatform::getMemoryLimit() {
 
 void LauncherAppPlatform::calculateHardwareTier() {
     hardwareTier = 3;
+}
+
+std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
+#ifdef __APPLE__
+    return std::vector<mcpe::string>();
+#else
+    struct ifaddrs *ifaddrs = nullptr;
+    if (getifaddrs(&ifaddrs) != 0)
+        return std::vector<mcpe::string>();
+    std::vector<mcpe::string> retval;
+    for (struct ifaddrs *ifaddr = ifaddrs; ifaddr; ifaddr = ifaddr->ifa_next) {
+        if (!(ifaddr->ifa_flags & IFF_BROADCAST))
+            continue;
+        auto addr = ifaddr->ifa_ifu.ifu_broadaddr;
+        if (addr == nullptr)
+            continue;
+        if (addr->sa_family == AF_INET) {
+            char buf[INET_ADDRSTRLEN] = {0};
+            if (!inet_ntop(addr->sa_family, &((sockaddr_in*) addr)->sin_addr, buf, sizeof(buf)))
+                continue;
+            retval.emplace_back(buf);
+        }
+        if (addr->sa_family == AF_INET6) {
+            char buf[INET6_ADDRSTRLEN] = {0};
+            if (!inet_ntop(addr->sa_family, &((sockaddr_in6*) addr)->sin6_addr, buf, sizeof(buf)))
+                continue;
+            retval.emplace_back(buf);
+        }
+    }
+    freeifaddrs(ifaddrs);
+    return retval;
+#endif
 }
