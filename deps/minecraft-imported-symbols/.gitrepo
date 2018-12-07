@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/minecraft-linux/minecraft-imported-symbols
+	branch = master
+	commit = efbf38ea130ab5a1cf3e5bdf5e3b87cafd9a2ac0
+	parent = 4383ee5086679bed0d2246964ff401d8aaf1e4a9
+	method = merge
+	cmdver = 0.4.0
