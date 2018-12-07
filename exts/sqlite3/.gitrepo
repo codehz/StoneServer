@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/alex85k/sqlite3-cmake
+	branch = master
+	commit = 34d366c60267322a196333ec69997d81ecb1eaa4
+	parent = d6f84dbb5800a2bb4e97b913b48b2bb1fee1fc23
+	method = merge
+	cmdver = 0.4.0
