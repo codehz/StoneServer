@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/codehz/simppl
+	branch = master
+	commit = a8f91f7818ce74bd456314c3a87e070f64531ddd
+	parent = e6de81d281b8aa514c3fa2717ce195c86e3a99c8
+	method = merge
+	cmdver = 0.4.0
