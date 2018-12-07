@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/codehz/minecraft-symbols
+	branch = stone
+	commit = f6b7972f042b9daf198f08dde67489aace04fe5d
+	parent = fb2f1c3458b02910663a368e0ac587dda26bbbc1
+	method = merge
+	cmdver = 0.4.0
