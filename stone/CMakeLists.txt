@@ -22,5 +22,6 @@ set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
 add_dependencies(stone simppl)
 target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl simppl interface dbus-api)
+cotire(stone)
 
 install(TARGETS stone RUNTIME DESTINATION bin)
