@@ -40,3 +40,4 @@ foreach(ext ${EXTS})
 endforeach()
 
 add_subdirectory(stone)
+add_subdirectory(stoned)
