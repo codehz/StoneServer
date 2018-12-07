@@ -24,7 +24,7 @@ job_package:
     - mkdir -p output/support && cd output
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support/{}
     - cp -Lv /usr/lib32/ld-*.so support/ld.so
-    - cp ../install/* .
+    - cp ../install/bin/* .
     - cp /usr/bin/proot .
     - cp ../loader .
     - strip stone
