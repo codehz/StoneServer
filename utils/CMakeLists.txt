@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
+project(utils LANGUAGES CXX)
+
 add_library(utils
   "src/utils.cpp"
   "src/server_hook.cpp"
