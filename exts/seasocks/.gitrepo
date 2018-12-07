@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/mattgodbolt/seasocks
+	branch = master
+	commit = 6ec0bf436bf1ad53982d6acebbcfba5b0025c23b
+	parent = 741633c91433b0d22dce01c75a3ea389509c55a6
+	method = merge
+	cmdver = 0.4.0
