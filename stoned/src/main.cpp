@@ -10,9 +10,19 @@
 
 #include <memory>
 
+using namespace seasocks;
+using namespace std;
+
+struct StoneHandler : WebSocket::Handler {
+  set<WebSocket *> connections;
+  void onConnect(WebSocket *socket) override { connections.insert(socket); }
+  void onDisconnect(WebSocket *socket) override { connections.erase(socket); }
+  void onData(WebSocket *socket, const char *data) override {}
+};
+
 int main() {
-  using namespace seasocks;
-  auto logger = std::make_shared<PrintfLogger>();
+  auto logger = make_shared<PrintfLogger>();
   Server server(logger);
+  server.addWebSocketHandler("/ws", make_shared<StoneHandler>());
   server.serve("web", 9090);
 }
