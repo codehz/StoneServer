@@ -10,6 +10,7 @@ namespace structs {
 struct PlayerInfo {
   using serializer_type = make_serializer<string, string, string>::type;
   string name, uuid, xuid;
+  void jsonToStream(std::ostream &o) const;
   bool operator!=(PlayerInfo const &rhs) const { return name != rhs.name; }
   bool operator==(PlayerInfo const &rhs) const { return name == rhs.name; }
 };
