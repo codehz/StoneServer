@@ -7,7 +7,7 @@ add_executable(stoned
 
 set_property(TARGET stoned PROPERTY CXX_STANDARD 17)
 
-target_link_libraries(stoned dbus-api seasocks msgpackc-cxx msgpackc-static)
+target_link_libraries(stoned dbus-api seasocks)
 if (${USE_COTIRE})
   cotire(stoned)
 endif()
