@@ -171,8 +171,23 @@ extern struct r_debug* rtld_r_debug_loc(void);
 static struct r_debug* _r_debug = NULL;
 static struct link_map *r_debug_map = 0;
 static struct link_map *r_debug_tail = 0;
+static struct link_map* glibc_r_map;
 
 static pthread_mutex_t _r_debug_lock = PTHREAD_MUTEX_INITIALIZER;
+
+static void update_gdb_r_debug() {
+    struct link_map * map;
+    while (glibc_r_map) {
+        map = (struct link_map*) malloc(sizeof(struct link_map));
+        map->l_addr = glibc_r_map->l_addr;
+        map->l_name = glibc_r_map->l_name;
+        map->l_prev = r_debug_tail;
+        map->l_next = NULL;
+        r_debug_tail->l_next = map;
+        r_debug_tail = map;
+        glibc_r_map = glibc_r_map->l_next;
+    }
+}
 
 static void init_r_debug() {
     if (_r_debug != NULL) {
@@ -182,6 +197,8 @@ static void init_r_debug() {
     _r_debug = rtld_r_debug_loc();
     if (_r_debug == NULL)
         abort();
+
+    glibc_r_map = _r_debug->r_map;
 
     struct link_map * map;
     map = (struct link_map*) malloc(sizeof(struct link_map));
@@ -193,21 +210,8 @@ static void init_r_debug() {
     _r_debug->r_map = map;
     r_debug_tail = map;
 
-    struct link_map* glibc_r_map = _r_debug->r_map;
-
-    while (glibc_r_map->l_next) {
-        map = (struct link_map*) malloc(sizeof(struct link_map));
-        map->l_addr = glibc_r_map->l_addr;
-        map->l_name = glibc_r_map->l_name;
-        map->l_prev = r_debug_tail;
-        map->l_next = NULL;
-        r_debug_tail->l_next = map;
-        r_debug_tail = map;
-
-        glibc_r_map = glibc_r_map->l_next;
-    }
+    update_gdb_r_debug();
 }
-
 
 static void insert_soinfo_into_debug_map(soinfo * info)
 {
@@ -257,6 +261,7 @@ void notify_gdb_of_load(soinfo * info)
 
     pthread_mutex_lock(&_r_debug_lock);
     init_r_debug();
+    update_gdb_r_debug();
 
     _r_debug = rtld_r_debug_loc();
     if (_r_debug == NULL)
@@ -281,6 +286,7 @@ void notify_gdb_of_unload(soinfo * info)
     }
 
     pthread_mutex_lock(&_r_debug_lock);
+    update_gdb_r_debug();
 
     _r_debug->r_state = RT_DELETE;
     rtld_db_dlactivity();
