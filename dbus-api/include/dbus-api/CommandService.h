@@ -9,6 +9,7 @@ using namespace simppl::dbus;
 namespace structs {
 struct AutoCompleteOption {
   using serializer_type = make_serializer<string, string, string, int, int, int>::type;
+  void jsonToStream(std::ostream &o) const;
   string source, title, desc;
   int offset, eat, item;
 };
