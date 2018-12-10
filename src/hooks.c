@@ -198,6 +198,7 @@ int darwin_my_ioctl(int s, int cmd, void* arg) {
 int* darwin_my_errno() {
     int* ret = &errno;
     if (*ret == EAGAIN) *ret = 11;
+    else if (*ret == ETIMEDOUT) *ret = 110;
     else if (*ret == EINPROGRESS) *ret = 115;
     return ret;
 }
