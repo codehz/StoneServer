@@ -29,7 +29,7 @@ Server log signal.
 #### Signal: *playerAdded*/*playerRemoved* Struct of (String *name*, String *uuid*, String *xuid*)
 Notify if a player joined/left.
 ### Interface: *one.codehz.stone.CommandService.\<SUFFIX>*
-#### Method: *complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *eat*, Int32 *item_id*)] *options*)
+#### Method: *complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *length*, Int32 *item_id*)] *options*)
 Get the list of the auto-complete options.
 #### Method: *execute* (String *origin_name*, String *command*) ↦ (String *result*)
 Execute a command and collect the output.

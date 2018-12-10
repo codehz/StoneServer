@@ -230,9 +230,11 @@ int main() {
     auto options = instance.minecraft->getCommands()->getRegistry().getAutoCompleteOptions(*commandOrigin, input, pos);
     std::vector<structs::AutoCompleteOption> results;
     results.reserve(options->list.size());
+    printf("%s %d\n", input.c_str(), pos);
     for (auto option : options->list) {
+      printf("\t%s %d %d %d\n", option.source.c_str(), option.offset, option.length, option.tail);
       results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
-                                                     option.offset, option.eat, option.item.id });
+                                                     option.offset, option.length, option.item.id });
     }
     srv_command.respond_with(srv_command.complete(results));
   };

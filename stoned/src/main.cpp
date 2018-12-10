@@ -24,7 +24,7 @@ static Dispatcher disp("bus:session");
 
 void structs::PlayerInfo::jsonToStream(std::ostream &str) const { str << makeMap("name", name, "uuid", uuid, "xuid", xuid); }
 void structs::AutoCompleteOption::jsonToStream(std::ostream &str) const {
-  str << makeMap("source", source, "title", title, "description", desc, "offset", offset, "eat", eat, "item_id", item);
+  str << makeMap("source", source, "title", title, "description", desc, "offset", offset, "length", length, "item_id", item);
 }
 
 struct StoneHandler : WebSocket::Handler {

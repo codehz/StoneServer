@@ -9,7 +9,7 @@ struct CommandItem {
 
 struct AutoCompleteOption {
   mcpe::string source, title, description;
-  int offset, eat, tail;
+  int offset, length, tail;
   CommandItem item;
   bool flag;
 };
