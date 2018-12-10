@@ -213,6 +213,18 @@ int darwin_my_prctl(int opt) {
     printf("unsupported prctl %i\n", opt);
     return 0;
 }
+
+static void* darwin_my_mmap(void *addr, size_t length, int prot, int flags,
+                            int fd, off_t offset) {
+    int flags_m = flags & 0xf;
+    if (flags & 0x10)
+        flags_m |= MAP_FIXED;
+    if (flags & 0x20)
+        flags_m |= MAP_ANON;
+    if (flags & 0x4000)
+        flags_m |= MAP_NORESERVE;
+    return mmap(addr, length, prot, flags_m, fd, offset);
+}
 #endif
 
 static int my_set_errno(int oi_errno)
@@ -668,7 +680,11 @@ struct _hook main_hooks[] = {
     // {"clock_nanosleep", clock_nanosleep},
     // {"clock_getcpuclockid", clock_getcpuclockid},
     /* mman.h */
+#ifdef __APPLE__
+    {"mmap", darwin_my_mmap},
+#else
     {"mmap", mmap},
+#endif
     {"munmap", munmap},
     {"mprotect", mprotect},
     {"madvise", madvise},
