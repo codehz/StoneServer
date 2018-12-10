@@ -344,6 +344,19 @@ static pthread_mutex_t *my_static_init_mutex(pthread_mutex_t *__mutex) {
     return realmutex;
 }
 
+
+static pthread_cond_t *my_static_init_cond(pthread_cond_t *__cond) {
+    pthread_mutex_lock(&hybris_static_init_mutex);
+    unsigned int value = (*(unsigned int *) __cond);
+    pthread_cond_t *realcond = (pthread_cond_t *) value;
+    if (value <= ANDROID_TOP_ADDR_VALUE_MUTEX) {
+        realcond = hybris_alloc_init_cond();
+        *((unsigned int*) __cond) = (unsigned int) realcond;
+    }
+    pthread_mutex_unlock(&hybris_static_init_mutex);
+    return realcond;
+}
+
 static int my_pthread_mutex_lock(pthread_mutex_t *__mutex)
 {
     if (!__mutex) {
@@ -562,8 +575,7 @@ static int my_pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
@@ -595,8 +607,7 @@ static int my_pthread_cond_timedwait(pthread_cond_t *cond,
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
@@ -629,8 +640,7 @@ static int my_pthread_cond_timedwait_relative_np(pthread_cond_t *cond,
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
