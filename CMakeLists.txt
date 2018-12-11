@@ -13,10 +13,7 @@ include(GetGitRevisionDescription)
 git_describe(VERSION --always --tags --dirty=-modified --long --abbrev=40)
 add_compile_options(-DBUILD_VERSION=\"${VERSION}\")
 
-set(CMAKE_CXX_FLAGS_RELEASE
-  -flto
-  -Os
-  -s)
+set(CMAKE_CXX_FLAGS_RELEASE "-flto -Os -s")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -static-libstdc++")
