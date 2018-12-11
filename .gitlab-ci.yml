@@ -48,7 +48,7 @@ build_docker_image:
     - cp -v ../install/bin/* run
     - strip run/*
     - |
-      docker build -t codehz/stoneserver:latest -<<EOF
+      docker build -t codehz/stoneserver:latest --no-cache -<<EOF
       FROM scratch
       ADD . /
       WORKDIR /run
