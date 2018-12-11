@@ -11,5 +11,4 @@ libnss_myhostname.so.2
 libnss_mymachines.so.2
 libpthread.so.0
 librt.so.1
-libstdc++.so.6
 libsystemd.so.0
