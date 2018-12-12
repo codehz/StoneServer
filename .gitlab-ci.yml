@@ -4,10 +4,12 @@ stages:
   - package
 
 variables:
-  GIT_STRATEGY: clone
+  GIT_STRATEGY: none
   GIT_SUBMODULE_STRATEGY: recursive
 
 job_build:
+  variables:
+    GIT_STRATEGY: clone
   script:
     - mkdir build install
     - cd build
