@@ -16,7 +16,7 @@ job_build:
   artifacts:
     paths:
       - install/
-    expire_in: 20min
+    expire_in: 20hours
   stage: build
 
 job_package:
