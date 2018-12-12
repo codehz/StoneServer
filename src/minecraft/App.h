@@ -16,7 +16,8 @@ public:
 
     void init(AppContext& ctx);
 
-    void quit();
+    /// @vtable App _ZN3App4quitERKSsS1_
+    void quit(mcpe::string const&, mcpe::string const&);
 
     /// @vtable App _ZN3App10wantToQuitEv
     bool wantToQuit();
