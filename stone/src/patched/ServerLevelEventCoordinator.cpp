@@ -30,15 +30,8 @@ SHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5LevelR6Pl
 
 static patched::details::RegisterPatchInit pinit([] {
   using namespace interface;
-
   Locator<PlayerList>().generate<>();
-
   Locator<Level>()->_setServerLevelEventCoordinator(std::make_unique<ServerLevelEventCoordinator>());
-  constexpr char JZ_SHORT = 0x74, JMP_SHORT = 0xEB;
-
-  BUILD_HELPER(DirectPatch, char, 0x3E4, "_ZN5LevelD2Ev").VerifiedPatch(JZ_SHORT, JMP_SHORT);
-  BUILD_HELPER(DirectPatch, char, 0x414, "_ZN5LevelD2Ev").VerifiedPatch(JZ_SHORT, JMP_SHORT);
-  BUILD_HELPER(DirectPatch, char, 0x422, "_ZN5LevelD2Ev").VerifiedPatch(JZ_SHORT, JMP_SHORT);
 });
 
 } // namespace

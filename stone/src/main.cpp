@@ -16,7 +16,7 @@
 #include <minecraft/Minecraft.h>
 #include <minecraft/MinecraftCommands.h>
 #include <minecraft/MinecraftEventing.h>
-#include <minecraft/PermissionsMap.h>
+#include <minecraft/PermissionsFile.h>
 #include <minecraft/ResourcePack.h>
 #include <minecraft/ResourcePackStack.h>
 #include <minecraft/SaveTransactionManager.h>
@@ -124,7 +124,7 @@ int main() {
 
   Log::trace("StoneServer", "Loading whitelist and operator list");
   Whitelist whitelist;
-  PermissionsMap permissionsMap(true);
+  PermissionsFile permissionsFile("");
 
   Log::trace("StoneServer", "Setting up level settings");
   LevelSettings levelSettings;
@@ -200,15 +200,19 @@ int main() {
     return levelStorage.createLevelStorage(scheduler, props.worldDir.get(), *ContentIdentity::EMPTY, *keyProvider);
   };
   std::unique_ptr<EducationOptions> eduOptions(new EducationOptions(resourcePackManager));
-  ServerInstance instance(minecraftApp, whitelist, permissionsMap, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
-                          props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode, {},
-                          "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
-                          pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
-                          [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
-                          [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
+  ServerInstanceEventCoordinator ec;
+  ServerInstance instance(minecraftApp, ec);
+  instance.initializeServer(minecraftApp, whitelist, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
+                            props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
+                            {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
+                            pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
+                            [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
+                            [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
   Locator<ServerInstance>() = &instance;
   Log::trace("StoneServer", "Loading language data");
-  I18n::loadLanguages(*resourcePackManager, "en_US"_intl);
+  ResourceLoadManager resLoadMgr;
+  resLoadMgr.setAppSuspended(false);
+  I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
@@ -248,6 +252,7 @@ int main() {
   disp.run();
 
   Log::info("StoneServer", "Server is stopping");
+  patched::dest();
   instance.leaveGameSync();
 
   MinecraftUtils::workaroundShutdownCrash(handle);

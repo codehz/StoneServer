@@ -24,10 +24,11 @@ template <typename F> std::string withCommandOutput(F f) {
 
 namespace details {
   struct RegisterPatchInit {
-    RegisterPatchInit(void (*)());
+    RegisterPatchInit(void (*)(), void (*)() = nullptr);
   };
 }
 
 void init();
+void dest();
 
 } // namespace patched
