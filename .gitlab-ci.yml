@@ -20,6 +20,7 @@ job_build:
     paths:
       - install/
       - lib32.txt
+      - loader
     expire_in: 20hours
   stage: build
 
