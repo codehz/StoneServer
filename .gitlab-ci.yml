@@ -19,6 +19,7 @@ job_build:
   artifacts:
     paths:
       - install/
+      - lib32.txt
     expire_in: 20hours
   stage: build
 
