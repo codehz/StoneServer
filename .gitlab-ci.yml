@@ -13,7 +13,7 @@ job_build:
   script:
     - mkdir build install
     - cd build
-    - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
+    - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install -DCMAKE_BUILD_TYPE=Release -DUSE_COTIRE=OFF .. || (cat CMakeFiles/CMakeOutput.log && cat CMakeFiles/CMakeError.log && exit 1)
     - make
     - make install
   artifacts:
@@ -32,7 +32,6 @@ job_package:
     - cp ../install/bin/* .
     - cp /usr/bin/proot .
     - cp ../loader .
-    - strip stone
   artifacts:
     paths:
       - output
@@ -51,7 +50,6 @@ build_docker_image:
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} usr/lib32/{}
     - cp -Lv /usr/lib32/ld-linux.so.2 lib
     - cp -v ../install/bin/* run
-    - strip run/*
     - |
       docker build -t codehz/stoneserver:latest --no-cache -f - . <<EOF
       FROM scratch
