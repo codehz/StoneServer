@@ -24,6 +24,7 @@ void initDependencies() {
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
   Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
   Locator<PlayerList>() >> [](PlayerList *list) {
+    Log::info("PlayerList", "Initialized");
     list->onPlayerAdded >> [](Player *player) {
       Locator<PlayerList>()->set.insert(player);
       Log::info("PlayerList", "Player %s joined", PlayerName[*player].c_str());
