@@ -4,6 +4,7 @@ stages:
   - package
 
 variables:
+  GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
 
 job_build:
