@@ -290,6 +290,15 @@ void *my_android_dlsym(void *handle, const char *symbol)
     return android_dlsym(handle, symbol);
 }
 
+static void my_assert2(const char* file, int line, const char* function, const char* msg) {
+    fprintf(stderr, "%s:%u: %s: assertion \"%s\" failed", file, line, function, msg);
+    abort();
+}
+static void my_assert(const char* file, int line, const char* msg) {
+    fprintf(stderr, "%s:%u: assertion \"%s\" failed", file, line, msg);
+    abort();
+}
+
 struct _hook main_hooks[] = {
     {"property_get", property_get },
     {"property_set", property_set },
@@ -300,8 +309,8 @@ struct _hook main_hooks[] = {
     {"malloc", my_malloc },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
-    // {"__assert", __assert },
-    // {"__assert2", __assert },
+    {"__assert", my_assert },
+    {"__assert2", my_assert2 },
     {"uname", uname },
     {"sched_yield", sched_yield},
     {"ldexp", ldexp},
@@ -317,6 +326,7 @@ struct _hook main_hooks[] = {
     {"gettimeofday", gettimeofday},
     {"utime", utime},
     {"setlocale", setlocale},
+    {"localeconv", localeconv},
     {"setjmp", _setjmp},
     {"longjmp", longjmp},
     {"__umoddi3", __umoddi3},
