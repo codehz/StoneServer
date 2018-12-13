@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Dec 13 2018 17:21:08 UTC
+// Generated on Thu Dec 13 2018 17:29:12 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -39,6 +39,16 @@ mcpe::string Common::getGameVersionStringNet() {
 #include "FilePickerSettings.h"
 
 #include "IMinecraftApp.h"
+
+#include "NetworkIdentifier.h"
+static int (NetworkIdentifier::*_NetworkIdentifier_getHash)() const;
+int NetworkIdentifier::getHash() const {
+    return (this->*_NetworkIdentifier_getHash)();
+}
+static bool (NetworkIdentifier::*_NetworkIdentifier_equalsTypeData)(NetworkIdentifier const &) const;
+bool NetworkIdentifier::equalsTypeData(NetworkIdentifier const & p1) const {
+    return (this->*_NetworkIdentifier_equalsTypeData)(p1);
+}
 
 #include "Options.h"
 static bool (Options::*_Options_getFullscreen)() const;
@@ -676,6 +686,10 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutput_getMessages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOutput11getMessagesEv");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
+    ((void*&) _NetworkIdentifier_getHash) = hybris_dlsym(handle, "_ZNK17NetworkIdentifier7getHashEv");
+    if (_NetworkIdentifier_getHash == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK17NetworkIdentifier7getHashEv");
+    ((void*&) _NetworkIdentifier_equalsTypeData) = hybris_dlsym(handle, "_ZNK17NetworkIdentifier14equalsTypeDataERKS_");
+    if (_NetworkIdentifier_equalsTypeData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK17NetworkIdentifier14equalsTypeDataERKS_");
     ((void*&) _Options_getFullscreen) = hybris_dlsym(handle, "_ZNK7Options13getFullscreenEv");
     if (_Options_getFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7Options13getFullscreenEv");
     ((void*&) _Options_setFullscreen) = hybris_dlsym(handle, "_ZN7Options13setFullscreenEb");
