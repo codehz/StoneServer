@@ -59,9 +59,9 @@ void initDependencies() {
       constexpr char const *typemap[] = { "name", "uuid", "xuid" };
       bool (*test)(Player &, string const &query);
       switch (type) {
-      case 0: test = [](Player &p, string const &query) { return (p >> PlayerName) == query; }; break;
-      case 1: test = [](Player &p, string const &query) { return (p >> PlayerUUID >> UUIDStr) == query; }; break;
-      case 2: test = [](Player &p, string const &query) { return (p >> PlayerXUID) == query; }; break;
+      case 0: test = [](auto p, auto query) { return p >> PlayerName >> StdStr >> EqualsTo(query); }; break;
+      case 1: test = [](auto p, auto query) { return p >> PlayerUUID >> UUIDStr >> StdStr >> EqualsTo(query); }; break;
+      case 2: test = [](auto p, auto query) { return p >> PlayerXUID >> StdStr >> EqualsTo(query); }; break;
       default:
         Locator<Skeleton<CoreService>>()->respond_with(Error("query_type.unknown", strformat("Unknown query type: %d"_intl, type).c_str()));
         return;

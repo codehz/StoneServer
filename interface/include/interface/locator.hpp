@@ -20,7 +20,7 @@ public:
     for (auto fn : updateNotifyList) fn(*input);
     return (raw_pointer = input);
   }
-  inline T &operator=(T &input) { return *(*this = input); }
+  inline T &operator=(T &input) { return *(*this = &input); }
   inline T *operator->() { return raw_pointer; }
   inline T &operator*() { return *raw_pointer; }
 

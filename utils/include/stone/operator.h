@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 #include <memory>
 
 namespace utils {
@@ -47,15 +48,23 @@ template <typename Source, typename Target> struct OperatorTraits<Target (*)(Sou
   using type = Operator<Source, Target, Target (*)(Source const &)>;
 };
 
+template <typename Source, typename Target> struct Operator<Source, Target, std::function<Target(Source const &)>> {
+  std::function<Target(Source const &)> func;
+  Target operator()(Source const &source) const { return func(source); }
+  friend Target operator>>(Source const &source, Operator accessor) { return accessor.operator()(source); }
+};
+
+template <typename Source, typename Target> struct OperatorTraits<std::function<Target(Source const &)>> {
+  using type = Operator<Source, Target, std::function<Target(Source const &)>>;
+};
+
 template <typename Source, typename Target> struct Operator<Source, Target, Target(Source::*)> {
   Target Source::*field;
   Target operator()(Source const &source) const { return source.*field; }
   friend Target operator>>(Source const &source, Operator accessor) { return accessor.operator()(source); }
 };
 
-template <typename Source, typename Target> struct OperatorTraits<Target(Source::*)> {
-  using type = Operator<Source, Target, Target(Source::*)>;
-};
+template <typename Source, typename Target> struct OperatorTraits<Target(Source::*)> { using type = Operator<Source, Target, Target(Source::*)>; };
 
 template <typename Method> auto makeOperator(Method method) { return typename OperatorTraits<Method>::type{ method }; }
 
