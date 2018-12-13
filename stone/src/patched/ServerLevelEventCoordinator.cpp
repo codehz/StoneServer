@@ -20,12 +20,12 @@ SHook(void, _ZN27ServerLevelEventCoordinator17sendLevelSaveDataER5LevelR11Compou
 
 SHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, void *self, Level *, Player *player) {
   using namespace interface;
-  Locator<PlayerList>()->onPlayerAdded(player);
+  Locator<PlayerList>()->onPlayerAdded(*player);
 }
 
 SHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5LevelR6Player, void *self, Level *, Player *player) {
   using namespace interface;
-  Locator<PlayerList>()->onPlayerRemoved(player);
+  Locator<PlayerList>()->onPlayerRemoved(*player);
 }
 
 static patched::details::RegisterPatchInit pinit([] {

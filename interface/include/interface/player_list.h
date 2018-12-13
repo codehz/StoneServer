@@ -10,8 +10,8 @@ namespace interface {
 
 struct PlayerList : BaseInterface {
   std::set<Player *> set;
-  EventEmitter<Player *> onPlayerAdded;
-  EventEmitter<Player *> onPlayerRemoved;
+  EventEmitter<Player &> onPlayerAdded;
+  EventEmitter<Player &> onPlayerRemoved;
 };
 
 } // namespace interface

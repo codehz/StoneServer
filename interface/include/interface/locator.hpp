@@ -7,7 +7,7 @@ namespace interface {
 
 template <typename T> class ReferenceHolder {
   T *raw_pointer;
-  std::list<std::function<void(T *)>> setNotifyList, unsetNotifyList, updateNotifyList;
+  std::list<std::function<void(T &)>> setNotifyList, unsetNotifyList, updateNotifyList;
 
 public:
   inline ReferenceHolder(T *init = nullptr)
@@ -15,9 +15,9 @@ public:
   inline T *operator=(T *input) {
     if (input == raw_pointer) return input;
     auto &tlist = input ? setNotifyList : unsetNotifyList;
-    for (auto fn : tlist) fn(input ?: raw_pointer);
+    for (auto fn : tlist) fn(*(input ?: raw_pointer));
     tlist.clear();
-    for (auto fn : updateNotifyList) fn(input);
+    for (auto fn : updateNotifyList) fn(*input);
     return (raw_pointer = input);
   }
   inline T &operator=(T &input) { return *(*this = input); }
@@ -26,7 +26,7 @@ public:
 
   template <typename F> inline void operator>>(F const &f) {
     if (raw_pointer)
-      f(raw_pointer);
+      f(*raw_pointer);
     else
       setNotifyList.emplace_back(f);
   }
@@ -56,15 +56,15 @@ template <typename T> struct plain_type<T volatile> { using type = typename plai
 template <typename T> using plain_type_t = typename plain_type<T>::type;
 
 template <typename T, typename R> inline auto FieldRef(R(T::*field)) {
-  return [=](T *t) { Locator<plain_type_t<R>>() = t->*field; };
+  return [=](T &t) { Locator<plain_type_t<R>>() = t.*field; };
 }
 
 template <typename T, typename R> inline auto MethodGet(R (T::*method)()) {
-  return [=](T *t) { Locator<plain_type_t<R>>() = (t->*method)(); };
+  return [=](T &t) { Locator<plain_type_t<R>>() = (t.*method)(); };
 }
 
 template <typename T, typename R> inline auto MethodGet(R (T::*method)() const) {
-  return [=](T *t) { Locator<plain_type_t<R>>() = (t->*method)(); };
+  return [=](T &t) { Locator<plain_type_t<R>>() = (t.*method)(); };
 }
 
 } // namespace interface

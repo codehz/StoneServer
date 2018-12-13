@@ -1,6 +1,7 @@
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
 
+#include "operators.h"
 #include "patched.h"
 #include "patched/Player.h"
 #include "services.h"
@@ -9,6 +10,7 @@
 #include <minecraft/ExtendedCertificate.h>
 #include <minecraft/Level.h>
 #include <minecraft/Minecraft.h>
+#include <minecraft/MinecraftCommands.h>
 
 #include <simppl/skeleton.h>
 #include <simppl/string.h>
@@ -22,63 +24,65 @@ void initDependencies() {
 
   Locator<ServerInstance>() >> FieldRef(&ServerInstance::minecraft);
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
+  Locator<MinecraftCommands>() >> MethodGet(&MinecraftCommands::getRegistry);
   Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
-  Locator<PlayerList>() >> [](PlayerList *list) {
+  Locator<PlayerList>() >> [](PlayerList &list) {
     Log::info("PlayerList", "Initialized");
-    list->onPlayerAdded >> [](Player *player) {
-      Locator<PlayerList>()->set.insert(player);
-      Log::info("PlayerList", "Player %s joined", PlayerName[*player].c_str());
+    list.onPlayerAdded >> [](Player &player) {
+      Locator<PlayerList>()->set.insert(&player);
+      Log::info("PlayerList", "Player %s joined", (player >> PlayerName).c_str());
     };
-    list->onPlayerRemoved >> [](Player *player) {
-      Locator<PlayerList>()->set.erase(player);
-      Log::info("PlayerList", "Player %s left", PlayerName[*player].c_str());
+    list.onPlayerRemoved >> [](Player &player) {
+      Locator<PlayerList>()->set.erase(&player);
+      Log::info("PlayerList", "Player %s left", (player >> PlayerName).c_str());
     };
-    auto updateDBus = [](Player *) {
-      std::vector<structs::PlayerInfo> vec;
+    auto updateDBus = [](Player &) {
+      vector<structs::PlayerInfo> vec;
       for (auto player : Locator<PlayerList>()->set) {
         auto [name, uuid, xuid] = PlayerBasicInfo(*player);
         vec.emplace_back(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
       }
       Locator<Skeleton<CoreService>>()->players = vec;
     };
-    list->onPlayerAdded >> [](Player *player) {
-      auto [name, uuid, xuid] = PlayerBasicInfo(*player);
-      Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
+    list.onPlayerAdded >> [](Player &player) {
+      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
+      Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
-    list->onPlayerRemoved >> [](Player *player) {
-      auto [name, uuid, xuid] = PlayerBasicInfo(*player);
-      Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
+    list.onPlayerRemoved >> [](Player &player) {
+      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
+      Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
-    list->onPlayerAdded >> updateDBus;
-    list->onPlayerRemoved >> updateDBus;
-    Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](char const &type, std::string const &query) {
+    list.onPlayerAdded >> updateDBus;
+    list.onPlayerRemoved >> updateDBus;
+    Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](char const &type, string const &query) {
       using namespace uintl;
       constexpr char const *typemap[] = { "name", "uuid", "xuid" };
-      bool (*test)(Player *, std::string const &query);
+      bool (*test)(Player &, string const &query);
       switch (type) {
-      case 0: test = [](Player *p, std::string const &query) { return PlayerName[*p] == query; }; break;
-      case 1: test = [](Player *p, std::string const &query) { return PlayerUUID[*p].asString() == query; }; break;
-      case 2: test = [](Player *p, std::string const &query) { return ExtendedCertificate::getXuid(*p->getCertificate()) == query; }; break;
+      case 0: test = [](Player &p, string const &query) { return (p >> PlayerName) == query; }; break;
+      case 1: test = [](Player &p, string const &query) { return (p >> PlayerUUID >> UUIDStr) == query; }; break;
+      case 2: test = [](Player &p, string const &query) { return (p >> PlayerXUID) == query; }; break;
       default:
         Locator<Skeleton<CoreService>>()->respond_with(Error("query_type.unknown", strformat("Unknown query type: %d"_intl, type).c_str()));
         return;
       }
-      for (auto player : Locator<PlayerList>()->set) {
+      for (auto pplayer : Locator<PlayerList>()->set) {
+        auto player = *pplayer;
         if (test(player, query)) {
           map<string, simppl::Variant<string, int, unsigned, double>> ret;
-          auto [x, y, z]          = player->getPos();
-          auto [pitch, yaw]       = player->getRotation();
-          auto [name, uuid, xuid] = PlayerBasicInfo(*player);
+          auto [x, y, z]          = player >> PlayerPos;
+          auto [pitch, yaw]       = player >> PlayerRot;
+          auto [name, uuid, xuid] = player >> PlayerBasicInfo;
 
-          ret["name"]  = name.std();
-          ret["uuid"]  = uuid.asString().std();
-          ret["xuid"]  = xuid.std();
-          ret["x"]     = (double)x;
-          ret["y"]     = (double)y;
-          ret["z"]     = (double)z;
-          ret["pitch"] = (double)pitch;
-          ret["yaw"]   = (double)yaw;
-          ret["xp"]    = (double)player->getLevelProgress();
+          ret["name"]  = name >> StdStr;
+          ret["uuid"]  = uuid >> UUIDStr >> StdStr;
+          ret["xuid"]  = xuid >> StdStr;
+          ret["x"]     = x >> FloatToDouble;
+          ret["y"]     = y >> FloatToDouble;
+          ret["z"]     = z >> FloatToDouble;
+          ret["pitch"] = pitch >> FloatToDouble;
+          ret["yaw"]   = yaw >> FloatToDouble;
+          ret["xp"]    = player >> PlayerLvl >> FloatToDouble;
           Locator<Skeleton<CoreService>>()->respond_with(Locator<Skeleton<CoreService>>()->getPlayerInfo(ret));
           return;
         }

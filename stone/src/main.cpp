@@ -223,20 +223,18 @@ int main() {
   srv_command.execute >> [&](std::string const &origin, std::string const &command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
-        std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *instance.minecraft));
-        instance.minecraft->getCommands()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+        std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *Locator<Minecraft>()));
+        Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
       });
     });
     srv_command.respond_with(srv_command.execute(ret));
   };
   srv_command.complete >> [&](std::string const &input, unsigned const &pos) {
-    std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin("server", *instance.minecraft));
-    auto options = instance.minecraft->getCommands()->getRegistry().getAutoCompleteOptions(*commandOrigin, input, pos);
+    std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin("server", *Locator<Minecraft>()));
+    auto options = Locator<CommandRegistry>()->getAutoCompleteOptions(*commandOrigin, input, pos);
     std::vector<structs::AutoCompleteOption> results;
     results.reserve(options->list.size());
-    printf("%s %d\n", input.c_str(), pos);
     for (auto option : options->list) {
-      printf("\t%s %d %d %d\n", option.source.c_str(), option.offset, option.length, option.tail);
       results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
                                                      option.offset, option.length, option.item.id });
     }

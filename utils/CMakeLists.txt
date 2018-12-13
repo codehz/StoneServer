@@ -10,7 +10,7 @@ add_library(utils
   "include/stone/server_hook.h"
   "include/stone/symbol.h"
   "include/stone/hook_helper.h"
-  "include/stone/field_access.h"
+  "include/stone/operator.h"
 )
 
 set_property(TARGET utils PROPERTY CXX_STANDARD 17)

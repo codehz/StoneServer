@@ -10,6 +10,7 @@ add_executable(stone
   "src/stub_key_provider.h"
   "src/dependency.cpp"
   "src/services.h"
+  "src/operators.h"
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"
