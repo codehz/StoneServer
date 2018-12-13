@@ -7,6 +7,8 @@ class Certificate;
 
 class Player {
 public:
+    explicit Player(Player const &) = delete;
+
     void** vtable;
 
     mcpe::string *getPlatformOnlineId() const;

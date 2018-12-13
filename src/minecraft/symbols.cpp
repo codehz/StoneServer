@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Dec 12 2018 10:39:03 UTC
+// Generated on Thu Dec 13 2018 17:21:08 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -228,6 +228,9 @@ static void (CommandOutputSender::*_CommandOutputSender_registerOutputCallback)(
 void CommandOutputSender::registerOutputCallback() {
     (this->*_CommandOutputSender_registerOutputCallback)();
 }
+
+#include "Packet.h"
+void * * Packet::myVtable;
 
 #include "AppPlatform.h"
 void * * AppPlatform::myVtable;
@@ -533,6 +536,44 @@ void MinecraftEventing::init() {
     (this->*_MinecraftEventing_init)();
 }
 
+#include "TextPacket.h"
+static void (TextPacket::*_TextPacket_TextPacket)(TextPacketType, mcpe::string const &, mcpe::string const &, std::vector<mcpe::string> const &, bool, mcpe::string const &, mcpe::string const &);
+TextPacket::TextPacket(TextPacketType p1, mcpe::string const & p2, mcpe::string const & p3, std::vector<mcpe::string> const & p4, bool p5, mcpe::string const & p6, mcpe::string const & p7) {
+    (this->*_TextPacket_TextPacket)(p1, p2, p3, p4, p5, p6, p7);
+}
+static TextPacket (*_TextPacket_createRaw)(mcpe::string const &);
+TextPacket TextPacket::createRaw(mcpe::string const & p1) {
+    return _TextPacket_createRaw(p1);
+}
+static TextPacket (*_TextPacket_createJukeboxPopup)(mcpe::string const &);
+TextPacket TextPacket::createJukeboxPopup(mcpe::string const & p1) {
+    return _TextPacket_createJukeboxPopup(p1);
+}
+static TextPacket (*_TextPacket_createSystemMessage)(mcpe::string const &);
+TextPacket TextPacket::createSystemMessage(mcpe::string const & p1) {
+    return _TextPacket_createSystemMessage(p1);
+}
+static TextPacket (*_TextPacket_createChat)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &);
+TextPacket TextPacket::createChat(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    return _TextPacket_createChat(p1, p2, p3, p4);
+}
+static TextPacket (*_TextPacket_createTranslatedChat)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &);
+TextPacket TextPacket::createTranslatedChat(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    return _TextPacket_createTranslatedChat(p1, p2, p3, p4);
+}
+static TextPacket (*_TextPacket_createTranslatedAnnouncement)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &);
+TextPacket TextPacket::createTranslatedAnnouncement(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    return _TextPacket_createTranslatedAnnouncement(p1, p2, p3, p4);
+}
+static TextPacket (*_TextPacket_createWhisper)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &);
+TextPacket TextPacket::createWhisper(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    return _TextPacket_createWhisper(p1, p2, p3, p4);
+}
+static TextPacket (*_TextPacket_createTranslated)(mcpe::string const &, std::vector<mcpe::string> const &);
+TextPacket TextPacket::createTranslated(mcpe::string const & p1, std::vector<mcpe::string> const & p2) {
+    return _TextPacket_createTranslated(p1, p2);
+}
+
 #include "GameControllerManager.h"
 GameControllerManager * GameControllerManager::sGamePadManager;
 static void (GameControllerManager::*_GameControllerManager_setGameControllerConnected)(int, bool);
@@ -720,6 +761,8 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutputSender_send == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender4sendERK13CommandOriginRK13CommandOutput");
     ((void*&) _CommandOutputSender_registerOutputCallback) = hybris_dlsym(handle, "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
     if (_CommandOutputSender_registerOutputCallback == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
+    ((void*&) Packet::myVtable) = hybris_dlsym(handle, "_ZTV6Packet");
+    if (Packet::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6Packet");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
     if (AppPlatform::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11AppPlatform");
     ((void*&) AppPlatform::instance) = hybris_dlsym(handle, "_ZN14ServiceLocatorI11AppPlatformE15mDefaultServiceE");
@@ -856,6 +899,24 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftEventing_MinecraftEventing == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventingC2ERKSs");
     ((void*&) _MinecraftEventing_init) = hybris_dlsym(handle, "_ZN17MinecraftEventing4initEv");
     if (_MinecraftEventing_init == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventing4initEv");
+    ((void*&) _TextPacket_TextPacket) = hybris_dlsym(handle, "_ZN10TextPacketC2E14TextPacketTypeRKSsS2_RKSt6vectorISsSaISsEEbS2_S2_");
+    if (_TextPacket_TextPacket == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacketC2E14TextPacketTypeRKSsS2_RKSt6vectorISsSaISsEEbS2_S2_");
+    ((void*&) _TextPacket_createRaw) = hybris_dlsym(handle, "_ZN10TextPacket9createRawERKSs");
+    if (_TextPacket_createRaw == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket9createRawERKSs");
+    ((void*&) _TextPacket_createJukeboxPopup) = hybris_dlsym(handle, "_ZN10TextPacket18createJukeboxPopupERKSs");
+    if (_TextPacket_createJukeboxPopup == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket18createJukeboxPopupERKSs");
+    ((void*&) _TextPacket_createSystemMessage) = hybris_dlsym(handle, "_ZN10TextPacket19createSystemMessageERKSs");
+    if (_TextPacket_createSystemMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket19createSystemMessageERKSs");
+    ((void*&) _TextPacket_createChat) = hybris_dlsym(handle, "_ZN10TextPacket10createChatERKSsS1_S1_S1_");
+    if (_TextPacket_createChat == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket10createChatERKSsS1_S1_S1_");
+    ((void*&) _TextPacket_createTranslatedChat) = hybris_dlsym(handle, "_ZN10TextPacket20createTranslatedChatERKSsS1_S1_S1_");
+    if (_TextPacket_createTranslatedChat == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket20createTranslatedChatERKSsS1_S1_S1_");
+    ((void*&) _TextPacket_createTranslatedAnnouncement) = hybris_dlsym(handle, "_ZN10TextPacket28createTranslatedAnnouncementERKSsS1_S1_S1_");
+    if (_TextPacket_createTranslatedAnnouncement == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket28createTranslatedAnnouncementERKSsS1_S1_S1_");
+    ((void*&) _TextPacket_createWhisper) = hybris_dlsym(handle, "_ZN10TextPacket13createWhisperERKSsS1_S1_S1_");
+    if (_TextPacket_createWhisper == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket13createWhisperERKSsS1_S1_S1_");
+    ((void*&) _TextPacket_createTranslated) = hybris_dlsym(handle, "_ZN10TextPacket16createTranslatedERKSsRKSt6vectorISsSaISsEE");
+    if (_TextPacket_createTranslated == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10TextPacket16createTranslatedERKSsRKSt6vectorISsSaISsEE");
     ((void*&) GameControllerManager::sGamePadManager) = hybris_dlsym(handle, "_ZN21GameControllerManager15sGamePadManagerE");
     if (GameControllerManager::sGamePadManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN21GameControllerManager15sGamePadManagerE");
     ((void*&) _GameControllerManager_setGameControllerConnected) = hybris_dlsym(handle, "_ZN21GameControllerManager26setGameControllerConnectedEib");
