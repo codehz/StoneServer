@@ -26,17 +26,17 @@ void initDependencies() {
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
   Locator<MinecraftCommands>() >> MethodGet(&MinecraftCommands::getRegistry);
   Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
-  Locator<PlayerList>() >> [](PlayerList &list) {
+  Locator<PlayerList>() >> [](auto list) {
     Log::info("PlayerList", "Initialized");
-    list.onPlayerAdded >> [](Player &player) {
+    list.onPlayerAdded >> [](auto player) {
       Locator<PlayerList>()->set.insert(&player);
       Log::info("PlayerList", "Player %s joined", (player >> PlayerName).c_str());
     };
-    list.onPlayerRemoved >> [](Player &player) {
+    list.onPlayerRemoved >> [](auto player) {
       Locator<PlayerList>()->set.erase(&player);
       Log::info("PlayerList", "Player %s left", (player >> PlayerName).c_str());
     };
-    auto updateDBus = [](Player &) {
+    auto updateDBus = [](auto) {
       vector<structs::PlayerInfo> vec;
       for (auto player : Locator<PlayerList>()->set) {
         auto [name, uuid, xuid] = PlayerBasicInfo(*player);
@@ -44,17 +44,17 @@ void initDependencies() {
       }
       Locator<Skeleton<CoreService>>()->players = vec;
     };
-    list.onPlayerAdded >> [](Player &player) {
+    list.onPlayerAdded >> [](auto player) {
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
-    list.onPlayerRemoved >> [](Player &player) {
+    list.onPlayerRemoved >> [](auto player) {
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
     list.onPlayerAdded >> updateDBus;
     list.onPlayerRemoved >> updateDBus;
-    Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](char const &type, string const &query) {
+    Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](auto type, auto query) {
       using namespace uintl;
       constexpr char const *typemap[] = { "name", "uuid", "xuid" };
       bool (*test)(Player &, string const &query);

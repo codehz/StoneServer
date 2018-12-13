@@ -112,7 +112,7 @@ int main() {
   Log::trace("StoneServer", "Initializing AppPlatform (vtable)");
   LauncherAppPlatform::initVtable(handle);
   Log::trace("StoneServer", "Initializing AppPlatform (create instance)");
-  std::unique_ptr<LauncherAppPlatform> appPlatform(new LauncherAppPlatform());
+  auto appPlatform = make_unique<LauncherAppPlatform>();
   // Try to use i18n
   *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_intl;
   Log::trace("StoneServer", "Initializing AppPlatform (initialize call)");
@@ -148,12 +148,9 @@ int main() {
   pathmgr.setPackagePath(appPlatform->getPackagePath());
   pathmgr.setSettingsPath(pathmgr.getRootPath());
   Log::trace("StoneServer", "Initializing resource loaders");
-  ResourceLoaders::registerLoader((ResourceFileSystem)1,
-                                  std::unique_ptr<ResourceLoader>(new AppResourceLoader([&pathmgr] { return pathmgr.getPackagePath(); })));
-  ResourceLoaders::registerLoader((ResourceFileSystem)8,
-                                  std::unique_ptr<ResourceLoader>(new AppResourceLoader([&pathmgr] { return pathmgr.getUserDataPath(); })));
-  ResourceLoaders::registerLoader((ResourceFileSystem)4,
-                                  std::unique_ptr<ResourceLoader>(new AppResourceLoader([&pathmgr] { return pathmgr.getSettingsPath(); })));
+  ResourceLoaders::registerLoader((ResourceFileSystem)1, std::make_unique<AppResourceLoader>([&pathmgr] { return pathmgr.getPackagePath(); }));
+  ResourceLoaders::registerLoader((ResourceFileSystem)8, std::make_unique<AppResourceLoader>([&pathmgr] { return pathmgr.getUserDataPath(); }));
+  ResourceLoaders::registerLoader((ResourceFileSystem)4, std::make_unique<AppResourceLoader>([&pathmgr] { return pathmgr.getSettingsPath(); }));
 
   Log::trace("StoneServer", "Initializing MinecraftEventing (create instance)");
   MinecraftEventing eventing(pathmgr.getRootPath());
@@ -185,21 +182,20 @@ int main() {
   Automation::AutomationClient aclient(minecraftApp);
   minecraftApp.automationClient = &aclient;
   Log::debug("StoneServer", "Initializing SaveTransactionManager");
-  std::shared_ptr<SaveTransactionManager> saveTransactionManager(new SaveTransactionManager([](bool b) {
+  auto saveTransactionManager = std::make_shared<SaveTransactionManager>([](bool b) {
     if (b)
       Log::debug("StoneServer", "Saving the world...");
     else
       Log::debug("StoneServer", "World has been saved.");
-  }));
+  });
   Log::debug("StoneServer", "Initializing ExternalFileLevelStorageSource");
   ExternalFileLevelStorageSource levelStorage(&pathmgr, saveTransactionManager);
   Log::debug("StoneServer", "Initializing ServerInstance");
-  auto idleTimeout                 = std::chrono::seconds((int)(props.playerIdleTimeout * 60.f));
-  IContentKeyProvider *keyProvider = &stubKeyProvider;
-  auto createLevelStorageFunc      = [&levelStorage, &props, keyProvider](Scheduler &scheduler) {
-    return levelStorage.createLevelStorage(scheduler, props.worldDir.get(), *ContentIdentity::EMPTY, *keyProvider);
+  auto idleTimeout            = std::chrono::seconds((int)(props.playerIdleTimeout * 60.f));
+  auto createLevelStorageFunc = [&](Scheduler &scheduler) {
+    return levelStorage.createLevelStorage(scheduler, props.worldDir.get(), *ContentIdentity::EMPTY, stubKeyProvider);
   };
-  std::unique_ptr<EducationOptions> eduOptions(new EducationOptions(resourcePackManager));
+  auto eduOptions = std::make_unique<EducationOptions>(resourcePackManager);
   ServerInstanceEventCoordinator ec;
   ServerInstance instance(minecraftApp, ec);
   instance.initializeServer(minecraftApp, whitelist, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
@@ -211,7 +207,6 @@ int main() {
   Locator<ServerInstance>() = &instance;
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
-  resLoadMgr.setAppSuspended(false);
   I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
@@ -220,18 +215,18 @@ int main() {
 
   srv_core.stop >> [&] { disp.stop(); };
 
-  srv_command.execute >> [&](std::string const &origin, std::string const &command) {
+  srv_command.execute >> [&](auto origin, auto command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
-        std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin(origin, *Locator<Minecraft>()));
+        auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(origin, *Locator<Minecraft>());
         Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
       });
     });
     srv_command.respond_with(srv_command.execute(ret));
   };
-  srv_command.complete >> [&](std::string const &input, unsigned const &pos) {
-    std::unique_ptr<DedicatedServerCommandOrigin> commandOrigin(new DedicatedServerCommandOrigin("server", *Locator<Minecraft>()));
-    auto options = Locator<CommandRegistry>()->getAutoCompleteOptions(*commandOrigin, input, pos);
+  srv_command.complete >> [&](auto input, auto pos) {
+    auto commandOrigin = make_unique<DedicatedServerCommandOrigin>("server", *Locator<Minecraft>());
+    auto options       = Locator<CommandRegistry>()->getAutoCompleteOptions(*commandOrigin, input, pos);
     std::vector<structs::AutoCompleteOption> results;
     results.reserve(options->list.size());
     for (auto option : options->list) {
