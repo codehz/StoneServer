@@ -16,7 +16,7 @@ add_compile_options(-DBUILD_VERSION=\"${VERSION}\")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -s")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -static-libstdc++ -Wno-odr")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -static-libstdc++ -Wno-odr -g")
 
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")

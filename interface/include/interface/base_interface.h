@@ -7,6 +7,10 @@
 
 namespace interface {
 struct BaseInterface {
+  BaseInterface(BaseInterface const &) = delete;
+  BaseInterface(BaseInterface &&)      = delete;
+  BaseInterface &operator=(BaseInterface const &) = delete;
+  BaseInterface &operator=(BaseInterface &&) = delete;
   inline virtual ~BaseInterface(){};
 };
 

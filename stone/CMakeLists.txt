@@ -15,6 +15,7 @@ add_executable(stone
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"
   "src/patched/ServerInstanceEventCoordinator.cpp"
+  "src/patched/TextPacket.cpp"
   "src/patched/BedrockLog.cpp"
   "src/patched/Player.h"
 )

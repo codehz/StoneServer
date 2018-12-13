@@ -1,5 +1,6 @@
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
+#include <interface/chat.h>
 
 #include "operators.h"
 #include "patched.h"
@@ -90,6 +91,11 @@ void initDependencies() {
       Locator<Skeleton<CoreService>>()->respond_with(
           Error(strformat("query.%s.failed", typemap[(int)type]).c_str(), strformat("Player not found: %s"_intl, query.c_str()).c_str()));
       return;
+    };
+  };
+  Locator<Chat>() >> [](Chat &chat) {
+    chat.onPlayerChat >> [](auto &player, auto &msg) {
+      Log::info("chat", "[%s] %s", player >> PlayerName >> CStr, msg >> CStr);
     };
   };
 }
