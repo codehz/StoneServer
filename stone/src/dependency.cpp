@@ -36,23 +36,17 @@ void initDependencies() {
     auto updateDBus = [](Player *) {
       std::vector<structs::PlayerInfo> vec;
       for (auto player : Locator<PlayerList>()->set) {
-        auto name = PlayerName[*player];
-        auto uuid = PlayerUUID[*player];
-        auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+        auto [name, uuid, xuid] = PlayerBasicInfo(*player);
         vec.emplace_back(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
       }
       Locator<Skeleton<CoreService>>()->players = vec;
     };
     list->onPlayerAdded >> [](Player *player) {
-      auto name = PlayerName[*player];
-      auto uuid = PlayerUUID[*player];
-      auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+      auto [name, uuid, xuid] = PlayerBasicInfo(*player);
       Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
     };
     list->onPlayerRemoved >> [](Player *player) {
-      auto name = PlayerName[*player];
-      auto uuid = PlayerUUID[*player];
-      auto xuid = ExtendedCertificate::getXuid(*player->getCertificate());
+      auto [name, uuid, xuid] = PlayerBasicInfo(*player);
       Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
     };
     list->onPlayerAdded >> updateDBus;
@@ -72,12 +66,13 @@ void initDependencies() {
       for (auto player : Locator<PlayerList>()->set) {
         if (test(player, query)) {
           map<string, simppl::Variant<string, int, unsigned, double>> ret;
-          auto [x, y, z]    = player->getPos();
-          auto [pitch, yaw] = player->getRotation();
+          auto [x, y, z]          = player->getPos();
+          auto [pitch, yaw]       = player->getRotation();
+          auto [name, uuid, xuid] = PlayerBasicInfo(*player);
 
-          ret["name"]  = PlayerName[*player].std();
-          ret["uuid"]  = PlayerUUID[*player].asString().std();
-          ret["xuid"]  = ExtendedCertificate::getXuid(*player->getCertificate()).std();
+          ret["name"]  = name.std();
+          ret["uuid"]  = uuid.asString().std();
+          ret["xuid"]  = xuid.std();
           ret["x"]     = (double)x;
           ret["y"]     = (double)y;
           ret["z"]     = (double)z;
