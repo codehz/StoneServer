@@ -10,6 +10,8 @@ template <typename T> class ReferenceHolder {
   std::list<std::function<void(T &)>> setNotifyList, unsetNotifyList, updateNotifyList;
 
 public:
+  ReferenceHolder(ReferenceHolder const &) = delete;
+
   inline ReferenceHolder(T *init = nullptr)
       : raw_pointer(init) {}
   inline T *operator=(T *input) {

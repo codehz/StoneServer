@@ -15,7 +15,7 @@ wrapper_name_counter = {}
 out_file = None
 
 def output(text):
-    print(text)
+    # print(text)
     if out_file is not None:
         out_file.write(text)
         out_file.write("\n")
@@ -284,7 +284,7 @@ def process_header(file, is_legacy=False):
 
         for method_vis in class_data["methods"]:
             for method in class_data["methods"][method_vis]:
-                if method["defined"] or method["pure_virtual"]:
+                if method["defined"] or method["pure_virtual"] or method["explicit"]:
                     continue
                 process_method(method, True, is_legacy)
 

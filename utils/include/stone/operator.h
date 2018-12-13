@@ -12,7 +12,7 @@ template <typename Source, std::ptrdiff_t Offset, typename Target> struct Static
   }
   Target &operator[](Source const &source) const { return access(source); }
   Target &operator[](Source &source) const { return access(source); }
-  friend Target &operator>>(Source &source, StaticFieldAccessor accessor) { return accessor.operator[](source); }
+  friend Target &operator>>(Source &source, StaticFieldAccessor accessor) { return access(source); }
 };
 
 template <typename Source, typename Target, typename Method> struct Operator;
