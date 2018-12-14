@@ -122,10 +122,6 @@ int main() {
   ServerProperties props;
   props.load();
 
-  Log::trace("StoneServer", "Loading whitelist and operator list");
-  Whitelist whitelist;
-  PermissionsFile permissionsFile("");
-
   Log::trace("StoneServer", "Setting up level settings");
   LevelSettings levelSettings;
   levelSettings.seed                 = LevelSettings::parseSeedString(props.worldSeed.get(), Level::createRandomSeed());
@@ -147,6 +143,11 @@ int main() {
   FilePathManager pathmgr(appPlatform->getCurrentStoragePath(), false);
   pathmgr.setPackagePath(appPlatform->getPackagePath());
   pathmgr.setSettingsPath(pathmgr.getRootPath());
+
+  Log::trace("StoneServer", "Loading whitelist and operator list");
+  Whitelist whitelist;
+  PermissionsFile permissionsFile(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/permissions.json");
+
   Log::trace("StoneServer", "Initializing resource loaders");
   ResourceLoaders::registerLoader((ResourceFileSystem)1, std::make_unique<AppResourceLoader>([&pathmgr] { return pathmgr.getPackagePath(); }));
   ResourceLoaders::registerLoader((ResourceFileSystem)8, std::make_unique<AppResourceLoader>([&pathmgr] { return pathmgr.getUserDataPath(); }));
