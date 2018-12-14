@@ -119,25 +119,29 @@ int main() {
   appPlatform->initialize();
 
   Log::trace("StoneServer", "Loading server properties");
-  ServerProperties props;
+  auto &props = Locator<ServerProperties>().generate();
   props.load();
 
   Log::trace("StoneServer", "Setting up level settings");
   LevelSettings levelSettings;
-  levelSettings.seed                 = LevelSettings::parseSeedString(props.worldSeed.get(), Level::createRandomSeed());
-  levelSettings.gametype             = props.gamemode;
-  levelSettings.forceGameType        = props.forceGamemode;
-  levelSettings.difficulty           = props.difficulty;
-  levelSettings.dimension            = 0;
-  levelSettings.generator            = props.worldGenerator;
-  levelSettings.edu                  = false;
-  levelSettings.mpGame               = true;
-  levelSettings.lanBroadcast         = true;
-  levelSettings.commandsEnabled      = true;
-  levelSettings.texturepacksRequired = false;
-  levelSettings.defaultSpawnX        = INT_MIN;
-  levelSettings.defaultSpawnY        = INT_MIN;
-  levelSettings.defaultSpawnZ        = INT_MIN;
+  levelSettings.seed                  = LevelSettings::parseSeedString(props.worldSeed.get(), Level::createRandomSeed());
+  levelSettings.gametype              = props.gamemode;
+  levelSettings.forceGameType         = props.forceGamemode;
+  levelSettings.difficulty            = props.difficulty;
+  levelSettings.dimension             = 0;
+  levelSettings.generator             = props.worldGenerator;
+  levelSettings.edu                   = props.eduMode;
+  levelSettings.eduFeatures           = props.eduMode;
+  levelSettings.experimentalGameplay  = props.experimentMode;
+  levelSettings.mpGame                = true;
+  levelSettings.lanBroadcast          = true;
+  levelSettings.commandsEnabled       = true;
+  levelSettings.texturepacksRequired  = props.texturepackRequired;
+  levelSettings.defaultSpawnX         = INT_MIN;
+  levelSettings.defaultSpawnY         = INT_MIN;
+  levelSettings.defaultSpawnZ         = INT_MIN;
+  levelSettings.serverChunkTickRange  = props.tickDistance;
+  levelSettings.overrideSavedSettings = true;
 
   Log::trace("StoneServer", "Initializing FilePathManager");
   FilePathManager pathmgr(appPlatform->getCurrentStoragePath(), false);

@@ -20,11 +20,15 @@ public:
   property<std::string> worldSeed;
   property<int> gamemode;
   property<bool> forceGamemode;
+  property<bool> eduMode;
+  property<bool> experimentMode;
+  property<bool> texturepackRequired;
   property<int> difficulty;
   property<int> port;
   property<int> portV6;
   property<int> maxPlayers;
   property<int> viewDistance;
+  property<int> tickDistance;
   property<bool> onlineMode;
   property<float> playerIdleTimeout;
 
@@ -36,11 +40,15 @@ public:
       , motd(properties, "motd", "A Minecraft Server")
       , gamemode(properties, "gamemode", 0)
       , forceGamemode(properties, "force-gamemode", false)
+      , eduMode(properties, "edu-mode", false)
+      , experimentMode(properties, "experiment-mode", false)
+      , texturepackRequired(properties, "texturepack-required", false)
       , difficulty(properties, "difficulty", 0)
       , port(properties, "server-port", 19132)
       , portV6(properties, "server-port-v6", 19133)
       , maxPlayers(properties, "max-players", 20)
-      , viewDistance(properties, "view-distance", 22)
+      , viewDistance(properties, "view-distance", 10)
+      , tickDistance(properties, "tick-distance", 4)
       , onlineMode(properties, "online-mode", true)
       , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {}
 

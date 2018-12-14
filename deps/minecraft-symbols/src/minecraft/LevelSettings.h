@@ -14,7 +14,7 @@ public:
     bool hasAchievementsDisabled; // 18
     int dimension; // 1c
     int time; // 20
-    bool edu, immutableWorld; // 21, 22
+    bool edu, eduFeatures, immutableWorld; // 21, 22, 23
     float rainLevel, lightningLevel; // 28, 2c
     bool xblBroadcastIntent, mpGame, lanBroadcast, xblBroadcast; // 2d, 2e, 2f, 2e
     int xblLanBroadcastMode; // 34
@@ -23,7 +23,9 @@ public:
     bool msaGamertagsOnly; // 3A
     bool overrideSavedSettings; // 3B
     bool bonusChestEnabled, startWithMap; // 3C, 3D
-    char filler[0x94 - 0x3D];
+    unsigned serverChunkTickRange; // 44
+    bool experimentalGameplay; // 45
+    char filler[0x94 - 0x45];
     int defaultSpawnX, defaultSpawnY, defaultSpawnZ;
     char filler2[0x300];
 
