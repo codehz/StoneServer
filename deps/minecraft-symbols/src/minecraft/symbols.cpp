@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Fri Dec 14 2018 03:38:05 UTC
+// Generated on Fri Dec 14 2018 11:27:01 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -633,6 +633,156 @@ float Player::getLevelProgress() const {
     return (this->*_Player_getLevelProgress)();
 }
 
+#include "Xbox.h"
+static void * (*_xbox_services_xbox_services_error_code_category)();
+void * xbox::services::xbox_services_error_code_category() {
+    return _xbox_services_xbox_services_error_code_category();
+}
+static void (web::json::value::*_web_json_value_value)();
+web::json::value::value() {
+    (this->*_web_json_value_value)();
+}
+static void (web::json::value::*_web_json_value_value2)(mcpe::string);
+web::json::value::value(mcpe::string p1) {
+    (this->*_web_json_value_value2)(p1);
+}
+static void (web::json::value::*_web_json_value_value3)(web::json::value const &);
+web::json::value::value(web::json::value const & p1) {
+    (this->*_web_json_value_value3)(p1);
+}
+static void (web::json::value::*_web_json_value_value4)(web::json::value &&);
+web::json::value::value(web::json::value && p1) {
+    (this->*_web_json_value_value4)(std::move(p1));
+}
+static web::json::value & (web::json::value::*_web_json_value_operator)(mcpe::string const &);
+web::json::value & web::json::value::operator[](mcpe::string const & p1) {
+    return (this->*_web_json_value_operator)(p1);
+}
+static web::json::value & (web::json::value::*_web_json_value_operator2)(web::json::value &&);
+web::json::value & web::json::value::operator=(web::json::value && p1) {
+    return (this->*_web_json_value_operator2)(std::move(p1));
+}
+static mcpe::string (web::json::value::*_web_json_value_to_string)() const;
+mcpe::string web::json::value::to_string() const {
+    return (this->*_web_json_value_to_string)();
+}
+static void (web::json::value::*_web_json_value_erase)(mcpe::string const &);
+void web::json::value::erase(mcpe::string const & p1) {
+    (this->*_web_json_value_erase)(p1);
+}
+static std::shared_ptr<xbox::services::java_interop> (*_xbox_services_java_interop_get_java_interop_singleton)();
+std::shared_ptr<xbox::services::java_interop> xbox::services::java_interop::get_java_interop_singleton() {
+    return _xbox_services_java_interop_get_java_interop_singleton();
+}
+static uint32_t (xbox::services::xbox_live_app_config::*_xbox_services_xbox_live_app_config_title_id)();
+uint32_t xbox::services::xbox_live_app_config::title_id() {
+    return (this->*_xbox_services_xbox_live_app_config_title_id)();
+}
+static std::shared_ptr<xbox::services::xbox_live_app_config> (*_xbox_services_xbox_live_app_config_get_app_config_singleton)();
+std::shared_ptr<xbox::services::xbox_live_app_config> xbox::services::xbox_live_app_config::get_app_config_singleton() {
+    return _xbox_services_xbox_live_app_config_get_app_config_singleton();
+}
+static int vti_xbox_services_local_config_get_value_from_local_storage;
+mcpe::string xbox::services::local_config::get_value_from_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3) {
+    union { void* voidp; mcpe::string (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_xbox_services_local_config_get_value_from_local_storage];
+    return (this->*u.funcp)(p1, p2, p3);
+}
+static int vti_xbox_services_local_config_write_value_to_local_storage;
+xbox::services::xbox_live_result<void> xbox::services::local_config::write_value_to_local_storage(mcpe::string const & p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string const & p4) {
+    union { void* voidp; xbox::services::xbox_live_result<void> (xbox::services::local_config::*funcp)(mcpe::string const &, mcpe::string const &, mcpe::string const &, mcpe::string const &); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_xbox_services_local_config_write_value_to_local_storage];
+    return (this->*u.funcp)(p1, p2, p3, p4);
+}
+static std::shared_ptr<xbox::services::local_config> (*_xbox_services_local_config_get_local_config_singleton)();
+std::shared_ptr<xbox::services::local_config> xbox::services::local_config::get_local_config_singleton() {
+    return _xbox_services_local_config_get_local_config_singleton();
+}
+static void (xbox::services::xsapi_singleton::*_xbox_services_xsapi_singleton_destructor)();
+xbox::services::xsapi_singleton::~xsapi_singleton() {
+    (this->*_xbox_services_xsapi_singleton_destructor)();
+}
+static void (xbox::services::system::user_impl::*_xbox_services_system_user_impl_user_signed_out)();
+void xbox::services::system::user_impl::user_signed_out() {
+    (this->*_xbox_services_system_user_impl_user_signed_out)();
+}
+static std::shared_ptr<xbox::services::system::user_impl_android> (*_xbox_services_system_user_impl_android_get_instance)();
+std::shared_ptr<xbox::services::system::user_impl_android> xbox::services::system::user_impl_android::get_instance() {
+    return _xbox_services_system_user_impl_android_get_instance();
+}
+static void (pplx::task_completion_event_java_rps_ticket::*_pplx_task_completion_event_java_rps_ticket_set)(xbox::services::system::java_rps_ticket);
+void pplx::task_completion_event_java_rps_ticket::set(xbox::services::system::java_rps_ticket p1) {
+    (this->*_pplx_task_completion_event_java_rps_ticket_set)(p1);
+}
+static void (pplx::task_completion_event_auth_flow_result::*_pplx_task_completion_event_auth_flow_result_set)(xbox::services::system::auth_flow_result);
+void pplx::task_completion_event_auth_flow_result::set(xbox::services::system::auth_flow_result p1) {
+    (this->*_pplx_task_completion_event_auth_flow_result_set)(p1);
+}
+static void (pplx::task_completion_event_xbox_live_result_void::*_pplx_task_completion_event_xbox_live_result_void_set)(xbox::services::xbox_live_result<void>);
+void pplx::task_completion_event_xbox_live_result_void::set(xbox::services::xbox_live_result<void> p1) {
+    (this->*_pplx_task_completion_event_xbox_live_result_void_set)(p1);
+}
+static xbox::services::xbox_live_result<void> (pplx::task_xbox_live_result_void::*_pplx_task_xbox_live_result_void_get)();
+xbox::services::xbox_live_result<void> pplx::task_xbox_live_result_void::get() {
+    return (this->*_pplx_task_xbox_live_result_void_get)();
+}
+static xbox::services::xbox_live_result<xbox::services::system::token_and_signature_result> (pplx::task_xbox_live_result_token_and_signature_result::*_pplx_task_xbox_live_result_token_and_signature_result_get)();
+xbox::services::xbox_live_result<xbox::services::system::token_and_signature_result> pplx::task_xbox_live_result_token_and_signature_result::get() {
+    return (this->*_pplx_task_xbox_live_result_token_and_signature_result_get)();
+}
+static void (xbox::services::system::auth_config::*_xbox_services_system_auth_config_set_xtoken_composition)(std::vector<xbox::services::system::token_identity_type>);
+void xbox::services::system::auth_config::set_xtoken_composition(std::vector<xbox::services::system::token_identity_type> p1) {
+    (this->*_xbox_services_system_auth_config_set_xtoken_composition)(p1);
+}
+static mcpe::string const & (xbox::services::system::auth_config::*_xbox_services_system_auth_config_xbox_live_endpoint)() const;
+mcpe::string const & xbox::services::system::auth_config::xbox_live_endpoint() const {
+    return (this->*_xbox_services_system_auth_config_xbox_live_endpoint)();
+}
+static std::shared_ptr<xbox::services::system::auth_manager> (*_xbox_services_system_auth_manager_get_auth_manager_instance)();
+std::shared_ptr<xbox::services::system::auth_manager> xbox::services::system::auth_manager::get_auth_manager_instance() {
+    return _xbox_services_system_auth_manager_get_auth_manager_instance();
+}
+static void (xbox::services::system::auth_manager::*_xbox_services_system_auth_manager_set_rps_ticket)(mcpe::string const &);
+void xbox::services::system::auth_manager::set_rps_ticket(mcpe::string const & p1) {
+    (this->*_xbox_services_system_auth_manager_set_rps_ticket)(p1);
+}
+static pplx::task_xbox_live_result_void (xbox::services::system::auth_manager::*_xbox_services_system_auth_manager_initialize_default_nsal)(pplx::cancellation_token);
+pplx::task_xbox_live_result_void xbox::services::system::auth_manager::initialize_default_nsal(pplx::cancellation_token p1) {
+    return (this->*_xbox_services_system_auth_manager_initialize_default_nsal)(p1);
+}
+static pplx::task_xbox_live_result_void (xbox::services::system::auth_manager::*_xbox_services_system_auth_manager_initialize_title_nsal)(mcpe::string const &, pplx::cancellation_token);
+pplx::task_xbox_live_result_void xbox::services::system::auth_manager::initialize_title_nsal(mcpe::string const & p1, pplx::cancellation_token p2) {
+    return (this->*_xbox_services_system_auth_manager_initialize_title_nsal)(p1, p2);
+}
+static pplx::task_xbox_live_result_token_and_signature_result (xbox::services::system::auth_manager::*_xbox_services_system_auth_manager_internal_get_token_and_signature)(mcpe::string, mcpe::string const &, mcpe::string const &, mcpe::string, std::vector<unsigned char> const &, bool, bool, mcpe::string const &, pplx::cancellation_token);
+pplx::task_xbox_live_result_token_and_signature_result xbox::services::system::auth_manager::internal_get_token_and_signature(mcpe::string p1, mcpe::string const & p2, mcpe::string const & p3, mcpe::string p4, std::vector<unsigned char> const & p5, bool p6, bool p7, mcpe::string const & p8, pplx::cancellation_token p9) {
+    return (this->*_xbox_services_system_auth_manager_internal_get_token_and_signature)(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+}
+static std::shared_ptr<xbox::services::system::auth_config> (xbox::services::system::auth_manager::*_xbox_services_system_auth_manager_get_auth_config)();
+std::shared_ptr<xbox::services::system::auth_config> xbox::services::system::auth_manager::get_auth_config() {
+    return (this->*_xbox_services_system_auth_manager_get_auth_config)();
+}
+pplx::task_completion_event_java_rps_ticket * xbox::services::system::user_auth_android::s_rpsTicketCompletionEvent;
+pplx::task_completion_event_xbox_live_result_void * xbox::services::system::user_auth_android::s_signOutCompleteEvent;
+static std::shared_ptr<xbox::services::system::user_auth_android> (*_xbox_services_system_user_auth_android_get_instance)();
+std::shared_ptr<xbox::services::system::user_auth_android> xbox::services::system::user_auth_android::get_instance() {
+    return _xbox_services_system_user_auth_android_get_instance();
+}
+static void (xbox::services::system::user_auth_android::*_xbox_services_system_user_auth_android_complete_sign_in_with_ui)(xbox::services::system::auth_flow_result const &);
+void xbox::services::system::user_auth_android::complete_sign_in_with_ui(xbox::services::system::auth_flow_result const & p1) {
+    (this->*_xbox_services_system_user_auth_android_complete_sign_in_with_ui)(p1);
+}
+static std::shared_ptr<xbox::services::system::xbox_live_services_settings> (*_xbox_services_system_xbox_live_services_settings_get_singleton_instance)(bool);
+std::shared_ptr<xbox::services::system::xbox_live_services_settings> xbox::services::system::xbox_live_services_settings::get_singleton_instance(bool p1) {
+    return _xbox_services_system_xbox_live_services_settings_get_singleton_instance(p1);
+}
+static void (xbox::services::system::xbox_live_services_settings::*_xbox_services_system_xbox_live_services_settings_set_diagnostics_trace_level)(int);
+void xbox::services::system::xbox_live_services_settings::set_diagnostics_trace_level(int p1) {
+    (this->*_xbox_services_system_xbox_live_services_settings_set_diagnostics_trace_level)(p1);
+}
+
 #include "legacy/App.h"
 static int vti_Legacy_Pre_1_8_App_quit;
 void Legacy::Pre_1_8::App::quit() {
@@ -955,9 +1105,83 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_isCreative == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10isCreativeEv");
     ((void*&) _Player_getLevelProgress) = hybris_dlsym(handle, "_ZNK6Player16getLevelProgressEv");
     if (_Player_getLevelProgress == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player16getLevelProgressEv");
+    ((void*&) _xbox_services_xbox_services_error_code_category) = hybris_dlsym(handle, "_ZN4xbox8services33xbox_services_error_code_categoryEv");
+    if (_xbox_services_xbox_services_error_code_category == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services33xbox_services_error_code_categoryEv");
+    ((void*&) _web_json_value_value) = hybris_dlsym(handle, "_ZN3web4json5valueC2Ev");
+    if (_web_json_value_value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2Ev");
+    ((void*&) _web_json_value_value2) = hybris_dlsym(handle, "_ZN3web4json5valueC2ESs");
+    if (_web_json_value_value2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2ESs");
+    ((void*&) _web_json_value_value3) = hybris_dlsym(handle, "_ZN3web4json5valueC2ERKS1_");
+    if (_web_json_value_value3 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2ERKS1_");
+    ((void*&) _web_json_value_value4) = hybris_dlsym(handle, "_ZN3web4json5valueC2EOS1_");
+    if (_web_json_value_value4 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueC2EOS1_");
+    ((void*&) _web_json_value_operator) = hybris_dlsym(handle, "_ZN3web4json5valueixERKSs");
+    if (_web_json_value_operator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueixERKSs");
+    ((void*&) _web_json_value_operator2) = hybris_dlsym(handle, "_ZN3web4json5valueaSEOS1_");
+    if (_web_json_value_operator2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5valueaSEOS1_");
+    ((void*&) _web_json_value_to_string) = hybris_dlsym(handle, "_ZNK3web4json5value9to_stringEv");
+    if (_web_json_value_to_string == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3web4json5value9to_stringEv");
+    ((void*&) _web_json_value_erase) = hybris_dlsym(handle, "_ZN3web4json5value5eraseERKSs");
+    if (_web_json_value_erase == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3web4json5value5eraseERKSs");
+    ((void*&) _xbox_services_java_interop_get_java_interop_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12java_interop26get_java_interop_singletonEv");
+    if (_xbox_services_java_interop_get_java_interop_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12java_interop26get_java_interop_singletonEv");
+    ((void*&) _xbox_services_xbox_live_app_config_title_id) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config8title_idEv");
+    if (_xbox_services_xbox_live_app_config_title_id == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config8title_idEv");
+    ((void*&) _xbox_services_xbox_live_app_config_get_app_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
+    if (_xbox_services_xbox_live_app_config_get_app_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services20xbox_live_app_config24get_app_config_singletonEv");
+    void** vt_xbox_services_local_config = (void**) hybris_dlsym(handle, "_ZTVN4xbox8services12local_configE") + 2;
+    vti_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_"));
+    if (vti_xbox_services_local_config_get_value_from_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_");
+    vti_xbox_services_local_config_write_value_to_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_"));
+    if (vti_xbox_services_local_config_write_value_to_local_storage == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN4xbox8services12local_config28write_value_to_local_storageERKSsS3_S3_S3_");
+    ((void*&) _xbox_services_local_config_get_local_config_singleton) = hybris_dlsym(handle, "_ZN4xbox8services12local_config26get_local_config_singletonEv");
+    if (_xbox_services_local_config_get_local_config_singleton == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services12local_config26get_local_config_singletonEv");
+    ((void*&) _xbox_services_xsapi_singleton_destructor) = hybris_dlsym(handle, "_ZN4xbox8services15xsapi_singletonD2Ev");
+    if (_xbox_services_xsapi_singleton_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services15xsapi_singletonD2Ev");
+    ((void*&) _xbox_services_system_user_impl_user_signed_out) = hybris_dlsym(handle, "_ZN4xbox8services6system9user_impl15user_signed_outEv");
+    if (_xbox_services_system_user_impl_user_signed_out == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system9user_impl15user_signed_outEv");
+    ((void*&) _xbox_services_system_user_impl_android_get_instance) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_impl_android12get_instanceEv");
+    if (_xbox_services_system_user_impl_android_get_instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_impl_android12get_instanceEv");
+    ((void*&) _pplx_task_completion_event_java_rps_ticket_set) = hybris_dlsym(handle, "_ZNK4pplx21task_completion_eventIN4xbox8services6system15java_rps_ticketEE3setES4_");
+    if (_pplx_task_completion_event_java_rps_ticket_set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4pplx21task_completion_eventIN4xbox8services6system15java_rps_ticketEE3setES4_");
+    ((void*&) _pplx_task_completion_event_auth_flow_result_set) = hybris_dlsym(handle, "_ZNK4pplx21task_completion_eventIN4xbox8services6system16auth_flow_resultEE3setES4_");
+    if (_pplx_task_completion_event_auth_flow_result_set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4pplx21task_completion_eventIN4xbox8services6system16auth_flow_resultEE3setES4_");
+    ((void*&) _pplx_task_completion_event_xbox_live_result_void_set) = hybris_dlsym(handle, "_ZNK4pplx21task_completion_eventIN4xbox8services16xbox_live_resultIvEEE3setES4_");
+    if (_pplx_task_completion_event_xbox_live_result_void_set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4pplx21task_completion_eventIN4xbox8services16xbox_live_resultIvEEE3setES4_");
+    ((void*&) _pplx_task_xbox_live_result_void_get) = hybris_dlsym(handle, "_ZNK4pplx4taskIN4xbox8services16xbox_live_resultIvEEE3getEv");
+    if (_pplx_task_xbox_live_result_void_get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4pplx4taskIN4xbox8services16xbox_live_resultIvEEE3getEv");
+    ((void*&) _pplx_task_xbox_live_result_token_and_signature_result_get) = hybris_dlsym(handle, "_ZNK4pplx4taskIN4xbox8services16xbox_live_resultINS2_6system26token_and_signature_resultEEEE3getEv");
+    if (_pplx_task_xbox_live_result_token_and_signature_result_get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4pplx4taskIN4xbox8services16xbox_live_resultINS2_6system26token_and_signature_resultEEEE3getEv");
+    ((void*&) _xbox_services_system_auth_config_set_xtoken_composition) = hybris_dlsym(handle, "_ZN4xbox8services6system11auth_config22set_xtoken_compositionESt6vectorINS1_19token_identity_typeESaIS4_EE");
+    if (_xbox_services_system_auth_config_set_xtoken_composition == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system11auth_config22set_xtoken_compositionESt6vectorINS1_19token_identity_typeESaIS4_EE");
+    ((void*&) _xbox_services_system_auth_config_xbox_live_endpoint) = hybris_dlsym(handle, "_ZNK4xbox8services6system11auth_config18xbox_live_endpointEv");
+    if (_xbox_services_system_auth_config_xbox_live_endpoint == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK4xbox8services6system11auth_config18xbox_live_endpointEv");
+    ((void*&) _xbox_services_system_auth_manager_get_auth_manager_instance) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager25get_auth_manager_instanceEv");
+    if (_xbox_services_system_auth_manager_get_auth_manager_instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager25get_auth_manager_instanceEv");
+    ((void*&) _xbox_services_system_auth_manager_set_rps_ticket) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager14set_rps_ticketERKSs");
+    if (_xbox_services_system_auth_manager_set_rps_ticket == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager14set_rps_ticketERKSs");
+    ((void*&) _xbox_services_system_auth_manager_initialize_default_nsal) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager23initialize_default_nsalEN4pplx18cancellation_tokenE");
+    if (_xbox_services_system_auth_manager_initialize_default_nsal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager23initialize_default_nsalEN4pplx18cancellation_tokenE");
+    ((void*&) _xbox_services_system_auth_manager_initialize_title_nsal) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager21initialize_title_nsalERKSsN4pplx18cancellation_tokenE");
+    if (_xbox_services_system_auth_manager_initialize_title_nsal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager21initialize_title_nsalERKSsN4pplx18cancellation_tokenE");
+    ((void*&) _xbox_services_system_auth_manager_internal_get_token_and_signature) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager32internal_get_token_and_signatureESsRKSsS4_SsRKSt6vectorIhSaIhEEbbS4_N4pplx18cancellation_tokenE");
+    if (_xbox_services_system_auth_manager_internal_get_token_and_signature == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager32internal_get_token_and_signatureESsRKSsS4_SsRKSt6vectorIhSaIhEEbbS4_N4pplx18cancellation_tokenE");
+    ((void*&) _xbox_services_system_auth_manager_get_auth_config) = hybris_dlsym(handle, "_ZN4xbox8services6system12auth_manager15get_auth_configEv");
+    if (_xbox_services_system_auth_manager_get_auth_config == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system12auth_manager15get_auth_configEv");
+    ((void*&) xbox::services::system::user_auth_android::s_rpsTicketCompletionEvent) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android26s_rpsTicketCompletionEventE");
+    if (xbox::services::system::user_auth_android::s_rpsTicketCompletionEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android26s_rpsTicketCompletionEventE");
+    ((void*&) xbox::services::system::user_auth_android::s_signOutCompleteEvent) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android22s_signOutCompleteEventE");
+    if (xbox::services::system::user_auth_android::s_signOutCompleteEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android22s_signOutCompleteEventE");
+    ((void*&) _xbox_services_system_user_auth_android_get_instance) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android12get_instanceEv");
+    if (_xbox_services_system_user_auth_android_get_instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android12get_instanceEv");
+    ((void*&) _xbox_services_system_user_auth_android_complete_sign_in_with_ui) = hybris_dlsym(handle, "_ZN4xbox8services6system17user_auth_android24complete_sign_in_with_uiERKNS1_16auth_flow_resultE");
+    if (_xbox_services_system_user_auth_android_complete_sign_in_with_ui == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system17user_auth_android24complete_sign_in_with_uiERKNS1_16auth_flow_resultE");
+    ((void*&) _xbox_services_system_xbox_live_services_settings_get_singleton_instance) = hybris_dlsym(handle, "_ZN4xbox8services6system27xbox_live_services_settings22get_singleton_instanceEb");
+    if (_xbox_services_system_xbox_live_services_settings_get_singleton_instance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system27xbox_live_services_settings22get_singleton_instanceEb");
+    ((void*&) _xbox_services_system_xbox_live_services_settings_set_diagnostics_trace_level) = hybris_dlsym(handle, "_ZN4xbox8services6system27xbox_live_services_settings27set_diagnostics_trace_levelENS0_37xbox_services_diagnostics_trace_levelE");
+    if (_xbox_services_system_xbox_live_services_settings_set_diagnostics_trace_level == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4xbox8services6system27xbox_live_services_settings27set_diagnostics_trace_levelENS0_37xbox_services_diagnostics_trace_levelE");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");
-    void** vt_xbox_services_local_config = (void**) hybris_dlsym(handle, "_ZTVN4xbox8services12local_configE") + 2;
     vti_Legacy_Beta_1_8_xbox_services_local_config_get_value_from_local_storage = resolve_vtable_func(vt_xbox_services_local_config, hybris_dlsym(handle, "_ZN4xbox8services12local_config28get_value_from_local_storageERKSsS3_S3_"));
 }

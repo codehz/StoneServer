@@ -136,6 +136,8 @@ int main() {
   levelSettings.experimentalGameplay  = props.experimentMode;
   levelSettings.mpGame                = true;
   levelSettings.lanBroadcast          = true;
+  levelSettings.xblBroadcast          = true;
+  levelSettings.xblBroadcastIntent    = true;
   levelSettings.commandsEnabled       = props.cheatsEnabled;
   levelSettings.texturepacksRequired  = props.texturepackRequired;
   levelSettings.defaultSpawnX         = INT_MIN;

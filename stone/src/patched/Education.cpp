@@ -7,10 +7,8 @@
 
 namespace {
 
-inline static bool eduMode() { return true; };
-SHook(bool, _ZN16EducationOptions24isBaseCodeBuilderEnabledEv) { return eduMode(); }
-SHook(bool, _ZN16EducationOptions18isChemistryEnabledEv) { return eduMode(); }
-SHook(bool, _ZN16EducationOptions20isCodeBuilderEnabledEv) { return eduMode(); }
-SHook(bool, _ZN16EducationOptions18isEducationEnabledEv) { return eduMode(); }
+SHook(bool, _ZN16EducationOptions24isBaseCodeBuilderEnabledEv) { return true; }
+SHook(bool, _ZN16EducationOptions18isChemistryEnabledEv) { return true; }
+SHook(bool, _ZN16EducationOptions20isCodeBuilderEnabledEv) { return true; }
 
 } // namespace
