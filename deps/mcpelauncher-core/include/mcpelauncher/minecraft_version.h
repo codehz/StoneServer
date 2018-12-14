@@ -12,4 +12,9 @@ public:
             *SharedConstants::RevisionVersion >= revision)))));
     }
 
+    static bool isExactly(int major, int minor, int patch, int revision) {
+        return *SharedConstants::MajorVersion == major && *SharedConstants::MinorVersion == minor &&
+               *SharedConstants::RevisionVersion == revision && *SharedConstants::PatchVersion == patch;
+    }
+
 };

@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/minecraft-linux/mcpelauncher-core
 	branch = master
-	commit = b10b1d7e26cbf424ec063dbb211aab99d3812245
-	parent = 9663454acaeb51abc8d8ecfae90811297611a757
+	commit = c4557fa74293791c686f0a5806f2d0035b5deae0
+	parent = e4f5dd56ebe7089292477e275c2dbbfb9d241922
 	method = merge
 	cmdver = 0.4.0
