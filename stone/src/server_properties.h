@@ -19,6 +19,7 @@ public:
   property<std::string> motd;
   property<std::string> worldSeed;
   property<int> gamemode;
+  property<bool> cheatsEnabled;
   property<bool> forceGamemode;
   property<bool> eduMode;
   property<bool> experimentMode;
@@ -39,6 +40,7 @@ public:
       , worldGenerator(properties, "level-generator", 1)
       , motd(properties, "motd", "A Minecraft Server")
       , gamemode(properties, "gamemode", 0)
+      , cheatsEnabled(properties, "cheats-enabled", false)
       , forceGamemode(properties, "force-gamemode", false)
       , eduMode(properties, "edu-mode", false)
       , experimentMode(properties, "experiment-mode", false)
