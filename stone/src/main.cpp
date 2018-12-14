@@ -103,6 +103,7 @@ int main() {
 
   Log::info("StoneServer", "Applying patches");
   hack(handle, "_ZN5Level17_checkUserStorageEv");
+  *reinterpret_cast<bool *>(hybris_dlsym(handle, "_ZN10BedrockLog15gLogFileCreatedE")) = true;
   *reinterpret_cast<void **>(hybris_dlsym(handle, "_ZN6RakNet19rakDebugLogCallbackE")) = nullptr;
   RegisterServerHook::InitHooks();
 
