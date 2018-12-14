@@ -17,6 +17,7 @@ add_executable(stone
   "src/patched/ServerInstanceEventCoordinator.cpp"
   "src/patched/TextPacket.cpp"
   "src/patched/Education.cpp"
+  "src/patched/FeatureToggles.cpp"
   "src/patched/Player.h"
 )
 
