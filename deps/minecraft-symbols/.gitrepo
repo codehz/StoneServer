@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:codehz/minecraft-symbols.git
 	branch = stone
-	commit = f6b7972f042b9daf198f08dde67489aace04fe5d
-	parent = fb2f1c3458b02910663a368e0ac587dda26bbbc1
+	commit = d8406948e35c7e9d9ce9f26882db795b8c4e9a7a
+	parent = 00cfd413cb8bb11bc6edab2e246ef1e53522e7b7
 	method = merge
 	cmdver = 0.4.0
