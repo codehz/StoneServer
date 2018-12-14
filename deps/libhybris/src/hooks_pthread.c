@@ -4,6 +4,9 @@
 #include <signal.h>
 #include <semaphore.h>
 #ifdef __APPLE__
+#include <mach/mach_init.h>
+#include <mach/task.h>
+#include <mach/semaphore.h>
 #include "hooks_darwin_pthread_once.h"
 #else
 #include <sys/syscall.h>
@@ -344,6 +347,19 @@ static pthread_mutex_t *my_static_init_mutex(pthread_mutex_t *__mutex) {
     return realmutex;
 }
 
+
+static pthread_cond_t *my_static_init_cond(pthread_cond_t *__cond) {
+    pthread_mutex_lock(&hybris_static_init_mutex);
+    unsigned int value = (*(unsigned int *) __cond);
+    pthread_cond_t *realcond = (pthread_cond_t *) value;
+    if (value <= ANDROID_TOP_ADDR_VALUE_MUTEX) {
+        realcond = hybris_alloc_init_cond();
+        *((unsigned int*) __cond) = (unsigned int) realcond;
+    }
+    pthread_mutex_unlock(&hybris_static_init_mutex);
+    return realcond;
+}
+
 static int my_pthread_mutex_lock(pthread_mutex_t *__mutex)
 {
     if (!__mutex) {
@@ -562,8 +578,7 @@ static int my_pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
@@ -595,8 +610,7 @@ static int my_pthread_cond_timedwait(pthread_cond_t *cond,
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
@@ -629,8 +643,7 @@ static int my_pthread_cond_timedwait_relative_np(pthread_cond_t *cond,
         realcond = (pthread_cond_t *)hybris_get_shmpointer((hybris_shm_pointer_t)cvalue);
 
     if (cvalue <= ANDROID_TOP_ADDR_VALUE_COND) {
-        realcond = hybris_alloc_init_cond();
-        *((unsigned int *) cond) = (unsigned int) realcond;
+        realcond = my_static_init_cond(cond);
     }
 
     pthread_mutex_t *realmutex = (pthread_mutex_t *) mvalue;
@@ -988,44 +1001,56 @@ static int my_sem_post(sem_t **sem) {
 #else
 
 struct darwin_my_sem_info {
-    pthread_cond_t cond;
-    pthread_mutex_t mutex;
+    semaphore_t sem;
 };
 static int darwin_my_sem_init(struct darwin_my_sem_info **sem, int pshared, unsigned int value) {
     if (pshared) {
         printf("sem_init: pshared not supported\n");
     }
     *sem = malloc(sizeof(struct darwin_my_sem_info));
-    if (!*sem) {
-        return ENOMEM;
-    }
-    int ret = pthread_cond_init(&(*sem)->cond, NULL);
-    if (ret) {
+    kern_return_t res = semaphore_create(mach_task_self(), &(*sem)->sem, SYNC_POLICY_FIFO, value);
+    if (res) {
         free(*sem);
         *sem = NULL;
+        if (res == KERN_INVALID_ARGUMENT)
+            errno = EINVAL;
+        if (res == KERN_RESOURCE_SHORTAGE)
+            errno = ENOMEM;
+        return -1;
     }
-    ret = pthread_mutex_init(&(*sem)->mutex, NULL);
-    if (ret) {
-        pthread_cond_destroy(&(*sem)->cond);
-        free(*sem);
-        *sem = NULL;
-    }
-    return ret;
+    return 0;
 }
 static int darwin_my_sem_destroy(struct darwin_my_sem_info **sem) {
-    pthread_cond_destroy(&(*sem)->cond);
-    pthread_mutex_destroy(&(*sem)->mutex);
+    semaphore_destroy(mach_task_self(), (*sem)->sem);
     free(*sem);
     return 0;
 }
 static int darwin_my_sem_wait(struct darwin_my_sem_info **sem) {
-    return pthread_cond_wait(&(*sem)->cond, &(*sem)->mutex);
+    return semaphore_wait((*sem)->sem);
 }
 static int darwin_my_sem_timedwait(struct darwin_my_sem_info **sem, const struct timespec *abs_timeout) {
-    return pthread_cond_timedwait(&(*sem)->cond, &(*sem)->mutex, abs_timeout);
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    mach_timespec_t ts;
+    if  (abs_timeout->tv_sec > now.tv_sec ||
+        (abs_timeout->tv_sec == now.tv_sec && abs_timeout->tv_nsec > now.tv_nsec)) {
+        ts.tv_sec = (unsigned int) (abs_timeout->tv_sec - now.tv_sec);
+        ts.tv_nsec = abs_timeout->tv_nsec - now.tv_nsec;
+    } else {
+        ts.tv_sec = 0;
+        ts.tv_nsec = 0;
+    }
+    kern_return_t result = semaphore_timedwait((*sem)->sem, ts);
+    if (result == KERN_SUCCESS)
+        return 0;
+    if (result == KERN_OPERATION_TIMED_OUT)
+        errno = ETIMEDOUT;
+    if (result == KERN_ABORTED)
+        errno = EINTR;
+    return -1;
 }
 static int darwin_my_sem_post(struct darwin_my_sem_info **sem) {
-    return pthread_cond_signal(&(*sem)->cond);
+    return semaphore_signal((*sem)->sem);
 }
 
 #endif

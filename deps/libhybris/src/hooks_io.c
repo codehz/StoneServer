@@ -673,6 +673,7 @@ struct _hook io_hooks[] = {
     {"setlinebuf", my_setlinebuf},
     {"putchar", putchar},
     {"tmpfile", tmpfile},
+    {"tmpnam", tmpnam},
     {"remove", remove},
     {"rename", rename},
     /* wchar.t */

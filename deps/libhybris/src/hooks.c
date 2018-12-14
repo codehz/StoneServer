@@ -198,6 +198,7 @@ int darwin_my_ioctl(int s, int cmd, void* arg) {
 int* darwin_my_errno() {
     int* ret = &errno;
     if (*ret == EAGAIN) *ret = 11;
+    else if (*ret == ETIMEDOUT) *ret = 110;
     else if (*ret == EINPROGRESS) *ret = 115;
     return ret;
 }
@@ -212,6 +213,18 @@ void* darwin_my_memalign(size_t alignment, size_t size) {
 int darwin_my_prctl(int opt) {
     printf("unsupported prctl %i\n", opt);
     return 0;
+}
+
+static void* darwin_my_mmap(void *addr, size_t length, int prot, int flags,
+                            int fd, off_t offset) {
+    int flags_m = flags & 0xf;
+    if (flags & 0x10)
+        flags_m |= MAP_FIXED;
+    if (flags & 0x20)
+        flags_m |= MAP_ANON;
+    if (flags & 0x4000)
+        flags_m |= MAP_NORESERVE;
+    return mmap(addr, length, prot, flags_m, fd, offset);
 }
 #endif
 
@@ -277,6 +290,15 @@ void *my_android_dlsym(void *handle, const char *symbol)
     return android_dlsym(handle, symbol);
 }
 
+static void my_assert2(const char* file, int line, const char* function, const char* msg) {
+    fprintf(stderr, "%s:%u: %s: assertion \"%s\" failed", file, line, function, msg);
+    abort();
+}
+static void my_assert(const char* file, int line, const char* msg) {
+    fprintf(stderr, "%s:%u: assertion \"%s\" failed", file, line, msg);
+    abort();
+}
+
 struct _hook main_hooks[] = {
     {"property_get", property_get },
     {"property_set", property_set },
@@ -287,8 +309,8 @@ struct _hook main_hooks[] = {
     {"malloc", my_malloc },
     // {"pvalloc", pvalloc },
     {"getxattr", getxattr},
-    // {"__assert", __assert },
-    // {"__assert2", __assert },
+    {"__assert", my_assert },
+    {"__assert2", my_assert2 },
     {"uname", uname },
     {"sched_yield", sched_yield},
     {"ldexp", ldexp},
@@ -304,6 +326,7 @@ struct _hook main_hooks[] = {
     {"gettimeofday", gettimeofday},
     {"utime", utime},
     {"setlocale", setlocale},
+    {"localeconv", localeconv},
     {"setjmp", _setjmp},
     {"longjmp", longjmp},
     {"__umoddi3", __umoddi3},
@@ -668,7 +691,11 @@ struct _hook main_hooks[] = {
     // {"clock_nanosleep", clock_nanosleep},
     // {"clock_getcpuclockid", clock_getcpuclockid},
     /* mman.h */
+#ifdef __APPLE__
+    {"mmap", darwin_my_mmap},
+#else
     {"mmap", mmap},
+#endif
     {"munmap", munmap},
     {"mprotect", mprotect},
     {"madvise", madvise},
