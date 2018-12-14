@@ -145,7 +145,7 @@ int main() {
   pathmgr.setSettingsPath(pathmgr.getRootPath());
 
   Log::trace("StoneServer", "Loading whitelist and operator list");
-  Whitelist whitelist;
+  auto &whitelist = Locator<Whitelist>().generate();
   PermissionsFile permissionsFile(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/permissions.json");
 
   Log::trace("StoneServer", "Initializing resource loaders");
