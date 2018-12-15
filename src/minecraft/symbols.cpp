@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Dec 15 2018 14:15:18 UTC
+// Generated on Sat Dec 15 2018 15:24:51 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -474,6 +474,16 @@ void ResourcePackManager::onLanguageChanged() {
     (this->*_ResourcePackManager_onLanguageChanged)();
 }
 
+#include "V8.h"
+static bool (*_v8_V8_Initialize)();
+bool v8::V8::Initialize() {
+    return _v8_V8_Initialize();
+}
+static void (*_v8_V8_InitializePlatform)(v8::Platform *);
+void v8::V8::InitializePlatform(v8::Platform * p1) {
+    _v8_V8_InitializePlatform(p1);
+}
+
 #include "CommandOrigin.h"
 static int vti_CommandOrigin_getName;
 mcpe::string CommandOrigin::getName() {
@@ -912,6 +922,10 @@ void minecraft_symbols_init(void* handle) {
     if (_ResourcePackManager_setStack == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManager8setStackESt10unique_ptrI17ResourcePackStackSt14default_deleteIS1_EE21ResourcePackStackTypeb");
     ((void*&) _ResourcePackManager_onLanguageChanged) = hybris_dlsym(handle, "_ZN19ResourcePackManager17onLanguageChangedEv");
     if (_ResourcePackManager_onLanguageChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManager17onLanguageChangedEv");
+    ((void*&) _v8_V8_Initialize) = hybris_dlsym(handle, "_ZN2v82V810InitializeEv");
+    if (_v8_V8_Initialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V810InitializeEv");
+    ((void*&) _v8_V8_InitializePlatform) = hybris_dlsym(handle, "_ZN2v82V818InitializePlatformEPNS_8PlatformE");
+    if (_v8_V8_InitializePlatform == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V818InitializePlatformEPNS_8PlatformE");
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
     vti_CommandOrigin_getName = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin7getNameEv"));
     if (vti_CommandOrigin_getName == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin7getNameEv");

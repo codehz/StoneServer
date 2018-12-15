@@ -284,7 +284,7 @@ def process_header(file, is_legacy=False):
 
         for method_vis in class_data["methods"]:
             for method in class_data["methods"][method_vis]:
-                if method["defined"] or method["pure_virtual"] or method["explicit"]:
+                if method["defined"] or method["pure_virtual"] or method["explicit"] or "doxygen" in method and "/// @skipped" in method["doxygen"]:
                     continue
                 process_method(method, True, is_legacy)
 
