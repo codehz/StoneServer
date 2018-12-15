@@ -19,8 +19,6 @@ public:
   CommandMessage message;
 };
 
-// class Packet
-
 namespace {
 
 SInstanceHook(void, _ZNK10SayCommand7executeERK13CommandOriginR13CommandOutput, SayCommand, CommandOrigin &orig, CommandOutput &output) {
