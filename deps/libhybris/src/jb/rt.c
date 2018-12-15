@@ -35,7 +35,7 @@ void (*dl_dlactivity_symbol)() = NULL;
 
 static void* open_dl_library() {
     if (dl_library == NULL)
-        dl_library = dlopen("libdl.so", RTLD_LAZY);
+        dl_library = dlopen("libdl.so.2", RTLD_LAZY);
     return dl_library;
 }
 
