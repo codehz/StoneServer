@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Dec 15 2018 12:29:35 UTC
+// Generated on Sat Dec 15 2018 12:41:10 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -22,6 +22,12 @@ CommandRegistry & MinecraftCommands::getRegistry() {
 static std::unique_ptr<AutoCompleteInformation> (CommandRegistry::*_CommandRegistry_getAutoCompleteOptions)(CommandOrigin const &, mcpe::string const &, unsigned int) const;
 std::unique_ptr<AutoCompleteInformation> CommandRegistry::getAutoCompleteOptions(CommandOrigin const & p1, mcpe::string const & p2, unsigned int p3) const {
     return (this->*_CommandRegistry_getAutoCompleteOptions)(p1, p2, p3);
+}
+
+#include "MessagingCommand.h"
+static bool (MessagingCommand::*_MessagingCommand_checkChatPermissions)(CommandOrigin const &, CommandOutput &) const;
+bool MessagingCommand::checkChatPermissions(CommandOrigin const & p1, CommandOutput & p2) const {
+    return (this->*_MessagingCommand_checkChatPermissions)(p1, p2);
 }
 
 #include "CommandOutput.h"
@@ -707,6 +713,8 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftCommands_getRegistry == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftCommands11getRegistryEv");
     ((void*&) _CommandRegistry_getAutoCompleteOptions) = hybris_dlsym(handle, "_ZNK15CommandRegistry22getAutoCompleteOptionsERK13CommandOriginRKSsj");
     if (_CommandRegistry_getAutoCompleteOptions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry22getAutoCompleteOptionsERK13CommandOriginRKSsj");
+    ((void*&) _MessagingCommand_checkChatPermissions) = hybris_dlsym(handle, "_ZNK16MessagingCommand20checkChatPermissionsERK13CommandOriginR13CommandOutput");
+    if (_MessagingCommand_checkChatPermissions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK16MessagingCommand20checkChatPermissionsERK13CommandOriginR13CommandOutput");
     ((void*&) _CommandOutput_getMessages) = hybris_dlsym(handle, "_ZNK13CommandOutput11getMessagesEv");
     if (_CommandOutput_getMessages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOutput11getMessagesEv");
     ((void*&) _CommandOutput_success) = hybris_dlsym(handle, "_ZN13CommandOutput7successEv");
