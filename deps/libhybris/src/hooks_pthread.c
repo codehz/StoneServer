@@ -970,7 +970,7 @@ static int my_sem_init(sem_t **sem, int pshared, unsigned int value) {
         return -1;
     }
     int ret = sem_init(*sem, pshared, value);
-    if (!ret) {
+    if (ret) {
         free(*sem);
         *sem = NULL;
     }
