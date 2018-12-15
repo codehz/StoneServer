@@ -31,6 +31,7 @@ LauncherV8Platform::LauncherV8Platform() { vtable = myVtable; }
 
 void LauncherV8Platform::CallOnBackgroundThread(v8::Task *task, v8::ExpectedRuntime expected_runtime) {
   Log::warn("LauncherV8Platform", "CallOnBackgroundThread\n");
+  task->Run();
 }
 
 void LauncherV8Platform::CallOnForegroundThread(v8::Isolate *isolate, v8::Task *task) { Log::warn("LauncherV8Platform", "CallOnForegroundThread\n"); }
