@@ -19,4 +19,6 @@ public:
 
     std::vector<CommandOutputMessage> const& getMessages() const;
 
+    void success();
+
 };

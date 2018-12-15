@@ -5,6 +5,8 @@
 
 class Certificate;
 
+class Packet;
+
 class Player {
 public:
     explicit Player(Player const &) = delete;
@@ -25,4 +27,7 @@ public:
     bool isCreative();
 
     float getLevelProgress() const;
+
+    /// @symbol _ZNK12ServerPlayer17sendNetworkPacketER6Packet
+    void sendNetworkPacket(Packet &) const;
 };

@@ -73,7 +73,7 @@ int main() {
   initDependencies();
 
   CrashHandler::registerCrashHandler();
-  MinecraftUtils::workaroundLocaleBug();
+  // MinecraftUtils::workaroundLocaleBug();
   MinecraftUtils::setMallocZero();
 
   auto cwd = PathHelper::getWorkingDir();
