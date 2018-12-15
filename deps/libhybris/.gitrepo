@@ -5,8 +5,8 @@
 ;
 [subrepo]
 	remote = https://github.com/minecraft-linux/libhybris
-	branch = master
-	commit = aa00e7f91c7c9fd5d78e5867855e73d1681525de
-	parent = 0dc84256698d08e99a5e5bd9638bec80b97ebad8
+	branch = gdb-support
+	commit = a41348e36ab0ca0ad2813c94fa8761aead7c821e
+	parent = 1b7d7cfc5e5e742fe9180bcbb0b8d74416dbac3d
 	method = merge
 	cmdver = 0.4.0

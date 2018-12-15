@@ -166,11 +166,52 @@ const char *linker_get_error(void)
  */
 extern void __attribute__((noinline)) rtld_db_dlactivity(void);
 
-static struct r_debug _r_debug = {1, NULL, &rtld_db_dlactivity,
-                                  RT_CONSISTENT, 0};
+extern struct r_debug* rtld_r_debug_loc(void);
+
+static struct r_debug* _r_debug = NULL;
+static struct link_map *r_debug_map = 0;
 static struct link_map *r_debug_tail = 0;
+static struct link_map* glibc_r_map;
 
 static pthread_mutex_t _r_debug_lock = PTHREAD_MUTEX_INITIALIZER;
+
+static void update_gdb_r_debug() {
+    struct link_map * map;
+    while (glibc_r_map) {
+        map = (struct link_map*) malloc(sizeof(struct link_map));
+        map->l_addr = glibc_r_map->l_addr;
+        map->l_name = glibc_r_map->l_name;
+        map->l_prev = r_debug_tail;
+        map->l_next = NULL;
+        r_debug_tail->l_next = map;
+        r_debug_tail = map;
+        glibc_r_map = glibc_r_map->l_next;
+    }
+}
+
+static void init_r_debug() {
+    if (_r_debug != NULL) {
+        _r_debug->r_map = r_debug_map;
+        return;
+    }
+    _r_debug = rtld_r_debug_loc();
+    if (_r_debug == NULL)
+        abort();
+
+    glibc_r_map = _r_debug->r_map;
+
+    struct link_map * map;
+    map = (struct link_map*) malloc(sizeof(struct link_map));
+    map->l_addr = 0;
+    map->l_name = "linker";
+    map->l_prev = NULL;
+    map->l_next = NULL;
+    r_debug_map = map;
+    _r_debug->r_map = map;
+    r_debug_tail = map;
+
+    update_gdb_r_debug();
+}
 
 static void insert_soinfo_into_debug_map(soinfo * info)
 {
@@ -180,7 +221,7 @@ static void insert_soinfo_into_debug_map(soinfo * info)
      */
     map = &(info->linkmap);
     map->l_addr = info->base;
-    map->l_name = (char*) info->name;
+    map->l_name = (char*) info->ext_path;
     map->l_ld = (uintptr_t)info->dynamic;
 
     /* Stick the new library at the end of the list.
@@ -193,7 +234,7 @@ static void insert_soinfo_into_debug_map(soinfo * info)
         map->l_prev = r_debug_tail;
         map->l_next = 0;
     } else {
-        _r_debug.r_map = map;
+        _r_debug->r_map = map;
         map->l_prev = 0;
         map->l_next = 0;
     }
@@ -219,13 +260,19 @@ void notify_gdb_of_load(soinfo * info)
     }
 
     pthread_mutex_lock(&_r_debug_lock);
+    init_r_debug();
+    update_gdb_r_debug();
 
-    _r_debug.r_state = RT_ADD;
+    _r_debug = rtld_r_debug_loc();
+    if (_r_debug == NULL)
+        abort();
+
+    _r_debug->r_state = RT_ADD;
     rtld_db_dlactivity();
 
     insert_soinfo_into_debug_map(info);
 
-    _r_debug.r_state = RT_CONSISTENT;
+    _r_debug->r_state = RT_CONSISTENT;
     rtld_db_dlactivity();
 
     pthread_mutex_unlock(&_r_debug_lock);
@@ -239,13 +286,14 @@ void notify_gdb_of_unload(soinfo * info)
     }
 
     pthread_mutex_lock(&_r_debug_lock);
+    update_gdb_r_debug();
 
-    _r_debug.r_state = RT_DELETE;
+    _r_debug->r_state = RT_DELETE;
     rtld_db_dlactivity();
 
     remove_soinfo_from_debug_map(info);
 
-    _r_debug.r_state = RT_CONSISTENT;
+    _r_debug->r_state = RT_CONSISTENT;
     rtld_db_dlactivity();
 
     pthread_mutex_unlock(&_r_debug_lock);
@@ -254,14 +302,15 @@ void notify_gdb_of_unload(soinfo * info)
 void notify_gdb_of_libraries()
 {
     pthread_mutex_lock(&_r_debug_lock);
-    _r_debug.r_state = RT_ADD;
+    init_r_debug();
+    _r_debug->r_state = RT_ADD;
     rtld_db_dlactivity();
-    _r_debug.r_state = RT_CONSISTENT;
+    _r_debug->r_state = RT_CONSISTENT;
     rtld_db_dlactivity();
     pthread_mutex_unlock(&_r_debug_lock);
 }
 
-static soinfo *alloc_info(const char *name)
+static soinfo *alloc_info(const char *name, const char *path)
 {
     soinfo *si;
 
@@ -288,6 +337,7 @@ static soinfo *alloc_info(const char *name)
     /* Make sure we get a clean block of soinfo */
     memset(si, 0, sizeof(soinfo));
     strlcpy((char*) si->name, name, sizeof(si->name));
+    si->ext_path = path != NULL ? strdup(path) : NULL;
     sonext->next = si;
     si->next = NULL;
     si->refcount = 0;
@@ -1142,7 +1192,7 @@ load_library(const char *name)
      * soinfo struct here is a lot more convenient.
      */
     bname = strrchr(name, '/');
-    si = alloc_info(bname ? bname + 1 : name);
+    si = alloc_info(bname ? bname + 1 : name, name);
     if (si == NULL)
         goto fail;
 
@@ -1187,7 +1237,7 @@ load_empty_library(const char *name)
     soinfo *si = NULL;
 
     bname = strrchr(name, '/');
-    si = alloc_info(bname ? bname + 1 : name);
+    si = alloc_info(bname ? bname + 1 : name, name);
     if (si == NULL)
         goto fail;
 
@@ -1434,7 +1484,7 @@ static int reloc_library(soinfo *si, Elf32_Rel *rel, unsigned count)
 #endif
                 sym_addr = (unsigned)(s->st_value + base);
 	        }
-            }
+	        }
             COUNT_RELOC(RELOC_SYMBOL);
         } else {
             s = NULL;
@@ -2169,7 +2219,7 @@ sanitize:
     INFO("[ android linker & debugger ]\n");
     DEBUG("%5d elfdata @ 0x%08x\n", pid, (unsigned)elfdata);
 
-    si = alloc_info(argv[0]);
+    si = alloc_info(argv[0], argv[0]);
     if(si == 0) {
         exit(-1);
     }
@@ -2183,7 +2233,7 @@ sanitize:
     map->l_prev = NULL;
     map->l_next = NULL;
 
-    _r_debug.r_map = map;
+    _r_debug->r_map = map;
     r_debug_tail = map;
 
         /* gdb expects the linker to be in the debug shared object list,
