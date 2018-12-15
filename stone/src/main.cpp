@@ -145,6 +145,7 @@ int main() {
   levelSettings.defaultSpawnZ         = INT_MIN;
   levelSettings.serverChunkTickRange  = props.tickDistance;
   levelSettings.overrideSavedSettings = true;
+  levelSettings.achievementsDisabled  = false;
 
   Log::trace("StoneServer", "Initializing FilePathManager");
   FilePathManager pathmgr(appPlatform->getCurrentStoragePath(), false);
