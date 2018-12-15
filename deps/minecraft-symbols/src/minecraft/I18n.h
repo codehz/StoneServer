@@ -5,11 +5,13 @@
 
 class ResourcePackManager;
 
+enum class ResourceLoadType;
+
 class ResourceLoadManager{
     char filler[0x36];
 public:
     ResourceLoadManager();
-    void setAppSuspended(bool);
+    void sync(ResourceLoadType);
 };
 
 class I18n {

@@ -217,6 +217,7 @@ int main() {
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
   I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);
+  resLoadMgr.sync((ResourceLoadType)4);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
   modLoader.onServerInstanceInitialized(&instance);
