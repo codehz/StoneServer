@@ -12,20 +12,21 @@
 
 namespace {
 
-SHook(void, _ZN16EventCoordinatorI18LevelEventListenerE12processEventESt8functionIF11EventResultPS0_EE) {}
-
-SHook(void, _ZN27ServerLevelEventCoordinator17sendLevelSaveDataER5LevelR11CompoundTag, void *self, Level *level, void *tag) {
+SInstanceHook(void, _ZN27ServerLevelEventCoordinator17sendLevelSaveDataER5LevelR11CompoundTag, ServerLevelEventCoordinator, Level *level, void *tag) {
   Log::info("Minecraft", "Save level data");
+  original(this, level, tag);
 }
 
-SHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, void *self, Level *, Player *player) {
+SInstanceHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level, Player *player) {
   using namespace interface;
   Locator<PlayerList>()->onPlayerAdded(*player);
+  original(this, level, player);
 }
 
-SHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5LevelR6Player, void *self, Level *, Player *player) {
+SInstanceHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level, Player *player) {
   using namespace interface;
   Locator<PlayerList>()->onPlayerRemoved(*player);
+  original(this, level, player);
 }
 
 static patched::details::RegisterPatchInit pinit([] {

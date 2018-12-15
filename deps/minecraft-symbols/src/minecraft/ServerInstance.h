@@ -40,7 +40,7 @@ class ServerInstanceEventListener {
 
 class ServerInstanceEventCoordinator {
     std::vector<ServerInstanceEventListener *> listeners;
-    mcpe::function<EventResult (ServerInstanceEventListener *)> handlers;
+    std::vector<mcpe::function<EventResult (ServerInstanceEventListener *)>> handlers;
     char filler[36-28];
 };
 
