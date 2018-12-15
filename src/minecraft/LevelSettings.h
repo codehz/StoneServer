@@ -11,7 +11,7 @@ public:
     int difficulty; // c
     bool forceGameType; // 10
     int generator; // 14
-    bool hasAchievementsDisabled; // 18
+    bool achievementsDisabled; // 18
     int dimension; // 1c
     int time; // 20
     bool edu, eduFeatures, immutableWorld; // 21, 22, 23
