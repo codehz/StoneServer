@@ -12,7 +12,7 @@ class ServerLevelEventListener {};
 
 class ServerLevelEventCoordinator {
     std::vector<ServerLevelEventListener *> listeners;
-    mcpe::function<EventResult (ServerLevelEventListener *)> handlers;
+    std::vector<mcpe::function<EventResult (ServerLevelEventListener *)>> handlers;
     char filler[36-28];
 };
 
