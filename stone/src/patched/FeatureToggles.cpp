@@ -15,7 +15,7 @@ SClasslessInstanceHook(bool, _ZNK14FeatureToggles9isEnabledE15FeatureOptionID, i
   Option *ptr = *(Option **)((int)this + id * 4);
   Log::info("FeatureToggles", "Feature (%s): %d\n", ptr->name.c_str(), id);
   notified[id] = true;
-  return true;
+  return id != 8; // temp fix: disable scripting
 }
 
 } // namespace
