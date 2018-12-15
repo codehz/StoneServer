@@ -7,6 +7,8 @@ add_executable(stone
 
   "src/server_properties.h"
   "src/server_minecraft_app.h"
+  "src/v8_platform.h"
+  "src/v8_platform.cpp"
   "src/stub_key_provider.h"
   "src/dependency.cpp"
   "src/services.h"

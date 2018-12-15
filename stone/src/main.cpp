@@ -48,6 +48,7 @@
 #include "server_properties.h"
 #include "services.h"
 #include "stub_key_provider.h"
+#include "v8_platform.h"
 
 #ifndef BUILD_VERSION
 #define BUILD_VERSION "UNKNOWN VERSION"
@@ -207,6 +208,10 @@ int main() {
   auto eduOptions = std::make_unique<EducationOptions>(resourcePackManager);
   ServerInstanceEventCoordinator ec;
   ServerInstance instance(minecraftApp, ec);
+  LauncherV8Platform::initVtable(handle);
+  LauncherV8Platform v8Platform;
+  v8::V8::InitializePlatform((v8::Platform*) &v8Platform);
+  v8::V8::Initialize();
   instance.initializeServer(minecraftApp, whitelist, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
                             props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
                             {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
