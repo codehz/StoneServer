@@ -251,6 +251,8 @@ def process_header(file, is_legacy=False):
     cpp_header = cppheaderparser.CppHeader(file)
 
     for function in cpp_header.functions:
+        if function["defined"]:
+            continue
         process_method(function, False, is_legacy)
 
     for class_name in cpp_header.classes:
@@ -265,7 +267,7 @@ def process_header(file, is_legacy=False):
         # pprint(class_data)
         for member_vis in class_data["properties"]:
             for member in class_data["properties"][member_vis]:
-                if not member["static"]:
+                if not member["static"] or "inline static" in member["type"]:
                     continue
                 mangled_name = get_mangled_member(member, class_name_with_namespace)
                 if "doxygen" in member:
@@ -284,7 +286,7 @@ def process_header(file, is_legacy=False):
 
         for method_vis in class_data["methods"]:
             for method in class_data["methods"][method_vis]:
-                if method["defined"] or method["pure_virtual"] or method["explicit"] or "doxygen" in method and "/// @skipped" in method["doxygen"]:
+                if method["defined"] or method["inline"] or method["pure_virtual"] or method["explicit"] or "doxygen" in method and "/// @skipped" in method["doxygen"]:
                     continue
                 process_method(method, True, is_legacy)
 

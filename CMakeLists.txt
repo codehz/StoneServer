@@ -11,5 +11,6 @@ else()
 endif()
 
 add_library(minecraft-symbols ${MINECRAFT_SYMBOLS_SOURCES})
+set_property(TARGET minecraft-symbols PROPERTY CXX_STANDARD 17)
 target_include_directories(minecraft-symbols PUBLIC src/)
 target_link_libraries(minecraft-symbols logger hybris)

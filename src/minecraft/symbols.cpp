@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Dec 15 2018 15:24:51 UTC
+// Generated on Sun Dec 16 2018 05:58:24 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -69,6 +69,8 @@ static void (Options::*_Options_setFullscreen)(bool);
 void Options::setFullscreen(bool p1) {
     (this->*_Options_setFullscreen)(p1);
 }
+
+#include "V8Internals.h"
 
 #include "AutoComplete.h"
 
@@ -250,7 +252,7 @@ void CommandOutputSender::registerOutputCallback() {
 }
 
 #include "Packet.h"
-void * * Packet::myVtable;
+void * Packet::myVtable;
 
 #include "AppPlatform.h"
 void * * AppPlatform::myVtable;
@@ -482,6 +484,386 @@ bool v8::V8::Initialize() {
 static void (*_v8_V8_InitializePlatform)(v8::Platform *);
 void v8::V8::InitializePlatform(v8::Platform * p1) {
     _v8_V8_InitializePlatform(p1);
+}
+static bool (v8::Value::*_v8_Value_IsTrue)() const;
+bool v8::Value::IsTrue() const {
+    return (this->*_v8_Value_IsTrue)();
+}
+static bool (v8::Value::*_v8_Value_IsFalse)() const;
+bool v8::Value::IsFalse() const {
+    return (this->*_v8_Value_IsFalse)();
+}
+static bool (v8::Value::*_v8_Value_IsName)() const;
+bool v8::Value::IsName() const {
+    return (this->*_v8_Value_IsName)();
+}
+static bool (v8::Value::*_v8_Value_IsSymbol)() const;
+bool v8::Value::IsSymbol() const {
+    return (this->*_v8_Value_IsSymbol)();
+}
+static bool (v8::Value::*_v8_Value_IsFunction)() const;
+bool v8::Value::IsFunction() const {
+    return (this->*_v8_Value_IsFunction)();
+}
+static bool (v8::Value::*_v8_Value_IsArray)() const;
+bool v8::Value::IsArray() const {
+    return (this->*_v8_Value_IsArray)();
+}
+static bool (v8::Value::*_v8_Value_IsObject)() const;
+bool v8::Value::IsObject() const {
+    return (this->*_v8_Value_IsObject)();
+}
+static bool (v8::Value::*_v8_Value_IsBoolean)() const;
+bool v8::Value::IsBoolean() const {
+    return (this->*_v8_Value_IsBoolean)();
+}
+static bool (v8::Value::*_v8_Value_IsNumber)() const;
+bool v8::Value::IsNumber() const {
+    return (this->*_v8_Value_IsNumber)();
+}
+static bool (v8::Value::*_v8_Value_IsExternal)() const;
+bool v8::Value::IsExternal() const {
+    return (this->*_v8_Value_IsExternal)();
+}
+static bool (v8::Value::*_v8_Value_IsInt32)() const;
+bool v8::Value::IsInt32() const {
+    return (this->*_v8_Value_IsInt32)();
+}
+static bool (v8::Value::*_v8_Value_IsUint32)() const;
+bool v8::Value::IsUint32() const {
+    return (this->*_v8_Value_IsUint32)();
+}
+static bool (v8::Value::*_v8_Value_IsDate)() const;
+bool v8::Value::IsDate() const {
+    return (this->*_v8_Value_IsDate)();
+}
+static bool (v8::Value::*_v8_Value_IsArgumentsObject)() const;
+bool v8::Value::IsArgumentsObject() const {
+    return (this->*_v8_Value_IsArgumentsObject)();
+}
+static bool (v8::Value::*_v8_Value_IsBooleanObject)() const;
+bool v8::Value::IsBooleanObject() const {
+    return (this->*_v8_Value_IsBooleanObject)();
+}
+static bool (v8::Value::*_v8_Value_IsNumberObject)() const;
+bool v8::Value::IsNumberObject() const {
+    return (this->*_v8_Value_IsNumberObject)();
+}
+static bool (v8::Value::*_v8_Value_IsStringObject)() const;
+bool v8::Value::IsStringObject() const {
+    return (this->*_v8_Value_IsStringObject)();
+}
+static bool (v8::Value::*_v8_Value_IsSymbolObject)() const;
+bool v8::Value::IsSymbolObject() const {
+    return (this->*_v8_Value_IsSymbolObject)();
+}
+static bool (v8::Value::*_v8_Value_IsNativeError)() const;
+bool v8::Value::IsNativeError() const {
+    return (this->*_v8_Value_IsNativeError)();
+}
+static bool (v8::Value::*_v8_Value_IsRegExp)() const;
+bool v8::Value::IsRegExp() const {
+    return (this->*_v8_Value_IsRegExp)();
+}
+static bool (v8::Value::*_v8_Value_IsAsyncFunction)() const;
+bool v8::Value::IsAsyncFunction() const {
+    return (this->*_v8_Value_IsAsyncFunction)();
+}
+static bool (v8::Value::*_v8_Value_IsGeneratorFunction)() const;
+bool v8::Value::IsGeneratorFunction() const {
+    return (this->*_v8_Value_IsGeneratorFunction)();
+}
+static bool (v8::Value::*_v8_Value_IsGeneratorObject)() const;
+bool v8::Value::IsGeneratorObject() const {
+    return (this->*_v8_Value_IsGeneratorObject)();
+}
+static bool (v8::Value::*_v8_Value_IsPromise)() const;
+bool v8::Value::IsPromise() const {
+    return (this->*_v8_Value_IsPromise)();
+}
+static bool (v8::Value::*_v8_Value_IsMap)() const;
+bool v8::Value::IsMap() const {
+    return (this->*_v8_Value_IsMap)();
+}
+static bool (v8::Value::*_v8_Value_IsSet)() const;
+bool v8::Value::IsSet() const {
+    return (this->*_v8_Value_IsSet)();
+}
+static bool (v8::Value::*_v8_Value_IsMapIterator)() const;
+bool v8::Value::IsMapIterator() const {
+    return (this->*_v8_Value_IsMapIterator)();
+}
+static bool (v8::Value::*_v8_Value_IsSetIterator)() const;
+bool v8::Value::IsSetIterator() const {
+    return (this->*_v8_Value_IsSetIterator)();
+}
+static bool (v8::Value::*_v8_Value_IsWeakMap)() const;
+bool v8::Value::IsWeakMap() const {
+    return (this->*_v8_Value_IsWeakMap)();
+}
+static bool (v8::Value::*_v8_Value_IsWeakSet)() const;
+bool v8::Value::IsWeakSet() const {
+    return (this->*_v8_Value_IsWeakSet)();
+}
+static bool (v8::Value::*_v8_Value_IsArrayBuffer)() const;
+bool v8::Value::IsArrayBuffer() const {
+    return (this->*_v8_Value_IsArrayBuffer)();
+}
+static bool (v8::Value::*_v8_Value_IsArrayBufferView)() const;
+bool v8::Value::IsArrayBufferView() const {
+    return (this->*_v8_Value_IsArrayBufferView)();
+}
+static bool (v8::Value::*_v8_Value_IsTypedArray)() const;
+bool v8::Value::IsTypedArray() const {
+    return (this->*_v8_Value_IsTypedArray)();
+}
+static bool (v8::Value::*_v8_Value_IsUint8Array)() const;
+bool v8::Value::IsUint8Array() const {
+    return (this->*_v8_Value_IsUint8Array)();
+}
+static bool (v8::Value::*_v8_Value_IsUint8ClampedArray)() const;
+bool v8::Value::IsUint8ClampedArray() const {
+    return (this->*_v8_Value_IsUint8ClampedArray)();
+}
+static bool (v8::Value::*_v8_Value_IsInt8Array)() const;
+bool v8::Value::IsInt8Array() const {
+    return (this->*_v8_Value_IsInt8Array)();
+}
+static bool (v8::Value::*_v8_Value_IsUint16Array)() const;
+bool v8::Value::IsUint16Array() const {
+    return (this->*_v8_Value_IsUint16Array)();
+}
+static bool (v8::Value::*_v8_Value_IsInt16Array)() const;
+bool v8::Value::IsInt16Array() const {
+    return (this->*_v8_Value_IsInt16Array)();
+}
+static bool (v8::Value::*_v8_Value_IsUint32Array)() const;
+bool v8::Value::IsUint32Array() const {
+    return (this->*_v8_Value_IsUint32Array)();
+}
+static bool (v8::Value::*_v8_Value_IsInt32Array)() const;
+bool v8::Value::IsInt32Array() const {
+    return (this->*_v8_Value_IsInt32Array)();
+}
+static bool (v8::Value::*_v8_Value_IsFloat32Array)() const;
+bool v8::Value::IsFloat32Array() const {
+    return (this->*_v8_Value_IsFloat32Array)();
+}
+static bool (v8::Value::*_v8_Value_IsFloat64Array)() const;
+bool v8::Value::IsFloat64Array() const {
+    return (this->*_v8_Value_IsFloat64Array)();
+}
+static bool (v8::Value::*_v8_Value_IsDataView)() const;
+bool v8::Value::IsDataView() const {
+    return (this->*_v8_Value_IsDataView)();
+}
+static bool (v8::Value::*_v8_Value_IsSharedArrayBuffer)() const;
+bool v8::Value::IsSharedArrayBuffer() const {
+    return (this->*_v8_Value_IsSharedArrayBuffer)();
+}
+static bool (v8::Value::*_v8_Value_IsProxy)() const;
+bool v8::Value::IsProxy() const {
+    return (this->*_v8_Value_IsProxy)();
+}
+static bool (v8::Value::*_v8_Value_IsWebAssemblyCompiledModule)() const;
+bool v8::Value::IsWebAssemblyCompiledModule() const {
+    return (this->*_v8_Value_IsWebAssemblyCompiledModule)();
+}
+static v8::Local<v8::Boolean> (v8::Value::*_v8_Value_ToBoolean)(v8::Isolate *) const;
+v8::Local<v8::Boolean> v8::Value::ToBoolean(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToBoolean)(p1);
+}
+static v8::Local<v8::Number> (v8::Value::*_v8_Value_ToNumber)(v8::Isolate *) const;
+v8::Local<v8::Number> v8::Value::ToNumber(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToNumber)(p1);
+}
+static v8::Local<v8::String> (v8::Value::*_v8_Value_ToString)(v8::Isolate *) const;
+v8::Local<v8::String> v8::Value::ToString(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToString)(p1);
+}
+static v8::Local<v8::Object> (v8::Value::*_v8_Value_ToObject)(v8::Isolate *) const;
+v8::Local<v8::Object> v8::Value::ToObject(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToObject)(p1);
+}
+static v8::Local<v8::Integer> (v8::Value::*_v8_Value_ToInteger)(v8::Isolate *) const;
+v8::Local<v8::Integer> v8::Value::ToInteger(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToInteger)(p1);
+}
+static v8::Local<v8::Int32> (v8::Value::*_v8_Value_ToInt32)(v8::Isolate *) const;
+v8::Local<v8::Int32> v8::Value::ToInt32(v8::Isolate * p1) const {
+    return (this->*_v8_Value_ToInt32)(p1);
+}
+static bool (v8::Value::*_v8_Value_BooleanValue)() const;
+bool v8::Value::BooleanValue() const {
+    return (this->*_v8_Value_BooleanValue)();
+}
+static v8::MaybeLocal<v8::Uint32> (v8::Value::*_v8_Value_ToArrayIndex)() const;
+v8::MaybeLocal<v8::Uint32> v8::Value::ToArrayIndex() const {
+    return (this->*_v8_Value_ToArrayIndex)();
+}
+static v8::Maybe<bool> (v8::Value::*_v8_Value_Equals)(v8::Local<v8::Context>, v8::Local<v8::Value>) const;
+v8::Maybe<bool> v8::Value::Equals(v8::Local<v8::Context> p1, v8::Local<v8::Value> p2) const {
+    return (this->*_v8_Value_Equals)(p1, p2);
+}
+static v8::Maybe<bool> (v8::Value::*_v8_Value_Equals2)(v8::Local<v8::Value>) const;
+v8::Maybe<bool> v8::Value::Equals(v8::Local<v8::Value> p1) const {
+    return (this->*_v8_Value_Equals2)(p1);
+}
+static bool (v8::Value::*_v8_Value_StrictEquals)(v8::Local<v8::Value>) const;
+bool v8::Value::StrictEquals(v8::Local<v8::Value> p1) const {
+    return (this->*_v8_Value_StrictEquals)(p1);
+}
+static bool (v8::Value::*_v8_Value_SameValue)(v8::Local<v8::Value>) const;
+bool v8::Value::SameValue(v8::Local<v8::Value> p1) const {
+    return (this->*_v8_Value_SameValue)(p1);
+}
+static v8::Local<v8::String> (v8::Value::*_v8_Value_TypeOf)(v8::Isolate *);
+v8::Local<v8::String> v8::Value::TypeOf(v8::Isolate * p1) {
+    return (this->*_v8_Value_TypeOf)(p1);
+}
+static bool (v8::Value::*_v8_Value_FullIsNull)() const;
+bool v8::Value::FullIsNull() const {
+    return (this->*_v8_Value_FullIsNull)();
+}
+static bool (v8::Value::*_v8_Value_FullIsUndefined)() const;
+bool v8::Value::FullIsUndefined() const {
+    return (this->*_v8_Value_FullIsUndefined)();
+}
+static bool (v8::Value::*_v8_Value_FullIsString)() const;
+bool v8::Value::FullIsString() const {
+    return (this->*_v8_Value_FullIsString)();
+}
+static void (*_v8_Name_CheckCast)(v8::Value *);
+void v8::Name::CheckCast(v8::Value * p1) {
+    _v8_Name_CheckCast(p1);
+}
+static int (v8::String::*_v8_String_Length)() const;
+int v8::String::Length() const {
+    return (this->*_v8_String_Length)();
+}
+static int (v8::String::*_v8_String_Utf8Length)() const;
+int v8::String::Utf8Length() const {
+    return (this->*_v8_String_Utf8Length)();
+}
+static bool (v8::String::*_v8_String_IsOneByte)() const;
+bool v8::String::IsOneByte() const {
+    return (this->*_v8_String_IsOneByte)();
+}
+static bool (v8::String::*_v8_String_ContainsOnlyOneByte)() const;
+bool v8::String::ContainsOnlyOneByte() const {
+    return (this->*_v8_String_ContainsOnlyOneByte)();
+}
+static bool (v8::String::*_v8_String_IsExternal)() const;
+bool v8::String::IsExternal() const {
+    return (this->*_v8_String_IsExternal)();
+}
+static bool (v8::String::*_v8_String_IsExternalOneByte)() const;
+bool v8::String::IsExternalOneByte() const {
+    return (this->*_v8_String_IsExternalOneByte)();
+}
+static v8::Local<v8::String> (*_v8_String_NewFromUtf8Impl)(v8::Isolate *, const char *, v8::NewStringType, int);
+v8::Local<v8::String> v8::String::NewFromUtf8Impl(v8::Isolate * p1, const char * p2, v8::NewStringType p3, int p4) {
+    return _v8_String_NewFromUtf8Impl(p1, p2, p3, p4);
+}
+static int (v8::String::*_v8_String_WriteUtf8Impl)(char *, int, int, int) const;
+int v8::String::WriteUtf8Impl(char * p1, int p2, int p3, int p4) const {
+    return (this->*_v8_String_WriteUtf8Impl)(p1, p2, p3, p4);
+}
+static int (v8::String::*_v8_String_WriteOneByteImpl)(char *, int, int, int) const;
+int v8::String::WriteOneByteImpl(char * p1, int p2, int p3, int p4) const {
+    return (this->*_v8_String_WriteOneByteImpl)(p1, p2, p3, p4);
+}
+static int (v8::String::*_v8_String_WriteImpl)(unsigned short *, int, int, int) const;
+int v8::String::WriteImpl(unsigned short * p1, int p2, int p3, int p4) const {
+    return (this->*_v8_String_WriteImpl)(p1, p2, p3, p4);
+}
+static void (*_v8_String_CheckCast)(v8::Value *);
+void v8::String::CheckCast(v8::Value * p1) {
+    _v8_String_CheckCast(p1);
+}
+static void (v8::String::Utf8Value::*_v8_String_Utf8Value_Utf8Value)(v8::Isolate *, v8::Local<v8::Value>);
+v8::String::Utf8Value::Utf8Value(v8::Isolate * p1, v8::Local<v8::Value> p2) {
+    (this->*_v8_String_Utf8Value_Utf8Value)(p1, p2);
+}
+static void (v8::String::Utf8Value::*_v8_String_Utf8Value_destructor)();
+v8::String::Utf8Value::~Utf8Value() {
+    (this->*_v8_String_Utf8Value_destructor)();
+}
+static v8::Local<v8::Integer> (*_v8_Integer_New)(v8::Isolate *, int32_t);
+v8::Local<v8::Integer> v8::Integer::New(v8::Isolate * p1, int32_t p2) {
+    return _v8_Integer_New(p1, p2);
+}
+static v8::Local<v8::Integer> (*_v8_Integer_NewFromUnsigned)(v8::Isolate *, uint32_t);
+v8::Local<v8::Integer> v8::Integer::NewFromUnsigned(v8::Isolate * p1, uint32_t p2) {
+    return _v8_Integer_NewFromUnsigned(p1, p2);
+}
+static int64_t (v8::Integer::*_v8_Integer_Value)() const;
+int64_t v8::Integer::Value() const {
+    return (this->*_v8_Integer_Value)();
+}
+static void (*_v8_Integer_CheckCast)(v8::Value *);
+void v8::Integer::CheckCast(v8::Value * p1) {
+    _v8_Integer_CheckCast(p1);
+}
+static v8::Local<v8::Number> (*_v8_Number_New)(v8::Isolate *, double);
+v8::Local<v8::Number> v8::Number::New(v8::Isolate * p1, double p2) {
+    return _v8_Number_New(p1, p2);
+}
+static double (v8::Number::*_v8_Number_Value)() const;
+double v8::Number::Value() const {
+    return (this->*_v8_Number_Value)();
+}
+static void (*_v8_Number_CheckCast)(v8::Value *);
+void v8::Number::CheckCast(v8::Value * p1) {
+    _v8_Number_CheckCast(p1);
+}
+static void (v8::TryCatch::*_v8_TryCatch_TryCatch)(v8::Isolate *);
+v8::TryCatch::TryCatch(v8::Isolate * p1) {
+    (this->*_v8_TryCatch_TryCatch)(p1);
+}
+static void (v8::TryCatch::*_v8_TryCatch_destructor)();
+v8::TryCatch::~TryCatch() {
+    (this->*_v8_TryCatch_destructor)();
+}
+static bool (v8::TryCatch::*_v8_TryCatch_HasCaught)() const;
+bool v8::TryCatch::HasCaught() const {
+    return (this->*_v8_TryCatch_HasCaught)();
+}
+static bool (v8::TryCatch::*_v8_TryCatch_CanContinue)() const;
+bool v8::TryCatch::CanContinue() const {
+    return (this->*_v8_TryCatch_CanContinue)();
+}
+static bool (v8::TryCatch::*_v8_TryCatch_HasTerminated)() const;
+bool v8::TryCatch::HasTerminated() const {
+    return (this->*_v8_TryCatch_HasTerminated)();
+}
+static v8::Local<v8::Value> (v8::TryCatch::*_v8_TryCatch_ReThrow)();
+v8::Local<v8::Value> v8::TryCatch::ReThrow() {
+    return (this->*_v8_TryCatch_ReThrow)();
+}
+static v8::Local<v8::Value> (v8::TryCatch::*_v8_TryCatch_Exception)() const;
+v8::Local<v8::Value> v8::TryCatch::Exception() const {
+    return (this->*_v8_TryCatch_Exception)();
+}
+static v8::MaybeLocal<v8::Value> (v8::TryCatch::*_v8_TryCatch_StackTrace)(v8::Local<v8::Context>) const;
+v8::MaybeLocal<v8::Value> v8::TryCatch::StackTrace(v8::Local<v8::Context> p1) const {
+    return (this->*_v8_TryCatch_StackTrace)(p1);
+}
+static v8::Local<v8::Message> (v8::TryCatch::*_v8_TryCatch_Message)() const;
+v8::Local<v8::Message> v8::TryCatch::Message() const {
+    return (this->*_v8_TryCatch_Message)();
+}
+static void (v8::TryCatch::*_v8_TryCatch_Reset)();
+void v8::TryCatch::Reset() {
+    (this->*_v8_TryCatch_Reset)();
+}
+static void (v8::TryCatch::*_v8_TryCatch_SetVerbose)(bool);
+void v8::TryCatch::SetVerbose(bool p1) {
+    (this->*_v8_TryCatch_SetVerbose)(p1);
+}
+static void (v8::TryCatch::*_v8_TryCatch_SetCaptureMessage)(bool);
+void v8::TryCatch::SetCaptureMessage(bool p1) {
+    (this->*_v8_TryCatch_SetCaptureMessage)(p1);
 }
 
 #include "CommandOrigin.h"
@@ -926,6 +1308,196 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_V8_Initialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V810InitializeEv");
     ((void*&) _v8_V8_InitializePlatform) = hybris_dlsym(handle, "_ZN2v82V818InitializePlatformEPNS_8PlatformE");
     if (_v8_V8_InitializePlatform == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V818InitializePlatformEPNS_8PlatformE");
+    ((void*&) _v8_Value_IsTrue) = hybris_dlsym(handle, "_ZNK2v85Value6IsTrueEv");
+    if (_v8_Value_IsTrue == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6IsTrueEv");
+    ((void*&) _v8_Value_IsFalse) = hybris_dlsym(handle, "_ZNK2v85Value7IsFalseEv");
+    if (_v8_Value_IsFalse == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value7IsFalseEv");
+    ((void*&) _v8_Value_IsName) = hybris_dlsym(handle, "_ZNK2v85Value6IsNameEv");
+    if (_v8_Value_IsName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6IsNameEv");
+    ((void*&) _v8_Value_IsSymbol) = hybris_dlsym(handle, "_ZNK2v85Value8IsSymbolEv");
+    if (_v8_Value_IsSymbol == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8IsSymbolEv");
+    ((void*&) _v8_Value_IsFunction) = hybris_dlsym(handle, "_ZNK2v85Value10IsFunctionEv");
+    if (_v8_Value_IsFunction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value10IsFunctionEv");
+    ((void*&) _v8_Value_IsArray) = hybris_dlsym(handle, "_ZNK2v85Value7IsArrayEv");
+    if (_v8_Value_IsArray == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value7IsArrayEv");
+    ((void*&) _v8_Value_IsObject) = hybris_dlsym(handle, "_ZNK2v85Value8IsObjectEv");
+    if (_v8_Value_IsObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8IsObjectEv");
+    ((void*&) _v8_Value_IsBoolean) = hybris_dlsym(handle, "_ZNK2v85Value9IsBooleanEv");
+    if (_v8_Value_IsBoolean == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9IsBooleanEv");
+    ((void*&) _v8_Value_IsNumber) = hybris_dlsym(handle, "_ZNK2v85Value8IsNumberEv");
+    if (_v8_Value_IsNumber == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8IsNumberEv");
+    ((void*&) _v8_Value_IsExternal) = hybris_dlsym(handle, "_ZNK2v85Value10IsExternalEv");
+    if (_v8_Value_IsExternal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value10IsExternalEv");
+    ((void*&) _v8_Value_IsInt32) = hybris_dlsym(handle, "_ZNK2v85Value7IsInt32Ev");
+    if (_v8_Value_IsInt32 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value7IsInt32Ev");
+    ((void*&) _v8_Value_IsUint32) = hybris_dlsym(handle, "_ZNK2v85Value8IsUint32Ev");
+    if (_v8_Value_IsUint32 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8IsUint32Ev");
+    ((void*&) _v8_Value_IsDate) = hybris_dlsym(handle, "_ZNK2v85Value6IsDateEv");
+    if (_v8_Value_IsDate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6IsDateEv");
+    ((void*&) _v8_Value_IsArgumentsObject) = hybris_dlsym(handle, "_ZNK2v85Value17IsArgumentsObjectEv");
+    if (_v8_Value_IsArgumentsObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value17IsArgumentsObjectEv");
+    ((void*&) _v8_Value_IsBooleanObject) = hybris_dlsym(handle, "_ZNK2v85Value15IsBooleanObjectEv");
+    if (_v8_Value_IsBooleanObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value15IsBooleanObjectEv");
+    ((void*&) _v8_Value_IsNumberObject) = hybris_dlsym(handle, "_ZNK2v85Value14IsNumberObjectEv");
+    if (_v8_Value_IsNumberObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value14IsNumberObjectEv");
+    ((void*&) _v8_Value_IsStringObject) = hybris_dlsym(handle, "_ZNK2v85Value14IsStringObjectEv");
+    if (_v8_Value_IsStringObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value14IsStringObjectEv");
+    ((void*&) _v8_Value_IsSymbolObject) = hybris_dlsym(handle, "_ZNK2v85Value14IsSymbolObjectEv");
+    if (_v8_Value_IsSymbolObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value14IsSymbolObjectEv");
+    ((void*&) _v8_Value_IsNativeError) = hybris_dlsym(handle, "_ZNK2v85Value13IsNativeErrorEv");
+    if (_v8_Value_IsNativeError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsNativeErrorEv");
+    ((void*&) _v8_Value_IsRegExp) = hybris_dlsym(handle, "_ZNK2v85Value8IsRegExpEv");
+    if (_v8_Value_IsRegExp == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8IsRegExpEv");
+    ((void*&) _v8_Value_IsAsyncFunction) = hybris_dlsym(handle, "_ZNK2v85Value15IsAsyncFunctionEv");
+    if (_v8_Value_IsAsyncFunction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value15IsAsyncFunctionEv");
+    ((void*&) _v8_Value_IsGeneratorFunction) = hybris_dlsym(handle, "_ZNK2v85Value19IsGeneratorFunctionEv");
+    if (_v8_Value_IsGeneratorFunction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value19IsGeneratorFunctionEv");
+    ((void*&) _v8_Value_IsGeneratorObject) = hybris_dlsym(handle, "_ZNK2v85Value17IsGeneratorObjectEv");
+    if (_v8_Value_IsGeneratorObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value17IsGeneratorObjectEv");
+    ((void*&) _v8_Value_IsPromise) = hybris_dlsym(handle, "_ZNK2v85Value9IsPromiseEv");
+    if (_v8_Value_IsPromise == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9IsPromiseEv");
+    ((void*&) _v8_Value_IsMap) = hybris_dlsym(handle, "_ZNK2v85Value5IsMapEv");
+    if (_v8_Value_IsMap == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value5IsMapEv");
+    ((void*&) _v8_Value_IsSet) = hybris_dlsym(handle, "_ZNK2v85Value5IsSetEv");
+    if (_v8_Value_IsSet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value5IsSetEv");
+    ((void*&) _v8_Value_IsMapIterator) = hybris_dlsym(handle, "_ZNK2v85Value13IsMapIteratorEv");
+    if (_v8_Value_IsMapIterator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsMapIteratorEv");
+    ((void*&) _v8_Value_IsSetIterator) = hybris_dlsym(handle, "_ZNK2v85Value13IsSetIteratorEv");
+    if (_v8_Value_IsSetIterator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsSetIteratorEv");
+    ((void*&) _v8_Value_IsWeakMap) = hybris_dlsym(handle, "_ZNK2v85Value9IsWeakMapEv");
+    if (_v8_Value_IsWeakMap == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9IsWeakMapEv");
+    ((void*&) _v8_Value_IsWeakSet) = hybris_dlsym(handle, "_ZNK2v85Value9IsWeakSetEv");
+    if (_v8_Value_IsWeakSet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9IsWeakSetEv");
+    ((void*&) _v8_Value_IsArrayBuffer) = hybris_dlsym(handle, "_ZNK2v85Value13IsArrayBufferEv");
+    if (_v8_Value_IsArrayBuffer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsArrayBufferEv");
+    ((void*&) _v8_Value_IsArrayBufferView) = hybris_dlsym(handle, "_ZNK2v85Value17IsArrayBufferViewEv");
+    if (_v8_Value_IsArrayBufferView == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value17IsArrayBufferViewEv");
+    ((void*&) _v8_Value_IsTypedArray) = hybris_dlsym(handle, "_ZNK2v85Value12IsTypedArrayEv");
+    if (_v8_Value_IsTypedArray == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12IsTypedArrayEv");
+    ((void*&) _v8_Value_IsUint8Array) = hybris_dlsym(handle, "_ZNK2v85Value12IsUint8ArrayEv");
+    if (_v8_Value_IsUint8Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12IsUint8ArrayEv");
+    ((void*&) _v8_Value_IsUint8ClampedArray) = hybris_dlsym(handle, "_ZNK2v85Value19IsUint8ClampedArrayEv");
+    if (_v8_Value_IsUint8ClampedArray == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value19IsUint8ClampedArrayEv");
+    ((void*&) _v8_Value_IsInt8Array) = hybris_dlsym(handle, "_ZNK2v85Value11IsInt8ArrayEv");
+    if (_v8_Value_IsInt8Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value11IsInt8ArrayEv");
+    ((void*&) _v8_Value_IsUint16Array) = hybris_dlsym(handle, "_ZNK2v85Value13IsUint16ArrayEv");
+    if (_v8_Value_IsUint16Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsUint16ArrayEv");
+    ((void*&) _v8_Value_IsInt16Array) = hybris_dlsym(handle, "_ZNK2v85Value12IsInt16ArrayEv");
+    if (_v8_Value_IsInt16Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12IsInt16ArrayEv");
+    ((void*&) _v8_Value_IsUint32Array) = hybris_dlsym(handle, "_ZNK2v85Value13IsUint32ArrayEv");
+    if (_v8_Value_IsUint32Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value13IsUint32ArrayEv");
+    ((void*&) _v8_Value_IsInt32Array) = hybris_dlsym(handle, "_ZNK2v85Value12IsInt32ArrayEv");
+    if (_v8_Value_IsInt32Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12IsInt32ArrayEv");
+    ((void*&) _v8_Value_IsFloat32Array) = hybris_dlsym(handle, "_ZNK2v85Value14IsFloat32ArrayEv");
+    if (_v8_Value_IsFloat32Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value14IsFloat32ArrayEv");
+    ((void*&) _v8_Value_IsFloat64Array) = hybris_dlsym(handle, "_ZNK2v85Value14IsFloat64ArrayEv");
+    if (_v8_Value_IsFloat64Array == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value14IsFloat64ArrayEv");
+    ((void*&) _v8_Value_IsDataView) = hybris_dlsym(handle, "_ZNK2v85Value10IsDataViewEv");
+    if (_v8_Value_IsDataView == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value10IsDataViewEv");
+    ((void*&) _v8_Value_IsSharedArrayBuffer) = hybris_dlsym(handle, "_ZNK2v85Value19IsSharedArrayBufferEv");
+    if (_v8_Value_IsSharedArrayBuffer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value19IsSharedArrayBufferEv");
+    ((void*&) _v8_Value_IsProxy) = hybris_dlsym(handle, "_ZNK2v85Value7IsProxyEv");
+    if (_v8_Value_IsProxy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value7IsProxyEv");
+    ((void*&) _v8_Value_IsWebAssemblyCompiledModule) = hybris_dlsym(handle, "_ZNK2v85Value27IsWebAssemblyCompiledModuleEv");
+    if (_v8_Value_IsWebAssemblyCompiledModule == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value27IsWebAssemblyCompiledModuleEv");
+    ((void*&) _v8_Value_ToBoolean) = hybris_dlsym(handle, "_ZNK2v85Value9ToBooleanEPNS_7IsolateE");
+    if (_v8_Value_ToBoolean == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9ToBooleanEPNS_7IsolateE");
+    ((void*&) _v8_Value_ToNumber) = hybris_dlsym(handle, "_ZNK2v85Value8ToNumberEPNS_7IsolateE");
+    if (_v8_Value_ToNumber == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8ToNumberEPNS_7IsolateE");
+    ((void*&) _v8_Value_ToString) = hybris_dlsym(handle, "_ZNK2v85Value8ToStringEPNS_7IsolateE");
+    if (_v8_Value_ToString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8ToStringEPNS_7IsolateE");
+    ((void*&) _v8_Value_ToObject) = hybris_dlsym(handle, "_ZNK2v85Value8ToObjectEPNS_7IsolateE");
+    if (_v8_Value_ToObject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value8ToObjectEPNS_7IsolateE");
+    ((void*&) _v8_Value_ToInteger) = hybris_dlsym(handle, "_ZNK2v85Value9ToIntegerEPNS_7IsolateE");
+    if (_v8_Value_ToInteger == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9ToIntegerEPNS_7IsolateE");
+    ((void*&) _v8_Value_ToInt32) = hybris_dlsym(handle, "_ZNK2v85Value7ToInt32EPNS_7IsolateE");
+    if (_v8_Value_ToInt32 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value7ToInt32EPNS_7IsolateE");
+    ((void*&) _v8_Value_BooleanValue) = hybris_dlsym(handle, "_ZNK2v85Value12BooleanValueEv");
+    if (_v8_Value_BooleanValue == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12BooleanValueEv");
+    ((void*&) _v8_Value_ToArrayIndex) = hybris_dlsym(handle, "_ZNK2v85Value12ToArrayIndexEv");
+    if (_v8_Value_ToArrayIndex == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12ToArrayIndexEv");
+    ((void*&) _v8_Value_Equals) = hybris_dlsym(handle, "_ZNK2v85Value6EqualsENS_5LocalINS_7ContextEEENS1_IS0_EE");
+    if (_v8_Value_Equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6EqualsENS_5LocalINS_7ContextEEENS1_IS0_EE");
+    ((void*&) _v8_Value_Equals2) = hybris_dlsym(handle, "_ZNK2v85Value6EqualsENS_5LocalIS0_EE");
+    if (_v8_Value_Equals2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6EqualsENS_5LocalIS0_EE");
+    ((void*&) _v8_Value_StrictEquals) = hybris_dlsym(handle, "_ZNK2v85Value12StrictEqualsENS_5LocalIS0_EE");
+    if (_v8_Value_StrictEquals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12StrictEqualsENS_5LocalIS0_EE");
+    ((void*&) _v8_Value_SameValue) = hybris_dlsym(handle, "_ZNK2v85Value9SameValueENS_5LocalIS0_EE");
+    if (_v8_Value_SameValue == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value9SameValueENS_5LocalIS0_EE");
+    ((void*&) _v8_Value_TypeOf) = hybris_dlsym(handle, "_ZN2v85Value6TypeOfEPNS_7IsolateE");
+    if (_v8_Value_TypeOf == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v85Value6TypeOfEPNS_7IsolateE");
+    ((void*&) _v8_Value_FullIsNull) = hybris_dlsym(handle, "_ZNK2v85Value10FullIsNullEv");
+    if (_v8_Value_FullIsNull == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value10FullIsNullEv");
+    ((void*&) _v8_Value_FullIsUndefined) = hybris_dlsym(handle, "_ZNK2v85Value15FullIsUndefinedEv");
+    if (_v8_Value_FullIsUndefined == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value15FullIsUndefinedEv");
+    ((void*&) _v8_Value_FullIsString) = hybris_dlsym(handle, "_ZNK2v85Value12FullIsStringEv");
+    if (_v8_Value_FullIsString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value12FullIsStringEv");
+    ((void*&) _v8_Name_CheckCast) = hybris_dlsym(handle, "_ZN2v84Name9CheckCastEPNS_5ValueE");
+    if (_v8_Name_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v84Name9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_String_Length) = hybris_dlsym(handle, "_ZNK2v86String6LengthEv");
+    if (_v8_String_Length == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String6LengthEv");
+    ((void*&) _v8_String_Utf8Length) = hybris_dlsym(handle, "_ZNK2v86String10Utf8LengthEv");
+    if (_v8_String_Utf8Length == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String10Utf8LengthEv");
+    ((void*&) _v8_String_IsOneByte) = hybris_dlsym(handle, "_ZNK2v86String9IsOneByteEv");
+    if (_v8_String_IsOneByte == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String9IsOneByteEv");
+    ((void*&) _v8_String_ContainsOnlyOneByte) = hybris_dlsym(handle, "_ZNK2v86String19ContainsOnlyOneByteEv");
+    if (_v8_String_ContainsOnlyOneByte == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String19ContainsOnlyOneByteEv");
+    ((void*&) _v8_String_IsExternal) = hybris_dlsym(handle, "_ZNK2v86String10IsExternalEv");
+    if (_v8_String_IsExternal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String10IsExternalEv");
+    ((void*&) _v8_String_IsExternalOneByte) = hybris_dlsym(handle, "_ZNK2v86String17IsExternalOneByteEv");
+    if (_v8_String_IsExternalOneByte == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String17IsExternalOneByteEv");
+    ((void*&) _v8_String_NewFromUtf8Impl) = hybris_dlsym(handle, "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
+    if (_v8_String_NewFromUtf8Impl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
+    ((void*&) _v8_String_WriteUtf8Impl) = hybris_dlsym(handle, "_ZNK2v86String9WriteUtf8EPciPii");
+    if (_v8_String_WriteUtf8Impl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String9WriteUtf8EPciPii");
+    ((void*&) _v8_String_WriteOneByteImpl) = hybris_dlsym(handle, "_ZNK2v86String12WriteOneByteEPhiii");
+    if (_v8_String_WriteOneByteImpl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String12WriteOneByteEPhiii");
+    ((void*&) _v8_String_WriteImpl) = hybris_dlsym(handle, "_ZNK2v86String5WriteEPtiii");
+    if (_v8_String_WriteImpl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String5WriteEPtiii");
+    ((void*&) _v8_String_CheckCast) = hybris_dlsym(handle, "_ZN2v86String9CheckCastEPNS_5ValueE");
+    if (_v8_String_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_String_Utf8Value_Utf8Value) = hybris_dlsym(handle, "_ZN2v86String9Utf8ValueC2ENS_5LocalINS_5ValueEEE");
+    if (_v8_String_Utf8Value_Utf8Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9Utf8ValueC2ENS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_String_Utf8Value_destructor) = hybris_dlsym(handle, "_ZN2v86String9Utf8ValueD2Ev");
+    if (_v8_String_Utf8Value_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9Utf8ValueD2Ev");
+    ((void*&) _v8_Integer_New) = hybris_dlsym(handle, "_ZN2v87Integer3NewEPNS_7IsolateEi");
+    if (_v8_Integer_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer3NewEPNS_7IsolateEi");
+    ((void*&) _v8_Integer_NewFromUnsigned) = hybris_dlsym(handle, "_ZN2v87Integer15NewFromUnsignedEPNS_7IsolateEj");
+    if (_v8_Integer_NewFromUnsigned == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer15NewFromUnsignedEPNS_7IsolateEj");
+    ((void*&) _v8_Integer_Value) = hybris_dlsym(handle, "_ZNK2v87Integer5ValueEv");
+    if (_v8_Integer_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v87Integer5ValueEv");
+    ((void*&) _v8_Integer_CheckCast) = hybris_dlsym(handle, "_ZN2v87Integer9CheckCastEPNS_5ValueE");
+    if (_v8_Integer_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_Number_New) = hybris_dlsym(handle, "_ZN2v86Number3NewEPNS_7IsolateEd");
+    if (_v8_Number_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number3NewEPNS_7IsolateEd");
+    ((void*&) _v8_Number_Value) = hybris_dlsym(handle, "_ZNK2v86Number5ValueEv");
+    if (_v8_Number_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86Number5ValueEv");
+    ((void*&) _v8_Number_CheckCast) = hybris_dlsym(handle, "_ZN2v86Number9CheckCastEPNS_5ValueE");
+    if (_v8_Number_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_TryCatch_TryCatch) = hybris_dlsym(handle, "_ZN2v88TryCatchC2EPNS_7IsolateE");
+    if (_v8_TryCatch_TryCatch == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatchC2EPNS_7IsolateE");
+    ((void*&) _v8_TryCatch_destructor) = hybris_dlsym(handle, "_ZN2v88TryCatchD2Ev");
+    if (_v8_TryCatch_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatchD2Ev");
+    ((void*&) _v8_TryCatch_HasCaught) = hybris_dlsym(handle, "_ZNK2v88TryCatch9HasCaughtEv");
+    if (_v8_TryCatch_HasCaught == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch9HasCaughtEv");
+    ((void*&) _v8_TryCatch_CanContinue) = hybris_dlsym(handle, "_ZNK2v88TryCatch11CanContinueEv");
+    if (_v8_TryCatch_CanContinue == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch11CanContinueEv");
+    ((void*&) _v8_TryCatch_HasTerminated) = hybris_dlsym(handle, "_ZNK2v88TryCatch13HasTerminatedEv");
+    if (_v8_TryCatch_HasTerminated == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch13HasTerminatedEv");
+    ((void*&) _v8_TryCatch_ReThrow) = hybris_dlsym(handle, "_ZN2v88TryCatch7ReThrowEv");
+    if (_v8_TryCatch_ReThrow == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch7ReThrowEv");
+    ((void*&) _v8_TryCatch_Exception) = hybris_dlsym(handle, "_ZNK2v88TryCatch9ExceptionEv");
+    if (_v8_TryCatch_Exception == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch9ExceptionEv");
+    ((void*&) _v8_TryCatch_StackTrace) = hybris_dlsym(handle, "_ZNK2v88TryCatch10StackTraceENS_5LocalINS_7ContextEEE");
+    if (_v8_TryCatch_StackTrace == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch10StackTraceENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_TryCatch_Message) = hybris_dlsym(handle, "_ZNK2v88TryCatch7MessageEv");
+    if (_v8_TryCatch_Message == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88TryCatch7MessageEv");
+    ((void*&) _v8_TryCatch_Reset) = hybris_dlsym(handle, "_ZN2v88TryCatch5ResetEv");
+    if (_v8_TryCatch_Reset == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch5ResetEv");
+    ((void*&) _v8_TryCatch_SetVerbose) = hybris_dlsym(handle, "_ZN2v88TryCatch10SetVerboseEb");
+    if (_v8_TryCatch_SetVerbose == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch10SetVerboseEb");
+    ((void*&) _v8_TryCatch_SetCaptureMessage) = hybris_dlsym(handle, "_ZN2v88TryCatch17SetCaptureMessageEb");
+    if (_v8_TryCatch_SetCaptureMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch17SetCaptureMessageEb");
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
     vti_CommandOrigin_getName = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin7getNameEv"));
     if (vti_CommandOrigin_getName == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin7getNameEv");
