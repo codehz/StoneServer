@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Dec 16 2018 05:58:24 UTC
+// Generated on Sun Dec 16 2018 11:31:00 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -865,6 +865,10 @@ static void (v8::TryCatch::*_v8_TryCatch_SetCaptureMessage)(bool);
 void v8::TryCatch::SetCaptureMessage(bool p1) {
     (this->*_v8_TryCatch_SetCaptureMessage)(p1);
 }
+static v8::Local<v8::Object> (v8::Context::*_v8_Context_Global)();
+v8::Local<v8::Object> v8::Context::Global() {
+    return (this->*_v8_Context_Global)();
+}
 
 #include "CommandOrigin.h"
 static int vti_CommandOrigin_getName;
@@ -900,6 +904,8 @@ static void (*_mce_Platform_OGL_InitBindings)();
 void mce::Platform::OGL::InitBindings() {
     _mce_Platform_OGL_InitBindings();
 }
+
+#include "ScriptApi.h"
 
 #include "Multitouch.h"
 static void (*_Multitouch_feed)(char, char, short, short, int);
@@ -1498,6 +1504,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_TryCatch_SetVerbose == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch10SetVerboseEb");
     ((void*&) _v8_TryCatch_SetCaptureMessage) = hybris_dlsym(handle, "_ZN2v88TryCatch17SetCaptureMessageEb");
     if (_v8_TryCatch_SetCaptureMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch17SetCaptureMessageEb");
+    ((void*&) _v8_Context_Global) = hybris_dlsym(handle, "_ZN2v87Context6GlobalEv");
+    if (_v8_Context_Global == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Context6GlobalEv");
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
     vti_CommandOrigin_getName = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin7getNameEv"));
     if (vti_CommandOrigin_getName == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin7getNameEv");
