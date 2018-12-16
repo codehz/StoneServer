@@ -19,6 +19,8 @@
 #include <mach/mach_host.h>
 #else
 #include <sys/sysinfo.h>
+#include <minecraft/Crypto.h>
+
 #endif
 
 const char* LauncherAppPlatform::TAG = "AppPlatform";
@@ -204,4 +206,25 @@ std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
     }
     freeifaddrs(ifaddrs);
     return retval;
+}
+
+mcpe::string LauncherAppPlatform::createDeviceID(mcpe::string &error) {
+    auto deviceIdFile = PathHelper::getPrimaryDataDirectory() + "deviceid.txt";
+    {
+        std::ifstream in (deviceIdFile);
+        if (in) {
+            std::string deviceId;
+            if (std::getline(in, deviceId) && !in.eof() && !deviceId.empty()) {
+                Log::trace(TAG, "createDeviceID (from file): %s", deviceId.c_str());
+                return deviceId;
+            }
+        }
+    }
+    auto deviceId = Crypto::Random::generateUUID().asString();
+    {
+        std::ofstream out (deviceIdFile);
+        out << deviceId << std::endl;
+    }
+    Log::trace(TAG, "createDeviceID (created new): %s", deviceId.c_str());
+    return deviceId;
 }
