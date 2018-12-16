@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <net/if.h>
+#include <minecraft/Crypto.h>
 
 #ifdef __APPLE__
 #include <stdint.h>
@@ -19,8 +20,6 @@
 #include <mach/mach_host.h>
 #else
 #include <sys/sysinfo.h>
-#include <minecraft/Crypto.h>
-
 #endif
 
 const char* LauncherAppPlatform::TAG = "AppPlatform";
