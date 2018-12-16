@@ -323,4 +323,12 @@ private:
   bool has_terminated_ : 1;
 };
 
+class ExtensionConfiguration;
+class ObjectTemplate;
+
+struct Context {
+public:
+  v8::Local<v8::Object> Global();
+};
+
 }
