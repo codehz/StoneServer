@@ -26,7 +26,7 @@ SInstanceHook(void, _ZNK10SayCommand7executeERK13CommandOriginR13CommandOutput, 
   if (!checkChatPermissions(orig, output)) return;
   auto sender  = I18n::get(orig.getName(), {});
   auto content = message.getMessage(orig);
-  Log::info("Chat", "%s say: %s.", sender.c_str(), content.c_str());
+  Log::info("Chat", "[%s] %s", sender.c_str(), content.c_str());
   TextPacket text = TextPacket::createTranslatedAnnouncement(sender, mcpe::string("[") + sender + "] " + content, orig.getUUID().asString(), "1");
   for (auto pplayer : Locator<PlayerList>()->set) {
     auto &player = *pplayer;

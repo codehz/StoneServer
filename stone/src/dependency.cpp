@@ -95,7 +95,10 @@ void initDependencies() {
   };
   Locator<Chat>() >> [](Chat &chat) {
     chat.onPlayerChat >> [](auto &player, auto &msg) {
-      Log::info("chat", "[%s] %s", player >> PlayerName >> CStr, msg >> CStr);
+      Log::info("Chat", "[%s] %s", player >> PlayerName >> CStr, msg >> CStr);
+    };
+    chat.onChat >> [](auto &sender, auto &msg) {
+      Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
     };
   };
 }

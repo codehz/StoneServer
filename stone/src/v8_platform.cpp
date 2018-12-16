@@ -2,8 +2,10 @@
 
 #include <cstring>
 #include <hybris/dlfcn.h>
+#include <interface/locator.hpp>
 #include <log.h>
 #include <mcpelauncher/patch_utils.h>
+#include <minecraft/ServerInstance.h>
 
 void **LauncherV8Platform::myVtable;
 
@@ -34,12 +36,18 @@ void LauncherV8Platform::CallOnBackgroundThread(v8::Task *task, v8::ExpectedRunt
   task->Run();
 }
 
-void LauncherV8Platform::CallOnForegroundThread(v8::Isolate *isolate, v8::Task *task) { Log::warn("LauncherV8Platform", "CallOnForegroundThread\n"); }
+void LauncherV8Platform::CallOnForegroundThread(v8::Isolate *isolate, v8::Task *task) {
+  using namespace interface;
+  Log::warn("LauncherV8Platform", "CallOnForegroundThread\n");
+  Locator<ServerInstance>()->queueForServerThread([=] { task->Run(); });
+}
 
 void LauncherV8Platform::CallDelayedOnForegroundThread(v8::Isolate *isolate, v8::Task *task, double delay_in_seconds) {
   Log::warn("LauncherV8Platform", "CallDelayedOnForegroundThread\n");
 }
 
-void LauncherV8Platform::CallIdleOnForegroundThread(v8::Isolate *isolate, v8::IdleTask *task) {}
+void LauncherV8Platform::CallIdleOnForegroundThread(v8::Isolate *isolate, v8::IdleTask *task) {
+  Log::warn("LauncherV8Platform", "CallIdleOnForegroundThread\n");
+}
 
 bool LauncherV8Platform::IdleTasksEnabled(v8::Isolate *) { return false; }
