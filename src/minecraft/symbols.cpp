@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Dec 24 2018 09:57:44 UTC
+// Generated on Mon Dec 24 2018 10:18:07 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -385,12 +385,14 @@ mcpe::string FilePathManager::getSettingsPath() const {
 }
 
 #include "CommandUtils.h"
-typeid_t<CommandRegistry> CommonType<mcpe::string>::tid;
+typeid_t<CommandRegistry> * CommonType<mcpe::string>::tid;
 Parser CommonType<mcpe::string>::parser;
-typeid_t<CommandRegistry> CommonType<int>::tid;
+typeid_t<CommandRegistry> * CommonType<int>::tid;
 Parser CommonType<int>::parser;
-typeid_t<CommandRegistry> CommonType<float>::tid;
+typeid_t<CommandRegistry> * CommonType<float>::tid;
 Parser CommonType<float>::parser;
+typeid_t<CommandRegistry> * CommonType<bool>::tid;
+Parser CommonType<bool>::parser;
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -875,6 +877,14 @@ static void (*_v8_Integer_CheckCast)(v8::Value *);
 void v8::Integer::CheckCast(v8::Value * p1) {
     _v8_Integer_CheckCast(p1);
 }
+static bool (v8::Boolean::*_v8_Boolean_Value)() const;
+bool v8::Boolean::Value() const {
+    return (this->*_v8_Boolean_Value)();
+}
+static void (*_v8_Boolean_CheckCast)(v8::Value *);
+void v8::Boolean::CheckCast(v8::Value * p1) {
+    _v8_Boolean_CheckCast(p1);
+}
 static void (v8::TryCatch::*_v8_TryCatch_TryCatch)(v8::Isolate *);
 v8::TryCatch::TryCatch(v8::Isolate * p1) {
     (this->*_v8_TryCatch_TryCatch)(p1);
@@ -1175,7 +1185,7 @@ void GameControllerManager::feedJoinGame(int p1, bool p2) {
 #include "CommandMessage.h"
 CDT CommandMessage::constructor;
 CDT CommandMessage::destructor;
-typeid_t<CommandRegistry> CommandMessage::tid;
+typeid_t<CommandRegistry> * CommandMessage::tid;
 Parser CommandMessage::parser;
 static mcpe::string (CommandMessage::*_CommandMessage_getMessage)(CommandOrigin const &) const;
 mcpe::string CommandMessage::getMessage(CommandOrigin const & p1) const {
@@ -1434,6 +1444,10 @@ void minecraft_symbols_init(void* handle) {
     if (CommonType<float>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistryfE8typeid_tIT_EvE2id");
     ((void*&) CommonType<float>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIfEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     if (CommonType<float>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIfEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) CommonType<bool>::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistrybE8typeid_tIT_EvE2id");
+    if (CommonType<bool>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistrybE8typeid_tIT_EvE2id");
+    ((void*&) CommonType<bool>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIbEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommonType<bool>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIbEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");
@@ -1666,6 +1680,10 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Integer_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v87Integer5ValueEv");
     ((void*&) _v8_Integer_CheckCast) = hybris_dlsym(handle, "_ZN2v87Integer9CheckCastEPNS_5ValueE");
     if (_v8_Integer_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_Boolean_Value) = hybris_dlsym(handle, "_ZNK2v87Boolean5ValueEv");
+    if (_v8_Boolean_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v87Boolean5ValueEv");
+    ((void*&) _v8_Boolean_CheckCast) = hybris_dlsym(handle, "_ZN2v87Boolean9CheckCastEPNS_5ValueE");
+    if (_v8_Boolean_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Boolean9CheckCastEPNS_5ValueE");
     ((void*&) _v8_TryCatch_TryCatch) = hybris_dlsym(handle, "_ZN2v88TryCatchC2EPNS_7IsolateE");
     if (_v8_TryCatch_TryCatch == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatchC2EPNS_7IsolateE");
     ((void*&) _v8_TryCatch_destructor) = hybris_dlsym(handle, "_ZN2v88TryCatchD2Ev");

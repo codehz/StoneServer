@@ -14,7 +14,7 @@ public:
   /// @symbol _ZN14CommandMessageD2Ev
   static CDT destructor;
   /// @symbol _ZZ7type_idI15CommandRegistry14CommandMessageE8typeid_tIT_EvE2id
-  static typeid_t<CommandRegistry> tid;
+  static typeid_t<CommandRegistry> *tid;
   /// @symbol _ZNK15CommandRegistry5parseI14CommandMessageEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
   static Parser parser;
 };
