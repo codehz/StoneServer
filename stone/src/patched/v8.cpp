@@ -131,8 +131,6 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   }
 }
 
-SHook(void, _ZN9ScriptApi15V8CoreInterface8shutdownERNS_12ScriptReportE, void *) {}
-
 SHook(
     void *,
     _ZN9ScriptApi34CreateFunctionTemplateDataPropertyEN2v85LocalINS0_7ContextEEEPNS0_7IsolateENS1_INS0_6ObjectEEEPKcPFvRKNS0_20FunctionCallbackInfoINS0_5ValueEEEENS1_ISB_EE,

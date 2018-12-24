@@ -210,7 +210,7 @@ int main() {
   ServerInstance instance(minecraftApp, ec);
   LauncherV8Platform::initVtable(handle);
   LauncherV8Platform v8Platform;
-  v8::V8::InitializePlatform((v8::Platform*) &v8Platform);
+  v8::V8::InitializePlatform((v8::Platform *)&v8Platform);
   v8::V8::Initialize();
   instance.initializeServer(minecraftApp, whitelist, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
                             props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
@@ -266,5 +266,6 @@ int main() {
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
+  exit(0);
   return 0;
 }

@@ -1,5 +1,6 @@
 #include "v8_platform.h"
 
+#include <chrono>
 #include <condition_variable>
 #include <cstring>
 #include <functional>
@@ -9,42 +10,64 @@
 #include <mcpelauncher/patch_utils.h>
 #include <minecraft/ServerInstance.h>
 #include <mutex>
+#include <queue>
+#include <stone/server_hook.h>
 #include <thread>
 
-class Runner {
+using namespace std::chrono_literals;
+
+static class TaskRunner {
   std::thread thread;
   std::mutex m;
   std::condition_variable cv;
-  v8::Task *current;
+  std::queue<v8::Task *> tasks;
   bool stop = false;
 
   void loop() {
-    std::unique_lock<std::mutex> lk(m);
+    std::queue<v8::Task *> temp;
     while (true) {
-      cv.wait(lk, [this] { return !!current or stop; });
-      if (stop) return;
-      current->Run();
-      current = nullptr;
+      {
+        std::unique_lock<std::mutex> lk(m);
+        cv.wait_for(lk, 1s);
+        printf("--%d %d\n", stop, tasks.size());
+        if (stop) return;
+        if (tasks.empty()) continue;
+        std::swap(temp, tasks);
+      }
+      printf("start proc\n");
+      while (!temp.empty()) {
+        temp.front()->Run();
+        temp.pop();
+        printf("pop\n");
+      }
+      printf("end proc\n");
     }
   }
 
 public:
-  Runner()
-      : thread(std::bind(&Runner::loop, this))
-      , current(nullptr) {}
+  TaskRunner()
+      : thread(std::bind(&TaskRunner::loop, this)) {}
 
-  ~Runner() {
-    stop = true;
-    cv.notify_one();
+  void dispose() {
+    if (stop) return;
+    {
+      std::unique_lock<std::mutex> lk(m);
+      stop = true;
+    }
+    cv.notify_all();
     thread.join();
   }
 
+  ~TaskRunner() { dispose(); }
+
   void operator()(v8::Task *task) {
-    std::unique_lock<std::mutex> lk(m);
-    current = task;
+    {
+      std::unique_lock<std::mutex> lk(m);
+      tasks.push(task);
+    }
     cv.notify_one();
   }
-};
+} taskRunner;
 
 void **LauncherV8Platform::myVtable;
 
@@ -68,12 +91,13 @@ void LauncherV8Platform::initVtable(void *lib) {
   vtr.replace("_ZN6cohtml6script17ScriptingPlatform16IdleTasksEnabledEPN2v87IsolateE", &LauncherV8Platform::IdleTasksEnabled);
 }
 
+SHook(void, _ZN9ScriptApi15V8CoreInterface8shutdownERNS_12ScriptReportE) {}
+
 LauncherV8Platform::LauncherV8Platform() { vtable = myVtable; }
 
 void LauncherV8Platform::CallOnBackgroundThread(v8::Task *task, v8::ExpectedRuntime expected_runtime) {
-  static Runner runner;
   Log::warn("LauncherV8Platform", "CallOnBackgroundThread\n");
-  runner(task);
+  taskRunner(task);
 }
 
 void LauncherV8Platform::CallOnForegroundThread(v8::Isolate *isolate, v8::Task *task) {
