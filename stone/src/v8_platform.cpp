@@ -28,19 +28,15 @@ static class TaskRunner {
     while (true) {
       {
         std::unique_lock<std::mutex> lk(m);
-        cv.wait_for(lk, 1s);
-        printf("--%d %d\n", stop, tasks.size());
+        cv.wait_for(lk, 10s);
         if (stop) return;
         if (tasks.empty()) continue;
         std::swap(temp, tasks);
       }
-      printf("start proc\n");
       while (!temp.empty()) {
         temp.front()->Run();
         temp.pop();
-        printf("pop\n");
       }
-      printf("end proc\n");
     }
   }
 
