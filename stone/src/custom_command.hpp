@@ -42,8 +42,9 @@ static ParameterDef messageParameter(std::string const &name) {
     .parser = CommandMessage::parser,
     .init   = CommandMessage::constructor,
     .deinit = CommandMessage::destructor,
-    .fetch  = [](void *self, CommandOrigin &orig,
-                v8::Isolate *iso) { return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((CommandMessage *)self)->getMessage(orig).c_str()); },
+    .fetch  = [](void *self, CommandOrigin &orig, v8::Isolate *iso) -> v8::Local<v8::Value> {
+      return v8::String::NewFromUtf8(iso, ((CommandMessage *)self)->getMessage(orig).c_str());
+    },
   };
 }
 
@@ -52,19 +53,24 @@ template <typename T> static void gendeinit(void *ptr) { ((T *)ptr)->~T(); }
 template <typename T> static v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) { return {}; }
 
 template <> v8::Local<v8::Value> genfetch<mcpe::string>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+  return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
 }
-template <> v8::Local<v8::Value> genfetch<int>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  return (v8::Local<v8::Value>)v8::Integer::New(iso, *(int *)self);
-}
-template <> v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  return (v8::Local<v8::Value>)v8::Number::New(iso, *(float *)self);
-}
-template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  return (v8::Local<v8::Value>)v8::Boolean::New(iso, *(bool *)self);
-}
+template <> v8::Local<v8::Value> genfetch<int>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Integer::New(iso, *(int *)self); }
+template <> v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Number::New(iso, *(float *)self); }
+template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Boolean::New(iso, *(bool *)self); }
 template <> v8::Local<v8::Value> genfetch<CommandRawText>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+  return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+}
+template <> v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  auto strX      = v8::String::NewFromUtf8(iso, "x");
+  auto strY      = v8::String::NewFromUtf8(iso, "y");
+  auto strZ      = v8::String::NewFromUtf8(iso, "z");
+  auto ret       = v8::Object::New(iso);
+  auto [x, y, z] = ((CommandPosition *)self)->getPosition(orig);
+  ret->Set(strX, v8::Number::New(iso, x));
+  ret->Set(strY, v8::Number::New(iso, y));
+  ret->Set(strZ, v8::Number::New(iso, z));
+  return ret;
 }
 
 template <typename T> static ParameterDef commonParameter(std::string const &name) {

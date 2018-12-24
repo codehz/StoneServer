@@ -28,6 +28,9 @@ template <class T> struct Local : BaseLocal<T> {
       : BaseLocal<T>() {}
   Local(T *val)
       : BaseLocal<T>(val) {}
+  template <typename F>
+  Local(Local<F> rhs)
+      : BaseLocal<T>(T::Cast(*rhs)) {}
 };
 template <class T> struct Maybe : BaseLocal<T> {
   Maybe()
@@ -88,6 +91,7 @@ class Value {
   bool FullIsString() const;
 
 public:
+  template <class T> inline static Value *Cast(T *value) { return static_cast<Value *>(value); }
   inline bool IsNull() const { return FullIsNull(); };
   inline bool IsUndefined() const { return FullIsUndefined(); };
   inline bool IsNullOrUndefined() const { return FullIsNull() || FullIsUndefined(); };

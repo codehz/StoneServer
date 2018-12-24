@@ -44,3 +44,15 @@ template <> struct CommonType<CommandRawText> {
   /// @symbol _ZNK15CommandRegistry5parseI14CommandRawTextEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
   static Parser parser;
 };
+
+struct CommandPosition {
+  char filler[16];
+  std::tuple<float, float, float> getPosition(CommandOrigin const &) const;
+};
+
+template <> struct CommonType<CommandPosition> {
+  /// @symbol _ZZ7type_idI15CommandRegistry15CommandPositionE8typeid_tIT_EvE2id
+  static typeid_t<CommandRegistry> *tid;
+  /// @symbol _ZNK15CommandRegistry5parseI15CommandPositionEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
+  static Parser parser;
+};
