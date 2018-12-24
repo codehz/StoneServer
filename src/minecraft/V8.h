@@ -236,7 +236,21 @@ public:
   };
 };
 
-class Integer {
+class Number : public Value {
+  /// @symbol _ZN2v86Number9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  inline static Number *Cast(v8::Value *obj) {
+    CheckCast(obj);
+    return (Number *)obj;
+  }
+  /// @symbol _ZN2v86Number3NewEPNS_7IsolateEd
+  static v8::Local<v8::Number> New(v8::Isolate *isolate, double value);
+  double Value() const;
+};
+
+class Integer : public Number {
   /// @symbol _ZN2v87Integer9CheckCastEPNS_5ValueE
   static void CheckCast(v8::Value *obj);
 
@@ -250,20 +264,6 @@ public:
   /// @symbol _ZN2v87Integer15NewFromUnsignedEPNS_7IsolateEj
   static v8::Local<v8::Integer> NewFromUnsigned(v8::Isolate *isolate, uint32_t value);
   int64_t Value() const;
-};
-
-class Number {
-  /// @symbol _ZN2v86Number9CheckCastEPNS_5ValueE
-  static void CheckCast(v8::Value *obj);
-
-public:
-  inline static Number *Cast(v8::Value *obj) {
-    CheckCast(obj);
-    return (Number *)obj;
-  }
-  /// @symbol _ZN2v86Number3NewEPNS_7IsolateEd
-  static v8::Local<v8::Number> New(v8::Isolate *isolate, double value);
-  double Value() const;
 };
 
 inline Local<Primitive> Undefined(Isolate *isolate) {
@@ -466,15 +466,15 @@ public:
   v8::Local<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
 };
 
-template <class T> class Persistent : BaseLocal<void*> {
+template <class T> class Persistent : BaseLocal<void *> {
 
 public:
   Persistent()
-      : BaseLocal<void*>() {}
+      : BaseLocal<void *>() {}
   Persistent(Isolate *iso, Local<T> local)
-      : BaseLocal<void*>((void **)V8::GlobalizeReference(iso, (void *)local)) {}
+      : BaseLocal<void *>((void **)V8::GlobalizeReference(iso, (void *)local)) {}
   inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *this->val_)); }
-  inline void Set(void *target) { this->val_ = (void**)target; }
+  inline void Set(void *target) { this->val_ = (void **)target; }
 };
 
 }
