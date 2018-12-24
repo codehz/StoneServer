@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Dec 24 2018 09:31:31 UTC
+// Generated on Mon Dec 24 2018 09:50:58 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -387,6 +387,8 @@ mcpe::string FilePathManager::getSettingsPath() const {
 #include "CommandUtils.h"
 typeid_t<CommandRegistry> CommonType<mcpe::string>::tid;
 Parser CommonType<mcpe::string>::parser;
+typeid_t<CommandRegistry> CommonType<int>::tid;
+Parser CommonType<int>::parser;
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -843,6 +845,18 @@ static void (v8::String::Utf8Value::*_v8_String_Utf8Value_destructor)();
 v8::String::Utf8Value::~Utf8Value() {
     (this->*_v8_String_Utf8Value_destructor)();
 }
+static v8::Local<v8::Number> (*_v8_Number_New)(v8::Isolate *, double);
+v8::Local<v8::Number> v8::Number::New(v8::Isolate * p1, double p2) {
+    return _v8_Number_New(p1, p2);
+}
+static double (v8::Number::*_v8_Number_Value)() const;
+double v8::Number::Value() const {
+    return (this->*_v8_Number_Value)();
+}
+static void (*_v8_Number_CheckCast)(v8::Value *);
+void v8::Number::CheckCast(v8::Value * p1) {
+    _v8_Number_CheckCast(p1);
+}
 static v8::Local<v8::Integer> (*_v8_Integer_New)(v8::Isolate *, int32_t);
 v8::Local<v8::Integer> v8::Integer::New(v8::Isolate * p1, int32_t p2) {
     return _v8_Integer_New(p1, p2);
@@ -858,18 +872,6 @@ int64_t v8::Integer::Value() const {
 static void (*_v8_Integer_CheckCast)(v8::Value *);
 void v8::Integer::CheckCast(v8::Value * p1) {
     _v8_Integer_CheckCast(p1);
-}
-static v8::Local<v8::Number> (*_v8_Number_New)(v8::Isolate *, double);
-v8::Local<v8::Number> v8::Number::New(v8::Isolate * p1, double p2) {
-    return _v8_Number_New(p1, p2);
-}
-static double (v8::Number::*_v8_Number_Value)() const;
-double v8::Number::Value() const {
-    return (this->*_v8_Number_Value)();
-}
-static void (*_v8_Number_CheckCast)(v8::Value *);
-void v8::Number::CheckCast(v8::Value * p1) {
-    _v8_Number_CheckCast(p1);
 }
 static void (v8::TryCatch::*_v8_TryCatch_TryCatch)(v8::Isolate *);
 v8::TryCatch::TryCatch(v8::Isolate * p1) {
@@ -1422,6 +1424,10 @@ void minecraft_symbols_init(void* handle) {
     if (CommonType<mcpe::string>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistrySsE8typeid_tIT_EvE2id");
     ((void*&) CommonType<mcpe::string>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseISsEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     if (CommonType<mcpe::string>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseISsEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) CommonType<int>::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistryiE8typeid_tIT_EvE2id");
+    if (CommonType<int>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistryiE8typeid_tIT_EvE2id");
+    ((void*&) CommonType<int>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIiEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommonType<int>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIiEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");
@@ -1640,6 +1646,12 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_String_Utf8Value_Utf8Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9Utf8ValueC2ENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_String_Utf8Value_destructor) = hybris_dlsym(handle, "_ZN2v86String9Utf8ValueD2Ev");
     if (_v8_String_Utf8Value_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9Utf8ValueD2Ev");
+    ((void*&) _v8_Number_New) = hybris_dlsym(handle, "_ZN2v86Number3NewEPNS_7IsolateEd");
+    if (_v8_Number_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number3NewEPNS_7IsolateEd");
+    ((void*&) _v8_Number_Value) = hybris_dlsym(handle, "_ZNK2v86Number5ValueEv");
+    if (_v8_Number_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86Number5ValueEv");
+    ((void*&) _v8_Number_CheckCast) = hybris_dlsym(handle, "_ZN2v86Number9CheckCastEPNS_5ValueE");
+    if (_v8_Number_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Integer_New) = hybris_dlsym(handle, "_ZN2v87Integer3NewEPNS_7IsolateEi");
     if (_v8_Integer_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer3NewEPNS_7IsolateEi");
     ((void*&) _v8_Integer_NewFromUnsigned) = hybris_dlsym(handle, "_ZN2v87Integer15NewFromUnsignedEPNS_7IsolateEj");
@@ -1648,12 +1660,6 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Integer_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v87Integer5ValueEv");
     ((void*&) _v8_Integer_CheckCast) = hybris_dlsym(handle, "_ZN2v87Integer9CheckCastEPNS_5ValueE");
     if (_v8_Integer_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Integer9CheckCastEPNS_5ValueE");
-    ((void*&) _v8_Number_New) = hybris_dlsym(handle, "_ZN2v86Number3NewEPNS_7IsolateEd");
-    if (_v8_Number_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number3NewEPNS_7IsolateEd");
-    ((void*&) _v8_Number_Value) = hybris_dlsym(handle, "_ZNK2v86Number5ValueEv");
-    if (_v8_Number_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86Number5ValueEv");
-    ((void*&) _v8_Number_CheckCast) = hybris_dlsym(handle, "_ZN2v86Number9CheckCastEPNS_5ValueE");
-    if (_v8_Number_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Number9CheckCastEPNS_5ValueE");
     ((void*&) _v8_TryCatch_TryCatch) = hybris_dlsym(handle, "_ZN2v88TryCatchC2EPNS_7IsolateE");
     if (_v8_TryCatch_TryCatch == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatchC2EPNS_7IsolateE");
     ((void*&) _v8_TryCatch_destructor) = hybris_dlsym(handle, "_ZN2v88TryCatchD2Ev");
