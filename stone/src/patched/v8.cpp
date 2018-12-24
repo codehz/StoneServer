@@ -64,6 +64,7 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto strHandler    = String::NewFromUtf8(iso, "handler");
   auto strName       = String::NewFromUtf8(iso, "name");
   auto strType       = String::NewFromUtf8(iso, "type");
+  auto strOptional   = String::NewFromUtf8(iso, "optional");
   auto definitions   = Array::Cast(info[3]);
 
   auto registerOverload = registerCustomCommand(command >> V8Str >> StdStr, desc >> V8Str >> StdStr, (int)lvl->Value());
@@ -75,7 +76,7 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
     }
     auto obj = Object::Cast(val);
     if (!obj->Has((Value *)strArguments) || !obj->Has((Value *)strHandler)) {
-      Log::error("Scripting", "registerCommand definition requires { arguments: array, handler: function }");
+      Log::error("Scripting", "registerCommand definition requires { arguments: array, handler: function, optional?: boolean }");
       return;
     }
     auto srcArguments = obj->Get((Value *)strArguments);
@@ -132,6 +133,8 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         Log::error("Scripting", "registerCommand definition arguments type is unknown");
         return;
       }
+      auto optional = arg->Get((Value *)strOptional)->BooleanValue();
+      if (optional) mvt.defs.rbegin()->makeOptional();
     }
     mvt.exec = [self = Persistent<Value>(iso, obj), handler = Persistent<Function>(iso, Function::Cast(srcHandler))](
                    Isolate *iso, int argc, v8::Local<v8::Value> *argv) -> v8::Local<v8::Value> {

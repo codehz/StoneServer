@@ -27,6 +27,10 @@ struct ParameterDef {
   std::string softEnum;
   std::vector<std::string> enumItems;
   bool optional;
+
+  void makeOptional() {
+    optional = true;
+  }
 };
 
 struct MyCommandVTable {
