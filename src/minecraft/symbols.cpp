@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Dec 24 2018 10:18:07 UTC
+// Generated on Mon Dec 24 2018 10:21:23 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -393,6 +393,8 @@ typeid_t<CommandRegistry> * CommonType<float>::tid;
 Parser CommonType<float>::parser;
 typeid_t<CommandRegistry> * CommonType<bool>::tid;
 Parser CommonType<bool>::parser;
+typeid_t<CommandRegistry> * CommonType<CommandRawText>::tid;
+Parser CommonType<CommandRawText>::parser;
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -1448,6 +1450,10 @@ void minecraft_symbols_init(void* handle) {
     if (CommonType<bool>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistrybE8typeid_tIT_EvE2id");
     ((void*&) CommonType<bool>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIbEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     if (CommonType<bool>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIbEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) CommonType<CommandRawText>::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistry14CommandRawTextE8typeid_tIT_EvE2id");
+    if (CommonType<CommandRawText>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistry14CommandRawTextE8typeid_tIT_EvE2id");
+    ((void*&) CommonType<CommandRawText>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseI14CommandRawTextEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommonType<CommandRawText>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseI14CommandRawTextEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");

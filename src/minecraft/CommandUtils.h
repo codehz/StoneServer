@@ -33,3 +33,14 @@ template <> struct CommonType<bool> {
   /// @symbol _ZNK15CommandRegistry5parseIbEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
   static Parser parser;
 };
+
+struct CommandRawText {
+  mcpe::string value;
+};
+
+template <> struct CommonType<CommandRawText> {
+  /// @symbol _ZZ7type_idI15CommandRegistry14CommandRawTextE8typeid_tIT_EvE2id
+  static typeid_t<CommandRegistry> *tid;
+  /// @symbol _ZNK15CommandRegistry5parseI14CommandRawTextEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
+  static Parser parser;
+};
