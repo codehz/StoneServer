@@ -63,6 +63,9 @@ template <> v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig
 template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return (v8::Local<v8::Value>)v8::Boolean::New(iso, *(bool *)self);
 }
+template <> v8::Local<v8::Value> genfetch<CommandRawText>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+}
 
 template <typename T> static ParameterDef commonParameter(std::string const &name) {
   return {
