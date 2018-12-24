@@ -65,7 +65,6 @@ template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig,
 }
 
 template <typename T> static ParameterDef commonParameter(std::string const &name) {
-  printf(": %d\n", CommonType<T>::tid->id);
   return {
     .size   = sizeof(T),
     .name   = name,
