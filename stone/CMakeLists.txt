@@ -13,6 +13,7 @@ add_executable(stone
   "src/dependency.cpp"
   "src/services.h"
   "src/operators.h"
+  "src/custom_command.hpp"
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <minecraft/V8.h>
 
 class LauncherV8Platform {

@@ -2,12 +2,45 @@
 
 #include "V8Internals.h"
 #include <cstdint>
+#include <cstring>
+#include <type_traits>
 
 namespace v8 {
 
-template <class T> using Local      = T *;
-template <class T> using MaybeLocal = T *;
-template <class T> using Maybe      = T *;
+template <class T> class BaseLocal {
+public:
+  BaseLocal()
+      : val_(nullptr) {}
+  BaseLocal(T *val)
+      : val_(val) {}
+  bool IsEmpty() const { return val_ == nullptr; }
+  void Clear() { val_ = nullptr; }
+  T *operator->() const { return val_; }
+  T *operator*() const { return val_; }
+  operator T *() const { return val_; }
+
+protected:
+  T *val_;
+};
+
+template <class T> struct Local : BaseLocal<T> {
+  Local()
+      : BaseLocal<T>() {}
+  Local(T *val)
+      : BaseLocal<T>(val) {}
+};
+template <class T> struct Maybe : BaseLocal<T> {
+  Maybe()
+      : BaseLocal<T>() {}
+  Maybe(T *val)
+      : BaseLocal<T>(val) {}
+};
+template <class T> struct MaybeLocal : BaseLocal<T> {
+  MaybeLocal()
+      : BaseLocal<T>() {}
+  MaybeLocal(T *val)
+      : BaseLocal<T>(val) {}
+};
 
 class Isolate;
 class Platform;
@@ -28,6 +61,10 @@ struct V8 {
   static bool Initialize();
   /// @symbol _ZN2v82V818InitializePlatformEPNS_8PlatformE
   static void InitializePlatform(v8::Platform *platform);
+  /// @symbol _ZN2v82V818GlobalizeReferenceEPNS_8internal7IsolateEPPNS1_6ObjectE
+  static void *GlobalizeReference(v8::Isolate *iso, void *inp);
+  /// @symbol _ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE
+  static void *CreateHandle(v8::Isolate *, void *);
 };
 
 struct Task {
@@ -160,23 +197,20 @@ public:
   bool ContainsOnlyOneByte() const;
   bool IsExternal() const;
   bool IsExternalOneByte() const;
+
   /// @symbol _ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi
-  static v8::Local<v8::String> NewFromUtf8Impl(v8::Isolate *isolate, const char *data, v8::NewStringType type, int length);
-  inline static v8::Local<v8::String> NewFromUtf8(v8::Isolate *isolate, const char *data, v8::NewStringType type = kNormal, int length = -1) {
+  static v8::Local<v8::String> NewFromUtf8Impl(v8::Isolate *isolate, char const *data, v8::NewStringType type, int length);
+  inline static v8::Local<v8::String> NewFromUtf8(v8::Isolate *isolate, char const *data, v8::NewStringType type = kNormal, int length = -1) {
     return NewFromUtf8Impl(isolate, data, type, length);
   }
 
+  /// @symbol _ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi
+  static v8::Local<v8::String> NewFromTwoByteImpl(v8::Isolate *isolate, char16_t const *data, v8::NewStringType type, int length);
+  inline static v8::Local<v8::String> NewFromTwoByte(v8::Isolate *isolate, char16_t const *data, v8::NewStringType type = kNormal, int length = -1) {
+    return NewFromTwoByteImpl(isolate, data, type, length);
+  }
+
   enum WriteOptions { NO_OPTIONS = 0, HINT_MANY_WRITES_EXPECTED = 1, NO_NULL_TERMINATION = 2, PRESERVE_ONE_BYTE_NULL = 4, REPLACE_INVALID_UTF8 = 8 };
-  /// @symbol _ZNK2v86String9WriteUtf8EPciPii
-  int WriteUtf8Impl(char *buffer, int start, int length, int options) const;
-  inline int WriteUtf8(char *buffer, int start = 0, int length = -1, int options = NO_OPTIONS) const {
-    return WriteUtf8Impl(buffer, start, length, options);
-  }
-  /// @symbol _ZNK2v86String12WriteOneByteEPhiii
-  int WriteOneByteImpl(char *buffer, int start, int length, int options) const;
-  inline int WriteOneByte(char *buffer, int start = 0, int length = -1, int options = NO_OPTIONS) const {
-    return WriteOneByteImpl(buffer, start, length, options);
-  }
   /// @symbol _ZNK2v86String5WriteEPtiii
   int WriteImpl(unsigned short *buffer, int start, int length, int options) const;
   inline int Write(unsigned short *buffer, int start = 0, int length = -1, int options = NO_OPTIONS) const {
@@ -287,6 +321,15 @@ private:
   int length_;
 };
 
+template <class T> class ReturnValue {
+  internal::Address *value_;
+
+public:
+  ReturnValue(internal::Address *slot)
+      : value_(slot) {}
+  template <typename S> inline void Set(const Local<S> handle) { *value_ = *reinterpret_cast<internal::Address *>(*handle); }
+};
+
 class TryCatch {
 public:
   /// @symbol _ZN2v88TryCatchC2EPNS_7IsolateE
@@ -326,9 +369,112 @@ private:
 class ExtensionConfiguration;
 class ObjectTemplate;
 
+struct Isolate {
+  char filler[0x10000];
+
+public:
+  /// @symbol _ZN2v87Isolate14ThrowExceptionENS_5LocalINS_5ValueEEE
+  void ThrowException(v8::Local<v8::Value>);
+
+  static v8::Isolate *GetCurrent();
+  v8::Local<v8::Context> GetCurrentContext();
+  bool InContext();
+  void Enter();
+  void Exit();
+};
+
 struct Context {
 public:
-  v8::Local<v8::Object> Global();
+  void Enter();
+  void Exit();
+  /// @symbol _ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigurationENS_10MaybeLocalINS_14ObjectTemplateEEENS5_INS_5ValueEEE
+  static v8::Local<v8::Context> New(v8::Isolate *, v8::ExtensionConfiguration *, v8::MaybeLocal<v8::ObjectTemplate>, v8::MaybeLocal<v8::Value>);
+
+  class Scope {
+  public:
+    explicit inline Scope(Local<Context> context)
+        : context_(context) {
+      context_->Enter();
+    }
+    inline ~Scope() { context_->Exit(); }
+
+  private:
+    Local<Context> context_;
+  };
+};
+
+class HandleScope {
+  char filler[0x20];
+
+public:
+  /// @symbol _ZN2v811HandleScopeC2EPNS_7IsolateE
+  HandleScope(v8::Isolate *isolate);
+  ~HandleScope();
+  /// @skipped
+  HandleScope(const HandleScope &) = delete;
+  /// @skipped
+  void operator=(const HandleScope &) = delete;
+};
+
+class Object : public Value {
+  /// @symbol _ZN2v86Object9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  inline static Object *Cast(v8::Value *obj) {
+    CheckCast(obj);
+    return (Object *)obj;
+  }
+  /// @symbol _ZN2v86Object3NewEPNS_7IsolateE
+  static v8::Local<v8::Object> New(v8::Isolate *isolate);
+  /// @symbol _ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE
+  bool Set(unsigned, v8::Local<v8::Value>);
+  /// @symbol _ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_
+  bool Set(v8::Local<v8::Value>, v8::Local<v8::Value>);
+  /// @symbol _ZN2v86Object3GetEj
+  v8::Local<v8::Value> Get(unsigned);
+  /// @symbol _ZN2v86Object3GetENS_5LocalINS_5ValueEEE
+  v8::Local<v8::Value> Get(v8::Local<v8::Value>);
+  /// @symbol _ZN2v86Object3HasENS_5LocalINS_5ValueEEE
+  bool Has(v8::Local<v8::Value>);
+};
+
+class Array : public Object {
+  /// @symbol _ZN2v85Array9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  inline static Array *Cast(Value *obj) {
+    CheckCast(obj);
+    return (Array *)obj;
+  }
+  /// @symbol _ZN2v85Array3NewEPNS_7IsolateEi
+  static v8::Local<v8::Array> New(v8::Isolate *isolate, int length);
+  unsigned Length() const;
+};
+
+class Function : public Object {
+  /// @symbol _ZN2v88Function9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  inline static Function *Cast(Value *obj) {
+    CheckCast(obj);
+    return (Function *)obj;
+  }
+  /// @symbol _ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_
+  v8::Local<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
+};
+
+template <class T> class Persistent : BaseLocal<void*> {
+
+public:
+  Persistent()
+      : BaseLocal<void*>() {}
+  Persistent(Isolate *iso, Local<T> local)
+      : BaseLocal<void*>((void **)V8::GlobalizeReference(iso, (void *)local)) {}
+  inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *this->val_)); }
+  inline void Set(void *target) { this->val_ = (void**)target; }
 };
 
 }

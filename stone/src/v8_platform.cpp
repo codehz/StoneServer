@@ -1,11 +1,50 @@
 #include "v8_platform.h"
 
+#include <condition_variable>
 #include <cstring>
+#include <functional>
 #include <hybris/dlfcn.h>
 #include <interface/locator.hpp>
 #include <log.h>
 #include <mcpelauncher/patch_utils.h>
 #include <minecraft/ServerInstance.h>
+#include <mutex>
+#include <thread>
+
+class Runner {
+  std::thread thread;
+  std::mutex m;
+  std::condition_variable cv;
+  v8::Task *current;
+  bool stop = false;
+
+  void loop() {
+    std::unique_lock<std::mutex> lk(m);
+    while (true) {
+      cv.wait(lk, [this] { return !!current or stop; });
+      if (stop) return;
+      current->Run();
+      current = nullptr;
+    }
+  }
+
+public:
+  Runner()
+      : thread(std::bind(&Runner::loop, this))
+      , current(nullptr) {}
+
+  ~Runner() {
+    stop = true;
+    cv.notify_one();
+    thread.join();
+  }
+
+  void operator()(v8::Task *task) {
+    std::unique_lock<std::mutex> lk(m);
+    current = task;
+    cv.notify_one();
+  }
+};
 
 void **LauncherV8Platform::myVtable;
 
@@ -32,8 +71,9 @@ void LauncherV8Platform::initVtable(void *lib) {
 LauncherV8Platform::LauncherV8Platform() { vtable = myVtable; }
 
 void LauncherV8Platform::CallOnBackgroundThread(v8::Task *task, v8::ExpectedRuntime expected_runtime) {
+  static Runner runner;
   Log::warn("LauncherV8Platform", "CallOnBackgroundThread\n");
-  task->Run();
+  runner(task);
 }
 
 void LauncherV8Platform::CallOnForegroundThread(v8::Isolate *isolate, v8::Task *task) {

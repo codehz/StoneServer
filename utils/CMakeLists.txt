@@ -8,6 +8,7 @@ add_library(utils
   "include/stone/utils.h"
   "include/stone/static_hook.h"
   "include/stone/server_hook.h"
+  "include/stone/magic_func.h"
   "include/stone/symbol.h"
   "include/stone/hook_helper.h"
   "include/stone/operator.h"

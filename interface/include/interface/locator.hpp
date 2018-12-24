@@ -5,6 +5,8 @@
 
 namespace interface {
 
+template <typename T> using identity = T;
+
 template <typename T> class ReferenceHolder {
   T *raw_pointer;
   std::list<std::function<void(T &)>> setNotifyList, unsetNotifyList, updateNotifyList;
@@ -25,6 +27,8 @@ public:
   inline T &operator=(T &input) { return *(*this = &input); }
   inline T *operator->() { return raw_pointer; }
   inline T &operator*() { return *raw_pointer; }
+  inline operator T *() { return raw_pointer; }
+  inline operator T &() { return *raw_pointer; }
 
   template <typename F> inline void operator>>(F const &f) {
     if (raw_pointer)
@@ -43,8 +47,8 @@ public:
   }
 };
 
-template <typename T> inline ReferenceHolder<T> &Locator() {
-  static ReferenceHolder<T> ref;
+template <typename T, template <typename> typename Holder = ReferenceHolder> inline Holder<T> &Locator() {
+  static Holder<T> ref;
   return ref;
 };
 
