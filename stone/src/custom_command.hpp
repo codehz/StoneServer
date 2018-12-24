@@ -35,7 +35,7 @@ struct MyCommandVTable {
 };
 
 static ParameterDef messageParameter(std::string const &name) {
-  return ParameterDef{
+  return {
     .size   = sizeof(CommandMessage),
     .name   = name,
     .type   = CommandMessage::tid,
@@ -46,6 +46,26 @@ static ParameterDef messageParameter(std::string const &name) {
                 v8::Isolate *iso) { return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((CommandMessage *)self)->getMessage(orig).c_str()); },
   };
 }
+
+template <typename T> static void geninit(void *ptr) { new (ptr) T(); }
+template <typename T> static void gendeinit(void *ptr) { ((T *)ptr)->~T(); }
+template <typename T> static v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) { return {}; }
+
+template <> v8::Local<v8::Value> genfetch<mcpe::string>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return (v8::Local<v8::Value>)v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+}
+
+template <typename T> static ParameterDef commonParameter(std::string const &name) {
+  return {
+    .size   = sizeof(T),
+    .name   = name,
+    .type   = CommonType<T>::tid,
+    .parser = CommonType<T>::parser,
+    .init   = &geninit<T>,
+    .deinit = &gendeinit<T>,
+    .fetch  = &genfetch<T>,
+  };
+};
 
 static v8::Local<v8::Context> *hack_ctx;
 

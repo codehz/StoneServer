@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Dec 24 2018 06:07:21 UTC
+// Generated on Mon Dec 24 2018 09:31:31 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -66,6 +66,14 @@ void CommandOutput::addMessage(mcpe::string const & p1, std::vector<CommandOutpu
 static void (CommandOutput::*_CommandOutput_success)();
 void CommandOutput::success() {
     (this->*_CommandOutput_success)();
+}
+static void (CommandOutputParameter::*_CommandOutputParameter_CommandOutputParameter)(mcpe::string const &);
+CommandOutputParameter::CommandOutputParameter(mcpe::string const & p1) {
+    (this->*_CommandOutputParameter_CommandOutputParameter)(p1);
+}
+static void (CommandOutputParameter::*_CommandOutputParameter_CommandOutputParameter2)(int);
+CommandOutputParameter::CommandOutputParameter(int p1) {
+    (this->*_CommandOutputParameter_CommandOutputParameter2)(p1);
 }
 
 #include "Common.h"
@@ -377,6 +385,8 @@ mcpe::string FilePathManager::getSettingsPath() const {
 }
 
 #include "CommandUtils.h"
+typeid_t<CommandRegistry> CommonType<mcpe::string>::tid;
+Parser CommonType<mcpe::string>::parser;
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -1267,6 +1277,10 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutput_addMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput10addMessageERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE24CommandOutputMessageType");
     ((void*&) _CommandOutput_success) = hybris_dlsym(handle, "_ZN13CommandOutput7successEv");
     if (_CommandOutput_success == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput7successEv");
+    ((void*&) _CommandOutputParameter_CommandOutputParameter) = hybris_dlsym(handle, "_ZN22CommandOutputParameterC2ERKSs");
+    if (_CommandOutputParameter_CommandOutputParameter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22CommandOutputParameterC2ERKSs");
+    ((void*&) _CommandOutputParameter_CommandOutputParameter2) = hybris_dlsym(handle, "_ZN22CommandOutputParameterC2Ei");
+    if (_CommandOutputParameter_CommandOutputParameter2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22CommandOutputParameterC2Ei");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
     ((void*&) _NetworkIdentifier_getHash) = hybris_dlsym(handle, "_ZNK17NetworkIdentifier7getHashEv");
@@ -1404,6 +1418,10 @@ void minecraft_symbols_init(void* handle) {
     if (_FilePathManager_setSettingsPath == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15FilePathManager15setSettingsPathESs");
     ((void*&) _FilePathManager_getSettingsPath) = hybris_dlsym(handle, "_ZNK15FilePathManager15getSettingsPathEv");
     if (_FilePathManager_getSettingsPath == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15FilePathManager15getSettingsPathEv");
+    ((void*&) CommonType<mcpe::string>::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistrySsE8typeid_tIT_EvE2id");
+    if (CommonType<mcpe::string>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistrySsE8typeid_tIT_EvE2id");
+    ((void*&) CommonType<mcpe::string>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseISsEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommonType<mcpe::string>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseISsEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");

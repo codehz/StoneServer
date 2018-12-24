@@ -116,6 +116,8 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       auto theType = String::Cast(argType) >> V8Str;
       if (theType == "message") {
         mvt.defs.push_back(messageParameter(theName));
+      } else if (theType == "string") {
+        mvt.defs.push_back(commonParameter<mcpe::string>(theName));
       } else {
         Log::error("Scripting", "registerCommand definition arguments type is unknown");
         return;
