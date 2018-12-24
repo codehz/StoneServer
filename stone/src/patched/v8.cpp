@@ -122,6 +122,8 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         mvt.defs.push_back(commonParameter<int>(theName));
       } else if (theType == "float") {
         mvt.defs.push_back(commonParameter<float>(theName));
+      } else if (theType == "bool") {
+        mvt.defs.push_back(commonParameter<bool>(theName));
       } else {
         Log::error("Scripting", "registerCommand definition arguments type is unknown");
         return;

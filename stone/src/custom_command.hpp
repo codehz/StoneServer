@@ -38,7 +38,7 @@ static ParameterDef messageParameter(std::string const &name) {
   return {
     .size   = sizeof(CommandMessage),
     .name   = name,
-    .type   = CommandMessage::tid,
+    .type   = *CommandMessage::tid,
     .parser = CommandMessage::parser,
     .init   = CommandMessage::constructor,
     .deinit = CommandMessage::destructor,
@@ -60,12 +60,16 @@ template <> v8::Local<v8::Value> genfetch<int>(void *self, CommandOrigin &orig, 
 template <> v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return (v8::Local<v8::Value>)v8::Number::New(iso, *(float *)self);
 }
+template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return (v8::Local<v8::Value>)v8::Boolean::New(iso, *(bool *)self);
+}
 
 template <typename T> static ParameterDef commonParameter(std::string const &name) {
+  printf(": %d\n", CommonType<T>::tid->id);
   return {
     .size   = sizeof(T),
     .name   = name,
-    .type   = CommonType<T>::tid,
+    .type   = *CommonType<T>::tid,
     .parser = CommonType<T>::parser,
     .init   = &geninit<T>,
     .deinit = &gendeinit<T>,

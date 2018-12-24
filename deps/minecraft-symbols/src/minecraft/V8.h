@@ -290,6 +290,19 @@ inline Local<Boolean> False(Isolate *isolate) {
   return Local<Boolean>(reinterpret_cast<Boolean *>(slot));
 }
 
+class Boolean : public Primitive {
+  /// @symbol _ZN2v87Boolean9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  bool Value() const;
+  inline static Boolean *Cast(v8::Value *obj) {
+    CheckCast(obj);
+    return (Boolean *)obj;
+  }
+  inline static v8::Local<v8::Boolean> New(v8::Isolate *isolate, bool value) { return value ? True(isolate) : False(isolate); }
+};
+
 template <class T> class ReturnValue;
 template <typename T> class FunctionCallbackInfo;
 
