@@ -12,8 +12,11 @@ target_include_directories(dbus-api INTERFACE "include")
 add_executable(dbus-api-logger src/logger.cpp)
 target_link_libraries(dbus-api-logger PRIVATE dbus-api)
 
+add_executable(dbus-api-chat src/chat.cpp)
+target_link_libraries(dbus-api-chat PRIVATE dbus-api)
+
 add_executable(dbus-api-userlist src/userlist.cpp)
 target_link_libraries(dbus-api-userlist PRIVATE dbus-api)
 
 install(FILES ${src} DESTINATION include/dbus-api)
-install(TARGETS dbus-api-logger dbus-api-userlist RUNTIME DESTINATION bin)
+install(TARGETS dbus-api-logger dbus-api-chat dbus-api-userlist RUNTIME DESTINATION bin)
