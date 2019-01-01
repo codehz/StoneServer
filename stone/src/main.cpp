@@ -87,6 +87,7 @@ int main() {
 
   Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
   auto &srv_core = Locator<Skeleton<CoreService>>().generate<Skeleton<CoreService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
+  auto &srv_chat = Locator<Skeleton<ChatService>>().generate<Skeleton<ChatService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   auto &srv_command =
       Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Log::addHook([&](auto level, auto tag, auto content) { srv_core.log.notify(level, tag, content); });
