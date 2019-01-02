@@ -21,6 +21,7 @@
 #include <minecraft/ResourcePackStack.h>
 #include <minecraft/SaveTransactionManager.h>
 #include <minecraft/ServerInstance.h>
+#include <minecraft/TextPacket.h>
 #include <minecraft/Whitelist.h>
 
 #include <simppl/dispatcher.h>
@@ -251,6 +252,13 @@ int main() {
     }
     srv_command.respond_with(srv_command.complete(results));
   };
+	srv_chat.send >> [&](auto sender, auto content) {
+		TextPacket text = TextPacket::createTranslatedAnnouncement(sender, mcpe::string("[") + sender + "] " + content, "", "1");
+		for (auto pplayer : Locator<PlayerList>()->set) {
+			auto &player = *pplayer;
+			player.sendNetworkPacket(text);
+		}
+	};
 
   std::signal(SIGINT, [](int) { Locator<Dispatcher>()->stop(); });
   std::signal(SIGTERM, [](int) { Locator<Dispatcher>()->stop(); });
