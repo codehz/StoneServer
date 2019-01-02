@@ -7,7 +7,7 @@ using namespace std;
 using namespace simppl::dbus;
 
 INTERFACE(ChatService) {
-  Method<in<string>, in<string>> send;
+  Method<in<string>, in<string>, oneway> send;
   Signal<string, string> recv;
   Property<bool> intercept;
 
