@@ -18,7 +18,7 @@ target_link_libraries(dbus-api-chat PRIVATE dbus-api)
 add_executable(dbus-api-chat-send src/chat-send.cpp)
 target_link_libraries(dbus-api-chat-send PRIVATE dbus-api)
 
-add_executable(dbus-api-userlist src/userlist.cpp)
+add_executable(dbus-api-userlist src/userlist.cpp src/json.cpp src/json.h)
 target_link_libraries(dbus-api-userlist PRIVATE dbus-api)
 
 install(FILES ${src} DESTINATION include/dbus-api)
