@@ -22,7 +22,7 @@ int main() {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
       core.players.attach() >> [](CallState call, vector<structs::PlayerInfo> const &vec) {
-        std::cout << makeMap("size", vec.size(), "list", makeArrayFromContainer(vec));
+        std::cout << makeMap("size", vec.size(), "list", makeArrayFromContainer(vec)) << std::endl;
       };
     } else {
       fprintf(stderr, "disconnected!\n");
