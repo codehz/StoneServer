@@ -14,10 +14,10 @@ int main(int argc, char **argv) {
 	if (argc != 3) return 1;
   
   Stub<ChatService> chat(disp, "default");
-  printf("waiting connection...\n");
+  fprintf(stderr, "waiting connection...\n");
   chat.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
-      printf("connected!\n");
+      fprintf(stderr, "connected!\n");
 			chat.send(argv[1], argv[2]);
       chat.disp().stop();
     }
