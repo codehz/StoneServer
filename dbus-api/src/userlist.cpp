@@ -3,7 +3,7 @@
 #include <simppl/dispatcher.h>
 #include <simppl/stub.h>
 
-#include "json.h"
+#include <json.h>
 
 #include <csignal>
 
