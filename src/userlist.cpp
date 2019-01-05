@@ -3,24 +3,26 @@
 #include <simppl/dispatcher.h>
 #include <simppl/stub.h>
 
+#include "json.h"
+
 #include <csignal>
 
 static simppl::dbus::Dispatcher disp("bus:session");
 
+using namespace simppl::dbus;
+using namespace one::codehz::stone;
+using namespace seasocks;
+
+void structs::PlayerInfo::jsonToStream(std::ostream &str) const { str << makeMap("name", name, "uuid", uuid, "xuid", xuid); }
+
 int main() {
-  using namespace simppl::dbus;
-  using namespace one::codehz::stone;
-  
   Stub<CoreService> core(disp, "default");
   fprintf(stderr, "waiting connection...\n");
-  core.connected >> [&] (ConnectionState state) {
+  core.connected >> [&](ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-      core.players.attach() >> [](CallState call, vector<structs::PlayerInfo> const&vec) {
-        printf("userlist updated: [%d]\n", vec.size());
-        for (auto &info : vec) {
-          printf("\t{name: %s, uuid: %s, xuid: %s}\n", info.name.c_str(), info.uuid.c_str(), info.xuid.c_str());
-        }
+      core.players.attach() >> [](CallState call, vector<structs::PlayerInfo> const &vec) {
+        std::cout << makeMap("size", vec.size(), "list", makeArrayFromContainer(vec));
       };
     } else {
       fprintf(stderr, "disconnected!\n");
