@@ -12,15 +12,15 @@ int main() {
   using namespace one::codehz::stone;
   
   Stub<ChatService> chat(disp, "default");
-  printf("waiting connection...\n");
+  fprintf(stderr, "waiting connection...\n");
   chat.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
-      printf("connected!\n");
+      fprintf(stderr, "connected!\n");
       chat.recv.attach() >> [](std::string const &sender, std::string const &content) {
         printf("<%s> %s\n", sender.c_str(), content.c_str());
       };
     } else {
-      printf("disconnected!\n");
+      fprintf(stderr, "disconnected!\n");
       chat.recv.detach();
       chat.disp().stop();
     }

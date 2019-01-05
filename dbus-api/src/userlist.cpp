@@ -12,10 +12,10 @@ int main() {
   using namespace one::codehz::stone;
   
   Stub<CoreService> core(disp, "default");
-  printf("waiting connection...\n");
+  fprintf(stderr, "waiting connection...\n");
   core.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
-      printf("connected!\n");
+      fprintf(stderr, "connected!\n");
       core.players.attach() >> [](CallState call, vector<structs::PlayerInfo> const&vec) {
         printf("userlist updated: [%d]\n", vec.size());
         for (auto &info : vec) {
@@ -23,7 +23,7 @@ int main() {
         }
       };
     } else {
-      printf("disconnected!\n");
+      fprintf(stderr, "disconnected!\n");
       core.players.detach();
       core.disp().stop();
     }

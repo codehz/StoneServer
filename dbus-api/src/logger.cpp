@@ -12,15 +12,15 @@ int main() {
   using namespace one::codehz::stone;
   
   Stub<CoreService> core(disp, "default");
-  printf("waiting connection...\n");
+  fprintf(stderr, "waiting connection...\n");
   core.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
-      printf("connected!\n");
+      fprintf(stderr, "connected!\n");
       core.log.attach() >> [](int level, std::string const &tag, std::string const &content) {
         printf("%d [%s] %s\n", level, tag.c_str(), content.c_str());
       };
     } else {
-      printf("disconnected!\n");
+      fprintf(stderr, "disconnected!\n");
       core.log.detach();
       core.disp().stop();
     }
