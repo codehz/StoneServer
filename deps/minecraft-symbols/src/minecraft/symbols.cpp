@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Dec 24 2018 10:35:07 UTC
+// Generated on Sat Jan 05 2019 03:35:47 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1230,6 +1230,20 @@ void Player::sendNetworkPacket(Packet & p1) const {
     (this->*_Player_sendNetworkPacket)(p1);
 }
 
+#include "Actor.h"
+static mcpe::string (ActorDefinitionIdentifier::*_ActorDefinitionIdentifier_getCanonicalName)() const;
+mcpe::string ActorDefinitionIdentifier::getCanonicalName() const {
+    return (this->*_ActorDefinitionIdentifier_getCanonicalName)();
+}
+static ActorDefinitionIdentifier & (Actor::*_Actor_getActorIdentifier)() const;
+ActorDefinitionIdentifier & Actor::getActorIdentifier() const {
+    return (this->*_Actor_getActorIdentifier)();
+}
+static int64_t & (Actor::*_Actor_getUniqueID)() const;
+int64_t & Actor::getUniqueID() const {
+    return (this->*_Actor_getUniqueID)();
+}
+
 #include "legacy/App.h"
 static int vti_Legacy_Pre_1_8_App_quit;
 void Legacy::Pre_1_8::App::quit() {
@@ -1867,6 +1881,12 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_getLevelProgress == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player16getLevelProgressEv");
     ((void*&) _Player_sendNetworkPacket) = hybris_dlsym(handle, "_ZNK12ServerPlayer17sendNetworkPacketER6Packet");
     if (_Player_sendNetworkPacket == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ServerPlayer17sendNetworkPacketER6Packet");
+    ((void*&) _ActorDefinitionIdentifier_getCanonicalName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
+    if (_ActorDefinitionIdentifier_getCanonicalName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
+    ((void*&) _Actor_getActorIdentifier) = hybris_dlsym(handle, "_ZNK5Actor18getActorIdentifierEv");
+    if (_Actor_getActorIdentifier == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor18getActorIdentifierEv");
+    ((void*&) _Actor_getUniqueID) = hybris_dlsym(handle, "_ZNK5Actor11getUniqueIDEv");
+    if (_Actor_getUniqueID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getUniqueIDEv");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");
