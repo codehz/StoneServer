@@ -28,10 +28,8 @@ job_package:
   script:
     - mkdir -p output/support && cd output
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support/{}
-    - cp -Lv /usr/lib32/ld-*.so support/ld.so
-    - cp ../install/bin/* .
-    - cp /usr/bin/proot .
-    - cp ../loader .
+    - cp -Lrv /usr/lib32/ld-*.so support/ld.so
+    - cp -Lrv ../{loader,wrapper,install/bin/*} /usr/bin/proot .
   artifacts:
     paths:
       - output
