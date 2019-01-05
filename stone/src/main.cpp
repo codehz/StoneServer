@@ -254,6 +254,7 @@ int main() {
   };
 	srv_chat.send >> [&](auto sender, auto content) {
 		TextPacket text = TextPacket::createTranslatedAnnouncement(sender, mcpe::string("[") + sender + "] " + content, "", "1");
+    Log::info("Chat", "[%s] %s", sender.c_str(), content.c_str());
 		for (auto pplayer : Locator<PlayerList>()->set) {
 			auto &player = *pplayer;
 			player.sendNetworkPacket(text);
