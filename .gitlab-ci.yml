@@ -21,6 +21,7 @@ job_build:
       - install/
       - lib32.txt
       - loader
+      - wrapper
     expire_in: 20hours
   stage: build
 
