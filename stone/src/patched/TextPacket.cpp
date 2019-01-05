@@ -19,16 +19,6 @@ SHook(void, _ZN20ServerNetworkHandler10handleTextERK17NetworkIdentifierRK10TextP
   if (!chat->intercept) original(handler, id, packet);
 }
 
-SHook(TextPacket, _ZN10TextPacket10createChatERKSsS1_S1_S1_, mcpe::string const &orig, mcpe::string const &content, mcpe::string const &xuid,
-      mcpe::string const &unk) {
-  using namespace interface;
-  if (xuid.length() == 0) {
-    auto &chat = Locator<Chat>();
-    chat->onChat(orig >> StdStr, content >> StdStr);
-  }
-  return original(orig, content, xuid, unk);
-}
-
 static patched::details::RegisterPatchInit pinit([] {
   using namespace interface;
   Locator<Chat>().generate<>();
