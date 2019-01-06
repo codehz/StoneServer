@@ -14,7 +14,6 @@ static ServerNetworkHandler *handler;
 
 SInstanceHook(void, _ZN20ServerNetworkHandler24allowIncomingConnectionsERKSsb, ServerNetworkHandler, mcpe::string const &str, bool flag) {
   handler = this;
-  printf("=====%p %s %d\n", this, str.c_str(), flag);
   original(this, str, flag);
 }
 
