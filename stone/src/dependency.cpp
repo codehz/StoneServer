@@ -105,9 +105,46 @@ void initDependencies() {
     };
   };
   Locator<Blacklist>() >> [](Blacklist &list) {
-    Locator<Skeleton<BlacklistService>>()->addByUUID >> [&](auto uuid, auto reason) { list.add(mce::UUID::fromString(uuid), reason); };
-    Locator<Skeleton<BlacklistService>>()->addByXUID >> [&](auto xuid, auto reason) { list.add(xuid, reason); };
-    Locator<Skeleton<BlacklistService>>()->removeByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
-    Locator<Skeleton<BlacklistService>>()->removeByXUID >> [&](auto xuid) { list.remove(xuid); };
+    auto &service = Locator<Skeleton<BlacklistService>>();
+    service->addByUUID >> [&](auto uuid, auto reason) { list.add(mce::UUID::fromString(uuid), reason); };
+    service->addByXUID >> [&](auto xuid, auto reason) { list.add(xuid, reason); };
+    service->addByName >> [&](auto name, auto reason) {
+      for (auto &player : Locator<PlayerList>()->set) {
+        if (PlayerName[*player] == name) {
+          list.add(PlayerUUID[*player], reason);
+          return;
+        }
+      }
+      service->respond_with(Error("player not found"));
+    };
+    service->kickByUUID >> [&](auto uuid, auto reason) {
+      for (auto &player : Locator<PlayerList>()->set) {
+        if (PlayerUUID[*player].asString() == uuid) {
+          list.kick(*player >> PlayerNetworkID, reason);
+          return;
+        }
+      }
+      service->respond_with(Error("player not found"));
+    };
+    service->kickByXUID >> [&](auto xuid, auto reason) {
+      for (auto &player : Locator<PlayerList>()->set) {
+        if (PlayerXUID(*player) == xuid) {
+          list.kick(*player >> PlayerNetworkID, reason);
+          return;
+        }
+      }
+      service->respond_with(Error("player not found"));
+    };
+    service->kickByName >> [&](auto name, auto reason) {
+      for (auto &player : Locator<PlayerList>()->set) {
+        if (PlayerName[*player] == name) {
+          list.kick(*player >> PlayerNetworkID, reason);
+          return;
+        }
+      }
+      service->respond_with(Error("player not found"));
+    };
+    service->removeByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
+    service->removeByXUID >> [&](auto xuid) { list.remove(xuid); };
   };
 }

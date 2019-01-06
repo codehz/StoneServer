@@ -12,7 +12,7 @@ namespace {
 using namespace std::literals;
 static ServerNetworkHandler *handler;
 
-SInstanceHook(void, _ZN20ServerNetworkHandler24allowIncomingConnectionsERKSsb, ServerNetworkHandler, mcpe::string const&str, bool flag) {
+SInstanceHook(void, _ZN20ServerNetworkHandler24allowIncomingConnectionsERKSsb, ServerNetworkHandler, mcpe::string const &str, bool flag) {
   handler = this;
   printf("=====%p %s %d\n", this, str.c_str(), flag);
   original(this, str, flag);
@@ -23,6 +23,7 @@ class BlacklistImpl : public interface::Blacklist {
   void add(std::string const &xuid, std::string const &reason) override { handler->addToBlacklist(*mce::UUID::EMPTY, xuid, reason, 100s); }
   void remove(mce::UUID const &uuid) override { handler->removeFromBlacklist(uuid, ""); }
   void remove(std::string const &xuid) override { handler->removeFromBlacklist(*mce::UUID::EMPTY, xuid); }
+  void kick(NetworkIdentifier const &id, std::string const &reason) override { handler->disconnectClient(id, reason, true); }
 };
 
 struct __attribute__((__packed__)) jump {
