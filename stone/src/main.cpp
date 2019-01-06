@@ -259,6 +259,7 @@ int main() {
     Locator<Chat>()->onChat(sender, content);
     for (auto pplayer : Locator<PlayerList>()->set) {
       auto &player = *pplayer;
+      if (player.canUseAbility("mute")) continue;
       player.sendNetworkPacket(text);
     }
   };
