@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Jan 05 2019 03:35:47 UTC
+// Generated on Sun Jan 06 2019 08:57:39 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -285,6 +285,20 @@ void CommandOutputSender::send(CommandOrigin const & p1, CommandOutput const & p
 static void (CommandOutputSender::*_CommandOutputSender_registerOutputCallback)();
 void CommandOutputSender::registerOutputCallback() {
     (this->*_CommandOutputSender_registerOutputCallback)();
+}
+
+#include "ServerNetworkHandler.h"
+static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist)(mce::UUID const &, mcpe::string const &);
+void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2) {
+    (this->*_ServerNetworkHandler_addToBlacklist)(p1, p2);
+}
+static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist2)(mce::UUID const &, mcpe::string const &, mcpe::string const &, std::chrono::seconds const &);
+void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2, mcpe::string const & p3, std::chrono::seconds const & p4) {
+    (this->*_ServerNetworkHandler_addToBlacklist2)(p1, p2, p3, p4);
+}
+static void (ServerNetworkHandler::*_ServerNetworkHandler_removeFromBlacklist)(mce::UUID const &, mcpe::string const &);
+void ServerNetworkHandler::removeFromBlacklist(mce::UUID const & p1, mcpe::string const & p2) {
+    (this->*_ServerNetworkHandler_removeFromBlacklist)(p1, p2);
 }
 
 #include "Packet.h"
@@ -1408,6 +1422,12 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutputSender_send == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender4sendERK13CommandOriginRK13CommandOutput");
     ((void*&) _CommandOutputSender_registerOutputCallback) = hybris_dlsym(handle, "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
     if (_CommandOutputSender_registerOutputCallback == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
+    ((void*&) _ServerNetworkHandler_addToBlacklist) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs");
+    if (_ServerNetworkHandler_addToBlacklist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs");
+    ((void*&) _ServerNetworkHandler_addToBlacklist2) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSsS5_RKN9Blacklist8DurationE");
+    if (_ServerNetworkHandler_addToBlacklist2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSsS5_RKN9Blacklist8DurationE");
+    ((void*&) _ServerNetworkHandler_removeFromBlacklist) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs");
+    if (_ServerNetworkHandler_removeFromBlacklist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs");
     ((void*&) Packet::myVtable) = hybris_dlsym(handle, "_ZTV6Packet");
     if (Packet::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6Packet");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
