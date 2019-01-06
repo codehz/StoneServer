@@ -9,10 +9,10 @@ using namespace simppl::dbus;
 INTERFACE(BlacklistService) {
   Method<in<string>, in<string>, oneway> addByUUID;
   Method<in<string>, in<string>, oneway> addByXUID;
-  Method<in<string>, in<string>, oneway> addByName;
-  Method<in<string>, in<string>, oneway> kickByUUID;
-  Method<in<string>, in<string>, oneway> kickByXUID;
-  Method<in<string>, in<string>, oneway> kickByName;
+  Method<in<string>, in<string>> addByName;
+  Method<in<string>, in<string>> kickByUUID;
+  Method<in<string>, in<string>> kickByXUID;
+  Method<in<string>, in<string>> kickByName;
   Method<in<string>, oneway> removeByUUID;
   Method<in<string>, oneway> removeByXUID;
 
