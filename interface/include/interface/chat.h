@@ -12,6 +12,8 @@ struct Chat : BaseInterface {
 
   EventEmitter<Player &, std::string const &> onPlayerChat;
   EventEmitter<std::string const &, std::string const &> onChat;
+  virtual void sendChat(std::string const &, std::string const &) = 0;
+  virtual void sendAnnouncement(std::string const &)              = 0;
 };
 
 } // namespace interface

@@ -95,14 +95,18 @@ void initDependencies() {
     };
   };
   Locator<Chat>() >> [](Chat &chat) {
-    chat.onPlayerChat >> [](auto &player, auto &msg) {
+    using namespace std::placeholders;
+    auto &service = Locator<Skeleton<ChatService>>();
+    chat.onPlayerChat >> [&](auto &player, auto &msg) {
       Log::info("Chat", "<%s> %s", player >> PlayerName >> CStr, msg >> CStr);
-      Locator<Skeleton<ChatService>>()->recv.notify(player >> PlayerName >> StdStr, msg >> StdStr);
+      service->recv.notify(player >> PlayerName >> StdStr, msg >> StdStr);
     };
-    chat.onChat >> [](auto &sender, auto &msg) {
+    chat.onChat >> [&](auto &sender, auto &msg) {
       Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
-      Locator<Skeleton<ChatService>>()->recv.notify(sender >> StdStr, msg >> StdStr);
+      service->recv.notify(sender >> StdStr, msg >> StdStr);
     };
+    service->send >> std::bind(&Chat::sendChat, &chat, _1, _2);
+    service->broadcast >> std::bind(&Chat::sendAnnouncement, &chat, _1);
   };
   Locator<Blacklist>() >> [](Blacklist &list) {
     auto &service = Locator<Skeleton<BlacklistService>>();
