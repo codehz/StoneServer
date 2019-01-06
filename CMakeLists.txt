@@ -21,8 +21,11 @@ target_link_libraries(dbus-api-chat PRIVATE dbus-api dbus-api-exts-json)
 add_executable(dbus-api-chat-send src/chat-send.cpp)
 target_link_libraries(dbus-api-chat-send PRIVATE dbus-api)
 
+add_executable(dbus-api-command src/command.cpp)
+target_link_libraries(dbus-api-command PRIVATE dbus-api)
+
 add_executable(dbus-api-userlist src/userlist.cpp)
 target_link_libraries(dbus-api-userlist PRIVATE dbus-api dbus-api-exts-json)
 
 install(FILES ${src} DESTINATION include/dbus-api)
-install(TARGETS dbus-api-logger dbus-api-chat dbus-api-chat-send dbus-api-userlist RUNTIME DESTINATION bin)
+install(TARGETS dbus-api-logger dbus-api-chat dbus-api-chat-send dbus-api-command dbus-api-userlist RUNTIME DESTINATION bin)
