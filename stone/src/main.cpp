@@ -36,8 +36,8 @@
 #include <stone/utils.h>
 #include <uintl.h>
 
-#include <interface/locator.hpp>
 #include <interface/chat.h>
+#include <interface/locator.hpp>
 #include <interface/player_list.h>
 
 #include <condition_variable>
@@ -92,6 +92,7 @@ int main() {
   auto &srv_chat = Locator<Skeleton<ChatService>>().generate<Skeleton<ChatService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   auto &srv_command =
       Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
+  Locator<Skeleton<BlacklistService>>().generate<Skeleton<BlacklistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Log::addHook([&](auto level, auto tag, auto content) { srv_core.log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
@@ -253,14 +254,14 @@ int main() {
     }
     srv_command.respond_with(srv_command.complete(results));
   };
-	srv_chat.send >> [&](auto sender, auto content) {
-		TextPacket text = TextPacket::createTranslatedAnnouncement(sender, mcpe::string("[") + sender + "] " + content, "", "1");
+  srv_chat.send >> [&](auto sender, auto content) {
+    TextPacket text = TextPacket::createTranslatedAnnouncement(sender, mcpe::string("[") + sender + "] " + content, "", "1");
     Locator<Chat>()->onChat(sender, content);
-		for (auto pplayer : Locator<PlayerList>()->set) {
-			auto &player = *pplayer;
-			player.sendNetworkPacket(text);
-		}
-	};
+    for (auto pplayer : Locator<PlayerList>()->set) {
+      auto &player = *pplayer;
+      player.sendNetworkPacket(text);
+    }
+  };
 
   std::signal(SIGINT, [](int) { Locator<Dispatcher>()->stop(); });
   std::signal(SIGTERM, [](int) { Locator<Dispatcher>()->stop(); });

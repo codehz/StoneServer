@@ -25,6 +25,7 @@ add_executable(stone
   "src/patched/v8.cpp"
   "src/patched/FeatureToggles.cpp"
   "src/patched/Player.h"
+  "src/patched/ServerNetworkHandler.cpp"
 )
 
 target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)

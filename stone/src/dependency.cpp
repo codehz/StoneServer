@@ -1,3 +1,4 @@
+#include <interface/blacklist.h>
 #include <interface/chat.h>
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
@@ -102,5 +103,11 @@ void initDependencies() {
       Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
       Locator<Skeleton<ChatService>>()->recv.notify(sender >> StdStr, msg >> StdStr);
     };
+  };
+  Locator<Blacklist>() >> [](Blacklist &list) {
+    Locator<Skeleton<BlacklistService>>()->addByUUID >> [&](auto uuid, auto reason) { list.add(mce::UUID::fromString(uuid), reason); };
+    Locator<Skeleton<BlacklistService>>()->addByXUID >> [&](auto xuid, auto reason) { list.add(xuid, reason); };
+    Locator<Skeleton<BlacklistService>>()->removeByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
+    Locator<Skeleton<BlacklistService>>()->removeByXUID >> [&](auto xuid) { list.remove(xuid); };
   };
 }
