@@ -21,6 +21,9 @@ target_link_libraries(dbus-api-chat PRIVATE dbus-api dbus-api-exts-json)
 add_executable(dbus-api-chat-send src/chat-send.cpp)
 target_link_libraries(dbus-api-chat-send PRIVATE dbus-api)
 
+add_executable(dbus-api-chat-broadcast src/chat-broadcast.cpp)
+target_link_libraries(dbus-api-chat-broadcast PRIVATE dbus-api)
+
 add_executable(dbus-api-command src/command.cpp)
 target_link_libraries(dbus-api-command PRIVATE dbus-api)
 
@@ -31,4 +34,12 @@ add_executable(dbus-api-blacklist src/blacklist.cpp)
 target_link_libraries(dbus-api-blacklist PRIVATE dbus-api dbus-api-exts-json)
 
 install(FILES ${src} DESTINATION include/dbus-api)
-install(TARGETS dbus-api-logger dbus-api-chat dbus-api-chat-send dbus-api-command dbus-api-userlist dbus-api-blacklist RUNTIME DESTINATION bin)
+install(TARGETS
+  dbus-api-logger
+  dbus-api-chat
+  dbus-api-chat-send
+  dbus-api-chat-broadcast
+  dbus-api-command
+  dbus-api-userlist
+  dbus-api-blacklist
+  RUNTIME DESTINATION bin)
