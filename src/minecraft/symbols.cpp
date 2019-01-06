@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Jan 06 2019 09:40:06 UTC
+// Generated on Sun Jan 06 2019 11:10:40 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1247,6 +1247,10 @@ static void (Player::*_Player_sendNetworkPacket)(Packet &) const;
 void Player::sendNetworkPacket(Packet & p1) const {
     (this->*_Player_sendNetworkPacket)(p1);
 }
+static bool (Player::*_Player_canUseAbility)(mcpe::string const &);
+bool Player::canUseAbility(mcpe::string const & p1) {
+    return (this->*_Player_canUseAbility)(p1);
+}
 
 #include "Actor.h"
 static mcpe::string (ActorDefinitionIdentifier::*_ActorDefinitionIdentifier_getCanonicalName)() const;
@@ -1907,6 +1911,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_getLevelProgress == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player16getLevelProgressEv");
     ((void*&) _Player_sendNetworkPacket) = hybris_dlsym(handle, "_ZNK12ServerPlayer17sendNetworkPacketER6Packet");
     if (_Player_sendNetworkPacket == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ServerPlayer17sendNetworkPacketER6Packet");
+    ((void*&) _Player_canUseAbility) = hybris_dlsym(handle, "_ZN6Player13canUseAbilityERKSs");
+    if (_Player_canUseAbility == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player13canUseAbilityERKSs");
     ((void*&) _ActorDefinitionIdentifier_getCanonicalName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     if (_ActorDefinitionIdentifier_getCanonicalName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     ((void*&) _Actor_getActorIdentifier) = hybris_dlsym(handle, "_ZNK5Actor18getActorIdentifierEv");
