@@ -1,6 +1,8 @@
 #pragma once
 
+#include "NetworkIdentifier.h"
 #include "UUID.h"
+
 #include <chrono>
 
 class ServerNetworkHandler {
@@ -11,4 +13,6 @@ public:
   void addToBlacklist(mce::UUID const &uuid, mcpe::string const &xuid, mcpe::string const &reason, std::chrono::seconds const &duration);
   /// @symbol _ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs
   void removeFromBlacklist(mce::UUID const &uuid, mcpe::string const &xuid);
+
+  void disconnectClient(NetworkIdentifier const &id, std::string const &reason, bool flag);
 };

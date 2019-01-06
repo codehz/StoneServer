@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Jan 06 2019 08:57:39 UTC
+// Generated on Sun Jan 06 2019 09:40:06 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -299,6 +299,10 @@ void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string con
 static void (ServerNetworkHandler::*_ServerNetworkHandler_removeFromBlacklist)(mce::UUID const &, mcpe::string const &);
 void ServerNetworkHandler::removeFromBlacklist(mce::UUID const & p1, mcpe::string const & p2) {
     (this->*_ServerNetworkHandler_removeFromBlacklist)(p1, p2);
+}
+static void (ServerNetworkHandler::*_ServerNetworkHandler_disconnectClient)(NetworkIdentifier const &, std::string const &, bool);
+void ServerNetworkHandler::disconnectClient(NetworkIdentifier const & p1, std::string const & p2, bool p3) {
+    (this->*_ServerNetworkHandler_disconnectClient)(p1, p2, p3);
 }
 
 #include "Packet.h"
@@ -1428,6 +1432,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ServerNetworkHandler_addToBlacklist2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSsS5_RKN9Blacklist8DurationE");
     ((void*&) _ServerNetworkHandler_removeFromBlacklist) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs");
     if (_ServerNetworkHandler_removeFromBlacklist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs");
+    ((void*&) _ServerNetworkHandler_disconnectClient) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler16disconnectClientERK17NetworkIdentifierRKSsb");
+    if (_ServerNetworkHandler_disconnectClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler16disconnectClientERK17NetworkIdentifierRKSsb");
     ((void*&) Packet::myVtable) = hybris_dlsym(handle, "_ZTV6Packet");
     if (Packet::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6Packet");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
