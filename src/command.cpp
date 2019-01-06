@@ -4,6 +4,7 @@
 #include <simppl/stub.h>
 
 #include <csignal>
+#include <iostream>
 
 static simppl::dbus::Dispatcher disp("bus:session");
 
@@ -18,7 +19,7 @@ int main(int argc, char **argv) {
   cmd.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-			cmd.execute(argv[1], argv[2]);
+			std::cout << cmd.execute(argv[1], argv[2]);
       cmd.disp().stop();
     }
   };
