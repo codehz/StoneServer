@@ -12,11 +12,6 @@
 
 namespace {
 
-SInstanceHook(void, _ZN27ServerLevelEventCoordinator17sendLevelSaveDataER5LevelR11CompoundTag, ServerLevelEventCoordinator, Level *level, void *tag) {
-  Log::info("Minecraft", "Save level data");
-  original(this, level, tag);
-}
-
 SInstanceHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level, Player *player) {
   using namespace interface;
   Locator<PlayerList>()->onPlayerAdded(*player);
