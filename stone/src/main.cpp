@@ -220,8 +220,8 @@ int main() {
                             props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
                             {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
                             pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
-                            [](mcpe::string const &s) { Log::debug("StoneServer", "Unloading level: %s", s.c_str()); },
-                            [](mcpe::string const &s) { Log::debug("StoneServer", "Saving level: %s", s.c_str()); });
+                            [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
+                            [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); });
   Locator<ServerInstance>() = &instance;
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
