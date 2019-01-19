@@ -28,9 +28,7 @@ struct ParameterDef {
   std::vector<std::string> enumItems;
   bool optional;
 
-  void makeOptional() {
-    optional = true;
-  }
+  void makeOptional() { optional = true; }
 };
 
 struct MyCommandVTable {
@@ -90,6 +88,7 @@ template <typename T> static ParameterDef commonParameter(std::string const &nam
 };
 
 static v8::Local<v8::Context> *hack_ctx;
+static CommandOrigin *current_orig = nullptr;
 
 struct CustomCommand : Command {
   MyCommandVTable *vt;
@@ -131,7 +130,9 @@ struct CustomCommand : Command {
       params[i] = def.fetch((void *)((size_t)this + sizeof(CustomCommand) + offset), orig, iso);
       offset += def.size;
     }
-    auto result = vt->exec(iso, size, params);
+    current_orig = &orig;
+    auto result  = vt->exec(iso, size, params);
+    current_orig = nullptr;
     if (!result->IsNullOrUndefined()) {
       auto str = result->ToString(iso) >> V8Str;
       outp.addMessage(str, {}, 0);

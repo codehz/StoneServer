@@ -1,3 +1,5 @@
+#include <minecraft/DedicatedServerCommandOrigin.h>
+#include <minecraft/MinecraftCommands.h>
 #include <minecraft/V8.h>
 #include <stone/server_hook.h>
 #include <wchar.h>
@@ -136,7 +138,7 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       auto optional = arg->Get((Value *)strOptional)->BooleanValue();
       if (optional) mvt.defs.rbegin()->makeOptional();
     }
-    mvt.exec = [self = Persistent<Value>(iso, obj), handler = Persistent<Function>(iso, Function::Cast(srcHandler))](
+    mvt.exec = [self = Persistent<Value>(iso, info.This()), handler = Persistent<Function>(iso, Function::Cast(srcHandler))](
                    Isolate *iso, int argc, v8::Local<v8::Value> *argv) -> v8::Local<v8::Value> {
       auto origin = self.Get(iso);
       auto func   = handler.Get(iso);
@@ -146,12 +148,55 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   }
 }
 
+void invokeCommandCallback(FunctionCallbackInfo<Value> const &info) {
+  auto iso = info.GetIsolate();
+  if (info.Length() != 1) {
+    Log::error("Scripting", "invokeCommand requires 1 arguments(current: %d)", info.Length());
+    return;
+  }
+  if (!info[0]->IsString()) {
+    Log::error("Scripting", "invokeCommand requires (string)");
+    return;
+  }
+  if (!current_orig) {
+    Log::error("Scripting", "invokeCommand need be invoked inside custom command execution context");
+    return;
+  }
+  auto command = Local(String::Cast(info[0])) >> V8Str;
+  auto result  = patched::withCommandOutput([&] {
+    auto commandOrigin = current_orig->clone();
+    Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+  });
+  info.GetReturnValue().Set(String::NewFromUtf8(iso, result.c_str()));
+}
+
+void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info) {
+  auto iso = info.GetIsolate();
+  if (info.Length() != 1) {
+    Log::error("Scripting", "invokeConsoleCommand requires 2 arguments(current: %d)", info.Length());
+    return;
+  }
+  if (!info[0]->IsString() || !info[1]->IsString()) {
+    Log::error("Scripting", "invokeConsoleCommand requires (string, string)");
+    return;
+  }
+  auto orig    = Local(String::Cast(info[0])) >> V8Str;
+  auto command = Local(String::Cast(info[1])) >> V8Str;
+  auto result  = patched::withCommandOutput([&] {
+    auto commandOrigin = std::make_unique<DedicatedServerCommandOrigin>(orig, *Locator<Minecraft>());
+    Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+  });
+  info.GetReturnValue().Set(String::NewFromUtf8(iso, result.c_str()));
+}
+
 SHook(
     void *,
     _ZN9ScriptApi34CreateFunctionTemplateDataPropertyEN2v85LocalINS0_7ContextEEEPNS0_7IsolateENS1_INS0_6ObjectEEEPKcPFvRKNS0_20FunctionCallbackInfoINS0_5ValueEEEENS1_ISB_EE,
     void *a, void *b, void *c, char const *name, void (*callback)(v8::FunctionCallbackInfo<v8::Value> const &), void *external) {
   if (strcmp(name, "registerComponent") == 0) {
     original(a, b, c, "registerCommand", registerCommandCallback, external);
+    original(a, b, c, "invokeCommand", invokeCommandCallback, external);
+    original(a, b, c, "invokeConsoleCommand", invokeConsoleCommandCallback, external);
   }
   return original(a, b, c, name, callback, external);
 }
