@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Jan 06 2019 11:10:40 UTC
+// Generated on Sat Jan 19 2019 13:38:41 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1060,6 +1060,13 @@ mcpe::string CommandOrigin::getName() {
     u.voidp = vtable[vti_CommandOrigin_getName];
     return (this->*u.funcp)();
 }
+static int vti_CommandOrigin_clone;
+std::unique_ptr<CommandOrigin> CommandOrigin::clone() {
+    union { void* voidp; std::unique_ptr<CommandOrigin> (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_clone];
+    return (this->*u.funcp)();
+}
 static mce::UUID const & (CommandOrigin::*_CommandOrigin_getUUID)() const;
 mce::UUID const & CommandOrigin::getUUID() const {
     return (this->*_CommandOrigin_getUUID)();
@@ -1819,6 +1826,8 @@ void minecraft_symbols_init(void* handle) {
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
     vti_CommandOrigin_getName = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin7getNameEv"));
     if (vti_CommandOrigin_getName == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin7getNameEv");
+    vti_CommandOrigin_clone = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin5cloneEv"));
+    if (vti_CommandOrigin_clone == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin5cloneEv");
     ((void*&) _CommandOrigin_getUUID) = hybris_dlsym(handle, "_ZNK13CommandOrigin7getUUIDEv");
     if (_CommandOrigin_getUUID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOrigin7getUUIDEv");
     ((void*&) _gl_getOpenGLVendor) = hybris_dlsym(handle, "_ZN2gl15getOpenGLVendorEv");
