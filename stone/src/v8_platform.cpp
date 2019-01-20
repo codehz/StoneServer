@@ -92,7 +92,7 @@ SHook(void, _ZN9ScriptApi15V8CoreInterface8shutdownERNS_12ScriptReportE) {}
 LauncherV8Platform::LauncherV8Platform() { vtable = myVtable; }
 
 void LauncherV8Platform::CallOnBackgroundThread(v8::Task *task, v8::ExpectedRuntime expected_runtime) {
-  Log::warn("LauncherV8Platform", "CallOnBackgroundThread\n");
+  // Log::warn("LauncherV8Platform", "CallOnBackgroundThread\n");
   taskRunner(task);
 }
 
