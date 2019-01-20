@@ -54,8 +54,13 @@ public:
       , onlineMode(properties, "online-mode", true)
       , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {}
 
+  std::string cfg() {
+    const char *value = getenv("STONE_CONFIG");
+    return value ? value : "server";
+  }
+
   void load() {
-    std::ifstream propertiesFile(PathHelper::getPrimaryDataDirectory() + "server.properties");
+    std::ifstream propertiesFile(PathHelper::getPrimaryDataDirectory() + cfg() + ".properties");
     if (propertiesFile) {
       properties.load(propertiesFile);
     } else {
@@ -64,7 +69,7 @@ public:
   }
 
   void save() {
-    std::ofstream propertiesFile(PathHelper::getPrimaryDataDirectory() + "server.properties");
+    std::ofstream propertiesFile(PathHelper::getPrimaryDataDirectory() + cfg() + ".properties");
     properties.save(propertiesFile);
   }
 };
