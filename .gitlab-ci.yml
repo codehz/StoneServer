@@ -30,7 +30,7 @@ job_package:
     - mkdir -p output/support && cd output
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} support/{}
     - cp -Lrv /usr/lib32/ld-*.so support/ld.so
-    - cp -Lrv ../{loader,wrapper,install/bin/*} /usr/bin/proot .
+    - cp -Prv ../{loader,wrapper,install/bin/*} /usr/bin/proot .
   artifacts:
     paths:
       - output
@@ -47,8 +47,8 @@ build_docker_image:
   script:
     - mkdir -p image/{usr/lib32,lib,run} && cd image
     - cat ../lib32.txt | xargs -I {} cp -Lrv /usr/lib32/{} usr/lib32/{}
-    - cp -Lv /usr/lib32/ld-linux.so.2 lib
-    - cp -v ../install/bin/* run
+    - cp -Lrv /usr/lib32/ld-linux.so.2 lib
+    - cp -Prv ../install/bin/* run
     - |
       docker build -t codehz/stoneserver:latest --no-cache -f - . <<EOF
       FROM scratch
