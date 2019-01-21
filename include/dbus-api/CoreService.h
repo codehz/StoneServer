@@ -19,6 +19,7 @@ struct PlayerInfo {
 INTERFACE(CoreService) {
   Method<oneway> stop;
   Method<in<char>, in<string>, out<map<string, simppl::Variant<string, int, unsigned, double>>>> getPlayerInfo;
+  Property<string, ReadOnly> config;
   Property<vector<structs::PlayerInfo>, ReadWrite | Notifying | Always> players;
   Signal<structs::PlayerInfo> playerAdded;
   Signal<structs::PlayerInfo> playerRemoved;
@@ -27,6 +28,7 @@ INTERFACE(CoreService) {
   CoreService()
       : INIT(stop)
       , INIT(getPlayerInfo)
+      , INIT(config)
       , INIT(players)
       , INIT(playerAdded)
       , INIT(playerRemoved)
