@@ -38,12 +38,12 @@ struct StoneHandler : WebSocket::Handler {
       , command(_command) {
     core.connected >> [&](ConnectionState state) {
       if (state != ConnectionState::Connected) return;
-      core.log.attach() >> [this](int const &level, string const &tag, string const &content) {
+      core.Log.attach() >> [this](int const &level, string const &tag, string const &content) {
         server.execute([this, ret = makeMap("type", "log", "level", level, "tag", tag, "content", content)] {
           for (auto const &conn : connections) { conn->send(ret); }
         });
       };
-      core.players.attach() >> [this](CallState state, vector<structs::PlayerInfo> const &vec) {
+      core.Players.attach() >> [this](CallState state, vector<structs::PlayerInfo> const &vec) {
         server.execute([this, ret = makeMap("type", "player_list", "list", makeArrayFromContainer(vec))] {
           for (auto const &conn : connections) { conn->send(ret); }
         });
@@ -68,7 +68,7 @@ struct CommandHandler : CrackedUriPageHandler {
       if (front == "execute") {
         auto origin = uri.queryParam("origin", "web");
         if (origin.empty()) return Response::jsonResponse(makeMap("type", "error", "details", "Origin shouldn't be empty"));
-        auto result = command.execute(origin, body);
+        auto result = command.Execute(origin, body);
         return Response::jsonResponse(makeMap("type", "result/execute", "content", result.c_str()));
       } else if (front == "complete") {
         auto position = uri.queryParam("pos", "-1");
@@ -76,7 +76,7 @@ struct CommandHandler : CrackedUriPageHandler {
         try {
           pos = stoi(position, nullptr, 10);
         } catch (invalid_argument &arg) { return Response::jsonResponse(makeMap("type", "error", "details", "Cannot convert the pos")); }
-        auto result = command.complete(body, (unsigned)pos);
+        auto result = command.Complete(body, (unsigned)pos);
         return Response::jsonResponse(makeMap("type", "result/complete", "list", makeArrayFromContainer(result)));
       }
     }

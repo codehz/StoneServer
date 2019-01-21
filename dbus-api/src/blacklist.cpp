@@ -64,14 +64,14 @@ int main(int argc, char **argv) {
       fprintf(stderr, "connected!\n");
       try {
         switch (action) {
-        case ADD_UUID: blacklist.addByUUID(argv[2], argv[3]); break;
-        case ADD_XUID: blacklist.addByXUID(argv[2], argv[3]); break;
-        case ADD_NAME: blacklist.addByName(argv[2], argv[3]); break;
-        case KICK_UUID: blacklist.kickByUUID(argv[2], argv[3]); break;
-        case KICK_XUID: blacklist.kickByXUID(argv[2], argv[3]); break;
-        case KICK_NAME: blacklist.kickByName(argv[2], argv[3]); break;
-        case DEL_UUID: blacklist.removeByUUID(argv[2]); break;
-        case DEL_XUID: blacklist.removeByXUID(argv[2]); break;
+        case ADD_UUID: blacklist.AddByUUID(argv[2], argv[3]); break;
+        case ADD_XUID: blacklist.AddByXUID(argv[2], argv[3]); break;
+        case ADD_NAME: blacklist.AddByName(argv[2], argv[3]); break;
+        case KICK_UUID: blacklist.KickByUUID(argv[2], argv[3]); break;
+        case KICK_XUID: blacklist.KickByXUID(argv[2], argv[3]); break;
+        case KICK_NAME: blacklist.KickByName(argv[2], argv[3]); break;
+        case DEL_UUID: blacklist.RemoveByUUID(argv[2]); break;
+        case DEL_XUID: blacklist.RemoveByXUID(argv[2]); break;
         }
       } catch (Error &e) {
         fprintf(stderr, "%s\n", e.what());

@@ -16,12 +16,12 @@ struct AutoCompleteOption {
 } // namespace structs
 
 INTERFACE(CommandService) {
-  Method<in<string>, in<string>, out<string>> execute;
-  Method<in<string>, in<unsigned>, out<vector<structs::AutoCompleteOption>>> complete;
+  Method<in<string>, in<string>, out<string>> Execute;
+  Method<in<string>, in<unsigned>, out<vector<structs::AutoCompleteOption>>> Complete;
 
   CommandService()
-      : INIT(execute)
-      , INIT(complete) {}
+      : INIT(Execute)
+      , INIT(Complete) {}
 };
 
 } // namespace one::codehz::stone

@@ -44,19 +44,19 @@ void initDependencies() {
         auto [name, uuid, xuid] = PlayerBasicInfo(*player);
         vec.emplace_back(structs::PlayerInfo{ name.std(), uuid.asString().std(), xuid.std() });
       }
-      Locator<Skeleton<CoreService>>()->players = vec;
+      Locator<Skeleton<CoreService>>()->Players = vec;
     };
     list.onPlayerAdded >> [](auto &player) {
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
-      Locator<Skeleton<CoreService>>()->playerAdded.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
+      Locator<Skeleton<CoreService>>()->PlayerAdded.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
     list.onPlayerRemoved >> [](auto &player) {
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
-      Locator<Skeleton<CoreService>>()->playerRemoved.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
+      Locator<Skeleton<CoreService>>()->PlayerRemoved.notify(structs::PlayerInfo{ name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr });
     };
     list.onPlayerAdded >> updateDBus;
     list.onPlayerRemoved >> updateDBus;
-    Locator<Skeleton<CoreService>>()->getPlayerInfo >> [](auto type, auto query) {
+    Locator<Skeleton<CoreService>>()->GetPlayerInfo >> [](auto type, auto query) {
       using namespace uintl;
       constexpr char const *typemap[] = { "name", "uuid", "xuid" };
       bool (*test)(Player &, string const &query);
@@ -85,7 +85,7 @@ void initDependencies() {
           ret["pitch"] = pitch >> FloatToDouble;
           ret["yaw"]   = yaw >> FloatToDouble;
           ret["xp"]    = player >> PlayerLvl >> FloatToDouble;
-          Locator<Skeleton<CoreService>>()->respond_with(Locator<Skeleton<CoreService>>()->getPlayerInfo(ret));
+          Locator<Skeleton<CoreService>>()->respond_with(Locator<Skeleton<CoreService>>()->GetPlayerInfo(ret));
           return;
         }
       }
@@ -99,60 +99,60 @@ void initDependencies() {
     auto &service = Locator<Skeleton<ChatService>>();
     chat.onPlayerChat >> [&](auto &player, auto &msg) {
       Log::info("Chat", "<%s> %s", player >> PlayerName >> CStr, msg >> CStr);
-      service->recv.notify(player >> PlayerName >> StdStr, msg >> StdStr);
+      service->Receive.notify(player >> PlayerName >> StdStr, msg >> StdStr);
     };
     chat.onChat >> [&](auto &sender, auto &msg) {
       Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
-      service->recv.notify(sender >> StdStr, msg >> StdStr);
+      service->Receive.notify(sender >> StdStr, msg >> StdStr);
     };
-    service->send >> std::bind(&Chat::sendChat, &chat, _1, _2);
-    service->broadcast >> std::bind(&Chat::sendAnnouncement, &chat, _1);
+    service->Send >> std::bind(&Chat::sendChat, &chat, _1, _2);
+    service->Broadcast >> std::bind(&Chat::sendAnnouncement, &chat, _1);
   };
   Locator<Blacklist>() >> [](Blacklist &list) {
     auto &service = Locator<Skeleton<BlacklistService>>();
-    service->addByUUID >> [&](auto uuid, auto reason) { list.add(mce::UUID::fromString(uuid), reason); };
-    service->addByXUID >> [&](auto xuid, auto reason) { list.add(xuid, reason); };
-    service->addByName >> [&](auto name, auto reason) {
+    service->AddByUUID >> [&](auto uuid, auto reason) { list.add(mce::UUID::fromString(uuid), reason); };
+    service->AddByXUID >> [&](auto xuid, auto reason) { list.add(xuid, reason); };
+    service->AddByName >> [&](auto name, auto reason) {
       for (auto &player : Locator<PlayerList>()->set) {
         if (PlayerName[*player] == name) {
           list.add(PlayerUUID[*player], reason);
-          service->respond_with(service->addByName());
+          service->respond_with(service->AddByName());
           return;
         }
       }
       service->respond_with(Error("blacklist.player_not_found"));
     };
-    service->kickByUUID >> [&](auto uuid, auto reason) {
+    service->KickByUUID >> [&](auto uuid, auto reason) {
       for (auto &player : Locator<PlayerList>()->set) {
         if (PlayerUUID[*player].asString() == uuid) {
           list.kick(*player >> PlayerNetworkID, reason);
-          service->respond_with(service->kickByUUID());
+          service->respond_with(service->KickByUUID());
           return;
         }
       }
       service->respond_with(Error("blacklist.player_not_found"));
     };
-    service->kickByXUID >> [&](auto xuid, auto reason) {
+    service->KickByXUID >> [&](auto xuid, auto reason) {
       for (auto &player : Locator<PlayerList>()->set) {
         if (PlayerXUID(*player) == xuid) {
           list.kick(*player >> PlayerNetworkID, reason);
-          service->respond_with(service->kickByXUID());
+          service->respond_with(service->KickByXUID());
           return;
         }
       }
       service->respond_with(Error("blacklist.player_not_found"));
     };
-    service->kickByName >> [&](auto name, auto reason) {
+    service->KickByName >> [&](auto name, auto reason) {
       for (auto &player : Locator<PlayerList>()->set) {
         if (PlayerName[*player] == name) {
           list.kick(*player >> PlayerNetworkID, reason);
-          service->respond_with(service->kickByName());
+          service->respond_with(service->KickByName());
           return;
         }
       }
       service->respond_with(Error("blacklist.player_not_found"));
     };
-    service->removeByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
-    service->removeByXUID >> [&](auto xuid) { list.remove(xuid); };
+    service->RemoveByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
+    service->RemoveByXUID >> [&](auto xuid) { list.remove(xuid); };
   };
 }

@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   chat.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-			chat.send(argv[1], argv[2]);
+			chat.Send(argv[1], argv[2]);
       chat.disp().stop();
     }
   };

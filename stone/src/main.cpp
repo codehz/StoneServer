@@ -93,7 +93,7 @@ int main() {
   auto &srv_command =
       Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Locator<Skeleton<BlacklistService>>().generate<Skeleton<BlacklistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  Log::addHook([&](auto level, auto tag, auto content) { srv_core.log.notify(level, tag, content); });
+  Log::addHook([&](auto level, auto tag, auto content) { srv_core.Log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
   MinecraftUtils::setupForHeadless();
@@ -127,7 +127,7 @@ int main() {
   Log::trace("StoneServer", "Loading server properties");
   auto &props = Locator<ServerProperties>().generate();
   props.load();
-  srv_core.config = props.config;
+  srv_core.Config = props.config;
 
   Log::trace("StoneServer", "Setting up level settings");
   LevelSettings levelSettings;
@@ -233,18 +233,18 @@ int main() {
   modLoader.onServerInstanceInitialized(&instance);
   patched::init();
 
-  srv_core.stop >> [&] { disp.stop(); };
+  srv_core.Stop >> [&] { disp.stop(); };
 
-  srv_command.execute >> [&](auto origin, auto command) {
+  srv_command.Execute >> [&](auto origin, auto command) {
     auto ret = EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
         auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(origin, *Locator<Minecraft>());
         Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
       });
     });
-    srv_command.respond_with(srv_command.execute(ret));
+    srv_command.respond_with(srv_command.Execute(ret));
   };
-  srv_command.complete >> [&](auto input, auto pos) {
+  srv_command.Complete >> [&](auto input, auto pos) {
     auto commandOrigin = make_unique<DedicatedServerCommandOrigin>("server", *Locator<Minecraft>());
     auto options       = Locator<CommandRegistry>()->getAutoCompleteOptions(*commandOrigin, input, pos);
     std::vector<structs::AutoCompleteOption> results;
@@ -253,7 +253,7 @@ int main() {
       results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
                                                      option.offset, option.length, option.item.id });
     }
-    srv_command.respond_with(srv_command.complete(results));
+    srv_command.respond_with(srv_command.Complete(results));
   };
 
   std::signal(SIGINT, [](int) { Locator<Dispatcher>()->stop(); });
