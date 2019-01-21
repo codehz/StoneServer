@@ -12,6 +12,7 @@ using namespace properties;
 class ServerProperties {
 
 public:
+  std::string config;
   property_list properties;
   property<std::string> worldDir;
   property<std::string> worldName;
@@ -33,6 +34,11 @@ public:
   property<bool> onlineMode;
   property<float> playerIdleTimeout;
 
+  inline std::string cfg() {
+    const char *value = getenv("STONE_CONFIG");
+    return value ? value : "server";
+  }
+
   ServerProperties()
       : worldDir(properties, "level-dir", "world")
       , worldName(properties, "level-name", "world")
@@ -52,15 +58,12 @@ public:
       , viewDistance(properties, "view-distance", 10)
       , tickDistance(properties, "tick-distance", 4)
       , onlineMode(properties, "online-mode", true)
-      , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {}
-
-  std::string cfg() {
-    const char *value = getenv("STONE_CONFIG");
-    return value ? value : "server";
+      , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {
+    config = cfg();
   }
 
-  void load() {
-    std::ifstream propertiesFile(PathHelper::getPrimaryDataDirectory() + cfg() + ".properties");
+  inline void load() {
+    std::ifstream propertiesFile(PathHelper::getPrimaryDataDirectory() + config + ".properties");
     if (propertiesFile) {
       properties.load(propertiesFile);
     } else {
@@ -68,8 +71,8 @@ public:
     }
   }
 
-  void save() {
-    std::ofstream propertiesFile(PathHelper::getPrimaryDataDirectory() + cfg() + ".properties");
+  inline void save() {
+    std::ofstream propertiesFile(PathHelper::getPrimaryDataDirectory() + config + ".properties");
     properties.save(propertiesFile);
   }
 };
