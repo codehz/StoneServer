@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:codehz/StoneDBusAPI.git
 	branch = master
-	commit = 202841c27f48230e2305e11fa2468d97ab61e969
+	commit = 400844229ec7e7ac4728e0ad4cd7a065e924bb9c
 	method = merge
 	cmdver = 0.4.0
-	parent = b2f732c9082e03ccbae87c1b5f448b57c9d6768a
+	parent = 86b391d605cc0d0c9b0c33d9f4d2dadad4a04429
