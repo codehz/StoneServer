@@ -18,31 +18,31 @@ Added features:
 ## DBus Interface
 
 ### Interface: *one.codehz.stone.CoreService.\<SUFFIX>*
-#### Method: *stop* () ↦ ()
+#### Method: *Stop* () ↦ ()
 Stop the server.
-#### Method: *getPlayerInfo* (Byte *type*, String *query*) ↦ (Dict of {String, Variant} *result*)
+#### Method: *GetPlayerInfo* (Byte *type*, String *query*) ↦ (Dict of {String, Variant} *result*)
 Retrieve the detail information of the selected player. (type: 0=name 1=uuid 2=xuid)
 #### Property: *players* Array of [Struct of (String *name*, String *uuid*, String *xuid*)]
 Retrieve the players list.
-#### Signal: *log* (Int32 *level*, String *tag*, String *content*)
+#### Signal: *Log* (Int32 *level*, String *tag*, String *content*)
 Server log signal.
-#### Signal: *playerAdded*/*playerRemoved* Struct of (String *name*, String *uuid*, String *xuid*)
+#### Signal: *PlayerAdded*/*PlayerRemoved* Struct of (String *name*, String *uuid*, String *xuid*)
 Notify if a player joined/left.
 ### Interface: *one.codehz.stone.CommandService.\<SUFFIX>*
-#### Method: *complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *length*, Int32 *item_id*)] *options*)
+#### Method: *Complete* (String *command*, UInt32 *position*) ↦ (Array of [Struct of (String *name*, String *title*, String *description*, Int32 *offset*, Int32 *length*, Int32 *item_id*)] *options*)
 Get the list of the auto-complete options.
-#### Method: *execute* (String *origin_name*, String *command*) ↦ (String *result*)
+#### Method: *Execute* (String *origin_name*, String *command*) ↦ (String *result*)
 Execute a command and collect the output.
 
 > PS: The **Bus Name** is same as the **Interface Name**
 >
 > Example:
 > 1. Stop the server:
->    * `dbus-send --type=method_call --print-reply --session --dest=one.codehz.stone.CoreService.default /one/codehz/stone/CoreService/default one.codehz.stone.CoreService.stop`
->    * `busctl call --user one.codehz.stone.CoreService.default /one/codehz/stone/CoreService/default one.codehz.stone.CoreService stop`
+>    * `dbus-send --type=method_call --print-reply --session --dest=one.codehz.stone.CoreService.default /one/codehz/stone/CoreService/default one.codehz.stone.CoreService.Stop`
+>    * `busctl call --user one.codehz.stone.CoreService.default /one/codehz/stone/CoreService/default one.codehz.stone.CoreService Stop`
 > 2. Execute the command:
->    * `dbus-send --type=method_call --print-reply --session --dest=one.codehz.stone.CommandService.default /one/codehz/stone/CommandService/default one.codehz.stone.CommandService.default.execute string:server string:/help`
->    * `busctl call --user one.codehz.stone.CommandService.default /one/codehz/stone/CommandService/default one.codehz.stone.CommandService.default execute ss server /help`
+>    * `dbus-send --type=method_call --print-reply --session --dest=one.codehz.stone.CommandService.default /one/codehz/stone/CommandService/default one.codehz.stone.CommandService.default.Execute string:server string:/help`
+>    * `busctl call --user one.codehz.stone.CommandService.default /one/codehz/stone/CommandService/default one.codehz.stone.CommandService.default Execute ss server /help`
 
 # COPYRIGHT
 
