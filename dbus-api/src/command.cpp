@@ -6,9 +6,11 @@
 #include <csignal>
 #include <iostream>
 
+#include "multi-call.h"
+
 static simppl::dbus::Dispatcher disp("bus:session");
 
-int main(int argc, char **argv) {
+DEF_MAIN("command") {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
 
@@ -26,4 +28,5 @@ int main(int argc, char **argv) {
   std::signal(SIGINT, [](int) { disp.stop(); });
   std::signal(SIGTERM, [](int) { disp.stop(); });
   disp.run();
+  return 0;
 }

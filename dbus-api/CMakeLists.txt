@@ -9,37 +9,31 @@ target_compile_definitions(dbus-api INTERFACE SIMPPL_HAVE_INTROSPECTION=true)
 target_link_libraries(dbus-api INTERFACE simppl)
 target_include_directories(dbus-api INTERFACE "include")
 
-add_library(dbus-api-exts-json include/json.h src/json.cpp)
-target_include_directories(dbus-api-exts-json PUBLIC "include")
+macro(dbus_api_add_multi_call name)
+  add_library(dbus-api-${name} src/${name}.cpp src/multi-call.h)
+  set_property(TARGET dbus-api-${name} PROPERTY CXX_STANDARD 17)
+  target_link_libraries(dbus-api-${name} PRIVATE dbus-api)
+  list(APPEND dbus_api_commands dbus-api-${name})
+endmacro(dbus_api_add_multi_call)
 
-add_executable(dbus-api-logger src/logger.cpp)
-target_link_libraries(dbus-api-logger PRIVATE dbus-api dbus-api-exts-json)
+dbus_api_add_multi_call(logger)
+dbus_api_add_multi_call(chat)
+dbus_api_add_multi_call(chat-send)
+dbus_api_add_multi_call(chat-broadcast)
+dbus_api_add_multi_call(command)
+dbus_api_add_multi_call(userlist)
+dbus_api_add_multi_call(blacklist)
 
-add_executable(dbus-api-chat src/chat.cpp)
-target_link_libraries(dbus-api-chat PRIVATE dbus-api dbus-api-exts-json)
-
-add_executable(dbus-api-chat-send src/chat-send.cpp)
-target_link_libraries(dbus-api-chat-send PRIVATE dbus-api)
-
-add_executable(dbus-api-chat-broadcast src/chat-broadcast.cpp)
-target_link_libraries(dbus-api-chat-broadcast PRIVATE dbus-api)
-
-add_executable(dbus-api-command src/command.cpp)
-target_link_libraries(dbus-api-command PRIVATE dbus-api)
-
-add_executable(dbus-api-userlist src/userlist.cpp)
-target_link_libraries(dbus-api-userlist PRIVATE dbus-api dbus-api-exts-json)
-
-add_executable(dbus-api-blacklist src/blacklist.cpp)
-target_link_libraries(dbus-api-blacklist PRIVATE dbus-api dbus-api-exts-json)
+add_executable(dbus-api-bin src/main.cpp src/multi-call.h src/json.cpp include/json.h)
+target_link_libraries(dbus-api-bin PRIVATE -Wl,--whole-archive ${dbus_api_commands} -Wl,--no-whole-archive dbus-api stdc++fs)
+set_property(TARGET dbus-api-bin PROPERTY CXX_STANDARD 20)
 
 install(FILES ${src} DESTINATION include/dbus-api)
-install(TARGETS
-  dbus-api-logger
-  dbus-api-chat
-  dbus-api-chat-send
-  dbus-api-chat-broadcast
-  dbus-api-command
-  dbus-api-userlist
-  dbus-api-blacklist
-  RUNTIME DESTINATION bin)
+install(TARGETS dbus-api-bin RUNTIME DESTINATION bin)
+foreach(target ${dbus_api_commands})
+  install(CODE "execute_process( \
+    COMMAND ln -sf dbus-api-bin ${target} \
+    WORKING_DIRECTORY \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin
+  )")
+  install(CODE "message(\"-- Created symlink: dbus-api-bin -> \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/${target}\")")
+endforeach(target)
