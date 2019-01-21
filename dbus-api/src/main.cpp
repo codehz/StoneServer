@@ -5,12 +5,9 @@
 std::map<std::string, MainFn, std::less<>> MultiCallRegistry::list;
 
 MainFn MultiCallRegistry::find(std::string_view const &name) {
-  printf("size: %d\n", list.size());
   std::filesystem::path path{ name };
   std::string filename = path.filename().string();
-  printf("1 %s\n", filename.c_str());
   if (filename.compare(0, 9, "dbus-api-") != 0) return nullptr;
-  printf("2 %s\n", filename.substr(9).c_str());
   auto it = list.find(filename.substr(9));
   if (it != list.end()) { return it->second; }
   return nullptr;
