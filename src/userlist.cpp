@@ -7,6 +7,8 @@
 
 #include <csignal>
 
+#include "multi-call.h"
+
 static simppl::dbus::Dispatcher disp("bus:session");
 
 using namespace simppl::dbus;
@@ -15,7 +17,7 @@ using namespace seasocks;
 
 void structs::PlayerInfo::jsonToStream(std::ostream &str) const { str << makeMap("name", name, "uuid", uuid, "xuid", xuid); }
 
-int main() {
+DEF_MAIN("userlist") {
   Stub<CoreService> core(disp, "default");
   fprintf(stderr, "waiting connection...\n");
   core.connected >> [&](ConnectionState state) {
@@ -41,4 +43,5 @@ int main() {
   std::signal(SIGINT, [](int) { disp.stop(); });
   std::signal(SIGTERM, [](int) { disp.stop(); });
   disp.run();
+  return 0;
 }

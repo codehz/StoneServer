@@ -7,9 +7,11 @@
 
 #include <csignal>
 
+#include "multi-call.h"
+
 static simppl::dbus::Dispatcher disp("bus:session");
 
-int main() {
+DEF_MAIN("logger") {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
   using namespace seasocks;
@@ -31,4 +33,5 @@ int main() {
   std::signal(SIGINT, [](int) { disp.stop(); });
   std::signal(SIGTERM, [](int) { disp.stop(); });
   disp.run();
+  return 0;
 }
