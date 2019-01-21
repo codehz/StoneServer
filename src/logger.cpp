@@ -19,12 +19,12 @@ int main() {
   core.connected >> [&](ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-      core.log.attach() >> [](int level, std::string const &tag, std::string const &content) {
+      core.Log.attach() >> [](int level, std::string const &tag, std::string const &content) {
         std::cout << makeMap("level", level, "tag", tag, "content", content) << std::endl;
       };
     } else {
       fprintf(stderr, "disconnected!\n");
-      core.log.detach();
+      core.Log.detach();
       core.disp().stop();
     }
   };

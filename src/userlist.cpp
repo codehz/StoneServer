@@ -21,20 +21,20 @@ int main() {
   core.connected >> [&](ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-      core.players.attach() >> [](CallState call, vector<structs::PlayerInfo> const &vec) {
+      core.Players.attach() >> [](CallState call, vector<structs::PlayerInfo> const &vec) {
         std::cout << makeMap("type", "list", "size", vec.size(), "list", makeArrayFromContainer(vec)) << std::endl;
       };
-      core.playerAdded.attach() >> [](structs::PlayerInfo const &info) {
+      core.PlayerAdded.attach() >> [](structs::PlayerInfo const &info) {
         std::cout << makeMap("type", "joined", "target", info) << std::endl;
       };
-      core.playerRemoved.attach() >> [](structs::PlayerInfo const &info) {
+      core.PlayerRemoved.attach() >> [](structs::PlayerInfo const &info) {
         std::cout << makeMap("type", "left", "target", info) << std::endl;
       };
     } else {
       fprintf(stderr, "disconnected!\n");
-      core.players.detach();
-      core.playerAdded.detach();
-      core.playerRemoved.detach();
+      core.Players.detach();
+      core.PlayerAdded.detach();
+      core.PlayerRemoved.detach();
       core.disp().stop();
     }
   };

@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   cmd.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-			std::cout << cmd.execute(argv[1], argv[2]);
+			std::cout << cmd.Execute(argv[1], argv[2]);
       cmd.disp().stop();
     }
   };

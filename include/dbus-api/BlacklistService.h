@@ -7,24 +7,24 @@ using namespace std;
 using namespace simppl::dbus;
 
 INTERFACE(BlacklistService) {
-  Method<in<string>, in<string>, oneway> addByUUID;
-  Method<in<string>, in<string>, oneway> addByXUID;
-  Method<in<string>, in<string>> addByName;
-  Method<in<string>, in<string>> kickByUUID;
-  Method<in<string>, in<string>> kickByXUID;
-  Method<in<string>, in<string>> kickByName;
-  Method<in<string>, oneway> removeByUUID;
-  Method<in<string>, oneway> removeByXUID;
+  Method<in<string>, in<string>, oneway> AddByUUID;
+  Method<in<string>, in<string>, oneway> AddByXUID;
+  Method<in<string>, in<string>> AddByName;
+  Method<in<string>, in<string>> KickByUUID;
+  Method<in<string>, in<string>> KickByXUID;
+  Method<in<string>, in<string>> KickByName;
+  Method<in<string>, oneway> RemoveByUUID;
+  Method<in<string>, oneway> RemoveByXUID;
 
   BlacklistService()
-      : INIT(addByUUID)
-      , INIT(addByXUID)
-      , INIT(addByName)
-      , INIT(kickByUUID)
-      , INIT(kickByXUID)
-      , INIT(kickByName)
-      , INIT(removeByUUID)
-      , INIT(removeByXUID) {}
+      : INIT(AddByUUID)
+      , INIT(AddByXUID)
+      , INIT(AddByName)
+      , INIT(KickByUUID)
+      , INIT(KickByXUID)
+      , INIT(KickByName)
+      , INIT(RemoveByUUID)
+      , INIT(RemoveByXUID) {}
 };
 
 } // namespace one::codehz::stone

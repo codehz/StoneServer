@@ -7,16 +7,16 @@ using namespace std;
 using namespace simppl::dbus;
 
 INTERFACE(ChatService) {
-  Method<in<string>, in<string>, oneway> send;
-  Method<in<string>, oneway> broadcast;
-  Signal<string, string> recv;
-  Property<bool> intercept;
+  Method<in<string>, in<string>, oneway> Send;
+  Method<in<string>, oneway> Broadcast;
+  Signal<string, string> Receive;
+  Property<bool> Intercept;
 
   ChatService()
-      : INIT(send)
-      , INIT(broadcast)
-      , INIT(recv)
-      , INIT(intercept) {}
+      : INIT(Send)
+      , INIT(Broadcast)
+      , INIT(Receive)
+      , INIT(Intercept) {}
 };
 
 } // namespace one::codehz::stone

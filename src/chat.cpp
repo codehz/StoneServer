@@ -19,12 +19,12 @@ int main() {
   chat.connected >> [&] (ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-      chat.recv.attach() >> [](std::string const &sender, std::string const &content) {
+      chat.Receive.attach() >> [](std::string const &sender, std::string const &content) {
         std::cout << makeMap("sender", sender, "content", content) << std::endl;
       };
     } else {
       fprintf(stderr, "disconnected!\n");
-      chat.recv.detach();
+      chat.Receive.detach();
       chat.disp().stop();
     }
   };

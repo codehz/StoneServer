@@ -17,22 +17,22 @@ struct PlayerInfo {
 } // namespace structs
 
 INTERFACE(CoreService) {
-  Method<oneway> stop;
-  Method<in<char>, in<string>, out<map<string, simppl::Variant<string, int, unsigned, double>>>> getPlayerInfo;
-  Property<string, ReadOnly> config;
-  Property<vector<structs::PlayerInfo>, ReadWrite | Notifying | Always> players;
-  Signal<structs::PlayerInfo> playerAdded;
-  Signal<structs::PlayerInfo> playerRemoved;
-  Signal<int, string, string> log;
+  Method<oneway> Stop;
+  Method<in<char>, in<string>, out<map<string, simppl::Variant<string, int, unsigned, double>>>> GetPlayerInfo;
+  Property<string, ReadOnly> Config;
+  Property<vector<structs::PlayerInfo>, ReadWrite | Notifying | Always> Players;
+  Signal<structs::PlayerInfo> PlayerAdded;
+  Signal<structs::PlayerInfo> PlayerRemoved;
+  Signal<int, string, string> Log;
 
   CoreService()
-      : INIT(stop)
-      , INIT(getPlayerInfo)
-      , INIT(config)
-      , INIT(players)
-      , INIT(playerAdded)
-      , INIT(playerRemoved)
-      , INIT(log) {}
+      : INIT(Stop)
+      , INIT(GetPlayerInfo)
+      , INIT(Config)
+      , INIT(Players)
+      , INIT(PlayerAdded)
+      , INIT(PlayerRemoved)
+      , INIT(Log) {}
 };
 
 } // namespace one::codehz::stone
