@@ -1,3 +1,4 @@
+#include <interface/chat.h>
 #include <minecraft/DedicatedServerCommandOrigin.h>
 #include <minecraft/MinecraftCommands.h>
 #include <minecraft/V8.h>
@@ -172,7 +173,7 @@ void invokeCommandCallback(FunctionCallbackInfo<Value> const &info) {
 
 void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
-  if (info.Length() != 1) {
+  if (info.Length() != 2) {
     Log::error("Scripting", "invokeConsoleCommand requires 2 arguments(current: %d)", info.Length());
     return;
   }
@@ -189,11 +190,25 @@ void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info) {
   info.GetReturnValue().Set(String::NewFromUtf8(iso, result.c_str()));
 }
 
+void broadcastMessageCallback(FunctionCallbackInfo<Value> const &info) {
+  if (info.Length() != 1) {
+    Log::error("Scripting", "broadcastMessage requires 1 arguments(current: %d)", info.Length());
+    return;
+  }
+  if (!info[0]->IsString()) {
+    Log::error("Scripting", "broadcastMessage requires (string)");
+    return;
+  }
+  auto content = Local(String::Cast(info[0])) >> V8Str;
+  Locator<Chat>()->sendAnnouncement(content);
+}
+
 SHook(
     void *,
     _ZN9ScriptApi34CreateFunctionTemplateDataPropertyEN2v85LocalINS0_7ContextEEEPNS0_7IsolateENS1_INS0_6ObjectEEEPKcPFvRKNS0_20FunctionCallbackInfoINS0_5ValueEEEENS1_ISB_EE,
     void *a, void *b, void *c, char const *name, void (*callback)(v8::FunctionCallbackInfo<v8::Value> const &), void *external) {
   if (strcmp(name, "registerComponent") == 0) {
+    original(a, b, c, "broadcastMessage", broadcastMessageCallback, external);
     original(a, b, c, "registerCommand", registerCommandCallback, external);
     original(a, b, c, "invokeCommand", invokeCommandCallback, external);
     original(a, b, c, "invokeConsoleCommand", invokeConsoleCommandCallback, external);
