@@ -135,7 +135,7 @@ struct CustomCommand : Command {
     current_orig = nullptr;
     if (!result->IsNullOrUndefined()) {
       auto str = result->ToString(iso) >> V8Str;
-      outp.addMessage(str, {}, 0);
+      if (str.size() != 0) outp.addMessage(str, {}, 0);
     }
     outp.success();
     hack_ctx = nullptr;
