@@ -20,6 +20,7 @@ class Log {
   static std::vector<std::function<void(int, std::string, std::string)>> hooks;
 
 public:
+  static LogLevel MIN_LEVEL;
   static inline void addHook(std::function<void(int, std::string, std::string)> fn) { hooks.push_back(fn); }
   static inline void clearHooks() { hooks.clear(); }
 

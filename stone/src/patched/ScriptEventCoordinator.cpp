@@ -8,13 +8,13 @@ namespace {
 
 SClasslessInstanceHook(void, _ZN22ScriptEventCoordinator24sendScriptBroadcastEventERKSs16RegistrationTypeb, mcpe::string const &event, int type,
                        bool flag) {
-  Log::debug("Scripting", "event: %s %d %d", event.c_str(), type, flag);
+  Log::trace("Scripting", "event: %s %d %d", event.c_str(), type, flag);
   original(this, event, type, flag);
 }
 
 SClasslessInstanceHook(void, _ZN22ScriptEventCoordinator22sendScriptGetComponentERKSs16RegistrationTypeb, mcpe::string const &component, int type,
                        bool flag) {
-  Log::debug("Scripting", "component: %s %d %d", component.c_str(), type, flag);
+  Log::trace("Scripting", "component: %s %d %d", component.c_str(), type, flag);
   original(this, component, type, flag);
 }
 
@@ -39,7 +39,7 @@ SClasslessInstanceHook(void, _ZN22ScriptEventCoordinator16sendScriptLoadedERKSsy
 }
 
 SClasslessInstanceHook(void, _ZN22ScriptEventCoordinator13sendScriptRanERKSsS1_b, mcpe::string const &source, mcpe::string const &content) {
-  Log::info("Scripting", "running %s", source.c_str());
+  Log::debug("Scripting", "running %s", source.c_str());
   original(this, source, content);
 }
 

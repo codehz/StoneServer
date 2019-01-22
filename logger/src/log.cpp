@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <ctime>
 
+LogLevel Log::MIN_LEVEL = LogLevel::LOG_INFO;
+
 void Log::vlog(LogLevel level, const char *tag, const char *text, va_list args) {
   char buffer[4096];
   int len = vsnprintf(buffer, sizeof(buffer), uintl::gettext(text), args);
@@ -18,6 +20,8 @@ void Log::vlog(LogLevel level, const char *tag, const char *text, va_list args) 
 
   std::string temp = uintl::gettext(tag);
   for (auto hook : hooks) hook(static_cast<int>(level), temp, buffer);
+
+  if (static_cast<int>(level) < static_cast<int>(MIN_LEVEL)) return;
 
   printf("%s %s [%s] %s\n", tbuf, getLogLevelString(level), temp.c_str(), buffer);
   fflush(stdout);

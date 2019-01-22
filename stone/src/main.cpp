@@ -73,6 +73,8 @@ int main() {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
 
+  if (getenv("STONE_DEBUG")) Log::MIN_LEVEL = LogLevel::LOG_TRACE;
+
   initDependencies();
 
   CrashHandler::registerCrashHandler();
@@ -128,6 +130,7 @@ int main() {
   auto &props = Locator<ServerProperties>().generate();
   props.load();
   srv_core.Config = props.config;
+  Log::info("StoneServer", "Config: %s", props.config.c_str());
 
   Log::trace("StoneServer", "Setting up level settings");
   LevelSettings levelSettings;
