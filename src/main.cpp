@@ -2,7 +2,15 @@
 #include <filesystem>
 #include <string_view>
 
+simppl::dbus::Dispatcher disp("bus:session");
 std::map<std::string, MainFn, std::less<>> MultiCallRegistry::list;
+
+void xassert(bool value, int code, char const *message) {
+  if (!value) {
+    fprintf(stderr, "%s\n", message);
+    exit(code);
+  }
+}
 
 MainFn MultiCallRegistry::find(std::string_view const &name) {
   std::filesystem::path path{ name };

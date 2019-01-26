@@ -9,8 +9,6 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 DEF_MAIN("chat") {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
