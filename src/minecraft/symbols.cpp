@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Jan 19 2019 13:38:41 UTC
+// Generated on Sat Jan 26 2019 04:12:28 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -109,6 +109,44 @@ void Options::setFullscreen(bool p1) {
 #include "V8Internals.h"
 
 #include "AutoComplete.h"
+
+#include "json.h"
+static void (Json::Reader::*_Json_Reader_Reader)();
+Json::Reader::Reader() {
+    (this->*_Json_Reader_Reader)();
+}
+static bool (Json::Reader::*_Json_Reader_parse)(std::istream &, Json::Value &, bool);
+bool Json::Reader::parse(std::istream & p1, Json::Value & p2, bool p3) {
+    return (this->*_Json_Reader_parse)(p1, p2, p3);
+}
+static void (Json::StyledWriter::*_Json_StyledWriter_StyledWriter)();
+Json::StyledWriter::StyledWriter() {
+    (this->*_Json_StyledWriter_StyledWriter)();
+}
+static void (Json::StyledWriter::*_Json_StyledWriter_destructor)();
+Json::StyledWriter::~StyledWriter() {
+    (this->*_Json_StyledWriter_destructor)();
+}
+static mcpe::string (Json::StyledWriter::*_Json_StyledWriter_write)(Json::Value const &);
+mcpe::string Json::StyledWriter::write(Json::Value const & p1) {
+    return (this->*_Json_StyledWriter_write)(p1);
+}
+static void (Json::FastWriter::*_Json_FastWriter_FastWriter)();
+Json::FastWriter::FastWriter() {
+    (this->*_Json_FastWriter_FastWriter)();
+}
+static void (Json::FastWriter::*_Json_FastWriter_destructor)();
+Json::FastWriter::~FastWriter() {
+    (this->*_Json_FastWriter_destructor)();
+}
+static mcpe::string (Json::FastWriter::*_Json_FastWriter_write)(Json::Value const &);
+mcpe::string Json::FastWriter::write(Json::Value const & p1) {
+    return (this->*_Json_FastWriter_write)(p1);
+}
+static void (Json::Value::*_Json_Value_Value)(Json::ValueType);
+Json::Value::Value(Json::ValueType p1) {
+    (this->*_Json_Value_Value)(p1);
+}
 
 #include "ContentIdentity.h"
 ContentIdentity * ContentIdentity::EMPTY;
@@ -358,6 +396,10 @@ MinecraftCommands * Minecraft::getCommands() {
 static Level * (Minecraft::*_Minecraft_getLevel)() const;
 Level * Minecraft::getLevel() const {
     return (this->*_Minecraft_getLevel)();
+}
+static void (Minecraft::*_Minecraft_activateWhitelist)();
+void Minecraft::activateWhitelist() {
+    (this->*_Minecraft_activateWhitelist)();
 }
 
 #include "AutomationClient.h"
@@ -1143,6 +1185,26 @@ void Keyboard::feedText(mcpe::string const & p1, bool p2, unsigned char p3) {
 }
 
 #include "Whitelist.h"
+static void (WhitelistEntry::*_WhitelistEntry_WhitelistEntry)(mcpe::string, mce::UUID, mcpe::string, bool);
+WhitelistEntry::WhitelistEntry(mcpe::string p1, mce::UUID p2, mcpe::string p3, bool p4) {
+    (this->*_WhitelistEntry_WhitelistEntry)(p1, p2, p3, p4);
+}
+static void (Whitelist::*_Whitelist_Whitelist)(mcpe::function<void ( )>);
+Whitelist::Whitelist(mcpe::function<void ( )> p1) {
+    (this->*_Whitelist_Whitelist)(p1);
+}
+static void (Whitelist::*_Whitelist_deserialize)(Json::Value &);
+void Whitelist::deserialize(Json::Value & p1) {
+    (this->*_Whitelist_deserialize)(p1);
+}
+static void (Whitelist::*_Whitelist_serialize)(Json::Value &);
+void Whitelist::serialize(Json::Value & p1) {
+    (this->*_Whitelist_serialize)(p1);
+}
+static void (Whitelist::*_Whitelist_removeByName)(mcpe::string const &);
+void Whitelist::removeByName(mcpe::string const & p1) {
+    (this->*_Whitelist_removeByName)(p1);
+}
 
 #include "MinecraftEventing.h"
 static void (MinecraftEventing::*_MinecraftEventing_MinecraftEventing)(mcpe::string const &);
@@ -1356,6 +1418,24 @@ void minecraft_symbols_init(void* handle) {
     if (_Options_getFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7Options13getFullscreenEv");
     ((void*&) _Options_setFullscreen) = hybris_dlsym(handle, "_ZN7Options13setFullscreenEb");
     if (_Options_setFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7Options13setFullscreenEb");
+    ((void*&) _Json_Reader_Reader) = hybris_dlsym(handle, "_ZN4Json6ReaderC2Ev");
+    if (_Json_Reader_Reader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json6ReaderC2Ev");
+    ((void*&) _Json_Reader_parse) = hybris_dlsym(handle, "_ZN4Json6Reader5parseERSiRNS_5ValueEb");
+    if (_Json_Reader_parse == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json6Reader5parseERSiRNS_5ValueEb");
+    ((void*&) _Json_StyledWriter_StyledWriter) = hybris_dlsym(handle, "_ZN4Json12StyledWriterC2Ev");
+    if (_Json_StyledWriter_StyledWriter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json12StyledWriterC2Ev");
+    ((void*&) _Json_StyledWriter_destructor) = hybris_dlsym(handle, "_ZN4Json12StyledWriterD2Ev");
+    if (_Json_StyledWriter_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json12StyledWriterD2Ev");
+    ((void*&) _Json_StyledWriter_write) = hybris_dlsym(handle, "_ZN4Json12StyledWriter5writeERKNS_5ValueE");
+    if (_Json_StyledWriter_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json12StyledWriter5writeERKNS_5ValueE");
+    ((void*&) _Json_FastWriter_FastWriter) = hybris_dlsym(handle, "_ZN4Json10FastWriterC2Ev");
+    if (_Json_FastWriter_FastWriter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json10FastWriterC2Ev");
+    ((void*&) _Json_FastWriter_destructor) = hybris_dlsym(handle, "_ZN4Json10FastWriterD2Ev");
+    if (_Json_FastWriter_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json10FastWriterD2Ev");
+    ((void*&) _Json_FastWriter_write) = hybris_dlsym(handle, "_ZN4Json10FastWriter5writeERKNS_5ValueE");
+    if (_Json_FastWriter_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json10FastWriter5writeERKNS_5ValueE");
+    ((void*&) _Json_Value_Value) = hybris_dlsym(handle, "_ZN4Json5ValueC2ENS_9ValueTypeE");
+    if (_Json_Value_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json5ValueC2ENS_9ValueTypeE");
     ((void*&) ContentIdentity::EMPTY) = hybris_dlsym(handle, "_ZN15ContentIdentity5EMPTYE");
     if (ContentIdentity::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ContentIdentity5EMPTYE");
     ((void*&) _DedicatedServerCommandOrigin_DedicatedServerCommandOrigin) = hybris_dlsym(handle, "_ZN28DedicatedServerCommandOriginC2ERKSsR9Minecraft");
@@ -1473,6 +1553,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Minecraft_getCommands == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Minecraft11getCommandsEv");
     ((void*&) _Minecraft_getLevel) = hybris_dlsym(handle, "_ZNK9Minecraft8getLevelEv");
     if (_Minecraft_getLevel == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9Minecraft8getLevelEv");
+    ((void*&) _Minecraft_activateWhitelist) = hybris_dlsym(handle, "_ZN9Minecraft17activateWhitelistEv");
+    if (_Minecraft_activateWhitelist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Minecraft17activateWhitelistEv");
     ((void*&) _Automation_AutomationClient_AutomationClient) = hybris_dlsym(handle, "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     if (_Automation_AutomationClient_AutomationClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Automation16AutomationClientC2ER13IMinecraftApp");
     ((void*&) _FilePathManager_FilePathManager) = hybris_dlsym(handle, "_ZN15FilePathManagerC2ESsb");
@@ -1862,6 +1944,16 @@ void minecraft_symbols_init(void* handle) {
     if (_Keyboard_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard4feedEhi");
     ((void*&) _Keyboard_feedText) = hybris_dlsym(handle, "_ZN8Keyboard8feedTextERKSsbh");
     if (_Keyboard_feedText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Keyboard8feedTextERKSsbh");
+    ((void*&) _WhitelistEntry_WhitelistEntry) = hybris_dlsym(handle, "_ZN14WhitelistEntryC2ESsN3mce4UUIDESsb");
+    if (_WhitelistEntry_WhitelistEntry == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14WhitelistEntryC2ESsN3mce4UUIDESsb");
+    ((void*&) _Whitelist_Whitelist) = hybris_dlsym(handle, "_ZN9WhitelistC2ESt8functionIFvvEE");
+    if (_Whitelist_Whitelist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9WhitelistC2ESt8functionIFvvEE");
+    ((void*&) _Whitelist_deserialize) = hybris_dlsym(handle, "_ZN9Whitelist11deserializeERN4Json5ValueE");
+    if (_Whitelist_deserialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Whitelist11deserializeERN4Json5ValueE");
+    ((void*&) _Whitelist_serialize) = hybris_dlsym(handle, "_ZN9Whitelist9serializeERN4Json5ValueE");
+    if (_Whitelist_serialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Whitelist9serializeERN4Json5ValueE");
+    ((void*&) _Whitelist_removeByName) = hybris_dlsym(handle, "_ZN9Whitelist12removeByNameERKSs");
+    if (_Whitelist_removeByName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Whitelist12removeByNameERKSs");
     ((void*&) _MinecraftEventing_MinecraftEventing) = hybris_dlsym(handle, "_ZN17MinecraftEventingC2ERKSs");
     if (_MinecraftEventing_MinecraftEventing == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17MinecraftEventingC2ERKSs");
     ((void*&) _MinecraftEventing_init) = hybris_dlsym(handle, "_ZN17MinecraftEventing4initEv");
