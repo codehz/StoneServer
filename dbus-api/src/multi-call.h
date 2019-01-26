@@ -1,8 +1,13 @@
 #pragma once
 
 #include <map>
+#include <simppl/dispatcher.h>
 #include <string>
 #include <string_view>
+
+extern simppl::dbus::Dispatcher disp;
+
+void xassert(bool value, int code, char const *message);
 
 using MainFn = int (*)(int, char **);
 

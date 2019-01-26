@@ -7,20 +7,18 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 DEF_MAIN("chat-broadcast") {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;
 
-	if (argc != 2) return 1;
-  
+  if (argc != 2) return 1;
+
   Stub<ChatService> chat(disp, "default");
   fprintf(stderr, "waiting connection...\n");
-  chat.connected >> [&] (ConnectionState state) {
+  chat.connected >> [&](ConnectionState state) {
     if (state == ConnectionState::Connected) {
       fprintf(stderr, "connected!\n");
-			chat.Broadcast(argv[1]);
+      chat.Broadcast(argv[1]);
       chat.disp().stop();
     }
   };

@@ -9,8 +9,6 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 using namespace simppl::dbus;
 using namespace one::codehz::stone;
 using namespace seasocks;
@@ -26,12 +24,8 @@ DEF_MAIN("userlist") {
       core.Players.attach() >> [](CallState call, vector<structs::PlayerInfo> const &vec) {
         std::cout << makeMap("type", "list", "size", vec.size(), "list", makeArrayFromContainer(vec)) << std::endl;
       };
-      core.PlayerAdded.attach() >> [](structs::PlayerInfo const &info) {
-        std::cout << makeMap("type", "joined", "target", info) << std::endl;
-      };
-      core.PlayerRemoved.attach() >> [](structs::PlayerInfo const &info) {
-        std::cout << makeMap("type", "left", "target", info) << std::endl;
-      };
+      core.PlayerAdded.attach() >> [](structs::PlayerInfo const &info) { std::cout << makeMap("type", "joined", "target", info) << std::endl; };
+      core.PlayerRemoved.attach() >> [](structs::PlayerInfo const &info) { std::cout << makeMap("type", "left", "target", info) << std::endl; };
     } else {
       fprintf(stderr, "disconnected!\n");
       core.Players.detach();

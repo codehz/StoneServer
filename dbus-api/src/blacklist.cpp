@@ -9,16 +9,7 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 enum action { ADD_UUID, ADD_XUID, ADD_NAME, DEL_UUID, DEL_XUID, KICK_UUID, KICK_XUID, KICK_NAME };
-
-void xassert(bool value, int code, char const *message) {
-  if (!value) {
-    fprintf(stderr, "%s\n", message);
-    exit(code);
-  }
-}
 
 DEF_MAIN("blacklist") {
   using namespace simppl::dbus;

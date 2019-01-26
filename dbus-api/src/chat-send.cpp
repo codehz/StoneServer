@@ -7,8 +7,6 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 DEF_MAIN("chat-send") {
   using namespace simppl::dbus;
   using namespace one::codehz::stone;

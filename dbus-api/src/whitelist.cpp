@@ -9,16 +9,7 @@
 
 #include "multi-call.h"
 
-static simppl::dbus::Dispatcher disp("bus:session");
-
 enum action { RELOAD, DUMP };
-
-void xassert(bool value, int code, char const *message) {
-  if (!value) {
-    fprintf(stderr, "%s\n", message);
-    exit(code);
-  }
-}
 
 DEF_MAIN("whitelist") {
   using namespace simppl::dbus;

@@ -23,6 +23,7 @@ dbus_api_add_multi_call(chat-broadcast)
 dbus_api_add_multi_call(command)
 dbus_api_add_multi_call(userlist)
 dbus_api_add_multi_call(blacklist)
+dbus_api_add_multi_call(whitelist)
 
 add_executable(dbus-api-bin src/main.cpp src/multi-call.h src/json.cpp include/json.h)
 target_link_libraries(dbus-api-bin PRIVATE -Wl,--whole-archive ${dbus_api_commands} -Wl,--no-whole-archive dbus-api stdc++fs)
