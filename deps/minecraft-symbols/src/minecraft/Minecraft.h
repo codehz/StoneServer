@@ -9,5 +9,6 @@ public:
 
     MinecraftCommands* getCommands();
     Level *getLevel() const;
+    void activateWhitelist();
 
 };

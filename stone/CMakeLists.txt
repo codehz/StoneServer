@@ -15,6 +15,7 @@ add_executable(stone
   "src/services.h"
   "src/operators.h"
   "src/custom_command.hpp"
+  "src/whitelist_mgr.hpp"
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"

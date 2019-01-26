@@ -51,6 +51,7 @@
 #include "services.h"
 #include "stub_key_provider.h"
 #include "v8_platform.h"
+#include "whitelist_mgr.hpp"
 
 #ifndef BUILD_VERSION
 #define BUILD_VERSION "UNKNOWN VERSION"
@@ -162,7 +163,7 @@ int main() {
   pathmgr.setSettingsPath(pathmgr.getRootPath());
 
   Log::trace("StoneServer", "Loading whitelist and operator list");
-  auto &whitelist = Locator<Whitelist>().generate();
+  auto &whitelist = Locator<WhitelistManager>().generate(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/whitelist.json");
   PermissionsFile permissionsFile(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/permissions.json");
 
   Log::trace("StoneServer", "Initializing resource loaders");
@@ -220,13 +221,14 @@ int main() {
   LauncherV8Platform v8Platform;
   v8::V8::InitializePlatform((v8::Platform *)&v8Platform);
   v8::V8::Initialize();
-  instance.initializeServer(minecraftApp, whitelist, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
+  instance.initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
                             props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
                             {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
                             pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
                             [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
                             [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); });
   Locator<ServerInstance>() = &instance;
+  if (props.activateWhitelist) Locator<Minecraft>()->activateWhitelist();
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
   I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);

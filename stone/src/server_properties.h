@@ -33,6 +33,7 @@ public:
   property<int> tickDistance;
   property<bool> onlineMode;
   property<float> playerIdleTimeout;
+  property<bool> activateWhitelist;
 
   inline std::string cfg() {
     const char *value = getenv("STONE_CONFIG");
@@ -58,7 +59,8 @@ public:
       , viewDistance(properties, "view-distance", 10)
       , tickDistance(properties, "tick-distance", 4)
       , onlineMode(properties, "online-mode", true)
-      , playerIdleTimeout(properties, "player-idle-timeout", 0.f) {
+      , playerIdleTimeout(properties, "player-idle-timeout", 0.f)
+      , activateWhitelist(properties, "activate-whitelist", false) {
     config = cfg();
   }
 
