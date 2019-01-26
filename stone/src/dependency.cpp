@@ -7,6 +7,7 @@
 #include "patched.h"
 #include "patched/Player.h"
 #include "services.h"
+#include "whitelist_mgr.hpp"
 
 #include <log.h>
 #include <minecraft/ExtendedCertificate.h>
@@ -154,5 +155,10 @@ void initDependencies() {
     };
     service->RemoveByUUID >> [&](auto uuid) { list.remove(mce::UUID::fromString(uuid)); };
     service->RemoveByXUID >> [&](auto xuid) { list.remove(xuid); };
+  };
+  Locator<WhitelistManager>() >> [](WhitelistManager &mgr) {
+    auto &service = Locator<Skeleton<WhitelistService>>();
+    service->Reload >> [&] { mgr.reload(); };
+    service->Dump >> [&] { mgr.save(); };
   };
 }

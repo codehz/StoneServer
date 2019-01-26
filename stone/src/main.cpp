@@ -96,6 +96,7 @@ int main() {
   auto &srv_command =
       Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Locator<Skeleton<BlacklistService>>().generate<Skeleton<BlacklistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
+  Locator<Skeleton<WhitelistService>>().generate<Skeleton<WhitelistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
   Log::addHook([&](auto level, auto tag, auto content) { srv_core.Log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 

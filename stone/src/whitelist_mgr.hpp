@@ -7,14 +7,14 @@
 struct WhitelistManager {
   const std::string path;
   Whitelist list;
-  WhitelistManager(std::string const &path)
+  inline WhitelistManager(std::string const &path)
       : path(path)
       , list([] {}) {
     reload();
     save();
   }
 
-  void reload() {
+  inline void reload() {
     Json::Reader reader;
     Json::Value value(Json::nullValue);
     std::ifstream ifs(path);
@@ -23,7 +23,7 @@ struct WhitelistManager {
     list.deserialize(value);
   }
 
-  void save() {
+  inline void save() {
     Json::StyledWriter writer;
     Json::Value value(Json::nullValue);
     std::ofstream ofs(path);
