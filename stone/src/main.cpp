@@ -229,7 +229,10 @@ int main() {
                             [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
                             [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); });
   Locator<ServerInstance>() = &instance;
-  if (props.activateWhitelist) Locator<Minecraft>()->activateWhitelist();
+  if (props.activateWhitelist) {
+    Locator<Minecraft>()->activateWhitelist();
+    Log::info("StoneServer", "Whitelist activated");
+  }
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
   I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);
