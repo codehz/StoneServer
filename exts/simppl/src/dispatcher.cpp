@@ -431,6 +431,9 @@ void Dispatcher::init(int have_introspection, const char* busname)
        }
    }
 
+   if(dbus_error_is_set(&err)) {
+      fprintf(stderr, "dbus error: %s\n%s\n", err.name, err.message);
+   }
    assert(!dbus_error_is_set(&err));
    dbus_error_free(&err);
 
