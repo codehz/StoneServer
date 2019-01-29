@@ -29,7 +29,11 @@ class ScriptEngine : public ScriptApi::ScriptFramework {};
 struct Actor;
 
 class MinecraftServerScriptEngine : public ScriptEngine {
-  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE
 public:
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE
   int helpDefineEntity(Actor const &, v8::Persistent<v8::Object> &);
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE12helpGetActorERKN9ScriptApi18ScriptObjectHandleEPP5Actor
+  int helpGetActor(v8::Persistent<v8::Object> const &, Actor *&);
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE13isValidEntityERKN9ScriptApi18ScriptObjectHandleERb
+  int isValidEntity(v8::Persistent<v8::Object> const &, bool &);
 };

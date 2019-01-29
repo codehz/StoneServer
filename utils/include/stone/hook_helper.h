@@ -22,18 +22,25 @@ public:
   ~TempPatch() { std::swap(backup, *address); }
 };
 
-template <typename Object, std::ptrdiff_t Offset, char... S> struct DirectAccess {
+template <typename Object, std::ptrdiff_t Offset, char... S> struct GetAddress {
   static constexpr char Name[] = { S..., 0 };
-  static Object &Access() {
-    static Object *address = reinterpret_cast<Object *>(reinterpret_cast<char *>(&DirectAccess<Object, 0, S...>::Access()) + Offset);
-    return *address;
+  static Object *Address() {
+    static Object *address = reinterpret_cast<Object *>(reinterpret_cast<char *>(GetAddress<Object, 0, S...>::Address()) + Offset);
+    return address;
   }
 };
 
-template <typename Object, char... S> struct DirectAccess<Object, 0, S...> {
+template <typename Object, char... S> struct GetAddress<Object, 0, S...> {
   static constexpr char Name[] = { S..., 0 };
-  static Object &Access() {
+  static Object *Address() {
     static Object *address = reinterpret_cast<Object *>(reinterpret_cast<char *>(hybris_dlsym(MinecraftHandle(), Name)));
+    return address;
+  }
+};
+
+template <typename Object, std::ptrdiff_t Offset, char... S> struct DirectAccess : GetAddress<Object, Offset, S...> {
+  static Object &Access() {
+    static Object *address = reinterpret_cast<Object *>(reinterpret_cast<char *>(DirectAccess<Object, 0, S...>::Address()) + Offset);
     return *address;
   }
 };

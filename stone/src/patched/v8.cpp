@@ -1,7 +1,10 @@
 #include <interface/chat.h>
 #include <minecraft/DedicatedServerCommandOrigin.h>
 #include <minecraft/MinecraftCommands.h>
+#include <minecraft/Player.h>
+#include <minecraft/TransferPacket.h>
 #include <minecraft/V8.h>
+#include <stone/hook_helper.h>
 #include <stone/server_hook.h>
 #include <wchar.h>
 
@@ -133,7 +136,9 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       } else if (theType == "position") {
         mvt.defs.push_back(commonParameter<CommandPosition>(theName));
       } else if (theType == "selector") {
-        mvt.defs.push_back(commonParameter<CommandActorSelector>(theName));
+        mvt.defs.push_back(commonParameter<CommandSelector<Actor>>(theName));
+      } else if (theType == "player-selector") {
+        mvt.defs.push_back(commonParameter<CommandSelector<Player>>(theName));
       } else {
         Log::error("Scripting", "registerCommand definition arguments type is unknown");
         return;
@@ -205,6 +210,36 @@ void broadcastMessageCallback(FunctionCallbackInfo<Value> const &info) {
   Locator<Chat>()->sendAnnouncement(content);
 }
 
+void transferPlayerCallback(FunctionCallbackInfo<Value> const &info) {
+  auto iso = info.GetIsolate();
+  if (info.Length() != 3) {
+    Log::error("Scripting", "transferPlayer requires 3 arguments(current: %d)", info.Length());
+    return;
+  }
+  if (!info[0]->IsObject() || !info[1]->IsString() || !info[2]->IsInt32()) {
+    Log::error("Scripting", "transferPlayer requires (object, string, integer)");
+    return;
+  }
+  auto &engine = Locator<MinecraftServerScriptEngine>();
+  Persistent<Object> entity{ iso, Object::Cast(info[0]) };
+  bool value;
+  engine->isValidEntity(entity, value);
+  if (!value) {
+    Log::error("Scripting", "transferPlayer requires (actor, string, integer)");
+    return;
+  }
+  Actor *actor = nullptr;
+  engine->helpGetActor(entity, actor);
+  if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
+    Log::error("Scripting", "transferPlayer requires (player, string, integer)");
+    return;
+  }
+  Player *player = (Player *)actor;
+
+  TransferPacket packet{ String::Cast(info[1]) >> V8Str, (short)Integer::Cast(info[2])->Value() };
+  player->sendNetworkPacket(packet);
+}
+
 SHook(
     void *,
     _ZN9ScriptApi34CreateFunctionTemplateDataPropertyEN2v85LocalINS0_7ContextEEEPNS0_7IsolateENS1_INS0_6ObjectEEEPKcPFvRKNS0_20FunctionCallbackInfoINS0_5ValueEEEENS1_ISB_EE,
@@ -214,6 +249,7 @@ SHook(
     original(a, b, c, "registerCommand", registerCommandCallback, external);
     original(a, b, c, "invokeCommand", invokeCommandCallback, external);
     original(a, b, c, "invokeConsoleCommand", invokeConsoleCommandCallback, external);
+    original(a, b, c, "transferPlayer", transferPlayerCallback, external);
   }
   return original(a, b, c, name, callback, external);
 }

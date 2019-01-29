@@ -51,9 +51,13 @@ static ParameterDef messageParameter(std::string const &name) {
   };
 }
 
+template <typename T> struct FetchGenerator;
+
 template <typename T> static void geninit(void *ptr) { new (ptr) T(); }
 template <typename T> static void gendeinit(void *ptr) { ((T *)ptr)->~T(); }
-template <typename T> static v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) { return {}; }
+template <typename T> static v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return FetchGenerator<T>::generate(self, orig, iso);
+}
 
 template <> v8::Local<v8::Value> genfetch<mcpe::string>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
@@ -76,19 +80,21 @@ template <> v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOr
   return ret;
 }
 
-template <> v8::Local<v8::Value> genfetch<CommandActorSelector>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  using namespace interface;
-  auto results = ((CommandActorSelector *)self)->newResults(orig);
-  auto ret     = v8::Array::New(iso, results->size());
-  auto &engine = Locator<MinecraftServerScriptEngine>();
-  int index    = 0;
-  for (auto actor : *results) {
-    v8::Persistent<v8::Object> pers;
-    engine->helpDefineEntity(*actor, pers);
-    ret->Set(index++, pers.Get(iso));
+template <typename T> struct FetchGenerator<CommandSelector<T>> {
+  static v8::Local<v8::Value> generate(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+    using namespace interface;
+    auto results = ((CommandSelector<T> *)self)->newResults(orig);
+    auto ret     = v8::Array::New(iso, results->size());
+    auto &engine = Locator<MinecraftServerScriptEngine>();
+    int index    = 0;
+    for (auto actor : *results) {
+      v8::Persistent<v8::Object> pers;
+      engine->helpDefineEntity(*actor, pers);
+      ret->Set(index++, pers.Get(iso));
+    }
+    return ret;
   }
-  return ret;
-}
+};
 
 template <typename T> static ParameterDef commonParameter(std::string const &name) {
   return {
