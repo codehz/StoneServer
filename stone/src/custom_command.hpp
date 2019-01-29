@@ -10,6 +10,7 @@
 #include <minecraft/CommandMessage.h>
 #include <minecraft/CommandOutput.h>
 #include <minecraft/CommandRegistry.h>
+#include <minecraft/CommandSelector.h>
 #include <minecraft/V8.h>
 #include <stone/magic_func.h>
 #include <stone/server_hook.h>
@@ -72,6 +73,20 @@ template <> v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOr
   ret->Set(strX, v8::Number::New(iso, x));
   ret->Set(strY, v8::Number::New(iso, y));
   ret->Set(strZ, v8::Number::New(iso, z));
+  return ret;
+}
+
+template <> v8::Local<v8::Value> genfetch<CommandActorSelector>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  using namespace interface;
+  auto results = ((CommandActorSelector *)self)->newResults(orig);
+  auto ret     = v8::Array::New(iso, results->size());
+  auto &engine = Locator<MinecraftServerScriptEngine>();
+  int index    = 0;
+  for (auto actor : *results) {
+    v8::Persistent<v8::Object> pers;
+    engine->helpDefineEntity(*actor, pers);
+    ret->Set(index++, pers.Get(iso));
+  }
   return ret;
 }
 

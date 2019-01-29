@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Jan 26 2019 04:12:28 UTC
+// Generated on Tue Jan 29 2019 11:40:10 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -377,6 +377,24 @@ static bool (AppPlatform::*_AppPlatform_isKeyboardVisible)();
 bool AppPlatform::isKeyboardVisible() {
     return (this->*_AppPlatform_isKeyboardVisible)();
 }
+
+#include "CommandSelector.h"
+static void (CommandSelectorBase::*_CommandSelectorBase_CommandSelectorBase)(bool);
+CommandSelectorBase::CommandSelectorBase(bool p1) {
+    (this->*_CommandSelectorBase_CommandSelectorBase)(p1);
+}
+static void (CommandSelectorBase::*_CommandSelectorBase_destructor)();
+CommandSelectorBase::~CommandSelectorBase() {
+    (this->*_CommandSelectorBase_destructor)();
+}
+static std::shared_ptr<std::vector<Actor *> > (CommandSelectorBase::*_CommandSelectorBase_newResults)(CommandOrigin const &) const;
+std::shared_ptr<std::vector<Actor *> > CommandSelectorBase::newResults(CommandOrigin const & p1) const {
+    return (this->*_CommandSelectorBase_newResults)(p1);
+}
+typeid_t<CommandRegistry> * CommandActorSelector::tid;
+Parser CommandActorSelector::parser;
+typeid_t<CommandRegistry> * CommandPlayerSelector::tid;
+Parser CommandPlayerSelector::parser;
 
 #include "Command.h"
 static void (Command::*_Command_destructor)();
@@ -1137,6 +1155,10 @@ void mce::Platform::OGL::InitBindings() {
 }
 
 #include "ScriptApi.h"
+static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpDefineEntity)(Actor const &, v8::Persistent<v8::Object> &);
+int MinecraftServerScriptEngine::helpDefineEntity(Actor const & p1, v8::Persistent<v8::Object> & p2) {
+    return (this->*_MinecraftServerScriptEngine_helpDefineEntity)(p1, p2);
+}
 
 #include "Multitouch.h"
 static void (*_Multitouch_feed)(char, char, short, short, int);
@@ -1545,6 +1567,20 @@ void minecraft_symbols_init(void* handle) {
     if (_AppPlatform_hideKeyboard == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform12hideKeyboardEv");
     ((void*&) _AppPlatform_isKeyboardVisible) = hybris_dlsym(handle, "_ZN11AppPlatform17isKeyboardVisibleEv");
     if (_AppPlatform_isKeyboardVisible == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11AppPlatform17isKeyboardVisibleEv");
+    ((void*&) _CommandSelectorBase_CommandSelectorBase) = hybris_dlsym(handle, "_ZN19CommandSelectorBaseC2Eb");
+    if (_CommandSelectorBase_CommandSelectorBase == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandSelectorBaseC2Eb");
+    ((void*&) _CommandSelectorBase_destructor) = hybris_dlsym(handle, "_ZN19CommandSelectorBaseD2Ev");
+    if (_CommandSelectorBase_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandSelectorBaseD2Ev");
+    ((void*&) _CommandSelectorBase_newResults) = hybris_dlsym(handle, "_ZNK19CommandSelectorBase10newResultsERK13CommandOrigin");
+    if (_CommandSelectorBase_newResults == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK19CommandSelectorBase10newResultsERK13CommandOrigin");
+    ((void*&) CommandActorSelector::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistry15CommandSelectorI5ActorEE8typeid_tIT_EvE2id");
+    if (CommandActorSelector::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistry15CommandSelectorI5ActorEE8typeid_tIT_EvE2id");
+    ((void*&) CommandActorSelector::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseI15CommandSelectorI5ActorEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommandActorSelector::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseI15CommandSelectorI5ActorEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) CommandPlayerSelector::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistry15CommandSelectorI6PlayerEE8typeid_tIT_EvE2id");
+    if (CommandPlayerSelector::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistry15CommandSelectorI6PlayerEE8typeid_tIT_EvE2id");
+    ((void*&) CommandPlayerSelector::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseI15CommandSelectorI6PlayerEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommandPlayerSelector::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseI15CommandSelectorI6PlayerEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _Command_destructor) = hybris_dlsym(handle, "_ZN7CommandD2Ev");
     if (_Command_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7CommandD2Ev");
     ((void*&) _Command_Command) = hybris_dlsym(handle, "_ZN7CommandC2Ev");
@@ -1922,6 +1958,8 @@ void minecraft_symbols_init(void* handle) {
     if (_gl_getOpenGLExtensions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl19getOpenGLExtensionsEv");
     ((void*&) _mce_Platform_OGL_InitBindings) = hybris_dlsym(handle, "_ZN3mce8Platform3OGL12InitBindingsEv");
     if (_mce_Platform_OGL_InitBindings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce8Platform3OGL12InitBindingsEv");
+    ((void*&) _MinecraftServerScriptEngine_helpDefineEntity) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE");
+    if (_MinecraftServerScriptEngine_helpDefineEntity == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _Multitouch_feed) = hybris_dlsym(handle, "_ZN10Multitouch4feedEccssi");
     if (_Multitouch_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Multitouch4feedEccssi");
     ((void*&) _ResourceLoadManager_ResourceLoadManager) = hybris_dlsym(handle, "_ZN19ResourceLoadManagerC2Ev");

@@ -132,6 +132,8 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         mvt.defs.push_back(commonParameter<CommandRawText>(theName));
       } else if (theType == "position") {
         mvt.defs.push_back(commonParameter<CommandPosition>(theName));
+      } else if (theType == "selector") {
+        mvt.defs.push_back(commonParameter<CommandActorSelector>(theName));
       } else {
         Log::error("Scripting", "registerCommand definition arguments type is unknown");
         return;
