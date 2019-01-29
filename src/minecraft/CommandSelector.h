@@ -5,7 +5,8 @@
 #include <vector>
 
 struct Actor;
-struct CommandOrigin;
+struct Player;
+class CommandOrigin;
 
 struct CommandSelectorBase {
   char filler[0x100];
@@ -32,3 +33,8 @@ struct CommandPlayerSelector : CommandSelectorBase {
   /// @symbol _ZNK15CommandRegistry5parseI15CommandSelectorI6PlayerEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
   static Parser parser;
 };
+
+template <typename T> struct CommandSelector;
+
+template <> struct CommandSelector<Actor> : CommandActorSelector {};
+template <> struct CommandSelector<Player> : CommandPlayerSelector {};
