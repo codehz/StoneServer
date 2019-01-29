@@ -1,10 +1,11 @@
 #pragma once
 
 #include "CommandRegistry.h"
+#include "CommandSelector.h"
 
 using CDT = void (*)(void *);
 
-template <typename> class CommonType;
+template <typename T> struct CommonType : T {};
 
 template <> struct CommonType<mcpe::string> {
   /// @symbol _ZZ7type_idI15CommandRegistrySsE8typeid_tIT_EvE2id

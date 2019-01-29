@@ -1,5 +1,6 @@
 #pragma once
 
+#include "V8.h"
 #include "std/string.h"
 
 namespace ScriptApi {
@@ -25,4 +26,10 @@ struct ScriptFramework {
 
 class ScriptEngine : public ScriptApi::ScriptFramework {};
 
-class MinecraftServerScriptEngine : public ScriptEngine {};
+struct Actor;
+
+class MinecraftServerScriptEngine : public ScriptEngine {
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE
+public:
+  int helpDefineEntity(Actor const &, v8::Persistent<v8::Object> &);
+};
