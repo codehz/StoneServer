@@ -54,3 +54,4 @@ dkms.conf
 .ccls-cache
 build
 compile_commands.json
+.vscode
