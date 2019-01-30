@@ -244,7 +244,9 @@ SHook(
     void *,
     _ZN9ScriptApi34CreateFunctionTemplateDataPropertyEN2v85LocalINS0_7ContextEEEPNS0_7IsolateENS1_INS0_6ObjectEEEPKcPFvRKNS0_20FunctionCallbackInfoINS0_5ValueEEEENS1_ISB_EE,
     void *a, void *b, void *c, char const *name, void (*callback)(v8::FunctionCallbackInfo<v8::Value> const &), void *external) {
-  if (strcmp(name, "registerComponent") == 0) {
+  static char const *cached = nullptr;
+  if (name == cached || strcmp(name, "registerComponent") == 0) {
+    cached = name;
     original(a, b, c, "broadcastMessage", broadcastMessageCallback, external);
     original(a, b, c, "registerCommand", registerCommandCallback, external);
     original(a, b, c, "invokeCommand", invokeCommandCallback, external);
