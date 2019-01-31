@@ -1,4 +1,5 @@
 #include <interface/chat.h>
+#include <minecraft/AutomationPlayerCommandOrigin.h>
 #include <minecraft/DedicatedServerCommandOrigin.h>
 #include <minecraft/MinecraftCommands.h>
 #include <minecraft/Player.h>
@@ -11,6 +12,9 @@
 #include "../custom_command.hpp"
 #include "../operators.h"
 #include "../patched.h"
+#include "../v8_utils.hpp"
+
+#include "Flags.h"
 
 namespace {
 using namespace v8;
@@ -40,19 +44,6 @@ SInstanceHook(void, _ZN27MinecraftServerScriptEngineC2Ev, MinecraftServerScriptE
   Locator<MinecraftServerScriptEngine>() >> FieldRef(&MinecraftServerScriptEngine::core);
 }
 
-SHook(void *, _ZN2v82V818GlobalizeReferenceEPNS_8internal7IsolateEPPNS1_6ObjectE, Isolate *iso, void *obj) {
-  static bool first = true;
-  if (first) {
-    first = false;
-
-    Locator<Isolate>() = iso;
-    auto ret           = original(iso, obj);
-    Locator<Persistent<Context>, identity>().Set(ret);
-    return ret;
-  }
-  return original(iso, obj);
-}
-
 void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   if (info.Length() != 4) {
@@ -66,11 +57,11 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   const auto command = String::Cast(info[0]);
   const auto desc    = String::Cast(info[1]);
   const auto lvl     = Integer::Cast(info[2]);
-  auto strArguments  = String::NewFromUtf8(iso, "arguments");
-  auto strHandler    = String::NewFromUtf8(iso, "handler");
-  auto strName       = String::NewFromUtf8(iso, "name");
-  auto strType       = String::NewFromUtf8(iso, "type");
-  auto strOptional   = String::NewFromUtf8(iso, "optional");
+  auto strArguments  = toJS<std::string>(iso, "arguments");
+  auto strHandler    = toJS<std::string>(iso, "handler");
+  auto strName       = toJS<std::string>(iso, "name");
+  auto strType       = toJS<std::string>(iso, "type");
+  auto strOptional   = toJS<std::string>(iso, "optional");
   auto definitions   = Array::Cast(info[3]);
 
   auto registerOverload = registerCustomCommand(command >> V8Str >> StdStr, desc >> V8Str >> StdStr, (int)lvl->Value());
@@ -146,6 +137,7 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       auto optional = arg->Get((Value *)strOptional)->BooleanValue();
       if (optional) mvt.defs.rbegin()->makeOptional();
     }
+    mvt.iso  = iso;
     mvt.exec = [self = Persistent<Value>(iso, info.This()), handler = Persistent<Function>(iso, Function::Cast(srcHandler))](
                    Isolate *iso, int argc, v8::Local<v8::Value> *argv) -> v8::Local<v8::Value> {
       auto origin = self.Get(iso);
@@ -158,24 +150,63 @@ void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
 
 void invokeCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
-  if (info.Length() != 1) {
-    Log::error("Scripting", "invokeCommand requires 1 arguments(current: %d)", info.Length());
+  if (info.Length() == 1) {
+    if (!info[0]->IsString()) {
+      Log::error("Scripting", "invokeCommand requires (string)");
+      return;
+    }
+    if (!current_orig) {
+      Log::error("Scripting", "invokeCommand need be invoked inside custom command execution context");
+      return;
+    }
+    auto command = fromJS<std::string>(iso, info[0]);
+    auto result  = patched::withCommandOutput([&] {
+      auto commandOrigin = current_orig->clone();
+      Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
+    });
+    info.GetReturnValue().Set(toJS(iso, result));
+  } else if (info.Length() == 2) {
+    if (!info[0]->IsObject() || !info[1]->IsString()) {
+      Log::error("Scripting", "invokeCommand requires (object, string)");
+      return;
+    }
+    auto actor   = fromJS<Actor *>(iso, info[0]);
+    auto command = fromJS<std::string>(iso, info[1]);
+    if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
+      Log::error("Scripting", "invokeCommand requires (player, string)");
+      return;
+    }
+    auto origin = std::make_unique<PlayerCommandOrigin>((Player &)*actor);
+    auto result = patched::withCommandOutput([&] { Locator<MinecraftCommands>()->requestCommandExecution(std::move(origin), command, 4, true); });
+    info.GetReturnValue().Set(toJS(iso, result));
+  } else {
+    Log::error("Scripting", "invokeCommand requires 1 or 2 arguments(current: %d)", info.Length());
     return;
   }
-  if (!info[0]->IsString()) {
-    Log::error("Scripting", "invokeCommand requires (string)");
+}
+
+void invokePrivilegedCommandCallback(FunctionCallbackInfo<Value> const &info) {
+  auto iso = info.GetIsolate();
+  if (info.Length() != 2) {
+    Log::error("Scripting", "invokePrivilegedCommand requires 2 arguments(current: %d)", info.Length());
     return;
   }
-  if (!current_orig) {
-    Log::error("Scripting", "invokeCommand need be invoked inside custom command execution context");
+
+  if (!info[0]->IsObject() || !info[1]->IsString()) {
+    Log::error("Scripting", "invokeCommand requires (object, string)");
     return;
   }
-  auto command = Local(String::Cast(info[0])) >> V8Str;
-  auto result  = patched::withCommandOutput([&] {
-    auto commandOrigin = current_orig->clone();
-    Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
-  });
-  info.GetReturnValue().Set(String::NewFromUtf8(iso, result.c_str()));
+  auto actor   = fromJS<Actor *>(iso, info[0]);
+  auto command = fromJS<std::string>(iso, info[1]);
+  if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
+    Log::error("Scripting", "invokeCommand requires (player, string)");
+    return;
+  }
+  auto origin = std::make_unique<PlayerCommandOrigin>((Player &)*actor);
+  patched::flags::CommandPrivileged = true;
+  auto result = patched::withCommandOutput([&] { Locator<MinecraftCommands>()->requestCommandExecution(std::move(origin), command, 4, true); });
+  patched::flags::CommandPrivileged = false;
+  info.GetReturnValue().Set(toJS(iso, result));
 }
 
 void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info) {
@@ -188,16 +219,17 @@ void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info) {
     Log::error("Scripting", "invokeConsoleCommand requires (string, string)");
     return;
   }
-  auto orig    = Local(String::Cast(info[0])) >> V8Str;
-  auto command = Local(String::Cast(info[1])) >> V8Str;
+  auto orig    = fromJS<std::string>(iso, info[0]);
+  auto command = fromJS<std::string>(iso, info[1]);
   auto result  = patched::withCommandOutput([&] {
     auto commandOrigin = std::make_unique<DedicatedServerCommandOrigin>(orig, *Locator<Minecraft>());
     Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
   });
-  info.GetReturnValue().Set(String::NewFromUtf8(iso, result.c_str()));
+  info.GetReturnValue().Set(toJS(iso, result));
 }
 
 void broadcastMessageCallback(FunctionCallbackInfo<Value> const &info) {
+  auto iso = info.GetIsolate();
   if (info.Length() != 1) {
     Log::error("Scripting", "broadcastMessage requires 1 arguments(current: %d)", info.Length());
     return;
@@ -206,7 +238,7 @@ void broadcastMessageCallback(FunctionCallbackInfo<Value> const &info) {
     Log::error("Scripting", "broadcastMessage requires (string)");
     return;
   }
-  auto content = Local(String::Cast(info[0])) >> V8Str;
+  auto content = fromJS<std::string>(iso, info[0]);
   Locator<Chat>()->sendAnnouncement(content);
 }
 
@@ -220,24 +252,33 @@ void transferPlayerCallback(FunctionCallbackInfo<Value> const &info) {
     Log::error("Scripting", "transferPlayer requires (object, string, integer)");
     return;
   }
-  auto &engine = Locator<MinecraftServerScriptEngine>();
-  Persistent<Object> entity{ iso, Object::Cast(info[0]) };
-  bool value;
-  engine->isValidEntity(entity, value);
-  if (!value) {
-    Log::error("Scripting", "transferPlayer requires (actor, string, integer)");
-    return;
-  }
-  Actor *actor = nullptr;
-  engine->helpGetActor(entity, actor);
+  Actor *actor = fromJS<Actor *>(iso, info[0]);
   if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
     Log::error("Scripting", "transferPlayer requires (player, string, integer)");
     return;
   }
   Player *player = (Player *)actor;
 
-  TransferPacket packet{ String::Cast(info[1]) >> V8Str, (short)Integer::Cast(info[2])->Value() };
+  TransferPacket packet{ fromJS<std::string>(iso, info[1]), fromJS<short>(iso, info[2]) };
   player->sendNetworkPacket(packet);
+}
+
+void currentCommandOriginCallback(FunctionCallbackInfo<Value> const &info) {
+  if (current_orig) {
+    auto iso                = info.GetIsolate();
+    auto temp               = Object::New(iso);
+    auto strName            = toJS<std::string>(iso, "name");
+    auto strBlockPos        = toJS<std::string>(iso, "blockPos");
+    auto strWorldPos        = toJS<std::string>(iso, "worldPos");
+    auto strEntity          = toJS<std::string>(iso, "entity");
+    auto strPermissionLevel = toJS<std::string>(iso, "permissionLevel");
+    temp->Set(strName, toJS<std::string>(iso, current_orig->getName().std()));
+    temp->Set(strBlockPos, toJS(iso, current_orig->getBlockPosition()));
+    temp->Set(strWorldPos, toJS(iso, current_orig->getWorldPosition()));
+    temp->Set(strEntity, toJS(iso, current_orig->getEntity()));
+    temp->Set(strPermissionLevel, toJS(iso, current_orig->getPermissionLevel()));
+    info.GetReturnValue().Set(temp);
+  }
 }
 
 SHook(
@@ -249,7 +290,9 @@ SHook(
     cached = name;
     original(a, b, c, "broadcastMessage", broadcastMessageCallback, external);
     original(a, b, c, "registerCommand", registerCommandCallback, external);
+    original(a, b, c, "currentCommandOrigin", currentCommandOriginCallback, external);
     original(a, b, c, "invokeCommand", invokeCommandCallback, external);
+    original(a, b, c, "invokePrivilegedCommand", invokePrivilegedCommandCallback, external);
     original(a, b, c, "invokeConsoleCommand", invokeConsoleCommandCallback, external);
     original(a, b, c, "transferPlayer", transferPlayerCallback, external);
   }

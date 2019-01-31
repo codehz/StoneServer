@@ -33,6 +33,7 @@ struct ParameterDef {
 };
 
 struct MyCommandVTable {
+  v8::Isolate *iso;
   std::vector<ParameterDef> defs;
   std::function<v8::Local<v8::Value>(v8::Isolate *, int, v8::Local<v8::Value> *)> exec;
 };
@@ -137,7 +138,7 @@ struct CustomCommand : Command {
     using namespace v8;
     auto size     = vt->defs.size();
     size_t offset = 0;
-    auto &iso     = Locator<Isolate>();
+    auto &iso     = vt->iso;
     assert(size < 32);
     Local<Value> params[size];
 

@@ -1,16 +1,17 @@
 #pragma once
 
-#include "std/string.h"
 #include "CommandOrigin.h"
+#include "UUID.h"
+#include "std/string.h"
+#include <array>
 
 class Minecraft;
 
 class DedicatedServerCommandOrigin : public CommandOrigin {
 
 public:
+  Minecraft *mc;
+  mcpe::string name;
 
-    char filler[0x20];
-
-    DedicatedServerCommandOrigin(mcpe::string const& s, Minecraft& m);
-
+  DedicatedServerCommandOrigin(mcpe::string const &s, Minecraft &m);
 };

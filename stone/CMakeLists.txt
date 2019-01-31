@@ -19,6 +19,8 @@ add_executable(stone
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"
+  "src/patched/DedicatedServerCommandOrigin.cpp"
+  "src/patched/PlayerCommandOrigin.cpp"
   "src/patched/ScriptEventCoordinator.cpp"
   "src/patched/TextPacket.cpp"
   "src/patched/SayCommand.cpp"
