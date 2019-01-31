@@ -15,6 +15,7 @@ add_executable(stone
   "src/services.h"
   "src/operators.h"
   "src/custom_command.hpp"
+  "src/custom_command.h"
   "src/whitelist_mgr.hpp"
   "src/patched.h"
   "src/patched.cpp"
@@ -29,6 +30,15 @@ add_executable(stone
   "src/patched/FeatureToggles.cpp"
   "src/patched/Player.h"
   "src/patched/ServerNetworkHandler.cpp"
+  "src/ExtAPI/common.h"
+  "src/ExtAPI/common.cpp"
+  "src/ExtAPI/broadcastMessage.cpp"
+  "src/ExtAPI/currentCommandOrigin.cpp"
+  "src/ExtAPI/invokeCommand.cpp"
+  "src/ExtAPI/invokeConsoleCommand.cpp"
+  "src/ExtAPI/invokePrivilegedCommand.cpp"
+  "src/ExtAPI/registerCommand.cpp"
+  "src/ExtAPI/transferPlayer.cpp"
 )
 
 target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)

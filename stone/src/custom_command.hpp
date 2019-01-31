@@ -38,7 +38,7 @@ struct MyCommandVTable {
   std::function<v8::Local<v8::Value>(v8::Isolate *, int, v8::Local<v8::Value> *)> exec;
 };
 
-static ParameterDef messageParameter(std::string const &name) {
+static inline ParameterDef messageParameter(std::string const &name) {
   return {
     .size   = sizeof(CommandMessage),
     .name   = name,
@@ -54,22 +54,28 @@ static ParameterDef messageParameter(std::string const &name) {
 
 template <typename T> struct FetchGenerator;
 
-template <typename T> static void geninit(void *ptr) { new (ptr) T(); }
-template <typename T> static void gendeinit(void *ptr) { ((T *)ptr)->~T(); }
-template <typename T> static v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+template <typename T> static inline void geninit(void *ptr) { new (ptr) T(); }
+template <typename T> static inline void gendeinit(void *ptr) { ((T *)ptr)->~T(); }
+template <typename T> static inline v8::Local<v8::Value> genfetch(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return FetchGenerator<T>::generate(self, orig, iso);
 }
 
-template <> v8::Local<v8::Value> genfetch<mcpe::string>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+template <> inline v8::Local<v8::Value> genfetch<mcpe::string>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
 }
-template <> v8::Local<v8::Value> genfetch<int>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Integer::New(iso, *(int *)self); }
-template <> v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Number::New(iso, *(float *)self); }
-template <> v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) { return v8::Boolean::New(iso, *(bool *)self); }
-template <> v8::Local<v8::Value> genfetch<CommandRawText>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+template <> inline v8::Local<v8::Value> genfetch<int>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return v8::Integer::New(iso, *(int *)self);
+}
+template <> inline v8::Local<v8::Value> genfetch<float>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return v8::Number::New(iso, *(float *)self);
+}
+template <> inline v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return v8::Boolean::New(iso, *(bool *)self);
+}
+template <> inline v8::Local<v8::Value> genfetch<CommandRawText>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
 }
-template <> v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   auto strX      = v8::String::NewFromUtf8(iso, "x");
   auto strY      = v8::String::NewFromUtf8(iso, "y");
   auto strZ      = v8::String::NewFromUtf8(iso, "z");
@@ -82,7 +88,7 @@ template <> v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOr
 }
 
 template <typename T> struct FetchGenerator<CommandSelector<T>> {
-  static v8::Local<v8::Value> generate(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  static inline v8::Local<v8::Value> generate(void *self, CommandOrigin &orig, v8::Isolate *iso) {
     using namespace interface;
     auto results = ((CommandSelector<T> *)self)->newResults(orig);
     auto ret     = v8::Array::New(iso, results->size());
@@ -97,7 +103,7 @@ template <typename T> struct FetchGenerator<CommandSelector<T>> {
   }
 };
 
-template <typename T> static ParameterDef commonParameter(std::string const &name) {
+template <typename T> static inline ParameterDef commonParameter(std::string const &name) {
   return {
     .size   = sizeof(T),
     .name   = name,
@@ -110,7 +116,7 @@ template <typename T> static ParameterDef commonParameter(std::string const &nam
 };
 
 static v8::Local<v8::Context> *hack_ctx;
-static CommandOrigin *current_orig = nullptr;
+CommandOrigin *current_orig = nullptr;
 
 struct CustomCommand : Command {
   MyCommandVTable *vt;
