@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Jan 29 2019 14:46:38 UTC
+// Generated on Thu Jan 31 2019 13:20:44 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -107,6 +107,12 @@ void Options::setFullscreen(bool p1) {
 }
 
 #include "V8Internals.h"
+
+#include "AutomationPlayerCommandOrigin.h"
+static void (AutomationPlayerCommandOrigin::*_AutomationPlayerCommandOrigin_AutomationPlayerCommandOrigin)(mcpe::string const &, Player &);
+AutomationPlayerCommandOrigin::AutomationPlayerCommandOrigin(mcpe::string const & p1, Player & p2) {
+    (this->*_AutomationPlayerCommandOrigin_AutomationPlayerCommandOrigin)(p1, p2);
+}
 
 #include "AutoComplete.h"
 
@@ -1123,6 +1129,20 @@ mcpe::string CommandOrigin::getName() {
     u.voidp = vtable[vti_CommandOrigin_getName];
     return (this->*u.funcp)();
 }
+static int vti_CommandOrigin_getBlockPosition;
+std::array<int, 3> CommandOrigin::getBlockPosition() {
+    union { void* voidp; std::array<int, 3> (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_getBlockPosition];
+    return (this->*u.funcp)();
+}
+static int vti_CommandOrigin_getWorldPosition;
+std::array<float, 3> CommandOrigin::getWorldPosition() {
+    union { void* voidp; std::array<float, 3> (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_getWorldPosition];
+    return (this->*u.funcp)();
+}
 static int vti_CommandOrigin_clone;
 std::unique_ptr<CommandOrigin> CommandOrigin::clone() {
     union { void* voidp; std::unique_ptr<CommandOrigin> (CommandOrigin::*funcp)(); } u;
@@ -1130,9 +1150,34 @@ std::unique_ptr<CommandOrigin> CommandOrigin::clone() {
     u.voidp = vtable[vti_CommandOrigin_clone];
     return (this->*u.funcp)();
 }
+static int vti_CommandOrigin_getOriginType;
+CommandOriginType CommandOrigin::getOriginType() {
+    union { void* voidp; CommandOriginType (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_getOriginType];
+    return (this->*u.funcp)();
+}
+static int vti_CommandOrigin_getEntity;
+Actor * CommandOrigin::getEntity() {
+    union { void* voidp; Actor * (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_getEntity];
+    return (this->*u.funcp)();
+}
+static int vti_CommandOrigin_getPermissionLevel;
+unsigned char CommandOrigin::getPermissionLevel() {
+    union { void* voidp; unsigned char (CommandOrigin::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_CommandOrigin_getPermissionLevel];
+    return (this->*u.funcp)();
+}
 static mce::UUID const & (CommandOrigin::*_CommandOrigin_getUUID)() const;
 mce::UUID const & CommandOrigin::getUUID() const {
     return (this->*_CommandOrigin_getUUID)();
+}
+static void (PlayerCommandOrigin::*_PlayerCommandOrigin_PlayerCommandOrigin)(Player &);
+PlayerCommandOrigin::PlayerCommandOrigin(Player & p1) {
+    (this->*_PlayerCommandOrigin_PlayerCommandOrigin)(p1);
 }
 
 #include "gl.h"
@@ -1451,6 +1496,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Options_getFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7Options13getFullscreenEv");
     ((void*&) _Options_setFullscreen) = hybris_dlsym(handle, "_ZN7Options13setFullscreenEb");
     if (_Options_setFullscreen == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7Options13setFullscreenEb");
+    ((void*&) _AutomationPlayerCommandOrigin_AutomationPlayerCommandOrigin) = hybris_dlsym(handle, "_ZN29AutomationPlayerCommandOriginC2ERKSsR6Player");
+    if (_AutomationPlayerCommandOrigin_AutomationPlayerCommandOrigin == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN29AutomationPlayerCommandOriginC2ERKSsR6Player");
     ((void*&) _Json_Reader_Reader) = hybris_dlsym(handle, "_ZN4Json6ReaderC2Ev");
     if (_Json_Reader_Reader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json6ReaderC2Ev");
     ((void*&) _Json_Reader_parse) = hybris_dlsym(handle, "_ZN4Json6Reader5parseERSiRNS_5ValueEb");
@@ -1957,10 +2004,22 @@ void minecraft_symbols_init(void* handle) {
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
     vti_CommandOrigin_getName = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin7getNameEv"));
     if (vti_CommandOrigin_getName == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin7getNameEv");
+    vti_CommandOrigin_getBlockPosition = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin16getBlockPositionEv"));
+    if (vti_CommandOrigin_getBlockPosition == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin16getBlockPositionEv");
+    vti_CommandOrigin_getWorldPosition = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin16getWorldPositionEv"));
+    if (vti_CommandOrigin_getWorldPosition == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin16getWorldPositionEv");
     vti_CommandOrigin_clone = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin5cloneEv"));
     if (vti_CommandOrigin_clone == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin5cloneEv");
+    vti_CommandOrigin_getOriginType = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin13getOriginTypeEv"));
+    if (vti_CommandOrigin_getOriginType == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin13getOriginTypeEv");
+    vti_CommandOrigin_getEntity = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin9getEntityEv"));
+    if (vti_CommandOrigin_getEntity == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin9getEntityEv");
+    vti_CommandOrigin_getPermissionLevel = resolve_vtable_func(vt_PlayerCommandOrigin, hybris_dlsym(handle, "_ZNK19PlayerCommandOrigin19getPermissionsLevelEv"));
+    if (vti_CommandOrigin_getPermissionLevel == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK19PlayerCommandOrigin19getPermissionsLevelEv");
     ((void*&) _CommandOrigin_getUUID) = hybris_dlsym(handle, "_ZNK13CommandOrigin7getUUIDEv");
     if (_CommandOrigin_getUUID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOrigin7getUUIDEv");
+    ((void*&) _PlayerCommandOrigin_PlayerCommandOrigin) = hybris_dlsym(handle, "_ZN19PlayerCommandOriginC2ER6Player");
+    if (_PlayerCommandOrigin_PlayerCommandOrigin == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19PlayerCommandOriginC2ER6Player");
     ((void*&) _gl_getOpenGLVendor) = hybris_dlsym(handle, "_ZN2gl15getOpenGLVendorEv");
     if (_gl_getOpenGLVendor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl15getOpenGLVendorEv");
     ((void*&) _gl_getOpenGLRenderer) = hybris_dlsym(handle, "_ZN2gl17getOpenGLRendererEv");
