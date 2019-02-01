@@ -24,12 +24,6 @@
 #include <minecraft/TextPacket.h>
 #include <minecraft/Whitelist.h>
 
-#include <simppl/dispatcher.h>
-#include <simppl/skeleton.h>
-#include <simppl/string.h>
-#include <simppl/stub.h>
-#include <simppl/vector.h>
-
 #include <stone/hook_helper.h>
 #include <stone/server_hook.h>
 #include <stone/symbol.h>
@@ -71,8 +65,7 @@ void initDependencies();
 int main() {
   using namespace uintl;
   using namespace interface;
-  using namespace simppl::dbus;
-  using namespace one::codehz::stone;
+  using namespace std;
 
   if (getenv("STONE_DEBUG")) Log::MIN_LEVEL = LogLevel::LOG_TRACE;
 
@@ -87,17 +80,6 @@ int main() {
   PathHelper::setDataDir(cwd + "data/");
   PathHelper::setCacheDir(cwd + "cache/");
   Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
-  Log::trace("StoneServer", "Initializing rpc");
-  auto &disp = Locator<Dispatcher>().generate("bus:session");
-
-  Log::info("StoneServer", "BusName suffix: %s", BUSNAME_SUFFIX.c_str());
-  auto &srv_core = Locator<Skeleton<CoreService>>().generate<Skeleton<CoreService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  Locator<Skeleton<ChatService>>().generate<Skeleton<ChatService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  auto &srv_command =
-      Locator<Skeleton<CommandService>>().generate<Skeleton<CommandService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  Locator<Skeleton<BlacklistService>>().generate<Skeleton<BlacklistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  Locator<Skeleton<WhitelistService>>().generate<Skeleton<WhitelistService>, Dispatcher &, const char *>(disp, BUSNAME_SUFFIX.c_str());
-  Log::addHook([&](auto level, auto tag, auto content) { srv_core.Log.notify(level, tag, content); });
   Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
 
   MinecraftUtils::setupForHeadless();
@@ -131,7 +113,6 @@ int main() {
   Log::trace("StoneServer", "Loading server properties");
   auto &props = Locator<ServerProperties>().generate();
   props.load();
-  srv_core.Config = props.config;
   Log::info("StoneServer", "Config: %s", props.config.c_str());
 
   Log::trace("StoneServer", "Setting up level settings");
@@ -242,36 +223,9 @@ int main() {
   modLoader.onServerInstanceInitialized(&instance);
   patched::init();
 
-  srv_core.Stop >> [&] { disp.stop(); };
-
-  srv_command.Execute >> [&](auto origin, auto command) {
-    auto ret = EvalInServerThread<std::string>(instance, [&] {
-      return patched::withCommandOutput([&] {
-        auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(origin, *Locator<Minecraft>());
-        Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
-      });
-    });
-    srv_command.respond_with(srv_command.Execute(ret));
-  };
-  srv_command.Complete >> [&](auto input, auto pos) {
-    auto commandOrigin = make_unique<DedicatedServerCommandOrigin>("server", *Locator<Minecraft>());
-    auto options       = Locator<CommandRegistry>()->getAutoCompleteOptions(*commandOrigin, input, pos);
-    std::vector<structs::AutoCompleteOption> results;
-    results.reserve(options->list.size());
-    for (auto option : options->list) {
-      results.push_back(structs::AutoCompleteOption{ option.source.std(), I18n::get(option.title, {}).std(), I18n::get(option.description, {}).std(),
-                                                     option.offset, option.length, option.item.id });
-    }
-    srv_command.respond_with(srv_command.Complete(results));
-  };
-
-  std::signal(SIGINT, [](int) { Locator<Dispatcher>()->stop(); });
-  std::signal(SIGTERM, [](int) { Locator<Dispatcher>()->stop(); });
-
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
   Log::info("StoneServer", "Server is running");
-  disp.run();
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();
