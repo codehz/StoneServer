@@ -34,9 +34,10 @@
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
 
-#include <stone-api/Chat.h>
-#include <stone-api/Core.h>
 #include <stone-api/Blacklist.h>
+#include <stone-api/Chat.h>
+#include <stone-api/Command.h>
+#include <stone-api/Core.h>
 
 #include <condition_variable>
 #include <csignal>
@@ -98,9 +99,10 @@ int main() {
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
 
   apid_init();
-  auto &srv_core [[maybe_unused]] = Locator<CoreService<ServerSide>>().generate();
-  auto &srv_chat [[maybe_unused]] = Locator<ChatService<ServerSide>>().generate();
+  auto &srv_core [[maybe_unused]]      = Locator<CoreService<ServerSide>>().generate();
+  auto &srv_chat [[maybe_unused]]      = Locator<ChatService<ServerSide>>().generate();
   auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService<ServerSide>>().generate();
+  auto &srv_command [[maybe_unused]]   = Locator<CommandService<ServerSide>>().generate();
   Log::addHook([&](auto level, auto tag, auto content) { srv_core.log << LogEntry{ tag, level, content }; });
 
   MinecraftUtils::initSymbolBindings(handle);
@@ -246,6 +248,12 @@ int main() {
   std::signal(SIGTERM, [](int) { apid_stop(); });
   srv_core.stop >> [](auto) { apid_stop(); };
   srv_core.ping >> [](auto, auto f) { f({}); };
+  srv_command.execute >> [](auto request, auto f) {
+    f(patched::withCommandOutput([&] {
+      auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(request.sender, *Locator<Minecraft>());
+      Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);
+    }));
+  };
 
   apid_start();
 

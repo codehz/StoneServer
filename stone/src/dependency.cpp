@@ -71,10 +71,50 @@ void initDependencies() {
     service->raw >> std::bind(&Chat::sendAnnouncement, &chat, _1);
   };
   Locator<Blacklist>() >> [](Blacklist &list) {
-    // auto &service = Locator<BlacklistService<ServerSide>>();
-    // service->add >> [&](auto arg) {
-    //   auto [type, content] = arg;
-    //   // if (type == "uuid")
-    // }
+    auto &service = Locator<BlacklistService<ServerSide>>();
+    service->add >> [&](auto arg) {
+      auto [type, content, reason] = arg;
+      if (type == "name") {
+        auto callback = [=, &list](bool flag, auto entity) {
+          if (flag) list.add(mce::UUID::fromString(entity.uuid), arg.reason);
+        };
+        Locator<CoreService<ServerSide>>()->players.get(content, callback);
+      } else if (type == "uuid") {
+        list.add(mce::UUID::fromString(content), reason);
+      } else if (type == "xuid") {
+        list.add(content, reason);
+      }
+    };
+    service->kick >> [&](auto arg) {
+      auto [type, content, reason] = arg;
+      auto continuation            = [&](auto filter) {
+        for (auto &player : Locator<PlayerList>()->set) {
+          if (filter(player)) {
+            list.kick(*player >> PlayerNetworkID, arg.reason);
+            break;
+          }
+        }
+      };
+      if (type == "name") {
+        continuation([&](auto player) { return PlayerName[*player] == arg.content; });
+      } else if (type == "uuid") {
+        continuation([&](auto player) { return PlayerUUID[*player].asString() == arg.content; });
+      } else if (type == "xuid") {
+        continuation([&](auto player) { return PlayerXUID(*player) == arg.content; });
+      }
+    };
+    service->remove >> [&](auto arg) {
+      auto [type, content] = arg;
+      if (type == "name") {
+        auto callback = [=, &list](bool flag, auto entity) {
+          if (flag) list.remove(mce::UUID::fromString(entity.uuid));
+        };
+        Locator<CoreService<ServerSide>>()->players.get(content, callback);
+      } else if (type == "uuid") {
+        list.remove(mce::UUID::fromString(content));
+      } else if (type == "xuid") {
+        list.remove(content);
+      }
+    };
   };
 }
