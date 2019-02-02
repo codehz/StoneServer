@@ -4,5 +4,5 @@ workflow "Build test" {
 }
 
 action "build" {
-  uses = "codehz/StoneActions/build@df793763bd26ade6b27836abbe4089e584afe926"
+  uses = "codehz/StoneActions/build@de5d8fda0706e5cd1504ad635e95c7b80e9e0494"
 }
