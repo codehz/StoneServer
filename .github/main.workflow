@@ -4,5 +4,5 @@ workflow "Build test" {
 }
 
 action "build" {
-  uses = "codehz/StoneActions/build"
+  uses = "codehz/StoneActions/build@master"
 }
