@@ -8,6 +8,13 @@
 
 namespace api {
 
+template <typename F> inline F *copy_function(F f) {
+  if constexpr (std::is_function_v<F>)
+    return &f;
+  else
+    return new F(f);
+}
+
 struct Empty {};
 
 struct Buffer {
@@ -144,20 +151,21 @@ public:
     apid_set_remove(&fproxy<decltype(f)>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
   template <typename F> inline void on_remove(F f) {
-    apid_subscribe(events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "remove"));
+    apid_subscribe(&events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "remove"));
   }
   template <typename F> inline void iterate(F f) {
-    apid_set_iterate(iterate_stub, copy_function(f), Buffer::buildKeyName(this->service->name, name));
+    apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
   template <typename F> inline void contains(T const &input, F f) {
-    apid_set_contains(contains_stub, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
+    apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
 };
 
 template <typename K, typename V, typename ServiceRef> class CommonHash : public Named, public ServiceRef {
-  template <typename F> static void stub(char const *data, void *privdata) {
+  template <typename F> static void stub(bool flag, char const *data, void *privdata) {
     F *f = (F *)privdata;
-    (*f)(Serializble<V>::read(data));
+    (*f)(flag, flag ? Serializble<V>::read(data) : V{});
+    if constexpr (!std::is_function_v<F>) delete f;
   }
 
 public:
@@ -169,7 +177,7 @@ public:
   }
 
   template <typename F> inline void get(K const &key, F f) {
-    apid_hash_set(&stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key));
+    apid_hash_get(&stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key));
   }
 };
 
@@ -272,13 +280,6 @@ struct ServerSide {
   template <typename T> using proxied_set              = CommonSet<T, service_ref>;
   template <typename K, typename V> using proxied_hash = CommonHash<K, V, service_ref>;
 };
-
-template <typename F> inline F *copy_function(F f) {
-  if constexpr (std::is_function_v<F>)
-    return &f;
-  else
-    return new F(f);
-}
 
 struct ClientSide {
   class proxied_service : public Named {
