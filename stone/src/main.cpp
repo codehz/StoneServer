@@ -34,6 +34,10 @@
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
 
+#include <stone-api/Chat.h>
+#include <stone-api/Core.h>
+#include <stone-api/Blacklist.h>
+
 #include <condition_variable>
 #include <csignal>
 #include <mutex>
@@ -66,6 +70,9 @@ int main() {
   using namespace uintl;
   using namespace interface;
   using namespace std;
+  using namespace api;
+
+  const clock_t start_clock = clock();
 
   if (getenv("STONE_DEBUG")) Log::MIN_LEVEL = LogLevel::LOG_TRACE;
 
@@ -85,9 +92,16 @@ int main() {
   MinecraftUtils::setupForHeadless();
 
   Log::trace("StoneServer", "Loading Minecraft library");
+  const clock_t loading_library = clock();
   void *handle = MinecraftHandle() = MinecraftUtils::loadMinecraftLib();
-  Log::info("StoneServer", "Loaded Minecraft library");
+  Log::info("StoneServer", "Loaded Minecraft library in %f sec.", float(clock() - loading_library) / CLOCKS_PER_SEC);
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
+
+  apid_init();
+  auto &srv_core [[maybe_unused]] = Locator<CoreService<ServerSide>>().generate();
+  auto &srv_chat [[maybe_unused]] = Locator<ChatService<ServerSide>>().generate();
+  auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService<ServerSide>>().generate();
+  Log::addHook([&](auto level, auto tag, auto content) { srv_core.log << LogEntry{ tag, level, content }; });
 
   MinecraftUtils::initSymbolBindings(handle);
   Log::info("StoneServer", "Game version: %s", Common::getGameVersionStringNet().c_str());
@@ -113,6 +127,7 @@ int main() {
   Log::trace("StoneServer", "Loading server properties");
   auto &props = Locator<ServerProperties>().generate();
   props.load();
+  srv_core.config = props.config;
   Log::info("StoneServer", "Config: %s", props.config.c_str());
 
   Log::trace("StoneServer", "Setting up level settings");
@@ -225,7 +240,14 @@ int main() {
 
   Log::trace("StoneServer", "Starting server thread");
   instance.startServerThread();
-  Log::info("StoneServer", "Server is running");
+  Log::info("StoneServer", "Server is running (%f sec)", float(clock() - start_clock) / CLOCKS_PER_SEC);
+
+  std::signal(SIGINT, [](int) { apid_stop(); });
+  std::signal(SIGTERM, [](int) { apid_stop(); });
+  srv_core.stop >> [](auto) { apid_stop(); };
+  srv_core.ping >> [](auto, auto f) { f({}); };
+
+  apid_start();
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();

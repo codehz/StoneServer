@@ -44,7 +44,7 @@ add_executable(stone
 target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
-target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl interface)
+target_link_libraries(stone logger mcpelauncher-core properties-parser utils uintl interface stone-api)
 if (${USE_COTIRE})
   cotire(stone)
 endif()

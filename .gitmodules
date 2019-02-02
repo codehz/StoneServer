@@ -1,0 +1,3 @@
+[submodule "exts/APID"]
+	path = exts/APID
+	url = https://github.com/CodeHz/APID.git
