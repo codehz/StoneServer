@@ -4,7 +4,7 @@
 ; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
 ;
 [subrepo]
-	remote = none
+	remote = git@github.com:codehz/StoneAPI.git
 	branch = master
 	commit = 
 	method = merge
