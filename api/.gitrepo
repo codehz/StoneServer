@@ -7,6 +7,6 @@
 	remote = git@github.com:codehz/StoneAPI.git
 	branch = master
 	commit = 4479185e4a9944f144e078c560ce6127507608e9
-	method = merge
+	method = rebase
 	cmdver = 0.4.0
 	parent = cfaaca0a47b6edacc760621bc13d3635b13ddef7
