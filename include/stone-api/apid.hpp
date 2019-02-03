@@ -35,8 +35,15 @@ struct Buffer {
     char *ret = strdup(content.data());
     return { ret };
   }
+  Buffer(char *data)
+      : data(data) {}
+  Buffer(Buffer &&rhs)
+      : data(rhs.data) {
+    rhs.data = nullptr;
+  }
+  Buffer(Buffer const &) = delete;
   ~Buffer() {
-    if (data != ZERO) delete[] data;
+    if (data && data != ZERO) delete[] data;
   }
 };
 
