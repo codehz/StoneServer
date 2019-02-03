@@ -129,7 +129,7 @@ int main() {
   Log::trace("StoneServer", "Loading server properties");
   auto &props = Locator<ServerProperties>().generate();
   props.load();
-  srv_core.config = props.config;
+  srv_core.config << props.config;
   Log::info("StoneServer", "Config: %s", props.config.c_str());
 
   Log::trace("StoneServer", "Setting up level settings");

@@ -264,7 +264,7 @@ struct ServerSide {
   public:
     proxied_property(std::string const &name)
         : Named(name) {}
-    inline T const &operator=(T const &input) {
+    inline T const &operator<<(T const &input) {
       apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
       return input;
     }
