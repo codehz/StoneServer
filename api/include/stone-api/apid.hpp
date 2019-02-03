@@ -265,7 +265,7 @@ struct ServerSide {
     proxied_property(std::string const &name)
         : Named(name) {}
     inline T const &operator=(T const &input) {
-      apid_set_prop(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+      apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
       return input;
     }
   };
@@ -348,7 +348,7 @@ struct ClientSide {
   public:
     proxied_property(std::string const &name)
         : Named(name) {}
-    template <typename F> void operator>>(F f) { apid_get_prop(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
+    template <typename F> void operator>>(F f) { apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
   };
 
   template <typename T> class proxied_broadcast : public Named, public service_ref {
