@@ -9,8 +9,9 @@ int main() {
     auto [tag, level, content] = entry;
     printf("%d [%s] %s\n", level, tag.c_str(), content.c_str());
   };
-  // core.ping({}, [](auto) { printf("pong!"); });
-  // core.stop({}, [] { apid_stop(); });
+  core.config >> [](auto cfg) { printf("config: %s\n", cfg.c_str()); };
+  core.ping({}, [](auto) { printf("pong!"); });
+  core.stop({}, [] { apid_stop(); });
 
   apid_start();
 }
