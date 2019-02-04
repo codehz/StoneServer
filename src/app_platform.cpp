@@ -97,6 +97,7 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN11AppPlatform16allowSplitScreenEv", &LauncherAppPlatform::allowSplitScreen);
     vtr.replace("_ZN19AppPlatform_android21calculateHardwareTierEv", &LauncherAppPlatform::calculateHardwareTier);
     vtr.replace("_ZNK11AppPlatform17supportsScriptingEv", &LauncherAppPlatform::supportsScripting);
+    vtr.replace("_ZNK19AppPlatform_android17supportsScriptingEv", &LauncherAppPlatform::supportsScripting);
     vtr.replace("_ZN19AppPlatform_android21getBroadcastAddressesEv", &LauncherAppPlatform::getBroadcastAddresses);
 
     vtr.replace("_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", hybris_dlsym(lib, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv"));
