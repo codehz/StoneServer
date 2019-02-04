@@ -45,7 +45,7 @@ struct PlayerInfo {
   }
 };
 
-template <typename Side> struct CoreService : ProxiedService<Side> {
+template <typename Side> struct CoreService : ProxiedService<Side, CoreService> {
   ProxiedAction<Side, Empty> stop{ "stop" };
   ProxiedMethod<Side, Empty, Empty> ping{ "ping" };
   ProxiedProperty<Side, std::string> config{ "config" };
@@ -54,7 +54,7 @@ template <typename Side> struct CoreService : ProxiedService<Side> {
   ProxiedSet<Side, PlayerInfo> online_players{ "online_players" };
 
   CoreService()
-      : ProxiedService<Side>("core") {
+      : ProxiedService<Side, CoreService>("core") {
     this->$(stop);
     this->$(ping);
     this->$(config);

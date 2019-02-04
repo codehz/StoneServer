@@ -73,7 +73,7 @@ struct Named {
       : name(name) {}
 };
 
-template <typename Side> struct ProxiedService : Side::proxied_service {
+template <typename Side, template <typename> typename Src> struct ProxiedService : Side::proxied_service {
   ProxiedService(std::string const &name)
       : Side::proxied_service(name) {}
 };

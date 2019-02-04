@@ -60,10 +60,10 @@ struct AutoCompleteOption {
   }
 };
 
-template <typename Side> struct CommandService : ProxiedService<Side> {
+template <typename Side> struct CommandService : ProxiedService<Side, CommandService> {
   ProxiedMethod<Side, CommandRequest, std::string> execute{ "execute" };
   CommandService()
-      : ProxiedService<Side>("command") {
+      : ProxiedService<Side, CommandService>("command") {
     this->$(execute);
   }
 };
