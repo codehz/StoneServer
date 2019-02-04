@@ -135,6 +135,12 @@ public:
     int getBuildPlatform() const {
         return 1;
     }
+    mcpe::string getPlatformString() const {
+        return "Linux";
+    }
+    mcpe::string getSubPlatformString() const {
+        return "Linux";
+    }
     int getPlatformUIScalingRules() {
         return enablePocketGuis ? 2 : 0;
     }
