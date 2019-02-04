@@ -22,13 +22,13 @@ struct NormalMessage {
   }
 };
 
-template <typename Side> struct ChatService : ProxiedService<Side> {
+template <typename Side> struct ChatService : ProxiedService<Side, ChatService> {
   ProxiedAction<Side, NormalMessage> send{ "send" };
   ProxiedBoardcast<Side, NormalMessage> recv{ "recv" };
   ProxiedAction<Side, std::string> raw{ "raw" };
 
   ChatService()
-      : ProxiedService<Side>("chat") {
+      : ProxiedService<Side, ChatService>("chat") {
     this->$(send);
     this->$(recv);
     this->$(raw);

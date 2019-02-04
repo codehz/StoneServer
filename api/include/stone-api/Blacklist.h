@@ -40,13 +40,13 @@ template <> struct BlacklistOP<true> {
   }
 };
 
-template <typename Side> struct BlacklistService : ProxiedService<Side> {
+template <typename Side> struct BlacklistService : ProxiedService<Side, BlacklistService> {
   ProxiedAction<Side, BlacklistOP<true>> add{ "add" };
   ProxiedAction<Side, BlacklistOP<false>> remove{ "remove" };
   ProxiedAction<Side, BlacklistOP<true>> kick{ "kick" };
 
   BlacklistService()
-      : ProxiedService<Side>("blacklist") {
+      : ProxiedService<Side, BlacklistService>("blacklist") {
     this->$(add);
     this->$(remove);
     this->$(kick);
