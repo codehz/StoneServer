@@ -20,7 +20,8 @@ struct Empty {};
 struct Buffer {
   inline static constexpr char ZERO[1] = { 0 };
   char *data;
-  operator char const *() { return data; }
+  operator char *() { return data; }
+  operator char const *() const { return data; }
   static inline Buffer buildKeyEvent(std::string const &service, std::string const &name, std::string const &event) {
     char *ret;
     asprintf(&ret, "%s:%s!%s", service.data(), name.data(), event.data());
