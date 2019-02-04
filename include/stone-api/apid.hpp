@@ -114,6 +114,14 @@ template <typename T, typename ServiceRef> class CommonSet : public Named, publi
     if constexpr (!std::is_function_v<F>)
       if (done) delete f;
   }
+  template <typename F> static void all_stub(int size, char const **vec, void *privdata) {
+    F *f = (F *)privdata;
+    std::vector<T> ret;
+    ret.reserve(size);
+    for (auto i = 0; i < size; i++)
+      ret.emplace_back(Serializble<T>::read(vec[i]));
+    (*f)(ret);
+  }
   template <typename F> static void contains_stub(bool value, void *privdata) {
     F *f = (F *)privdata;
     (*f)(value);
@@ -163,6 +171,9 @@ public:
   }
   template <typename F> inline void iterate(F f) {
     apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
+  }
+  template <typename F> inline void all(F f) {
+    apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
   template <typename F> inline void contains(T const &input, F f) {
     apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
