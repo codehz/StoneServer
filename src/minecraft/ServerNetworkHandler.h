@@ -5,6 +5,18 @@
 
 #include <chrono>
 
+struct NetworkStats {
+  int32_t filler, ping, avgping, maxbps;
+  float packetloss, avgpacketloss;
+};
+
+struct NetworkPeer {
+  void **vtable;
+
+  /// @vtable LocalNetworkPeer _ZN16LocalNetworkPeer16getNetworkStatusEv
+  NetworkStats getNetworkStatus();
+};
+
 class ServerNetworkHandler {
 public:
   /// @symbol _ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs
@@ -15,4 +27,7 @@ public:
   void removeFromBlacklist(mce::UUID const &uuid, mcpe::string const &xuid);
 
   void disconnectClient(NetworkIdentifier const &id, std::string const &reason, bool flag);
+
+  /// @symbol _ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier
+  NetworkPeer *getPeerForUser(NetworkIdentifier const&);
 };
