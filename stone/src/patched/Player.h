@@ -3,13 +3,17 @@
 #include <minecraft/ExtendedCertificate.h>
 #include <minecraft/NetworkIdentifier.h>
 #include <minecraft/Player.h>
+#include <minecraft/ServerNetworkHandler.h>
 #include <minecraft/UUID.h>
 #include <stone/operator.h>
 
 #include <tuple>
 
+#include <interface/locator.hpp>
+
 namespace patched {
 using namespace utils;
+using namespace interface;
 using namespace std;
 
 inline static const auto PlayerName [[maybe_unused]]      = StaticFieldAccessor<Player, 0x1138, mcpe::string>{};
@@ -22,4 +26,6 @@ inline static const auto PlayerBasicInfo [[maybe_unused]] =
 inline static const auto PlayerPos [[maybe_unused]] = makeOperator(&Player::getPos);
 inline static const auto PlayerRot [[maybe_unused]] = makeOperator(&Player::getRotation);
 inline static const auto PlayerLvl [[maybe_unused]] = makeOperator(&Player::getLevelProgress);
+inline static const auto PlayerStats [[maybe_unused]] =
+    makeOperator(+[](Player const &player) { return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus(); });
 } // namespace patched

@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Feb 05 2019 08:25:50 UTC
+// Generated on Tue Feb 05 2019 12:02:08 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -332,6 +332,13 @@ void CommandOutputSender::registerOutputCallback() {
 }
 
 #include "ServerNetworkHandler.h"
+static int vti_NetworkPeer_getNetworkStatus;
+NetworkStats NetworkPeer::getNetworkStatus() {
+    union { void* voidp; NetworkStats (NetworkPeer::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_NetworkPeer_getNetworkStatus];
+    return (this->*u.funcp)();
+}
 static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist)(mce::UUID const &, mcpe::string const &);
 void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2) {
     (this->*_ServerNetworkHandler_addToBlacklist)(p1, p2);
@@ -347,6 +354,10 @@ void ServerNetworkHandler::removeFromBlacklist(mce::UUID const & p1, mcpe::strin
 static void (ServerNetworkHandler::*_ServerNetworkHandler_disconnectClient)(NetworkIdentifier const &, std::string const &, bool);
 void ServerNetworkHandler::disconnectClient(NetworkIdentifier const & p1, std::string const & p2, bool p3) {
     (this->*_ServerNetworkHandler_disconnectClient)(p1, p2, p3);
+}
+static NetworkPeer * (ServerNetworkHandler::*_ServerNetworkHandler_getPeerForUser)(NetworkIdentifier const &);
+NetworkPeer * ServerNetworkHandler::getPeerForUser(NetworkIdentifier const & p1) {
+    return (this->*_ServerNetworkHandler_getPeerForUser)(p1);
 }
 
 #include "Packet.h"
@@ -1601,6 +1612,9 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutputSender_send == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender4sendERK13CommandOriginRK13CommandOutput");
     ((void*&) _CommandOutputSender_registerOutputCallback) = hybris_dlsym(handle, "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
     if (_CommandOutputSender_registerOutputCallback == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19CommandOutputSender22registerOutputCallbackERKSt8functionIFvR19AutomationCmdOutputEE");
+    void** vt_LocalNetworkPeer = (void**) hybris_dlsym(handle, "_ZTV16LocalNetworkPeer") + 2;
+    vti_NetworkPeer_getNetworkStatus = resolve_vtable_func(vt_LocalNetworkPeer, hybris_dlsym(handle, "_ZN16LocalNetworkPeer16getNetworkStatusEv"));
+    if (vti_NetworkPeer_getNetworkStatus == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN16LocalNetworkPeer16getNetworkStatusEv");
     ((void*&) _ServerNetworkHandler_addToBlacklist) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs");
     if (_ServerNetworkHandler_addToBlacklist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs");
     ((void*&) _ServerNetworkHandler_addToBlacklist2) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSsS5_RKN9Blacklist8DurationE");
@@ -1609,6 +1623,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ServerNetworkHandler_removeFromBlacklist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs");
     ((void*&) _ServerNetworkHandler_disconnectClient) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler16disconnectClientERK17NetworkIdentifierRKSsb");
     if (_ServerNetworkHandler_disconnectClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler16disconnectClientERK17NetworkIdentifierRKSsb");
+    ((void*&) _ServerNetworkHandler_getPeerForUser) = hybris_dlsym(handle, "_ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier");
+    if (_ServerNetworkHandler_getPeerForUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier");
     ((void*&) Packet::myVtable) = hybris_dlsym(handle, "_ZTV6Packet");
     if (Packet::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6Packet");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
