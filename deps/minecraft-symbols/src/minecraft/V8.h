@@ -439,7 +439,6 @@ class EscapableHandleScope {
 public:
   /// @symbol _ZN2v820EscapableHandleScopeC2EPNS_7IsolateE
   EscapableHandleScope(v8::Isolate *isolate);
-  ~EscapableHandleScope();
   /// @skipped
   EscapableHandleScope(const EscapableHandleScope &) = delete;
   /// @skipped
