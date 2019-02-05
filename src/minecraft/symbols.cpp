@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Thu Jan 31 2019 13:20:44 UTC
+// Generated on Tue Feb 05 2019 04:39:19 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1072,6 +1072,14 @@ static void (v8::HandleScope::*_v8_HandleScope_destructor)();
 v8::HandleScope::~HandleScope() {
     (this->*_v8_HandleScope_destructor)();
 }
+static void (v8::EscapableHandleScope::*_v8_EscapableHandleScope_EscapableHandleScope)(v8::Isolate *);
+v8::EscapableHandleScope::EscapableHandleScope(v8::Isolate * p1) {
+    (this->*_v8_EscapableHandleScope_EscapableHandleScope)(p1);
+}
+static void (v8::EscapableHandleScope::*_v8_EscapableHandleScope_destructor)();
+v8::EscapableHandleScope::~EscapableHandleScope() {
+    (this->*_v8_EscapableHandleScope_destructor)();
+}
 static v8::Local<v8::Object> (*_v8_Object_New)(v8::Isolate *);
 v8::Local<v8::Object> v8::Object::New(v8::Isolate * p1) {
     return _v8_Object_New(p1);
@@ -1977,6 +1985,10 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_HandleScope_HandleScope == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811HandleScopeC2EPNS_7IsolateE");
     ((void*&) _v8_HandleScope_destructor) = hybris_dlsym(handle, "_ZN2v811HandleScopeD2Ev");
     if (_v8_HandleScope_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811HandleScopeD2Ev");
+    ((void*&) _v8_EscapableHandleScope_EscapableHandleScope) = hybris_dlsym(handle, "_ZN2v820EscapableHandleScopeC2EPNS_7IsolateE");
+    if (_v8_EscapableHandleScope_EscapableHandleScope == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v820EscapableHandleScopeC2EPNS_7IsolateE");
+    ((void*&) _v8_EscapableHandleScope_destructor) = hybris_dlsym(handle, "_ZN2v820EscapableHandleScopeD2Ev");
+    if (_v8_EscapableHandleScope_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v820EscapableHandleScopeD2Ev");
     ((void*&) _v8_Object_New) = hybris_dlsym(handle, "_ZN2v86Object3NewEPNS_7IsolateE");
     if (_v8_Object_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3NewEPNS_7IsolateE");
     ((void*&) _v8_Object_Set) = hybris_dlsym(handle, "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");

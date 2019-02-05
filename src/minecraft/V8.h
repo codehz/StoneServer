@@ -433,6 +433,19 @@ public:
   void operator=(const HandleScope &) = delete;
 };
 
+class EscapableHandleScope {
+  char filler[0x20];
+
+public:
+  /// @symbol _ZN2v820EscapableHandleScopeC2EPNS_7IsolateE
+  EscapableHandleScope(v8::Isolate *isolate);
+  ~EscapableHandleScope();
+  /// @skipped
+  EscapableHandleScope(const EscapableHandleScope &) = delete;
+  /// @skipped
+  void operator=(const EscapableHandleScope &) = delete;
+};
+
 class Object : public Value {
   /// @symbol _ZN2v86Object9CheckCastEPNS_5ValueE
   static void CheckCast(v8::Value *obj);
