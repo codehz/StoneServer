@@ -27,6 +27,7 @@ add_executable(stone
   "src/patched/SayCommand.cpp"
   "src/patched/Education.cpp"
   "src/patched/v8.cpp"
+  "src/patched/Level.cpp"
   "src/patched/FeatureToggles.cpp"
   "src/patched/Player.h"
   "src/patched/ScriptInterface.h"
