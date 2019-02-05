@@ -14,6 +14,10 @@ using namespace v8;
 using namespace utils;
 using namespace interface;
 
+SHook(void, _ZN2v85Utils16ReportApiFailureEPKcS2_, char const*title, char const*content) {
+  printf("FAILED: %s\n%s\n", title, content);
+}
+
 SHook(void, _ZN9ScriptApi13LogV8CallbackERKN2v820FunctionCallbackInfoINS0_5ValueEEE, FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   std::stringstream ss;

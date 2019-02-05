@@ -64,7 +64,7 @@ template <typename T, std::size_t length> struct Convertable<std::array<T, lengt
 };
 
 template <> struct Convertable<Actor *> {
-  using type = Object;
+  using type = Value;
   static Actor *fromJS(Isolate *iso, Local<type> obj) {
     using namespace interface;
     Actor *actor;
@@ -73,7 +73,7 @@ template <> struct Convertable<Actor *> {
   }
   static Local<type> toJS(Isolate *iso, Actor *src) {
     using namespace interface;
-    if (!src) return Undefined(iso);
+    if (!src) return Null(iso);
     v8::Persistent<v8::Object> pers;
     Locator<MinecraftServerScriptEngine>()->helpDefineEntity(*src, pers);
     return pers.Get(iso);

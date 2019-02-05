@@ -11,10 +11,12 @@
 #include <minecraft/CommandOutput.h>
 #include <minecraft/CommandRegistry.h>
 #include <minecraft/CommandSelector.h>
+#include <minecraft/ScriptApi.h>
 #include <minecraft/V8.h>
 #include <stone/magic_func.h>
 #include <stone/server_hook.h>
 
+#include "patched/ScriptInterface.h"
 #include "operators.h"
 
 struct ParameterDef {
@@ -115,7 +117,6 @@ template <typename T> static inline ParameterDef commonParameter(std::string con
   };
 };
 
-static v8::Local<v8::Context> *hack_ctx;
 CommandOrigin *current_orig = nullptr;
 
 struct CustomCommand : Command {
@@ -142,6 +143,7 @@ struct CustomCommand : Command {
     using namespace utils;
     using namespace interface;
     using namespace v8;
+    using namespace patched;
     auto size     = vt->defs.size();
     size_t offset = 0;
     auto &iso     = vt->iso;
@@ -149,9 +151,9 @@ struct CustomCommand : Command {
     Local<Value> params[size];
 
     HandleScope scope{ iso };
-    auto ctx = Context::New(iso, nullptr, nullptr, nullptr);
+    auto &core = Locator<ScriptApi::V8CoreInterface>();
+    auto ctx = V8Context[*core].Get(iso);
     Context::Scope ctx_scope{ ctx };
-    hack_ctx = &ctx;
 
     for (size_t i = 0; i < size; i++) {
       auto &def = vt->defs[i];
@@ -166,7 +168,6 @@ struct CustomCommand : Command {
       if (str.size() != 0) outp.addMessage(str, {}, 0);
     }
     outp.success();
-    hack_ctx = nullptr;
   }
 
   static auto create(MyCommandVTable *vt) {
@@ -176,11 +177,6 @@ struct CustomCommand : Command {
     return std::unique_ptr<Command>(ptr);
   }
 };
-
-SHook(v8::Local<v8::Context>, _ZN2v87Isolate17GetCurrentContextEv, void *self) {
-  if (hack_ctx) return *hack_ctx;
-  return original(self);
-}
 
 SHook(void, _ZN9XPCommand5setupER15CommandRegistry, CommandRegistry &reg) {
   original(reg);
