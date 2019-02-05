@@ -58,6 +58,15 @@ template <> struct Serializble<Empty> {
   static inline Empty read(char const *) { return {}; }
 };
 
+template <> struct Serializble<int> {
+  static inline Buffer write(int value) {
+    char *buffer;
+    asprintf(&buffer, "%d", value);
+    return buffer;
+  }
+  static inline int read(char const *data) { return atoi(data); }
+};
+
 template <> struct Serializble<std::string> {
   static inline Buffer write(std::string const &input) {
     size_t n;
@@ -118,8 +127,7 @@ template <typename T, typename ServiceRef> class CommonSet : public Named, publi
     F *f = (F *)privdata;
     std::vector<T> ret;
     ret.reserve(size);
-    for (auto i = 0; i < size; i++)
-      ret.emplace_back(Serializble<T>::read(vec[i]));
+    for (auto i = 0; i < size; i++) ret.emplace_back(Serializble<T>::read(vec[i]));
     (*f)(ret);
   }
   template <typename F> static void contains_stub(bool value, void *privdata) {
@@ -172,9 +180,7 @@ public:
   template <typename F> inline void iterate(F f) {
     apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
-  template <typename F> inline void all(F f) {
-    apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
-  }
+  template <typename F> inline void all(F f) { apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name)); }
   template <typename F> inline void contains(T const &input, F f) {
     apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
