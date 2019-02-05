@@ -135,6 +135,12 @@ public:
     int getBuildPlatform() const {
         return 1;
     }
+    mcpe::string getPlatformString() const {
+        return "Linux";
+    }
+    mcpe::string getSubPlatformString() const {
+        return "Linux";
+    }
     int getPlatformUIScalingRules() {
         return enablePocketGuis ? 2 : 0;
     }
@@ -153,10 +159,7 @@ public:
         return "linux";
     }
 
-    mcpe::string createDeviceID(std::string const& c) {
-        Log::trace(TAG, "createDeviceID: %s", c.c_str());
-        return "linux";
-    }
+    mcpe::string createDeviceID(mcpe::string& error);
 
     bool allowSplitScreen() {
         return true;

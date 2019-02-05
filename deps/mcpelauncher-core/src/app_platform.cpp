@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <net/if.h>
+#include <minecraft/Crypto.h>
 
 #ifdef __APPLE__
 #include <stdint.h>
@@ -85,6 +86,8 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN11AppPlatform17setFullscreenModeE14FullscreenMode", &LauncherAppPlatform::setFullscreenMode);
     vtr.replace("_ZNK19AppPlatform_android10getEditionEv", &LauncherAppPlatform::getEdition);
     vtr.replace("_ZNK19AppPlatform_android16getBuildPlatformEv", &LauncherAppPlatform::getBuildPlatform);
+    vtr.replace("_ZNK19AppPlatform_android17getPlatformStringEv", &LauncherAppPlatform::getPlatformString);
+    vtr.replace("_ZNK19AppPlatform_android20getSubPlatformStringEv", &LauncherAppPlatform::getSubPlatformString);
     vtr.replace("_ZN19AppPlatform_android31calculateAvailableDiskFreeSpaceERKSs", &LauncherAppPlatform::calculateAvailableDiskFreeSpace);
     vtr.replace("_ZNK19AppPlatform_android25getPlatformUIScalingRulesEv", &LauncherAppPlatform::getPlatformUIScalingRules);
     vtr.replace("_ZN19AppPlatform_android19getPlatformTempPathEv", &LauncherAppPlatform::getPlatformTempPath);
@@ -94,6 +97,7 @@ void LauncherAppPlatform::initVtable(void* lib) {
     vtr.replace("_ZN11AppPlatform16allowSplitScreenEv", &LauncherAppPlatform::allowSplitScreen);
     vtr.replace("_ZN19AppPlatform_android21calculateHardwareTierEv", &LauncherAppPlatform::calculateHardwareTier);
     vtr.replace("_ZNK11AppPlatform17supportsScriptingEv", &LauncherAppPlatform::supportsScripting);
+    vtr.replace("_ZNK19AppPlatform_android17supportsScriptingEv", &LauncherAppPlatform::supportsScripting);
     vtr.replace("_ZN19AppPlatform_android21getBroadcastAddressesEv", &LauncherAppPlatform::getBroadcastAddresses);
 
     vtr.replace("_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv", hybris_dlsym(lib, "_ZN19AppPlatform_android35getMultiplayerServiceListToRegisterEv"));
@@ -204,4 +208,25 @@ std::vector<mcpe::string> LauncherAppPlatform::getBroadcastAddresses() {
     }
     freeifaddrs(ifaddrs);
     return retval;
+}
+
+mcpe::string LauncherAppPlatform::createDeviceID(mcpe::string &error) {
+    auto deviceIdFile = PathHelper::getPrimaryDataDirectory() + "deviceid.txt";
+    {
+        std::ifstream in (deviceIdFile);
+        if (in) {
+            std::string deviceId;
+            if (std::getline(in, deviceId) && !in.eof() && !deviceId.empty()) {
+                Log::trace(TAG, "createDeviceID (from file): %s", deviceId.c_str());
+                return deviceId;
+            }
+        }
+    }
+    auto deviceId = Crypto::Random::generateUUID().asString();
+    {
+        std::ofstream out (deviceIdFile);
+        out << deviceId << std::endl;
+    }
+    Log::trace(TAG, "createDeviceID (created new): %s", deviceId.c_str());
+    return deviceId;
 }
