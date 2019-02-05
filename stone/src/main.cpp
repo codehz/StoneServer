@@ -33,6 +33,7 @@
 #include <interface/chat.h>
 #include <interface/locator.hpp>
 #include <interface/player_list.h>
+#include <interface/tick.h>
 
 #include <stone-api/Blacklist.h>
 #include <stone-api/Chat.h>
@@ -248,6 +249,7 @@ int main() {
   std::signal(SIGTERM, [](int) { apid_stop(); });
   srv_core.stop >> [](auto) { apid_stop(); };
   srv_core.ping >> [](auto, auto f) { f({}); };
+  srv_core.tps >> [](auto, auto f) { f(Locator<Tick>()->tps); };
   srv_command.execute >> [](auto request, auto f) {
     f(patched::withCommandOutput([&] {
       auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(request.sender, *Locator<Minecraft>());
