@@ -24,4 +24,7 @@ public:
     ServerLevelEventCoordinator*& _getServerLevelEventCoordinator();
 
     void _setServerLevelEventCoordinator(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator>> &&);
+
+    void suspendPlayer(Player &);
+    void resumePlayer(Player &);
 };
