@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Feb 05 2019 12:02:08 UTC
+// Generated on Tue Feb 05 2019 12:06:02 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -269,6 +269,14 @@ ServerLevelEventCoordinator * & Level::_getServerLevelEventCoordinator() {
 static void (Level::*_Level__setServerLevelEventCoordinator)(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > &&);
 void Level::_setServerLevelEventCoordinator(std::unique_ptr<ServerLevelEventCoordinator, std::default_delete<ServerLevelEventCoordinator> > && p1) {
     (this->*_Level__setServerLevelEventCoordinator)(std::move(p1));
+}
+static void (Level::*_Level_suspendPlayer)(Player &);
+void Level::suspendPlayer(Player & p1) {
+    (this->*_Level_suspendPlayer)(p1);
+}
+static void (Level::*_Level_resumePlayer)(Player &);
+void Level::resumePlayer(Player & p1) {
+    (this->*_Level_resumePlayer)(p1);
 }
 
 #include "AppResourceLoader.h"
@@ -1586,6 +1594,10 @@ void minecraft_symbols_init(void* handle) {
     if (_Level__getServerLevelEventCoordinator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level31_getServerLevelEventCoordinatorEv");
     ((void*&) _Level__setServerLevelEventCoordinator) = hybris_dlsym(handle, "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
     if (_Level__setServerLevelEventCoordinator == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level31_setServerLevelEventCoordinatorEOSt10unique_ptrI27ServerLevelEventCoordinatorSt14default_deleteIS1_EE");
+    ((void*&) _Level_suspendPlayer) = hybris_dlsym(handle, "_ZN5Level13suspendPlayerER6Player");
+    if (_Level_suspendPlayer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level13suspendPlayerER6Player");
+    ((void*&) _Level_resumePlayer) = hybris_dlsym(handle, "_ZN5Level12resumePlayerER6Player");
+    if (_Level_resumePlayer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level12resumePlayerER6Player");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _EducationOptions_EducationOptions) = hybris_dlsym(handle, "_ZN16EducationOptionsC2EP19ResourcePackManager");
