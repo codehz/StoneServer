@@ -1,21 +1,17 @@
 version: '3'
 services:
-  dbus-daemon:
-    image: codehz/dbus-daemon
-    volumes:
-      - ./dbus:/dbus:rw
+  redis:
+    image: redis
   server:
-    build: .
     image: codehz/stoneserver
     volumes:
       - ./game:/run/game:ro
       - ./data:/run/data:rw
-      - ./dbus:/dbus:rw
     environment:
-      DBUS_SESSION_BUS_ADDRESS: unix:path=/dbus/session
+      - APID=tcp:redis:6379
     ports:
       - "19132:19132/udp"
       - "19133:19133/udp"
     depends_on:
-      - dbus-daemon
+      - redis
 

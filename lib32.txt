@@ -5,5 +5,7 @@ libm.so.6
 libnss_files.so.2
 libnss_myhostname.so.2
 libnss_mymachines.so.2
+libnss_resolve.so.2
+libnss_dns.so.2
 libpthread.so.0
 librt.so.1
