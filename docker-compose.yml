@@ -9,9 +9,12 @@ services:
       - ./data:/run/data:rw
     environment:
       - APID=tcp:redis:6379
+      - STONE_DEBUG=1
+    links:
+      - redis
     ports:
       - "19132:19132/udp"
       - "19133:19133/udp"
     depends_on:
       - redis
-
+    restart: always
