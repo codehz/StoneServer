@@ -9,11 +9,11 @@ action "login" {
 }
 
 action "build" {
-  uses = "codehz/StoneActions/build@979f73d5baed36f3f8abca1c4ab197b319707589"
+  uses = "codehz/StoneActions/build@f806437102741f0c1042428b742115c777052dd0"
 }
 
 action "package" {
-  uses = "codehz/StoneActions/package@979f73d5baed36f3f8abca1c4ab197b319707589"
+  uses = "codehz/StoneActions/package@f806437102741f0c1042428b742115c777052dd0"
   needs = ["build"]
 }
 
