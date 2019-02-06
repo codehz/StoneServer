@@ -1,17 +1,19 @@
 #pragma once
 
 #include "CommandOrigin.h"
+#include "Level.h"
 #include "UUID.h"
 #include "std/string.h"
 #include <array>
 
 class Minecraft;
+using ServerLevel = Level;
 
-class DedicatedServerCommandOrigin : public CommandOrigin {
+class ServerCommandOrigin : public CommandOrigin {
 
 public:
   Minecraft *mc;
   mcpe::string name;
 
-  DedicatedServerCommandOrigin(mcpe::string const &s, Minecraft &m);
+  ServerCommandOrigin(mcpe::string const &s, ServerLevel &level);
 };

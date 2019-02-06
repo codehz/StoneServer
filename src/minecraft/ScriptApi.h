@@ -22,6 +22,8 @@ struct ScriptFramework {
   ScriptReport *report;
 };
 
+struct ScriptVersionInfo;
+
 }
 
 class ScriptEngine : public ScriptApi::ScriptFramework {};
@@ -30,10 +32,10 @@ struct Actor;
 
 class MinecraftServerScriptEngine : public ScriptEngine {
 public:
-  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE16helpDefineEntityERK5ActorRN9ScriptApi18ScriptObjectHandleE
-  int helpDefineEntity(Actor const &, v8::Persistent<v8::Object> &);
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE
+  int helpDefineActor(Actor const &, v8::Persistent<v8::Object> &);
   /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE12helpGetActorERKN9ScriptApi18ScriptObjectHandleEPP5Actor
   int helpGetActor(v8::Persistent<v8::Object> const &, Actor *&);
-  /// @symbol _ZN23ScriptEngineWithContextI19ScriptServerContextE13isValidEntityERKN9ScriptApi18ScriptObjectHandleERb
-  int isValidEntity(v8::Persistent<v8::Object> const &, bool &);
+  /// @symbol _ZN23ScriptEngineWithContextI19ScriptClientContextE13isValidEntityERKN9ScriptApi17ScriptVersionInfoERKNS2_18ScriptObjectHandleERb
+  int isValidEntity(ScriptApi::ScriptVersionInfo const&, v8::Persistent<v8::Object> const &, bool &);
 };
