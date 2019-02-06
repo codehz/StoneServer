@@ -1,6 +1,7 @@
 #include "common.h"
 #include <interface/chat.h>
-#include <minecraft/DedicatedServerCommandOrigin.h>
+#include <minecraft/ServerCommandOrigin.h>
+#include <minecraft/Level.h>
 #include <minecraft/MinecraftCommands.h>
 
 #include "../custom_command.h"
@@ -21,7 +22,7 @@ static void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info
   auto orig    = fromJS<std::string>(iso, info[0]);
   auto command = fromJS<std::string>(iso, info[1]);
   auto result  = patched::withCommandOutput([&] {
-    auto commandOrigin = std::make_unique<DedicatedServerCommandOrigin>(orig, *Locator<Minecraft>());
+    auto commandOrigin = std::make_unique<ServerCommandOrigin>(orig, *Locator<Level>());
     Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
   });
   info.GetReturnValue().Set(toJS(iso, result));

@@ -8,7 +8,7 @@
 #include <minecraft/AutomationClient.h>
 #include <minecraft/CommandRegistry.h>
 #include <minecraft/Common.h>
-#include <minecraft/DedicatedServerCommandOrigin.h>
+#include <minecraft/ServerCommandOrigin.h>
 #include <minecraft/ExternalFileLevelStorageSource.h>
 #include <minecraft/FilePathManager.h>
 #include <minecraft/I18n.h>
@@ -221,12 +221,13 @@ int main() {
   LauncherV8Platform v8Platform;
   v8::V8::InitializePlatform((v8::Platform *)&v8Platform);
   v8::V8::Initialize();
+  Log::trace("StoneServer", "Initializing Server");
   instance.initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
                             props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
                             {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
                             pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
                             [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
-                            [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); });
+                            [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); }, nullptr);
   Locator<ServerInstance>() = &instance;
   if (props.activateWhitelist) {
     Locator<Minecraft>()->activateWhitelist();
@@ -252,7 +253,7 @@ int main() {
   srv_core.tps >> [](auto, auto f) { f(Locator<Tick>()->tps); };
   srv_command.execute >> [](auto request, auto f) {
     f(patched::withCommandOutput([&] {
-      auto commandOrigin = make_unique<DedicatedServerCommandOrigin>(request.sender, *Locator<Minecraft>());
+      auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<Level>());
       Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);
     }));
   };

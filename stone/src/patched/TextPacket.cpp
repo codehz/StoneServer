@@ -12,7 +12,7 @@
 namespace {
 using namespace interface;
 
-SHook(void, _ZN20ServerNetworkHandler10handleTextERK17NetworkIdentifierRK10TextPacket, void *handler, NetworkIdentifier const &id,
+SHook(void, _ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK10TextPacket, void *handler, NetworkIdentifier const &id,
       TextPacket const &packet) {
   using namespace interface;
   auto &chat = Locator<Chat>();

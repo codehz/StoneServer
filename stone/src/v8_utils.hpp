@@ -75,7 +75,7 @@ template <> struct Convertable<Actor *> {
     using namespace interface;
     if (!src) return Null(iso);
     v8::Persistent<v8::Object> pers;
-    Locator<MinecraftServerScriptEngine>()->helpDefineEntity(*src, pers);
+    Locator<MinecraftServerScriptEngine>()->helpDefineActor(*src, pers);
     return pers.Get(iso);
   }
 };

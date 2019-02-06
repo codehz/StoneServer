@@ -98,7 +98,7 @@ template <typename T> struct FetchGenerator<CommandSelector<T>> {
     int index    = 0;
     for (auto actor : *results) {
       v8::Persistent<v8::Object> pers;
-      engine->helpDefineEntity(*actor, pers);
+      engine->helpDefineActor(*actor, pers);
       ret->Set(index++, pers.Get(iso));
     }
     return ret;

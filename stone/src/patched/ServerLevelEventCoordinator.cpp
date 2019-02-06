@@ -27,7 +27,6 @@ SInstanceHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5L
 static patched::details::RegisterPatchInit pinit([] {
   using namespace interface;
   Locator<PlayerList>().generate<>();
-  Locator<Level>()->_setServerLevelEventCoordinator(std::make_unique<ServerLevelEventCoordinator>());
 });
 
 } // namespace
