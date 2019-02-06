@@ -23,6 +23,7 @@ SInstanceHook(void, _ZN5Level4tickEv, Level) {
     flame = 0;
     last  = now;
   }
+  original(this);
 }
 
 static patched::details::RegisterPatchInit pinit([] { Locator<Tick>().generate(); });
