@@ -1,6 +1,6 @@
 #pragma once
 
-struct __attribute__((packed)) Packet {
+struct Packet {
   /// @symbol _ZTV6Packet
   static void *myVtable;
   void **vtable;       // 0

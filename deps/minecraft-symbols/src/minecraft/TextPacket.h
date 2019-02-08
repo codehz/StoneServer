@@ -9,11 +9,11 @@ enum struct TextPacketType : unsigned char {
 };
 
 struct TextPacket : Packet {
-  TextPacketType type;           // 13
-  mcpe::string name, message;    // 16, 20
-  std::vector<mcpe::string> vec; // 24
-  bool translated;               // 36
-  mcpe::string xuid, unk44;     // 40, 44
+  TextPacketType type;           // 16
+  mcpe::string name, message;    // 20, 24
+  std::vector<mcpe::string> vec; // 32
+  bool translated;               // 40
+  mcpe::string xuid, unk48;      // 44, 48
 
   /// @symbol _ZN10TextPacketC2E14TextPacketTypeRKSsS2_RKSt6vectorISsSaISsEEbS2_S2_
   TextPacket(TextPacketType, mcpe::string const &, mcpe::string const &, std::vector<mcpe::string> const &, bool, mcpe::string const &,
