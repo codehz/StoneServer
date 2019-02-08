@@ -5,6 +5,7 @@
 #include <stone/server_hook.h>
 
 #include <minecraft/Level.h>
+#include <minecraft/ServerCommandOrigin.h>
 
 #include "../server_properties.h"
 
@@ -12,6 +13,11 @@
 
 namespace {
 using namespace interface;
+
+SInstanceHook(int, _ZN11ServerLevel10initializeERKSsRK13LevelSettingsP9LevelData, ServerLevel, void *a, void *b, void *c) {
+  Locator<ServerLevel>() = this;
+  return original(this, a, b, c);
+}
 
 SInstanceHook(void, _ZN5Level4tickEv, Level) {
   static auto last  = clock();

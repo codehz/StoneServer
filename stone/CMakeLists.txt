@@ -29,7 +29,7 @@ add_executable(stone
   "src/patched/v8.cpp"
   "src/patched/Level.cpp"
   "src/patched/FeatureToggles.cpp"
-  "src/patched/Player.h"
+  "src/patched/HardcodedOffsets.h"
   "src/patched/ScriptInterface.h"
   "src/patched/ServerNetworkHandler.cpp"
   "src/ExtAPI/common.h"

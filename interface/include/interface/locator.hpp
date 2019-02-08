@@ -27,6 +27,7 @@ public:
   inline T &operator=(T &input) { return *(*this = &input); }
   inline T *operator->() { return raw_pointer; }
   inline T &operator*() { return *raw_pointer; }
+  inline T *operator&() { return raw_pointer; }
   inline operator T *() { return raw_pointer; }
   inline operator T &() { return *raw_pointer; }
 
@@ -71,6 +72,10 @@ template <typename T, typename R> inline auto MethodGet(R (T::*method)()) {
 
 template <typename T, typename R> inline auto MethodGet(R (T::*method)() const) {
   return [=](T &t) { Locator<plain_type_t<R>>() = (t.*method)(); };
+}
+
+template <typename T, typename R> inline auto MethodGet(R (*method)(T *)) {
+  return [=](T &t) { Locator<plain_type_t<R>>() = method(t); };
 }
 
 } // namespace interface

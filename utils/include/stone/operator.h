@@ -12,6 +12,8 @@ template <typename Source, std::ptrdiff_t Offset, typename Target> struct Static
   }
   inline Target &operator[](Source const &source) const { return access(source); }
   inline Target &operator[](Source &source) const { return access(source); }
+  inline Target &operator()(Source const &source) const { return access(source); }
+  inline Target &operator()(Source &source) const { return access(source); }
   inline friend Target &operator>>(Source &source, StaticFieldAccessor accessor) { return access(source); }
 };
 

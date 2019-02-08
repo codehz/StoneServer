@@ -13,7 +13,7 @@
 #include <locale>
 #include <tuple>
 
-#include "patched/Player.h"
+#include "patched/HardcodedOffsets.h"
 
 template <class Facet> struct deletable_facet : Facet {
   template <class... Args>

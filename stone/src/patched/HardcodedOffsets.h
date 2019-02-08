@@ -3,6 +3,8 @@
 #include <minecraft/ExtendedCertificate.h>
 #include <minecraft/NetworkIdentifier.h>
 #include <minecraft/Player.h>
+#include <minecraft/Minecraft.h>
+#include <minecraft/ServerInstance.h>
 #include <minecraft/ServerNetworkHandler.h>
 #include <minecraft/UUID.h>
 #include <stone/operator.h>
@@ -28,4 +30,7 @@ inline static const auto PlayerRot [[maybe_unused]] = makeOperator(&Player::getR
 inline static const auto PlayerLvl [[maybe_unused]] = makeOperator(&Player::getLevelProgress);
 inline static const auto PlayerStats [[maybe_unused]] =
     makeOperator(+[](Player const &player) { return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus(); });
+
+inline static const auto MinecraftFromServerInstance [[maybe_unused]] = StaticFieldAccessor<ServerInstance, 0x10, Minecraft *>{};
+
 } // namespace patched

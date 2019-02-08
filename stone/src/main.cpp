@@ -8,7 +8,6 @@
 #include <minecraft/AutomationClient.h>
 #include <minecraft/CommandRegistry.h>
 #include <minecraft/Common.h>
-#include <minecraft/ServerCommandOrigin.h>
 #include <minecraft/ExternalFileLevelStorageSource.h>
 #include <minecraft/FilePathManager.h>
 #include <minecraft/I18n.h>
@@ -20,6 +19,7 @@
 #include <minecraft/ResourcePack.h>
 #include <minecraft/ResourcePackStack.h>
 #include <minecraft/SaveTransactionManager.h>
+#include <minecraft/ServerCommandOrigin.h>
 #include <minecraft/ServerInstance.h>
 #include <minecraft/TextPacket.h>
 #include <minecraft/Whitelist.h>
@@ -45,7 +45,7 @@
 #include <mutex>
 
 #include "patched.h"
-#include "patched/Player.h"
+#include "patched/HardcodedOffsets.h"
 #include "server_minecraft_app.h"
 #include "server_properties.h"
 #include "services.h"
@@ -251,10 +251,12 @@ int main() {
   srv_core.stop >> [](auto) { apid_stop(); };
   srv_core.ping >> [](auto, auto f) { f({}); };
   srv_core.tps >> [](auto, auto f) { f(Locator<Tick>()->tps); };
-  srv_command.execute >> [](auto request, auto f) {
-    f(patched::withCommandOutput([&] {
-      auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<Level>());
-      Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);
+  srv_command.execute >> [&](auto request, auto f) {
+    f(EvalInServerThread<std::string>(instance, [&] {
+      return patched::withCommandOutput([&] {
+        auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<ServerLevel>());
+        Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), "/help", 4, true);
+      });
     }));
   };
 

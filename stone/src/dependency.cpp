@@ -9,7 +9,7 @@
 
 #include "operators.h"
 #include "patched.h"
-#include "patched/Player.h"
+#include "patched/HardcodedOffsets.h"
 #include "services.h"
 #include "whitelist_mgr.hpp"
 
@@ -24,10 +24,9 @@ void initDependencies() {
   using namespace patched;
   using namespace api;
 
-  Locator<ServerInstance>() >> FieldRef(&ServerInstance::minecraft);
+  Locator<ServerInstance>() >> [](ServerInstance &instance) { Locator<Minecraft>() = MinecraftFromServerInstance(instance); };
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
   Locator<MinecraftCommands>() >> MethodGet(&MinecraftCommands::getRegistry);
-  Locator<Minecraft>() >> MethodGet(&Minecraft::getLevel);
   Locator<PlayerList>() >> [](auto &list) {
     Log::info("PlayerList", "Initialized");
     list.onPlayerAdded >> [](auto &player) {
