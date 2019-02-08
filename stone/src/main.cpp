@@ -255,7 +255,7 @@ int main() {
     f(EvalInServerThread<std::string>(instance, [&] {
       return patched::withCommandOutput([&] {
         auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<ServerLevel>());
-        Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), "/help", 4, true);
+        Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);
       });
     }));
   };
