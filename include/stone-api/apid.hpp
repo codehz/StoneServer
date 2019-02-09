@@ -402,7 +402,10 @@ struct ClientSide {
   public:
     proxied_property(std::string const &name)
         : Named(name) {}
-    template <typename F> void operator>>(F f) {std::lock_guard guard{ mtx };apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
+    template <typename F> void operator>>(F f) {
+      std::lock_guard guard{ mtx };
+      apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
+    }
   };
 
   template <typename T> class proxied_broadcast : public Named, public service_ref {
@@ -414,7 +417,10 @@ struct ClientSide {
   public:
     proxied_broadcast(std::string const &name)
         : Named(name) {}
-    template <typename F> void operator>>(F f) {std::lock_guard guard{ mtx };apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
+    template <typename F> void operator>>(F f) {
+      std::lock_guard guard{ mtx };
+      apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
+    }
   };
 
   template <typename T> class proxied_pattern_broadcast : public Named, public service_ref {
@@ -426,10 +432,12 @@ struct ClientSide {
   public:
     proxied_pattern_broadcast(std::string const &name)
         : Named(name) {}
-    template <typename Filter, typename F> void operator()(Filter filter, F f) {std::lock_guard guard{ mtx };
+    template <typename Filter, typename F> void operator()(Filter filter, F f) {
+      std::lock_guard guard{ mtx };
       apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
     }
-    template <typename F> void operator>>(F f) {std::lock_guard guard{ mtx };
+    template <typename F> void operator>>(F f) {
+      std::lock_guard guard{ mtx };
       apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
     }
   };
