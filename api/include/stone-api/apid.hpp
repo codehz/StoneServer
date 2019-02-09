@@ -9,7 +9,7 @@
 
 namespace api {
 
-inline static std::recursive_mutex mtx;
+inline static std::mutex mtx;
 
 template <typename F> inline F *copy_function(F f) {
   if constexpr (std::is_function_v<F>)
