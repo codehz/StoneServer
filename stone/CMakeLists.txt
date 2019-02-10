@@ -23,6 +23,7 @@ add_executable(stone
   "src/patched/PlayerCommandOrigin.cpp"
   "src/patched/ScriptEventCoordinator.cpp"
   "src/patched/TextPacket.cpp"
+  "src/patched/Common.cpp"
   "src/patched/SayCommand.cpp"
   "src/patched/Education.cpp"
   "src/patched/ScriptEngine.cpp"

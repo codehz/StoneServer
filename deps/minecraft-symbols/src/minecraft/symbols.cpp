@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 06 2019 01:30:00 UTC
+// Generated on Sun Feb 10 2019 06:21:01 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -80,6 +80,10 @@ CommandOutputParameter::CommandOutputParameter(int p1) {
 static mcpe::string (*_Common_getGameVersionStringNet)();
 mcpe::string Common::getGameVersionStringNet() {
     return _Common_getGameVersionStringNet();
+}
+static mcpe::string (*_Common_getGameDevVersionString)();
+mcpe::string Common::getGameDevVersionString() {
+    return _Common_getGameDevVersionString();
 }
 
 #include "FilePickerSettings.h"
@@ -1497,6 +1501,8 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutputParameter_CommandOutputParameter2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22CommandOutputParameterC2Ei");
     ((void*&) _Common_getGameVersionStringNet) = hybris_dlsym(handle, "_ZN6Common23getGameVersionStringNetEv");
     if (_Common_getGameVersionStringNet == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameVersionStringNetEv");
+    ((void*&) _Common_getGameDevVersionString) = hybris_dlsym(handle, "_ZN6Common23getGameDevVersionStringEv");
+    if (_Common_getGameDevVersionString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Common23getGameDevVersionStringEv");
     ((void*&) _NetworkIdentifier_getHash) = hybris_dlsym(handle, "_ZNK17NetworkIdentifier7getHashEv");
     if (_NetworkIdentifier_getHash == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK17NetworkIdentifier7getHashEv");
     ((void*&) _NetworkIdentifier_equalsTypeData) = hybris_dlsym(handle, "_ZNK17NetworkIdentifier14equalsTypeDataERKS_");
