@@ -2,13 +2,16 @@ version: '3'
 services:
   redis:
     image: redis
+    volumes:
+      - ./data:/data:rw
+    command: redis-server --port 0 --unixsocket /data/apid.socket --save ""
   server:
     image: codehz/stoneserver
     volumes:
       - ./game:/run/game:ro
       - ./data:/run/data:rw
     environment:
-      - APID=tcp:redis:6379
+      - APID=unix:/run/data/apid.socket
       - STONE_DEBUG=1
     links:
       - redis
