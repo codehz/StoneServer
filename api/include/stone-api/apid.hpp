@@ -170,10 +170,7 @@ public:
   }
   inline void operator+= [[gnu::artificial]](T const &input) {
     std::lock_guard guard{ mtx };
-    auto f = [=] {
-      std::lock_guard guard{ mtx };
-      apid_publish(Buffer::buildKeyEvent(this->service->name, name, "add"), Serializble<T>::write(input));
-    };
+    auto f = [=] { apid_publish(Buffer::buildKeyEvent(this->service->name, name, "add"), Serializble<T>::write(input)); };
     apid_set_add(&fproxy<decltype(f)>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
   template <typename F> inline void on_add(F f) {
@@ -182,10 +179,7 @@ public:
   }
   inline void operator-= [[gnu::artificial]](T const &input) {
     std::lock_guard guard{ mtx };
-    auto f = [=] {
-      std::lock_guard guard{ mtx };
-      apid_publish(Buffer::buildKeyEvent(this->service->name, name, "remove"), Serializble<T>::write(input));
-    };
+    auto f = [=] { apid_publish(Buffer::buildKeyEvent(this->service->name, name, "remove"), Serializble<T>::write(input)); };
     apid_set_remove(&fproxy<decltype(f)>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
   template <typename F> inline void on_remove(F f) {
