@@ -12,7 +12,7 @@ using ServerLevel = Level;
 class ServerCommandOrigin : public CommandOrigin {
 
 public:
-  Minecraft *mc;
+  ServerLevel *mc;
   mcpe::string name;
 
   ServerCommandOrigin(mcpe::string const &s, ServerLevel &level);

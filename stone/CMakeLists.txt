@@ -32,6 +32,7 @@ add_executable(stone
   "src/patched/HardcodedOffsets.h"
   "src/patched/ScriptInterface.h"
   "src/patched/ServerNetworkHandler.cpp"
+  "src/patched/ServerCommandOrigin.cpp"
   "src/ExtAPI/common.h"
   "src/ExtAPI/common.cpp"
   "src/ExtAPI/broadcastMessage.cpp"
