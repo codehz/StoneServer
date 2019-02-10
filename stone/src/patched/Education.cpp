@@ -13,5 +13,6 @@ SHook(bool, _ZN16EducationOptions20isCodeBuilderEnabledEv) { return true; }
 SHook(bool, _ZNK6Social4User11isConnectedEv) {
   return true;
 }
+SHook(bool, _ZNK11AppPlatform9isEduModeEv) { return true; }
 
 } // namespace
