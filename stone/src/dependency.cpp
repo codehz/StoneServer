@@ -33,7 +33,7 @@ void initDependencies() {
       Locator<PlayerList>()->set.insert(&player);
       QueueForServerThread([tuple = player >> PlayerBasicInfo] {
         auto [name, uuid, xuid] = tuple;
-        Log::info("PlayerList", "Player %s joined(xuid: %s, uuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
+        Log::info("PlayerList", "Player %s joined(uuid: %s, xuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
         PlayerInfo temp = { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
         Locator<CoreService<ServerSide>>()->players.set(name >> StdStr, temp);
         Locator<CoreService<ServerSide>>()->online_players += temp;
@@ -43,7 +43,7 @@ void initDependencies() {
       Locator<PlayerList>()->set.erase(&player);
       QueueForServerThread([tuple = player >> PlayerBasicInfo] {
         auto [name, uuid, xuid] = tuple;
-        Log::info("PlayerList", "Player %s left  (xuid: %s, uuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
+        Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
         Locator<CoreService<ServerSide>>()->online_players -= { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
       });
     };
