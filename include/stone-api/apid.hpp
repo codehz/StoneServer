@@ -47,7 +47,7 @@ struct Buffer {
   }
   Buffer(Buffer const &) = delete;
   ~Buffer() {
-    if (data && data != ZERO) delete[] data;
+    if (data && data != ZERO) free(data);
   }
 };
 
