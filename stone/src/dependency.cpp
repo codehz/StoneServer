@@ -31,11 +31,13 @@ void initDependencies() {
     Log::info("PlayerList", "Initialized");
     list.onPlayerAdded >> [](auto &player) {
       Locator<PlayerList>()->set.insert(&player);
-      Log::info("PlayerList", "Player %s joined", (player >> PlayerName).c_str());
+      Log::info("PlayerList", "Player %s joined(xuid: %s, uuid: %s)", (player >> PlayerName).c_str(), (player >> PlayerXUID).c_str(),
+                (player >> PlayerUUID).asString().c_str());
     };
     list.onPlayerRemoved >> [](auto &player) {
       Locator<PlayerList>()->set.erase(&player);
-      Log::info("PlayerList", "Player %s left", (player >> PlayerName).c_str());
+      Log::info("PlayerList", "Player %s left  (xuid: %s, uuid: %s)", (player >> PlayerName).c_str(), (player >> PlayerXUID).c_str(),
+                (player >> PlayerUUID).asString().c_str());
     };
     auto updateDBus = [](auto &) {};
     list.onPlayerAdded >> [](auto &player) {
