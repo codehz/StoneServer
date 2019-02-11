@@ -251,8 +251,8 @@ int main() {
   srv_core.stop >> [](auto) { apid_stop(); };
   srv_core.ping >> [](auto, auto f) { f({}); };
   srv_core.tps >> [](auto, auto f) { f(Locator<Tick>()->tps); };
-  srv_command.execute >> [&](auto request, auto f) {
-    f(EvalInServerThread<std::string>(instance, [&] {
+  srv_command.execute >> [](auto request, auto f) {
+    f(EvalInServerThread([&] {
       return patched::withCommandOutput([&] {
         auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<ServerLevel>());
         Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);

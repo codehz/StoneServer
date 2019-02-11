@@ -31,39 +31,38 @@ void initDependencies() {
     Log::info("PlayerList", "Initialized");
     list.onPlayerAdded >> [](auto &player) {
       Locator<PlayerList>()->set.insert(&player);
-      Log::info("PlayerList", "Player %s joined(xuid: %s, uuid: %s)", (player >> PlayerName).c_str(), (player >> PlayerXUID).c_str(),
-                (player >> PlayerUUID).asString().c_str());
+      QueueForServerThread([tuple = player >> PlayerBasicInfo] {
+        auto [name, uuid, xuid] = tuple;
+        Log::info("PlayerList", "Player %s joined(xuid: %s, uuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
+        PlayerInfo temp = { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
+        Locator<CoreService<ServerSide>>()->players.set(name >> StdStr, temp);
+        Locator<CoreService<ServerSide>>()->online_players += temp;
+      });
     };
     list.onPlayerRemoved >> [](auto &player) {
       Locator<PlayerList>()->set.erase(&player);
-      Log::info("PlayerList", "Player %s left  (xuid: %s, uuid: %s)", (player >> PlayerName).c_str(), (player >> PlayerXUID).c_str(),
-                (player >> PlayerUUID).asString().c_str());
-    };
-    auto updateDBus = [](auto &) {};
-    list.onPlayerAdded >> [](auto &player) {
-      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
-      PlayerInfo temp         = { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
-      Locator<CoreService<ServerSide>>()->players.set(name >> StdStr, temp);
-      Locator<CoreService<ServerSide>>()->online_players += temp;
-    };
-    list.onPlayerRemoved >> [](auto &player) {
-      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
-      Locator<CoreService<ServerSide>>()->online_players -= { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
+      QueueForServerThread([tuple = player >> PlayerBasicInfo] {
+        auto [name, uuid, xuid] = tuple;
+        Log::info("PlayerList", "Player %s left  (xuid: %s, uuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
+        Locator<CoreService<ServerSide>>()->online_players -= { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
+      });
     };
     Locator<CoreService<ServerSide>>()->online_players.clear();
-    list.onPlayerAdded >> updateDBus;
-    list.onPlayerRemoved >> updateDBus;
   };
   Locator<Chat>() >> [](Chat &chat) {
     using namespace std::placeholders;
     auto &service = Locator<ChatService<ServerSide>>();
-    chat.onPlayerChat >> [&](auto &player, auto &msg) {
-      Log::info("Chat", "<%s> %s", player >> PlayerName >> CStr, msg >> CStr);
-      service->recv << NormalMessage{ player >> PlayerName >> StdStr, msg >> StdStr };
+    chat.onPlayerChat >> [](auto &player, auto &msg) {
+      QueueForServerThread([name = player >> PlayerName, msg] {
+        Log::info("Chat", "<%s> %s", name >> CStr, msg >> CStr);
+        Locator<ChatService<ServerSide>>()->recv << NormalMessage{ name >> StdStr, msg >> StdStr };
+      });
     };
-    chat.onChat >> [&](auto &sender, auto &msg) {
-      Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
-      service->recv << NormalMessage{ sender >> StdStr, msg >> StdStr };
+    chat.onChat >> [](auto &sender, auto &msg) {
+      QueueForServerThread([sender, msg] {
+        Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
+        Locator<ChatService<ServerSide>>()->recv << NormalMessage{ sender >> StdStr, msg >> StdStr };
+      });
     };
     service->send >> [&](auto msg) {
       auto [sender, content] = msg;

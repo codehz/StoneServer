@@ -17,4 +17,4 @@ add_library(utils
 set_property(TARGET utils PROPERTY CXX_STANDARD 17)
 
 target_include_directories(utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(utils minecraft-symbols mcpelauncher-core hybris)
+target_link_libraries(utils minecraft-symbols mcpelauncher-core interface hybris)
