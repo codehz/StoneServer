@@ -73,7 +73,7 @@ template <> struct Serializble<int> {
 template <> struct Serializble<std::string> {
   static inline Buffer write(std::string const &input) {
     size_t n;
-    char *buffer = new char[n = input.length() + 1];
+    char *buffer = (char *)malloc(n = input.length() + 1);
     strncpy(buffer, input.c_str(), n);
     return { buffer };
   }
