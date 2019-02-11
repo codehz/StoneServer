@@ -59,6 +59,12 @@ void MinecraftUtils::stubFMod() {
     });
 }
 
+void HybrisUtils::hookAndroidLog() {
+    hybris_hook("__android_log_print", (void*) +[]{});
+    hybris_hook("__android_log_vprint", (void*) +[]{});
+    hybris_hook("__android_log_write", (void*) +[]{});
+}
+
 void MinecraftUtils::setupHybris() {
 #ifndef USE_BIONIC_LIBC
     loadLibM();
