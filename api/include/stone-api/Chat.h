@@ -8,11 +8,7 @@ namespace api {
 struct NormalMessage {
   std::string sender, content;
 
-  static inline Buffer write(NormalMessage const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s", input.sender.data(), input.content.data());
-    return { buffer };
-  }
+  static inline Buffer write(NormalMessage const &input) { return Buffer::format("%s\n%s", input.sender.data(), input.content.data()); }
   static inline NormalMessage read(char const *input) {
     std::istringstream iss{ input };
     NormalMessage message;

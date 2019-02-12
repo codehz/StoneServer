@@ -31,9 +31,7 @@ struct PlayerInfo {
   std::string name, uuid, xuid;
 
   static inline Buffer write(PlayerInfo const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s\n%s", input.name.data(), input.uuid.data(), input.xuid.data());
-    return { buffer };
+    return Buffer::format("%s\n%s\n%s", input.name.data(), input.uuid.data(), input.xuid.data());
   }
   static inline PlayerInfo read(char const *input) {
     std::istringstream iss{ input };
@@ -48,7 +46,7 @@ struct PlayerInfo {
 template <typename Side> struct CoreService : ProxiedService<Side, CoreService> {
   ProxiedAction<Side, Empty> stop{ "stop" };
   ProxiedMethod<Side, Empty, Empty> ping{ "ping" };
-  ProxiedMethod<Side, Empty, int> tps { "tps" };
+  ProxiedMethod<Side, Empty, int> tps{ "tps" };
   ProxiedProperty<Side, std::string> config{ "config" };
   ProxiedPatternBoardcast<Side, LogEntry> log{ "log" };
   ProxiedHash<Side, std::string, PlayerInfo> players{ "players" };

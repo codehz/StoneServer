@@ -1,6 +1,7 @@
 #pragma once
 
 #include <apid.h>
+#include <cstdarg>
 #include <cstring>
 #include <functional>
 #include <mutex>
@@ -25,30 +26,27 @@ struct Buffer {
   char *data;
   operator char *() { return data; }
   operator char const *() const { return data; }
-  static inline Buffer buildKeyEvent(std::string const &service, std::string const &name, std::string const &event) {
-    char *ret;
-    asprintf(&ret, "%s:%s!%s", service.data(), name.data(), event.data());
-    return { ret };
-  }
-  static inline Buffer buildKeyName(std::string const &service, std::string const &name) {
-    char *ret;
-    asprintf(&ret, "%s:%s", service.data(), name.data());
-    return { ret };
-  }
-  static inline Buffer copy(std::string const &content) {
-    char *ret = strdup(content.data());
-    return { ret };
-  }
-  Buffer(char *data)
+  explicit Buffer(char *data)
       : data(data) {}
-  Buffer(Buffer &&rhs)
-      : data(rhs.data) {
-    rhs.data = nullptr;
-  }
+  Buffer(Buffer &&rhs) = delete;
   Buffer(Buffer const &) = delete;
   ~Buffer() {
     if (data && data != ZERO) free(data);
   }
+  static inline Buffer buildKeyEvent(std::string const &service, std::string const &name, std::string const &event) {
+    return format("%s:%s!%s", service.data(), name.data(), event.data());
+  }
+  static inline Buffer buildKeyName(std::string const &service, std::string const &name) { return format("%s:%s", service.data(), name.data()); }
+  static __attribute__((format(printf, 1, 2))) inline Buffer format(char const *format, ...) {
+    char *data;
+    va_list args;
+    va_start(args, format);
+    if (vasprintf(&data, format, args)) {}
+    va_end(args);
+    return Buffer{ data };
+  }
+  static inline Buffer copy(char const *data) { return Buffer{ strdup(data) }; }
+  static inline Buffer copy(std::string const &content) { return Buffer{ strdup(content.data()) }; }
 };
 
 template <typename T> struct Serializble {
@@ -62,21 +60,12 @@ template <> struct Serializble<Empty> {
 };
 
 template <> struct Serializble<int> {
-  static inline Buffer write(int value) {
-    char *buffer;
-    asprintf(&buffer, "%d", value);
-    return buffer;
-  }
+  static inline Buffer write(int value) { return Buffer::format("%d", value); }
   static inline int read(char const *data) { return atoi(data); }
 };
 
 template <> struct Serializble<std::string> {
-  static inline Buffer write(std::string const &input) {
-    size_t n;
-    char *buffer = (char *)malloc(n = input.length() + 1);
-    strncpy(buffer, input.c_str(), n);
-    return { buffer };
-  }
+  static inline Buffer write(std::string const &input) { return Buffer::copy(input); }
   static inline std::string read(char const *input) { return input; }
 };
 
