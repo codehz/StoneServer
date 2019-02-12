@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:codehz/StoneAPI.git
+	branch = master
+	commit = b533017ad7a943621b681e2ad5ab5c7a91f707c5
+	method = rebase
+	cmdver = 0.4.0
+	parent = 739f31bc1bf3e2f92ca6a6edef7740adafe39819
