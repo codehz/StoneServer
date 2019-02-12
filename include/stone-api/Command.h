@@ -8,11 +8,7 @@ namespace api {
 struct CommandRequest {
   std::string sender, content;
 
-  static inline Buffer write(CommandRequest const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s", input.sender.data(), input.content.data());
-    return { buffer };
-  }
+  static inline Buffer write(CommandRequest const &input) { return Buffer::format("%s\n%s", input.sender.data(), input.content.data()); }
   static inline CommandRequest read(char const *input) {
     std::istringstream iss{ input };
     CommandRequest request;
@@ -26,11 +22,7 @@ struct CommandAutoCompleteRequest {
   std::string content;
   int position;
 
-  static inline Buffer write(CommandAutoCompleteRequest const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%d", input.content.data(), input.position);
-    return { buffer };
-  }
+  static inline Buffer write(CommandAutoCompleteRequest const &input) { return Buffer::format("%s\n%d", input.content.data(), input.position); }
   static inline CommandAutoCompleteRequest read(char const *input) {
     std::istringstream iss{ input };
     CommandAutoCompleteRequest request;
@@ -45,9 +37,7 @@ struct AutoCompleteOption {
   int offset, length, item;
 
   static inline Buffer write(AutoCompleteOption const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s\n%s\n%d %d %d", input.source.data(), input.title.data(), input.desc.data(), input.offset, input.length, input.item);
-    return { buffer };
+    return Buffer::format("%s\n%s\n%s\n%d %d %d", input.source.data(), input.title.data(), input.desc.data(), input.offset, input.length, input.item);
   }
   static inline AutoCompleteOption read(char const *input) {
     std::istringstream iss{ input };

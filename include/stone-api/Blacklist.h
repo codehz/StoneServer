@@ -8,11 +8,7 @@ namespace api {
 template <bool reason = false> struct BlacklistOP {
   std::string type, content;
 
-  static inline Buffer write(BlacklistOP const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s", input.type.data(), input.content.data());
-    return { buffer };
-  }
+  static inline Buffer write(BlacklistOP const &input) { return Buffer::format("%s\n%s", input.type.data(), input.content.data()); }
   static inline BlacklistOP read(char const *input) {
     std::istringstream iss{ input };
     BlacklistOP op;
@@ -26,9 +22,7 @@ template <> struct BlacklistOP<true> {
   std::string type, content, reason;
 
   static inline Buffer write(BlacklistOP const &input) {
-    char *buffer;
-    asprintf(&buffer, "%s\n%s\n%s", input.type.data(), input.content.data(), input.reason.data());
-    return { buffer };
+    return Buffer::format("%s\n%s\n%s", input.type.data(), input.content.data(), input.reason.data());
   }
   static inline BlacklistOP read(char const *input) {
     std::istringstream iss{ input };
