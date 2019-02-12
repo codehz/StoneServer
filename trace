@@ -1,2 +1,0 @@
-16411 execve("./stone", ["./stone"], 0x7ffd81cbe7f8 /* 56 vars */) = -1 EACCES (Permission denied)
-16411 +++ exited with 1 +++

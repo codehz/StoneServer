@@ -1,6 +1,0 @@
-#!/bin/bash
-BASEDIR=$(dirname "$0")
-TEMPDIR=$(mktemp -d -t stone.XXXXXXXX)
-trap "rm -rf $TEMPDIR" EXIT
-export PROOT_NO_SECCOMP=1
-$BASEDIR/proot -w /run -r "$TEMPDIR" -b $BASEDIR:/run -b $BASEDIR/support:/usr/lib32 -b $BASEDIR/support/ld.so:/ld.so -b /proc -b /etc -b /usr/share/locale -b /sys -b /dev/urandom "$@"

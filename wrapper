@@ -1,4 +1,0 @@
-#!/bin/bash
-BASEDIR=$(dirname "$0")
-export DBUS_SESSION_BUS_ADDRESS=unix:path=/bus
-$BASEDIR/loader -b $BASEDIR/bus:/bus /ld.so "$@"
