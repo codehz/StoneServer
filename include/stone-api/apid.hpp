@@ -28,7 +28,10 @@ struct Buffer {
   operator char const *() const { return data; }
   explicit Buffer(char *data)
       : data(data) {}
-  Buffer(Buffer &&rhs) = delete;
+  Buffer(Buffer &&rhs)
+      : data(rhs.data) {
+    rhs.data = nullptr;
+  }
   Buffer(Buffer const &) = delete;
   ~Buffer() {
     if (data && data != ZERO) free(data);
