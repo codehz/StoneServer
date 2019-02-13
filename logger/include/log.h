@@ -3,7 +3,6 @@
 #include <cstdarg>
 #include <cstdlib>
 #include <functional>
-#include <uintl.h>
 #include <vector>
 
 #define LogFuncDef(name, logLevel)                                                                                                                   \
@@ -25,8 +24,7 @@ public:
   static inline void clearHooks() { hooks.clear(); }
 
   static inline const char *getLogLevelString(LogLevel lvl) {
-    using namespace uintl;
-    static char const *lvmap[] = { "Trace"_intl, "Debug"_intl, "Info "_intl, "Warn "_intl, "Error"_intl };
+    static char const *lvmap[] = { "Trace", "Debug", "Info ", "Warn ", "Error" };
     if (lvl >= LogLevel::LOG_MAX) return "?";
     return lvmap[(int)lvl];
   }

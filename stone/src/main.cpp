@@ -28,7 +28,6 @@
 #include <stone/server_hook.h>
 #include <stone/symbol.h>
 #include <stone/utils.h>
-#include <uintl.h>
 
 #include <interface/chat.h>
 #include <interface/locator.hpp>
@@ -69,7 +68,6 @@ LOAD_ENV(BUSNAME_SUFFIX, "default");
 void initDependencies();
 
 int main() {
-  using namespace uintl;
   using namespace interface;
   using namespace std;
   using namespace api;
@@ -123,7 +121,7 @@ int main() {
   Log::trace("StoneServer", "Initializing AppPlatform (create instance)");
   auto appPlatform = make_unique<LauncherAppPlatform>();
   // Try to use i18n
-  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US"_intl;
+  *(reinterpret_cast<mcpe::string *>(appPlatform.get()) + sizeof(AppPlatform) / sizeof(void *)) = "en_US";
   Log::trace("StoneServer", "Initializing AppPlatform (initialize call)");
   appPlatform->initialize();
 
@@ -235,7 +233,7 @@ int main() {
   }
   Log::trace("StoneServer", "Loading language data");
   ResourceLoadManager resLoadMgr;
-  I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US"_intl);
+  I18n::loadLanguages(*resourcePackManager, resLoadMgr, "en_US");
   resLoadMgr.sync((ResourceLoadType)4);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");

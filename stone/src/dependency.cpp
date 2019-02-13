@@ -31,21 +31,17 @@ void initDependencies() {
     Log::info("PlayerList", "Initialized");
     list.onPlayerAdded >> [](auto &player) {
       Locator<PlayerList>()->set.insert(&player);
-      QueueForServerThread([tuple = player >> PlayerBasicInfo] {
-        auto [name, uuid, xuid] = tuple;
-        Log::info("PlayerList", "Player %s joined(uuid: %s, xuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
-        PlayerInfo temp = { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
-        Locator<CoreService<ServerSide>>()->players.set(name >> StdStr, temp);
-        Locator<CoreService<ServerSide>>()->online_players += temp;
-      });
+      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
+      Log::info("PlayerList", "Player %s joined(uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
+      PlayerInfo temp = { name, uuid, xuid };
+      Locator<CoreService<ServerSide>>()->players.set(name, temp);
+      Locator<CoreService<ServerSide>>()->online_players += temp;
     };
     list.onPlayerRemoved >> [](auto &player) {
       Locator<PlayerList>()->set.erase(&player);
-      QueueForServerThread([tuple = player >> PlayerBasicInfo] {
-        auto [name, uuid, xuid] = tuple;
-        Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.asString().c_str(), xuid.c_str());
-        Locator<CoreService<ServerSide>>()->online_players -= { name >> StdStr, uuid >> UUIDStr >> StdStr, xuid >> StdStr };
-      });
+      auto [name, uuid, xuid] = player >> PlayerBasicInfo;
+      Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
+      Locator<CoreService<ServerSide>>()->online_players -= { name, uuid, xuid };
     };
     Locator<CoreService<ServerSide>>()->online_players.clear();
   };
