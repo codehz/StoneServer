@@ -8,6 +8,12 @@
 #include <string>
 #include <type_traits>
 
+#ifndef APID_USE_LIBUV
+extern "C" {
+#include <ae.h>
+}
+#endif
+
 namespace api {
 
 inline static std::mutex mtx;
@@ -18,6 +24,24 @@ template <typename F> inline F *copy_function(F f) {
   else
     return new F(f);
 }
+
+#ifndef APID_USE_LIBUV
+template <typename F> void SetTimeout(long long m, F f) {
+  auto loop = (aeEventLoop *)apid_underlying_context();
+  aeCreateTimeEvent(loop, m,
+                    +[](aeEventLoop *loop, long long id, void *client) {
+                      auto f = (F *)client;
+                      (*f)();
+                      if constexpr (!std::is_function_v<F>) delete f;
+                      return 0;
+                    },
+                    copy_function(f), nullptr);
+}
+
+inline static struct _Sync {
+  template <typename F> void operator<<(F f) { SetTimeout(0, f); }
+} Sync;
+#endif
 
 struct Empty {};
 
