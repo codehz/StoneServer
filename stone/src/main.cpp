@@ -102,7 +102,7 @@ int main() {
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService<ServerSide>>().generate();
   auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService<ServerSide>>().generate();
   auto &srv_command [[maybe_unused]]   = Locator<CommandService<ServerSide>>().generate();
-  Log::addHook([&](auto level, auto tag, auto content) { srv_core.log << LogEntry{ tag, level, content }; });
+  Log::addHook([&](auto level, auto tag, auto content) { Sync << [=, &srv_core] { srv_core.log << LogEntry{ tag, level, content }; }; });
 
   MinecraftUtils::initSymbolBindings(handle);
   Log::info("StoneServer", "Game version: %s", Common::getGameVersionStringNet().c_str());

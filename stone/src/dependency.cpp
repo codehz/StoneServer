@@ -34,14 +34,16 @@ void initDependencies() {
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Log::info("PlayerList", "Player %s joined(uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
       PlayerInfo temp = { name, uuid, xuid };
-      Locator<CoreService<ServerSide>>()->players.set(name, temp);
-      Locator<CoreService<ServerSide>>()->online_players += temp;
+      Sync << [=, name = name] {
+        Locator<CoreService<ServerSide>>()->players.set(name, temp);
+        Locator<CoreService<ServerSide>>()->online_players += temp;
+      };
     };
     list.onPlayerRemoved >> [](auto &player) {
       Locator<PlayerList>()->set.erase(&player);
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
-      Locator<CoreService<ServerSide>>()->online_players -= { name, uuid, xuid };
+      Sync << [name = name, uuid = uuid, xuid = xuid] { Locator<CoreService<ServerSide>>()->online_players -= { name, uuid, xuid }; };
     };
     Locator<CoreService<ServerSide>>()->online_players.clear();
   };
@@ -49,16 +51,16 @@ void initDependencies() {
     using namespace std::placeholders;
     auto &service = Locator<ChatService<ServerSide>>();
     chat.onPlayerChat >> [](auto &player, auto &msg) {
-      QueueForServerThread([name = player >> PlayerName, msg] {
+      Sync << [name = player >> PlayerName, msg] {
         Log::info("Chat", "<%s> %s", name >> CStr, msg >> CStr);
         Locator<ChatService<ServerSide>>()->recv << NormalMessage{ name >> StdStr, msg >> StdStr };
-      });
+      };
     };
     chat.onChat >> [](auto &sender, auto &msg) {
-      QueueForServerThread([sender, msg] {
+      Sync << [sender, msg] {
         Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
         Locator<ChatService<ServerSide>>()->recv << NormalMessage{ sender >> StdStr, msg >> StdStr };
-      });
+      };
     };
     service->send >> [&](auto msg) {
       auto [sender, content] = msg;
@@ -69,48 +71,54 @@ void initDependencies() {
   Locator<Blacklist>() >> [](Blacklist &list) {
     auto &service = Locator<BlacklistService<ServerSide>>();
     service->add >> [&](auto arg) {
-      auto [type, content, reason] = arg;
-      if (type == "name") {
-        auto callback = [=, &list](bool flag, auto entity) {
-          if (flag) list.add(mce::UUID::fromString(entity.uuid), arg.reason);
-        };
-        Locator<CoreService<ServerSide>>()->players.get(content, callback);
-      } else if (type == "uuid") {
-        list.add(mce::UUID::fromString(content), reason);
-      } else if (type == "xuid") {
-        list.add(content, reason);
-      }
-    };
-    service->kick >> [&](auto arg) {
-      auto [type, content, reason] = arg;
-      auto continuation            = [&](auto filter) {
-        for (auto &player : Locator<PlayerList>()->set) {
-          if (filter(player)) {
-            list.kick(*player >> PlayerNetworkID, arg.reason);
-            break;
-          }
+      Sync << [=, &list] {
+        auto [type, content, reason] = arg;
+        if (type == "name") {
+          auto callback = [=, &list](bool flag, auto entity) {
+            if (flag) list.add(mce::UUID::fromString(entity.uuid), arg.reason);
+          };
+          Locator<CoreService<ServerSide>>()->players.get(content, callback);
+        } else if (type == "uuid") {
+          list.add(mce::UUID::fromString(content), reason);
+        } else if (type == "xuid") {
+          list.add(content, reason);
         }
       };
-      if (type == "name") {
-        continuation([&](auto player) { return PlayerName[*player] == arg.content; });
-      } else if (type == "uuid") {
-        continuation([&](auto player) { return PlayerUUID[*player].asString() == arg.content; });
-      } else if (type == "xuid") {
-        continuation([&](auto player) { return PlayerXUID(*player) == arg.content; });
-      }
+    };
+    service->kick >> [&](auto arg) {
+      Sync << [=, &list] {
+        auto [type, content, reason] = arg;
+        auto continuation            = [&](auto filter) {
+          for (auto &player : Locator<PlayerList>()->set) {
+            if (filter(player)) {
+              list.kick(*player >> PlayerNetworkID, arg.reason);
+              break;
+            }
+          }
+        };
+        if (type == "name") {
+          continuation([&](auto player) { return PlayerName[*player] == arg.content; });
+        } else if (type == "uuid") {
+          continuation([&](auto player) { return PlayerUUID[*player].asString() == arg.content; });
+        } else if (type == "xuid") {
+          continuation([&](auto player) { return PlayerXUID(*player) == arg.content; });
+        }
+      };
     };
     service->remove >> [&](auto arg) {
-      auto [type, content] = arg;
-      if (type == "name") {
-        auto callback = [=, &list](bool flag, auto entity) {
-          if (flag) list.remove(mce::UUID::fromString(entity.uuid));
-        };
-        Locator<CoreService<ServerSide>>()->players.get(content, callback);
-      } else if (type == "uuid") {
-        list.remove(mce::UUID::fromString(content));
-      } else if (type == "xuid") {
-        list.remove(content);
-      }
+      Sync << [=, &list] {
+        auto [type, content] = arg;
+        if (type == "name") {
+          auto callback = [=, &list](bool flag, auto entity) {
+            if (flag) list.remove(mce::UUID::fromString(entity.uuid));
+          };
+          Locator<CoreService<ServerSide>>()->players.get(content, callback);
+        } else if (type == "uuid") {
+          list.remove(mce::UUID::fromString(content));
+        } else if (type == "xuid") {
+          list.remove(content);
+        }
+      };
     };
   };
 }
