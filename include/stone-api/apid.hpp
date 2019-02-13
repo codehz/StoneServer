@@ -16,8 +16,6 @@ extern "C" {
 
 namespace api {
 
-inline static std::mutex mtx;
-
 template <typename F> inline F *copy_function(F f) {
   if constexpr (std::is_function_v<F>)
     return &f;
@@ -176,44 +174,35 @@ public:
       : Named(name) {}
 
   inline void clear [[gnu::artificial]] () {
-    std::lock_guard guard{ mtx };
     apid_publish(Buffer::buildKeyEvent(this->service->name, name, "clear"), "");
     apid_set_clear(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name));
   }
   template <typename F> inline void on_clear(F f) {
-    std::lock_guard guard{ mtx };
     apid_subscribe(on_clear_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "clear"));
   }
   inline void operator+= [[gnu::artificial]](T const &input) {
-    std::lock_guard guard{ mtx };
     auto data = Serializble<T>::write(input);
     apid_publish(Buffer::buildKeyEvent(this->service->name, name, "add"), data);
     apid_set_add(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name), data);
   }
   template <typename F> inline void on_add(F f) {
-    std::lock_guard guard{ mtx };
     apid_subscribe(events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "add"));
   }
   inline void operator-= [[gnu::artificial]](T const &input) {
-    std::lock_guard guard{ mtx };
     auto data = Serializble<T>::write(input);
     apid_publish(Buffer::buildKeyEvent(this->service->name, name, "remove"), data);
     apid_set_remove(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name), data);
   }
   template <typename F> inline void on_remove(F f) {
-    std::lock_guard guard{ mtx };
     apid_subscribe(&events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "remove"));
   }
   template <typename F> inline void iterate(F f) {
-    std::lock_guard guard{ mtx };
     apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
   template <typename F> inline void all(F f) {
-    std::lock_guard guard{ mtx };
     apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
   template <typename F> inline void contains(T const &input, F f) {
-    std::lock_guard guard{ mtx };
     apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
 };
@@ -230,12 +219,10 @@ public:
       : Named(name) {}
 
   inline void set(K const &key, V const &value) {
-    std::lock_guard guard{ mtx };
     apid_hash_set(NULL, NULL, Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key), Serializble<V>::write(value));
   }
 
   template <typename F> inline void get(K const &key, F f) {
-    std::lock_guard guard{ mtx };
     apid_hash_get(&stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key));
   }
 };
@@ -258,12 +245,10 @@ struct ServerSide {
 
   protected:
     template <typename T> inline void $(ProxiedAction<ServerSide, T> &action) {
-      std::lock_guard guard{ mtx };
-      apid_register_action(Buffer::buildKeyName(name, action.name), &apid_action_stub<T>, (void *)&action);
+        apid_register_action(Buffer::buildKeyName(name, action.name), &apid_action_stub<T>, (void *)&action);
     }
     template <typename T, typename R> inline void $(ProxiedMethod<ServerSide, T, R> &method) {
-      std::lock_guard guard{ mtx };
-      apid_register_method(Buffer::buildKeyName(name, method.name), &apid_method_stub<T, R>, (void *)&method);
+        apid_register_method(Buffer::buildKeyName(name, method.name), &apid_method_stub<T, R>, (void *)&method);
     }
     template <typename T> inline void $(ProxiedProperty<ServerSide, T> &prop) { prop.$(this); }
     template <typename T> inline void $(ProxiedBoardcast<ServerSide, T> &broadcast) { broadcast.$(this); }
@@ -319,8 +304,7 @@ struct ServerSide {
     proxied_property(std::string const &name)
         : Named(name) {}
     inline T const &operator<<(T const &input) {
-      std::lock_guard guard{ mtx };
-      apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+        apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
       return input;
     }
   };
@@ -330,8 +314,7 @@ struct ServerSide {
     proxied_broadcast(std::string const &name)
         : Named(name) {}
     inline void operator<<(T const &input) {
-      std::lock_guard guard{ mtx };
-      apid_publish(Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+        apid_publish(Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
   };
 
@@ -340,8 +323,7 @@ struct ServerSide {
     proxied_pattern_broadcast(std::string const &name)
         : Named(name) {}
     inline void operator<<(T const &input) {
-      std::lock_guard guard{ mtx };
-      apid_publish(Buffer::buildKeyName(service->name, input.build(name)), Serializble<T>::write(input));
+        apid_publish(Buffer::buildKeyName(service->name, input.build(name)), Serializble<T>::write(input));
     }
   };
 
@@ -379,12 +361,10 @@ struct ClientSide {
     proxied_action(std::string const &name)
         : Named(name) {}
     void operator()(T const &input) {
-      std::lock_guard guard{ mtx };
-      apid_invoke(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+        apid_invoke(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
     template <typename F> void operator()(T const &input, F f) {
-      std::lock_guard guard{ mtx };
-      apid_invoke(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+        apid_invoke(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
   };
 
@@ -399,8 +379,7 @@ struct ClientSide {
     proxied_method(std::string const &name)
         : Named(name) {}
     template <typename F> void operator()(T const &input, F f) {
-      std::lock_guard guard{ mtx };
-      apid_invoke_method(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+        apid_invoke_method(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
   };
 
@@ -415,8 +394,7 @@ struct ClientSide {
     proxied_property(std::string const &name)
         : Named(name) {}
     template <typename F> void operator>>(F f) {
-      std::lock_guard guard{ mtx };
-      apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
+        apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
     }
   };
 
@@ -430,8 +408,7 @@ struct ClientSide {
     proxied_broadcast(std::string const &name)
         : Named(name) {}
     template <typename F> void operator>>(F f) {
-      std::lock_guard guard{ mtx };
-      apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
+        apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
     }
   };
 
@@ -445,12 +422,10 @@ struct ClientSide {
     proxied_pattern_broadcast(std::string const &name)
         : Named(name) {}
     template <typename Filter, typename F> void operator()(Filter filter, F f) {
-      std::lock_guard guard{ mtx };
-      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
+        apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
     }
     template <typename F> void operator>>(F f) {
-      std::lock_guard guard{ mtx };
-      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
+        apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
     }
   };
 
