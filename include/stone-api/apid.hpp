@@ -40,11 +40,11 @@ struct Buffer {
     return format("%s:%s!%s", service.data(), name.data(), event.data());
   }
   static inline Buffer buildKeyName(std::string const &service, std::string const &name) { return format("%s:%s", service.data(), name.data()); }
-  static __attribute__((format(printf, 1, 2))) inline Buffer format(char const *format, ...) {
+  static __attribute__((format(printf, 1, 2))) Buffer format(char const *format, ...) {
     char *data;
     va_list args;
     va_start(args, format);
-    if (vasprintf(&data, format, args)) {}
+    if (vasprintf(&data, format, args) == -1) __asm__("int3");
     va_end(args);
     return Buffer{ data };
   }
