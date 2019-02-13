@@ -199,9 +199,7 @@ public:
   template <typename F> inline void iterate(F f) {
     apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
   }
-  template <typename F> inline void all(F f) {
-    apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
-  }
+  template <typename F> inline void all(F f) { apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name)); }
   template <typename F> inline void contains(T const &input, F f) {
     apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
   }
@@ -245,10 +243,10 @@ struct ServerSide {
 
   protected:
     template <typename T> inline void $(ProxiedAction<ServerSide, T> &action) {
-        apid_register_action(Buffer::buildKeyName(name, action.name), &apid_action_stub<T>, (void *)&action);
+      apid_register_action(Buffer::buildKeyName(name, action.name), &apid_action_stub<T>, (void *)&action);
     }
     template <typename T, typename R> inline void $(ProxiedMethod<ServerSide, T, R> &method) {
-        apid_register_method(Buffer::buildKeyName(name, method.name), &apid_method_stub<T, R>, (void *)&method);
+      apid_register_method(Buffer::buildKeyName(name, method.name), &apid_method_stub<T, R>, (void *)&method);
     }
     template <typename T> inline void $(ProxiedProperty<ServerSide, T> &prop) { prop.$(this); }
     template <typename T> inline void $(ProxiedBoardcast<ServerSide, T> &broadcast) { broadcast.$(this); }
@@ -304,7 +302,7 @@ struct ServerSide {
     proxied_property(std::string const &name)
         : Named(name) {}
     inline T const &operator<<(T const &input) {
-        apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+      apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
       return input;
     }
   };
@@ -313,18 +311,14 @@ struct ServerSide {
   public:
     proxied_broadcast(std::string const &name)
         : Named(name) {}
-    inline void operator<<(T const &input) {
-        apid_publish(Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
-    }
+    inline void operator<<(T const &input) { apid_publish(Buffer::buildKeyName(service->name, name), Serializble<T>::write(input)); }
   };
 
   template <typename T> class proxied_pattern_broadcast : public Named, public service_ref {
   public:
     proxied_pattern_broadcast(std::string const &name)
         : Named(name) {}
-    inline void operator<<(T const &input) {
-        apid_publish(Buffer::buildKeyName(service->name, input.build(name)), Serializble<T>::write(input));
-    }
+    inline void operator<<(T const &input) { apid_publish(Buffer::buildKeyName(service->name, input.build(name)), Serializble<T>::write(input)); }
   };
 
   template <typename T> using proxied_set              = CommonSet<T, service_ref>;
@@ -360,11 +354,9 @@ struct ClientSide {
   public:
     proxied_action(std::string const &name)
         : Named(name) {}
-    void operator()(T const &input) {
-        apid_invoke(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
-    }
+    void operator()(T const &input) { apid_invoke(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input)); }
     template <typename F> void operator()(T const &input, F f) {
-        apid_invoke(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+      apid_invoke(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
   };
 
@@ -379,7 +371,7 @@ struct ClientSide {
     proxied_method(std::string const &name)
         : Named(name) {}
     template <typename F> void operator()(T const &input, F f) {
-        apid_invoke_method(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
+      apid_invoke_method(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
     }
   };
 
@@ -393,9 +385,7 @@ struct ClientSide {
   public:
     proxied_property(std::string const &name)
         : Named(name) {}
-    template <typename F> void operator>>(F f) {
-        apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
-    }
+    template <typename F> void operator>>(F f) { apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
   };
 
   template <typename T> class proxied_broadcast : public Named, public service_ref {
@@ -407,9 +397,7 @@ struct ClientSide {
   public:
     proxied_broadcast(std::string const &name)
         : Named(name) {}
-    template <typename F> void operator>>(F f) {
-        apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name));
-    }
+    template <typename F> void operator>>(F f) { apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
   };
 
   template <typename T> class proxied_pattern_broadcast : public Named, public service_ref {
@@ -422,10 +410,10 @@ struct ClientSide {
     proxied_pattern_broadcast(std::string const &name)
         : Named(name) {}
     template <typename Filter, typename F> void operator()(Filter filter, F f) {
-        apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
+      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
     }
     template <typename F> void operator>>(F f) {
-        apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
+      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
     }
   };
 
