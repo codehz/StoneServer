@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:codehz/StoneAPI.git
 	branch = master
-	commit = b533017ad7a943621b681e2ad5ab5c7a91f707c5
+	commit = c45f6174f6ea2b6390031983dabf7bf6140c5279
 	method = rebase
 	cmdver = 0.4.0
-	parent = 739f31bc1bf3e2f92ca6a6edef7740adafe39819
+	parent = 12c4d90646dafe0397cf312c9d8ec203d1f67983
