@@ -3,9 +3,11 @@
 #include <stone/server_hook.h>
 
 #include "../ExtAPI/common.h"
+#include "../GlobalAPI/common.h"
 #include "../operators.h"
 #include "../patched.h"
 #include "../v8_utils.hpp"
+#include "ScriptInterface.h"
 
 #include "Flags.h"
 
@@ -13,10 +15,9 @@ namespace {
 using namespace v8;
 using namespace utils;
 using namespace interface;
+using namespace patched;
 
-SHook(void, _ZN2v85Utils16ReportApiFailureEPKcS2_, char const*title, char const*content) {
-  printf("FAILED: %s\n%s\n", title, content);
-}
+SHook(void, _ZN2v85Utils16ReportApiFailureEPKcS2_, char const *title, char const *content) { printf("FAILED: %s\n%s\n", title, content); }
 
 SHook(void, _ZN9ScriptApi13LogV8CallbackERKN2v820FunctionCallbackInfoINS0_5ValueEEE, FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
@@ -50,6 +51,19 @@ SHook(
   if (it != registry.end())
     for (auto [name, func] : it->second) original(a, b, c, name, func, external);
   return original(a, b, c, name, callback, external);
+}
+
+SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReportE, ScriptApi::V8CoreInterface, void *report) {
+  auto ret = original(this, report);
+  auto iso = V8Isolate[*this];
+  HandleScope scope{ iso };
+  auto ctx = V8Context[*this].Get(iso);
+  Context::Scope ctx_scope{ ctx };
+  auto global       = ctx->Global();
+  auto s_globalThis = toJS<std::string>(iso, "globalThis");
+  if (!global->Has(s_globalThis)) { global->Set(s_globalThis, global); }
+  for (auto fn : WebAPI::Register::registry) fn(global, iso, ctx);
+  return ret;
 }
 
 } // namespace

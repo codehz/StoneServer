@@ -8,6 +8,8 @@
 #include <array>
 #include <type_traits>
 
+#define STR(s) toJS<std::string>(iso, s)
+
 namespace v8 {
 
 template <typename T> struct Convertable; // type, fromJS, toJS

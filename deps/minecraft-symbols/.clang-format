@@ -1,0 +1,24 @@
+---
+BasedOnStyle: LLVM
+---
+Language: Cpp
+# AlignAfterOpenBracket: AlwaysBreak
+ColumnLimit: 1000
+AlignConsecutiveAssignments: true
+AlignOperands: true
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakBeforeMultilineStrings: true
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializers: BeforeComma
+Cpp11BracedListStyle: false
+FixNamespaceComments: false
+IndentCaseLabels: false
+IndentWrappedFunctionNames: false

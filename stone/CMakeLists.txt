@@ -43,12 +43,15 @@ add_executable(stone
   "src/ExtAPI/invokePrivilegedCommand.cpp"
   "src/ExtAPI/registerCommand.cpp"
   "src/ExtAPI/transferPlayer.cpp"
+  "src/GlobalAPI/common.h"
+  "src/GlobalAPI/common.cpp"
+  "src/GlobalAPI/SQLite3.cpp"
 )
 
 target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)
 set_property(TARGET stone PROPERTY CXX_STANDARD 17)
 target_compile_options(stone PRIVATE -Wall -Wno-reorder -Wno-class-memaccess)
-target_link_libraries(stone logger mcpelauncher-core properties-parser utils interface stone-api)
+target_link_libraries(stone logger mcpelauncher-core properties-parser utils interface stone-api sqlite3)
 if (${USE_COTIRE})
   cotire(stone)
 endif()

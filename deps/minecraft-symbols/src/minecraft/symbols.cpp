@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Feb 10 2019 06:21:01 UTC
+// Generated on Sat Feb 16 2019 11:56:04 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1031,9 +1031,9 @@ static void (v8::TryCatch::*_v8_TryCatch_SetCaptureMessage)(bool);
 void v8::TryCatch::SetCaptureMessage(bool p1) {
     (this->*_v8_TryCatch_SetCaptureMessage)(p1);
 }
-static void (v8::Isolate::*_v8_Isolate_ThrowException)(v8::Local<v8::Value>);
-void v8::Isolate::ThrowException(v8::Local<v8::Value> p1) {
-    (this->*_v8_Isolate_ThrowException)(p1);
+static v8::Local<v8::Value> (v8::Isolate::*_v8_Isolate_ThrowException)(v8::Local<v8::Value>);
+v8::Local<v8::Value> v8::Isolate::ThrowException(v8::Local<v8::Value> p1) {
+    return (this->*_v8_Isolate_ThrowException)(p1);
 }
 static v8::Isolate * (*_v8_Isolate_GetCurrent)();
 v8::Isolate * v8::Isolate::GetCurrent() {
@@ -1066,6 +1066,10 @@ void v8::Context::Exit() {
 static v8::Local<v8::Context> (*_v8_Context_New)(v8::Isolate *, v8::ExtensionConfiguration *, v8::MaybeLocal<v8::ObjectTemplate>, v8::MaybeLocal<v8::Value>);
 v8::Local<v8::Context> v8::Context::New(v8::Isolate * p1, v8::ExtensionConfiguration * p2, v8::MaybeLocal<v8::ObjectTemplate> p3, v8::MaybeLocal<v8::Value> p4) {
     return _v8_Context_New(p1, p2, p3, p4);
+}
+static v8::Local<v8::Object> (*_v8_Context_Global)();
+v8::Local<v8::Object> v8::Context::Global() {
+    return _v8_Context_Global();
 }
 static void (v8::HandleScope::*_v8_HandleScope_HandleScope)(v8::Isolate *);
 v8::HandleScope::HandleScope(v8::Isolate * p1) {
@@ -1103,6 +1107,22 @@ static bool (v8::Object::*_v8_Object_Has)(v8::Local<v8::Value>);
 bool v8::Object::Has(v8::Local<v8::Value> p1) {
     return (this->*_v8_Object_Has)(p1);
 }
+static void (v8::Object::*_v8_Object_SetInternalField)(int, v8::Local<v8::Value>);
+void v8::Object::SetInternalField(int p1, v8::Local<v8::Value> p2) {
+    (this->*_v8_Object_SetInternalField)(p1, p2);
+}
+static void (v8::Object::*_v8_Object_SetAlignedPointerInInternalField)(int, void *);
+void v8::Object::SetAlignedPointerInInternalField(int p1, void * p2) {
+    (this->*_v8_Object_SetAlignedPointerInInternalField)(p1, p2);
+}
+static v8::Local<v8::Value> (v8::Object::*_v8_Object_GetInternalField)(int);
+v8::Local<v8::Value> v8::Object::GetInternalField(int p1) {
+    return (this->*_v8_Object_GetInternalField)(p1);
+}
+static void * (v8::Object::*_v8_Object_GetAlignedPointerFromInternalField)(int);
+void * v8::Object::GetAlignedPointerFromInternalField(int p1) {
+    return (this->*_v8_Object_GetAlignedPointerFromInternalField)(p1);
+}
 static void (*_v8_Object_CheckCast)(v8::Value *);
 void v8::Object::CheckCast(v8::Value * p1) {
     _v8_Object_CheckCast(p1);
@@ -1123,9 +1143,93 @@ static v8::Local<v8::Value> (v8::Function::*_v8_Function_Call)(v8::Local<v8::Val
 v8::Local<v8::Value> v8::Function::Call(v8::Local<v8::Value> p1, int p2, v8::Local<v8::Value> * p3) {
     return (this->*_v8_Function_Call)(p1, p2, p3);
 }
+static v8::Local<v8::Function> (*_v8_Function_New)(v8::Isolate *, v8::FunctionCallback, v8::Local<v8::Value>, int);
+v8::Local<v8::Function> v8::Function::New(v8::Isolate * p1, v8::FunctionCallback p2, v8::Local<v8::Value> p3, int p4) {
+    return _v8_Function_New(p1, p2, p3, p4);
+}
 static void (*_v8_Function_CheckCast)(v8::Value *);
 void v8::Function::CheckCast(v8::Value * p1) {
     _v8_Function_CheckCast(p1);
+}
+static void (v8::Template::*_v8_Template_Set)(v8::Local<v8::Name>, v8::Local<v8::Data>, v8::PropertyAttribute);
+void v8::Template::Set(v8::Local<v8::Name> p1, v8::Local<v8::Data> p2, v8::PropertyAttribute p3) {
+    (this->*_v8_Template_Set)(p1, p2, p3);
+}
+static void (v8::Template::*_v8_Template_SetAccessorProperty)(v8::Local<v8::Name>, v8::Local<v8::FunctionTemplate>, v8::Local<v8::FunctionTemplate>, v8::PropertyAttribute, v8::AccessControl);
+void v8::Template::SetAccessorProperty(v8::Local<v8::Name> p1, v8::Local<v8::FunctionTemplate> p2, v8::Local<v8::FunctionTemplate> p3, v8::PropertyAttribute p4, v8::AccessControl p5) {
+    (this->*_v8_Template_SetAccessorProperty)(p1, p2, p3, p4, p5);
+}
+static v8::Local<v8::FunctionTemplate> (*_v8_FunctionTemplate_New)(v8::Isolate *, v8::FunctionCallback, v8::Local<v8::Value>, v8::Local<v8::Signature>, int);
+v8::Local<v8::FunctionTemplate> v8::FunctionTemplate::New(v8::Isolate * p1, v8::FunctionCallback p2, v8::Local<v8::Value> p3, v8::Local<v8::Signature> p4, int p5) {
+    return _v8_FunctionTemplate_New(p1, p2, p3, p4, p5);
+}
+static void (v8::FunctionTemplate::*_v8_FunctionTemplate_Inherit)(v8::Local<v8::FunctionTemplate>);
+void v8::FunctionTemplate::Inherit(v8::Local<v8::FunctionTemplate> p1) {
+    (this->*_v8_FunctionTemplate_Inherit)(p1);
+}
+static void (v8::FunctionTemplate::*_v8_FunctionTemplate_SetClassName)(v8::Local<v8::String>);
+void v8::FunctionTemplate::SetClassName(v8::Local<v8::String> p1) {
+    (this->*_v8_FunctionTemplate_SetClassName)(p1);
+}
+static v8::Local<v8::ObjectTemplate> (v8::FunctionTemplate::*_v8_FunctionTemplate_PrototypeTemplate)();
+v8::Local<v8::ObjectTemplate> v8::FunctionTemplate::PrototypeTemplate() {
+    return (this->*_v8_FunctionTemplate_PrototypeTemplate)();
+}
+static v8::Local<v8::ObjectTemplate> (v8::FunctionTemplate::*_v8_FunctionTemplate_InstanceTemplate)();
+v8::Local<v8::ObjectTemplate> v8::FunctionTemplate::InstanceTemplate() {
+    return (this->*_v8_FunctionTemplate_InstanceTemplate)();
+}
+static v8::Local<v8::Object> (v8::FunctionTemplate::*_v8_FunctionTemplate_GetFunction)(v8::Local<v8::Context>);
+v8::Local<v8::Object> v8::FunctionTemplate::GetFunction(v8::Local<v8::Context> p1) {
+    return (this->*_v8_FunctionTemplate_GetFunction)(p1);
+}
+static v8::Local<v8::Object> (v8::ObjectTemplate::*_v8_ObjectTemplate_NewInstance)(v8::Local<v8::Context>);
+v8::Local<v8::Object> v8::ObjectTemplate::NewInstance(v8::Local<v8::Context> p1) {
+    return (this->*_v8_ObjectTemplate_NewInstance)(p1);
+}
+static void (v8::ObjectTemplate::*_v8_ObjectTemplate_SetImmutableProto)();
+void v8::ObjectTemplate::SetImmutableProto() {
+    (this->*_v8_ObjectTemplate_SetImmutableProto)();
+}
+static void (v8::ObjectTemplate::*_v8_ObjectTemplate_SetInternalFieldCount)(int);
+void v8::ObjectTemplate::SetInternalFieldCount(int p1) {
+    (this->*_v8_ObjectTemplate_SetInternalFieldCount)(p1);
+}
+static v8::Local<v8::Value> (*_v8_Exception_RangeError)(v8::Local<v8::String>);
+v8::Local<v8::Value> v8::Exception::RangeError(v8::Local<v8::String> p1) {
+    return _v8_Exception_RangeError(p1);
+}
+static v8::Local<v8::Value> (*_v8_Exception_ReferenceError)(v8::Local<v8::String>);
+v8::Local<v8::Value> v8::Exception::ReferenceError(v8::Local<v8::String> p1) {
+    return _v8_Exception_ReferenceError(p1);
+}
+static v8::Local<v8::Value> (*_v8_Exception_SyntaxError)(v8::Local<v8::String>);
+v8::Local<v8::Value> v8::Exception::SyntaxError(v8::Local<v8::String> p1) {
+    return _v8_Exception_SyntaxError(p1);
+}
+static v8::Local<v8::Value> (*_v8_Exception_TypeError)(v8::Local<v8::String>);
+v8::Local<v8::Value> v8::Exception::TypeError(v8::Local<v8::String> p1) {
+    return _v8_Exception_TypeError(p1);
+}
+static v8::Local<v8::Value> (*_v8_Exception_Error)(v8::Local<v8::String>);
+v8::Local<v8::Value> v8::Exception::Error(v8::Local<v8::String> p1) {
+    return _v8_Exception_Error(p1);
+}
+static v8::MaybeLocal<v8::Promise::Resolver> (*_v8_Promise_Resolver_New)(v8::Local<v8::Context>);
+v8::MaybeLocal<v8::Promise::Resolver> v8::Promise::Resolver::New(v8::Local<v8::Context> p1) {
+    return _v8_Promise_Resolver_New(p1);
+}
+static v8::Maybe<bool> (v8::Promise::Resolver::*_v8_Promise_Resolver_Resolve)(v8::Local<v8::Context>, v8::Local<v8::Value>);
+v8::Maybe<bool> v8::Promise::Resolver::Resolve(v8::Local<v8::Context> p1, v8::Local<v8::Value> p2) {
+    return (this->*_v8_Promise_Resolver_Resolve)(p1, p2);
+}
+static v8::Maybe<bool> (v8::Promise::Resolver::*_v8_Promise_Resolver_Reject)(v8::Local<v8::Context>, v8::Local<v8::Value>);
+v8::Maybe<bool> v8::Promise::Resolver::Reject(v8::Local<v8::Context> p1, v8::Local<v8::Value> p2) {
+    return (this->*_v8_Promise_Resolver_Reject)(p1, p2);
+}
+static void (*_v8_Promise_Resolver_CheckCast)(v8::Value *);
+void v8::Promise::Resolver::CheckCast(v8::Value * p1) {
+    _v8_Promise_Resolver_CheckCast(p1);
 }
 
 #include "ServerCommandOrigin.h"
@@ -1989,6 +2093,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Context_Exit == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Context4ExitEv");
     ((void*&) _v8_Context_New) = hybris_dlsym(handle, "_ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigurationENS_10MaybeLocalINS_14ObjectTemplateEEENS5_INS_5ValueEEE");
     if (_v8_Context_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigurationENS_10MaybeLocalINS_14ObjectTemplateEEENS5_INS_5ValueEEE");
+    ((void*&) _v8_Context_Global) = hybris_dlsym(handle, "_ZN2v87Context6GlobalEv");
+    if (_v8_Context_Global == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Context6GlobalEv");
     ((void*&) _v8_HandleScope_HandleScope) = hybris_dlsym(handle, "_ZN2v811HandleScopeC2EPNS_7IsolateE");
     if (_v8_HandleScope_HandleScope == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811HandleScopeC2EPNS_7IsolateE");
     ((void*&) _v8_HandleScope_destructor) = hybris_dlsym(handle, "_ZN2v811HandleScopeD2Ev");
@@ -2007,6 +2113,14 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Object_Get2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Object_Has) = hybris_dlsym(handle, "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
     if (_v8_Object_Has == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_SetInternalField) = hybris_dlsym(handle, "_ZN2v86Object16SetInternalFieldEiNS_5LocalINS_5ValueEEE");
+    if (_v8_Object_SetInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object16SetInternalFieldEiNS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_SetAlignedPointerInInternalField) = hybris_dlsym(handle, "_ZN2v86Object32SetAlignedPointerInInternalFieldEiPv");
+    if (_v8_Object_SetAlignedPointerInInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object32SetAlignedPointerInInternalFieldEiPv");
+    ((void*&) _v8_Object_GetInternalField) = hybris_dlsym(handle, "_ZN2v86Object20SlowGetInternalFieldEi");
+    if (_v8_Object_GetInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object20SlowGetInternalFieldEi");
+    ((void*&) _v8_Object_GetAlignedPointerFromInternalField) = hybris_dlsym(handle, "_ZN2v86Object38SlowGetAlignedPointerFromInternalFieldEi");
+    if (_v8_Object_GetAlignedPointerFromInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object38SlowGetAlignedPointerFromInternalFieldEi");
     ((void*&) _v8_Object_CheckCast) = hybris_dlsym(handle, "_ZN2v86Object9CheckCastEPNS_5ValueE");
     if (_v8_Object_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Array_New) = hybris_dlsym(handle, "_ZN2v85Array3NewEPNS_7IsolateEi");
@@ -2017,8 +2131,50 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Array_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v85Array9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Function_Call) = hybris_dlsym(handle, "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
     if (_v8_Function_Call == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
+    ((void*&) _v8_Function_New) = hybris_dlsym(handle, "_ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi");
+    if (_v8_Function_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi");
     ((void*&) _v8_Function_CheckCast) = hybris_dlsym(handle, "_ZN2v88Function9CheckCastEPNS_5ValueE");
     if (_v8_Function_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_Template_Set) = hybris_dlsym(handle, "_ZN2v88Template3SetENS_5LocalINS_4NameEEENS1_INS_4DataEEENS_17PropertyAttributeE");
+    if (_v8_Template_Set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Template3SetENS_5LocalINS_4NameEEENS1_INS_4DataEEENS_17PropertyAttributeE");
+    ((void*&) _v8_Template_SetAccessorProperty) = hybris_dlsym(handle, "_ZN2v88Template19SetAccessorPropertyENS_5LocalINS_4NameEEENS1_INS_16FunctionTemplateEEES5_NS_17PropertyAttributeENS_13AccessControlE");
+    if (_v8_Template_SetAccessorProperty == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Template19SetAccessorPropertyENS_5LocalINS_4NameEEENS1_INS_16FunctionTemplateEEES5_NS_17PropertyAttributeENS_13AccessControlE");
+    ((void*&) _v8_FunctionTemplate_New) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EENSA_INS_9SignatureEEEiNS_19ConstructorBehaviorE");
+    if (_v8_FunctionTemplate_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EENSA_INS_9SignatureEEEiNS_19ConstructorBehaviorE");
+    ((void*&) _v8_FunctionTemplate_Inherit) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate7InheritENS_5LocalIS0_EE");
+    if (_v8_FunctionTemplate_Inherit == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate7InheritENS_5LocalIS0_EE");
+    ((void*&) _v8_FunctionTemplate_SetClassName) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate12SetClassNameENS_5LocalINS_6StringEEE");
+    if (_v8_FunctionTemplate_SetClassName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate12SetClassNameENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_FunctionTemplate_PrototypeTemplate) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate17PrototypeTemplateEv");
+    if (_v8_FunctionTemplate_PrototypeTemplate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate17PrototypeTemplateEv");
+    ((void*&) _v8_FunctionTemplate_InstanceTemplate) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate16InstanceTemplateEv");
+    if (_v8_FunctionTemplate_InstanceTemplate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate16InstanceTemplateEv");
+    ((void*&) _v8_FunctionTemplate_GetFunction) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate11GetFunctionENS_5LocalINS_7ContextEEE");
+    if (_v8_FunctionTemplate_GetFunction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate11GetFunctionENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_ObjectTemplate_NewInstance) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate11NewInstanceENS_5LocalINS_7ContextEEE");
+    if (_v8_ObjectTemplate_NewInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate11NewInstanceENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_ObjectTemplate_SetImmutableProto) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate17SetImmutableProtoEv");
+    if (_v8_ObjectTemplate_SetImmutableProto == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate17SetImmutableProtoEv");
+    ((void*&) _v8_ObjectTemplate_SetInternalFieldCount) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate21SetInternalFieldCountEi");
+    if (_v8_ObjectTemplate_SetInternalFieldCount == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate21SetInternalFieldCountEi");
+    ((void*&) _v8_Exception_RangeError) = hybris_dlsym(handle, "_ZN2v89Exception10RangeErrorENS_5LocalINS_6StringEEE");
+    if (_v8_Exception_RangeError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception10RangeErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Exception_ReferenceError) = hybris_dlsym(handle, "_ZN2v89Exception14ReferenceErrorENS_5LocalINS_6StringEEE");
+    if (_v8_Exception_ReferenceError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception14ReferenceErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Exception_SyntaxError) = hybris_dlsym(handle, "_ZN2v89Exception11SyntaxErrorENS_5LocalINS_6StringEEE");
+    if (_v8_Exception_SyntaxError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception11SyntaxErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Exception_TypeError) = hybris_dlsym(handle, "_ZN2v89Exception9TypeErrorENS_5LocalINS_6StringEEE");
+    if (_v8_Exception_TypeError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception9TypeErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Exception_Error) = hybris_dlsym(handle, "_ZN2v89Exception5ErrorENS_5LocalINS_6StringEEE");
+    if (_v8_Exception_Error == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception5ErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Promise_Resolver_New) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
+    if (_v8_Promise_Resolver_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_Promise_Resolver_Resolve) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    if (_v8_Promise_Resolver_Resolve == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    ((void*&) _v8_Promise_Resolver_Reject) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    if (_v8_Promise_Resolver_Reject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    ((void*&) _v8_Promise_Resolver_CheckCast) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver9CheckCastEPNS_5ValueE");
+    if (_v8_Promise_Resolver_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver9CheckCastEPNS_5ValueE");
     ((void*&) _ServerCommandOrigin_ServerCommandOrigin) = hybris_dlsym(handle, "_ZN19ServerCommandOriginC2ERKSsR11ServerLevel");
     if (_ServerCommandOrigin_ServerCommandOrigin == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ServerCommandOriginC2ERKSsR11ServerLevel");
     void** vt_PlayerCommandOrigin = (void**) hybris_dlsym(handle, "_ZTV19PlayerCommandOrigin") + 2;
