@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Feb 16 2019 11:56:04 UTC
+// Generated on Sat Feb 16 2019 14:23:49 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1143,6 +1143,10 @@ static v8::Local<v8::Value> (v8::Function::*_v8_Function_Call)(v8::Local<v8::Val
 v8::Local<v8::Value> v8::Function::Call(v8::Local<v8::Value> p1, int p2, v8::Local<v8::Value> * p3) {
     return (this->*_v8_Function_Call)(p1, p2, p3);
 }
+static v8::Local<v8::Object> (v8::Function::*_v8_Function_NewInstance)(v8::Local<v8::Context>, int, v8::Local<v8::Value> *);
+v8::Local<v8::Object> v8::Function::NewInstance(v8::Local<v8::Context> p1, int p2, v8::Local<v8::Value> * p3) {
+    return (this->*_v8_Function_NewInstance)(p1, p2, p3);
+}
 static v8::Local<v8::Function> (*_v8_Function_New)(v8::Isolate *, v8::FunctionCallback, v8::Local<v8::Value>, int);
 v8::Local<v8::Function> v8::Function::New(v8::Isolate * p1, v8::FunctionCallback p2, v8::Local<v8::Value> p3, int p4) {
     return _v8_Function_New(p1, p2, p3, p4);
@@ -1182,6 +1186,10 @@ v8::Local<v8::ObjectTemplate> v8::FunctionTemplate::InstanceTemplate() {
 static v8::Local<v8::Object> (v8::FunctionTemplate::*_v8_FunctionTemplate_GetFunction)(v8::Local<v8::Context>);
 v8::Local<v8::Object> v8::FunctionTemplate::GetFunction(v8::Local<v8::Context> p1) {
     return (this->*_v8_FunctionTemplate_GetFunction)(p1);
+}
+static bool (v8::FunctionTemplate::*_v8_FunctionTemplate_HasInstance)(v8::Local<v8::Value>);
+bool v8::FunctionTemplate::HasInstance(v8::Local<v8::Value> p1) {
+    return (this->*_v8_FunctionTemplate_HasInstance)(p1);
 }
 static v8::Local<v8::Object> (v8::ObjectTemplate::*_v8_ObjectTemplate_NewInstance)(v8::Local<v8::Context>);
 v8::Local<v8::Object> v8::ObjectTemplate::NewInstance(v8::Local<v8::Context> p1) {
@@ -2131,6 +2139,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Array_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v85Array9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Function_Call) = hybris_dlsym(handle, "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
     if (_v8_Function_Call == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
+    ((void*&) _v8_Function_NewInstance) = hybris_dlsym(handle, "_ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE");
+    if (_v8_Function_NewInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE");
     ((void*&) _v8_Function_New) = hybris_dlsym(handle, "_ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi");
     if (_v8_Function_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi");
     ((void*&) _v8_Function_CheckCast) = hybris_dlsym(handle, "_ZN2v88Function9CheckCastEPNS_5ValueE");
@@ -2151,6 +2161,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_FunctionTemplate_InstanceTemplate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate16InstanceTemplateEv");
     ((void*&) _v8_FunctionTemplate_GetFunction) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate11GetFunctionENS_5LocalINS_7ContextEEE");
     if (_v8_FunctionTemplate_GetFunction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate11GetFunctionENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_FunctionTemplate_HasInstance) = hybris_dlsym(handle, "_ZN2v816FunctionTemplate11HasInstanceENS_5LocalINS_5ValueEEE");
+    if (_v8_FunctionTemplate_HasInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v816FunctionTemplate11HasInstanceENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_ObjectTemplate_NewInstance) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate11NewInstanceENS_5LocalINS_7ContextEEE");
     if (_v8_ObjectTemplate_NewInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate11NewInstanceENS_5LocalINS_7ContextEEE");
     ((void*&) _v8_ObjectTemplate_SetImmutableProto) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate17SetImmutableProtoEv");

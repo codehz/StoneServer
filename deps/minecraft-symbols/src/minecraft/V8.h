@@ -519,6 +519,8 @@ public:
   }
   /// @symbol _ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_
   v8::Local<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
+  /// @symbol _ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE
+  v8::Local<v8::Object> NewInstance(v8::Local<v8::Context> context, int argc, v8::Local<v8::Value> *argv);
   /// @symbol _ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi
   static v8::Local<v8::Function> New(v8::Isolate *, v8::FunctionCallback, v8::Local<v8::Value>, int);
 };
@@ -539,9 +541,12 @@ public:
 
 class FunctionTemplate : public Template {
 public:
+  inline static FunctionTemplate *Cast(Value *obj) { return (FunctionTemplate *)obj; }
   /// @symbol _ZN2v816FunctionTemplate3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EENSA_INS_9SignatureEEEiNS_19ConstructorBehaviorE
   static v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, v8::Local<v8::Value> data, v8::Local<v8::Signature> signature, int length);
-  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback) { return New(isolate, callback, Local<Value>(), Local<Signature>(), 0); }
+  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate) { return New(isolate, nullptr); }
+  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback) { return New(isolate, callback, Local<Value>()); }
+  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, v8::Local<v8::Value> data) { return New(isolate, callback, data, Local<Signature>(), 0); }
   static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, int length) { return New(isolate, callback, Local<Value>(), Local<Signature>(), length); }
 
   /// @symbol _ZN2v816FunctionTemplate7InheritENS_5LocalIS0_EE
@@ -558,6 +563,9 @@ public:
 
   /// @symbol _ZN2v816FunctionTemplate11GetFunctionENS_5LocalINS_7ContextEEE
   v8::Local<v8::Object> GetFunction(v8::Local<v8::Context>);
+
+  /// @symbol _ZN2v816FunctionTemplate11HasInstanceENS_5LocalINS_5ValueEEE
+  bool HasInstance(v8::Local<v8::Value> object);
 };
 
 class ObjectTemplate : public Template {
