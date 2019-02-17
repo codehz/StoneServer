@@ -49,6 +49,7 @@ class Isolate;
 class Platform;
 class Value;
 class Object;
+class Array;
 class Context;
 class Boolean;
 class Number;
@@ -460,6 +461,15 @@ public:
   void operator=(const EscapableHandleScope &) = delete;
 };
 
+enum PropertyFilter : int {
+  ALL_PROPERTIES    = 0,
+  ONLY_WRITABLE     = 1,
+  ONLY_ENUMERABLE   = 2,
+  ONLY_CONFIGURABLE = 4,
+  SKIP_STRINGS      = 8,
+  SKIP_SYMBOLS      = 16,
+};
+
 class Object : public Value {
   /// @symbol _ZN2v86Object9CheckCastEPNS_5ValueE
   static void CheckCast(v8::Value *obj);
@@ -490,6 +500,11 @@ public:
   v8::Local<v8::Value> GetInternalField(int pos);
   /// @symbol _ZN2v86Object38SlowGetAlignedPointerFromInternalFieldEi
   void *GetAlignedPointerFromInternalField(int pos);
+
+  /// @symbol _ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEE
+  v8::Local<v8::Array> GetOwnPropertyNames(v8::Local<v8::Context>);
+  /// @symbol _ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEENS_14PropertyFilterE
+  v8::Local<v8::Array> GetOwnPropertyNames(v8::Local<v8::Context>, v8::PropertyFilter);
 };
 
 class Array : public Object {

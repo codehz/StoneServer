@@ -1,13 +1,13 @@
 #pragma once
-#include <minecraft/ServerInstance.h>
 #include <interface/locator.hpp>
+#include <minecraft/ServerInstance.h>
 
 #include <condition_variable>
 #include <cstdarg>
 #include <functional>
-#include <type_traits>
 #include <mutex>
 #include <string>
+#include <type_traits>
 
 void *&MinecraftHandle();
 
@@ -39,11 +39,22 @@ template <typename F> inline static void QueueForServerThread(F fn) {
 }
 
 template <std::size_t buffer = 1024> __attribute__((format(printf, 1, 2))) inline std::string strformat(const char *temp, ...) {
-  std::string result;
-  result.reserve(buffer);
+  char result[buffer];
   va_list args;
   va_start(args, temp);
-  vsnprintf((char *)result.data(), buffer, temp, args);
+  vsnprintf(result, buffer, temp, args);
   va_end(args);
   return result;
 }
+
+template <typename Func> struct FailGuard {
+  Func fn;
+  bool canceled;
+  inline FailGuard(Func fn)
+      : fn(fn)
+      , canceled(false) {}
+  inline void cancel() { canceled = true; }
+  inline ~FailGuard() {
+    if (!canceled) fn();
+  }
+};

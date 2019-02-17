@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Feb 16 2019 14:23:49 UTC
+// Generated on Sun Feb 17 2019 01:23:11 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1123,6 +1123,14 @@ static void * (v8::Object::*_v8_Object_GetAlignedPointerFromInternalField)(int);
 void * v8::Object::GetAlignedPointerFromInternalField(int p1) {
     return (this->*_v8_Object_GetAlignedPointerFromInternalField)(p1);
 }
+static v8::Local<v8::Array> (v8::Object::*_v8_Object_GetOwnPropertyNames)(v8::Local<v8::Context>);
+v8::Local<v8::Array> v8::Object::GetOwnPropertyNames(v8::Local<v8::Context> p1) {
+    return (this->*_v8_Object_GetOwnPropertyNames)(p1);
+}
+static v8::Local<v8::Array> (v8::Object::*_v8_Object_GetOwnPropertyNames2)(v8::Local<v8::Context>, v8::PropertyFilter);
+v8::Local<v8::Array> v8::Object::GetOwnPropertyNames(v8::Local<v8::Context> p1, v8::PropertyFilter p2) {
+    return (this->*_v8_Object_GetOwnPropertyNames2)(p1, p2);
+}
 static void (*_v8_Object_CheckCast)(v8::Value *);
 void v8::Object::CheckCast(v8::Value * p1) {
     _v8_Object_CheckCast(p1);
@@ -2129,6 +2137,10 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Object_GetInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object20SlowGetInternalFieldEi");
     ((void*&) _v8_Object_GetAlignedPointerFromInternalField) = hybris_dlsym(handle, "_ZN2v86Object38SlowGetAlignedPointerFromInternalFieldEi");
     if (_v8_Object_GetAlignedPointerFromInternalField == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object38SlowGetAlignedPointerFromInternalFieldEi");
+    ((void*&) _v8_Object_GetOwnPropertyNames) = hybris_dlsym(handle, "_ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEE");
+    if (_v8_Object_GetOwnPropertyNames == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEE");
+    ((void*&) _v8_Object_GetOwnPropertyNames2) = hybris_dlsym(handle, "_ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEENS_14PropertyFilterE");
+    if (_v8_Object_GetOwnPropertyNames2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object19GetOwnPropertyNamesENS_5LocalINS_7ContextEEENS_14PropertyFilterE");
     ((void*&) _v8_Object_CheckCast) = hybris_dlsym(handle, "_ZN2v86Object9CheckCastEPNS_5ValueE");
     if (_v8_Object_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Array_New) = hybris_dlsym(handle, "_ZN2v85Array3NewEPNS_7IsolateEi");
