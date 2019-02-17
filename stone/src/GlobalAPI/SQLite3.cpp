@@ -103,8 +103,8 @@ static void fill_stmt(Isolate *iso, sqlite3 *db, sqlite3_stmt *stmt, Local<Objec
     if (numid == 0) { throw Exception::ReferenceError(STR(strformat("param`%s` not found", key->ToString(iso) >> V8Str >> CStr))); }
     auto value = param->Get(key);
     if (value->IsArrayBuffer()) {
-      throw "ArrayBuffer is unsupported";
-      // sqlite3_bind_blob(stmt, numid, const void *, int n, void (*)(void *))
+      auto buffer = ArrayBuffer::Cast(value)->GetContents();
+      sqlite3_bind_blob(stmt, numid, buffer.Data(), buffer.ByteLength(), SQLITE_TRANSIENT);
     } else if (value->IsString()) {
       sqlite3_bind_text(stmt, numid, value >> V8Str >> CStr, -1, nullptr);
     } else if (value->IsNumber()) {
@@ -150,7 +150,12 @@ static void bind_sqlite3_query(FunctionCallbackInfo<Value> const &info) {
             case SQLITE_INTEGER: value = Integer::New(iso, sqlite3_column_int(stmt, i)); break;
             case SQLITE_FLOAT: value = Number::New(iso, sqlite3_column_double(stmt, i)); break;
             case SQLITE_TEXT: value = STR((char const *)sqlite3_column_text(stmt, i)); break;
-            case SQLITE_BLOB: value = v8::Null(iso); break;
+            case SQLITE_BLOB: {
+              auto abuffer = ArrayBuffer::New(iso, sqlite3_column_bytes(stmt, i));
+              auto buffer  = abuffer->GetContents();
+              memcpy(buffer.Data(), sqlite3_column_blob(stmt, i), buffer.ByteLength());
+              value = abuffer;
+            } break;
             case SQLITE_NULL: value = v8::Null(iso); break;
             default: value = v8::Undefined(iso); break;
             }

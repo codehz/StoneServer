@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Feb 17 2019 01:23:11 UTC
+// Generated on Sun Feb 17 2019 09:00:14 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1147,6 +1147,18 @@ static void (*_v8_Array_CheckCast)(v8::Value *);
 void v8::Array::CheckCast(v8::Value * p1) {
     _v8_Array_CheckCast(p1);
 }
+static v8::ArrayBuffer::Contents (v8::ArrayBuffer::*_v8_ArrayBuffer_GetContents)();
+v8::ArrayBuffer::Contents v8::ArrayBuffer::GetContents() {
+    return (this->*_v8_ArrayBuffer_GetContents)();
+}
+static v8::Local<v8::ArrayBuffer> (*_v8_ArrayBuffer_New)(v8::Isolate *, size_t);
+v8::Local<v8::ArrayBuffer> v8::ArrayBuffer::New(v8::Isolate * p1, size_t p2) {
+    return _v8_ArrayBuffer_New(p1, p2);
+}
+static void (*_v8_ArrayBuffer_CheckCast)(v8::Value *);
+void v8::ArrayBuffer::CheckCast(v8::Value * p1) {
+    _v8_ArrayBuffer_CheckCast(p1);
+}
 static v8::Local<v8::Value> (v8::Function::*_v8_Function_Call)(v8::Local<v8::Value>, int, v8::Local<v8::Value> *);
 v8::Local<v8::Value> v8::Function::Call(v8::Local<v8::Value> p1, int p2, v8::Local<v8::Value> * p3) {
     return (this->*_v8_Function_Call)(p1, p2, p3);
@@ -2149,6 +2161,12 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Array_Length == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Array6LengthEv");
     ((void*&) _v8_Array_CheckCast) = hybris_dlsym(handle, "_ZN2v85Array9CheckCastEPNS_5ValueE");
     if (_v8_Array_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v85Array9CheckCastEPNS_5ValueE");
+    ((void*&) _v8_ArrayBuffer_GetContents) = hybris_dlsym(handle, "_ZN2v811ArrayBuffer11GetContentsEv");
+    if (_v8_ArrayBuffer_GetContents == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811ArrayBuffer11GetContentsEv");
+    ((void*&) _v8_ArrayBuffer_New) = hybris_dlsym(handle, "_ZN2v811ArrayBuffer3NewEPNS_7IsolateEj");
+    if (_v8_ArrayBuffer_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811ArrayBuffer3NewEPNS_7IsolateEj");
+    ((void*&) _v8_ArrayBuffer_CheckCast) = hybris_dlsym(handle, "_ZN2v811ArrayBuffer9CheckCastEPNS_5ValueE");
+    if (_v8_ArrayBuffer_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811ArrayBuffer9CheckCastEPNS_5ValueE");
     ((void*&) _v8_Function_Call) = hybris_dlsym(handle, "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
     if (_v8_Function_Call == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_");
     ((void*&) _v8_Function_NewInstance) = hybris_dlsym(handle, "_ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE");

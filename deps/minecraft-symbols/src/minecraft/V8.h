@@ -521,6 +521,34 @@ public:
   unsigned Length() const;
 };
 
+class ArrayBuffer : public Object {
+
+  /// @symbol _ZN2v811ArrayBuffer9CheckCastEPNS_5ValueE
+  static void CheckCast(v8::Value *obj);
+
+public:
+  static v8::ArrayBuffer *Cast(v8::Value *obj) {
+    CheckCast(obj);
+    return (ArrayBuffer *)obj;
+  }
+  class Contents {
+    void *data_;
+    size_t byte_length_;
+
+  public:
+    Contents()
+        : data_(NULL)
+        , byte_length_(0) {}
+    void *Data() const { return data_; }
+    size_t ByteLength() const { return byte_length_; }
+  };
+
+  /// @symbol _ZN2v811ArrayBuffer11GetContentsEv
+  v8::ArrayBuffer::Contents GetContents();
+  /// @symbol _ZN2v811ArrayBuffer3NewEPNS_7IsolateEj
+  static v8::Local<v8::ArrayBuffer> New(v8::Isolate *isolate, size_t byte_length);
+};
+
 using FunctionCallback = void (*)(v8::FunctionCallbackInfo<v8::Value> const &);
 
 class Function : public Object {
