@@ -1,27 +1,28 @@
 #include "../patched/Flags.h"
 #include "common.h"
 #include <interface/chat.h>
-#include <minecraft/MinecraftCommands.h>
 #include <minecraft/CommandOrigin.h>
+#include <minecraft/MinecraftCommands.h>
 
 namespace ExtAPI {
 using namespace interface;
 
 static void invokePrivilegedCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
+  Isolate::Scope isos{ iso };
   if (info.Length() != 2) {
-    Log::error("Scripting", "invokePrivilegedCommand requires 2 arguments(current: %d)", info.Length());
+    iso->ThrowException(Exception::ReferenceError(STR(strformat("invokePrivilegedCommand requires 2 arguments(current: %d)", info.Length()))));
     return;
   }
 
   if (!info[0]->IsObject() || !info[1]->IsString()) {
-    Log::error("Scripting", "invokePrivilegedCommand requires (object, string)");
+    iso->ThrowException(Exception::ReferenceError(STR("invokePrivilegedCommand requires (object, string)")));
     return;
   }
   auto actor   = fromJS<Actor *>(iso, info[0]);
   auto command = fromJS<std::string>(iso, info[1]);
   if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
-    Log::error("Scripting", "invokePrivilegedCommand requires (player, string)");
+    iso->ThrowException(Exception::ReferenceError(STR("invokePrivilegedCommand requires (player, string)")));
     return;
   }
   auto origin                       = std::make_unique<PlayerCommandOrigin>((Player &)*actor);
