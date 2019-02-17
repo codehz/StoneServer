@@ -12,7 +12,7 @@
 #include <set>
 #include <string>
 
-namespace WebAPI {
+namespace GlobalAPI {
 using namespace v8;
 
 struct Register {
@@ -20,4 +20,4 @@ struct Register {
   inline Register(void (*func)(Local<Object> &, Isolate *, Local<Context> &)) { registry.emplace_back(func); }
 };
 
-} // namespace WebAPI
+} // namespace GlobalAPI

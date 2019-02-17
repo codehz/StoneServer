@@ -1,5 +1,5 @@
 #include "common.h"
 
-namespace WebAPI {
+namespace GlobalAPI {
 std::vector<void (*)(Local<Object> &, Isolate *, Local<Context> &)> Register::registry;
 }

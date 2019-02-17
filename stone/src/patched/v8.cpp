@@ -62,7 +62,7 @@ SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReport
   auto global       = ctx->Global();
   auto s_globalThis = toJS<std::string>(iso, "globalThis");
   if (!global->Has(s_globalThis)) { global->Set(s_globalThis, global); }
-  for (auto fn : WebAPI::Register::registry) fn(global, iso, ctx);
+  for (auto fn : GlobalAPI::Register::registry) fn(global, iso, ctx);
   return ret;
 }
 

@@ -4,7 +4,7 @@
 
 #include <map>
 
-namespace WebAPI {
+namespace GlobalAPI {
 
 using StatmentMap = std::map<std::string, sqlite3_stmt *>;
 
@@ -227,4 +227,4 @@ Register reg([](Local<Object> &obj, Isolate *iso, Local<Context> &ctx) {
   obj->Set(STR("SQLite3"), tmp_Database->GetFunction(ctx));
 });
 
-} // namespace WebAPI
+} // namespace GlobalAPI
