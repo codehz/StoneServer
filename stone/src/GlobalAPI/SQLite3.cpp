@@ -68,8 +68,8 @@ static void bind_sqlite3_exec(FunctionCallbackInfo<Value> const &info) {
         tc.ReThrow();
       else if (errmsg)
         iso->ThrowException(Exception::Error(STR(errmsg)));
-      else
-        info.GetReturnValue().Set(v8::Integer::New(iso, ret));
+      else if (ret != SQLITE_OK)
+        iso->ThrowException(Exception::Error(STR(sqlite3_errstr(ret))));
     } else {
       iso->ThrowException(Exception::TypeError(STR("Use exec(sql: string, callback?: (line: { [index: string]: string })): number")));
     }
@@ -204,8 +204,7 @@ static void bind_sqlite3_update(FunctionCallbackInfo<Value> const &info) {
         default: throw sqlite3_errmsg(db);
         }
       } else {
-        iso->ThrowException(
-            Exception::TypeError(STR("Use query(sql: string, params: { [index: string | number]: any }): Iterable<{ [index: string]: any }>")));
+        throw Exception::TypeError(STR("Use update(sql: string, params: { [index: string | number]: any }): number"));
       }
     } else {
       iso->ThrowException(Exception::Error(STR("Database is closed")));
@@ -215,44 +214,9 @@ static void bind_sqlite3_update(FunctionCallbackInfo<Value> const &info) {
   }
 }
 
-#define copy_const(name) tmp_Database->Set(STR(#name), v8::Integer::New(iso, name))
-
 Register reg([](Local<Object> &obj, Isolate *iso, Local<Context> &ctx) {
   auto tmp_Database = FunctionTemplate::New(iso, bind_sqlite3_open, 1);
   tmp_Database->SetClassName(STR("SQLite3"));
-  {
-    copy_const(SQLITE_OK);
-    copy_const(SQLITE_ERROR);
-    copy_const(SQLITE_INTERNAL);
-    copy_const(SQLITE_PERM);
-    copy_const(SQLITE_ABORT);
-    copy_const(SQLITE_BUSY);
-    copy_const(SQLITE_LOCKED);
-    copy_const(SQLITE_NOMEM);
-    copy_const(SQLITE_READONLY);
-    copy_const(SQLITE_INTERRUPT);
-    copy_const(SQLITE_IOERR);
-    copy_const(SQLITE_CORRUPT);
-    copy_const(SQLITE_NOTFOUND);
-    copy_const(SQLITE_FULL);
-    copy_const(SQLITE_CANTOPEN);
-    copy_const(SQLITE_PROTOCOL);
-    copy_const(SQLITE_EMPTY);
-    copy_const(SQLITE_SCHEMA);
-    copy_const(SQLITE_TOOBIG);
-    copy_const(SQLITE_CONSTRAINT);
-    copy_const(SQLITE_MISMATCH);
-    copy_const(SQLITE_MISUSE);
-    copy_const(SQLITE_NOLFS);
-    copy_const(SQLITE_AUTH);
-    copy_const(SQLITE_FORMAT);
-    copy_const(SQLITE_RANGE);
-    copy_const(SQLITE_NOTADB);
-    copy_const(SQLITE_NOTICE);
-    copy_const(SQLITE_WARNING);
-    copy_const(SQLITE_ROW);
-    copy_const(SQLITE_DONE);
-  }
   auto proto_Database = tmp_Database->InstanceTemplate();
   proto_Database->SetInternalFieldCount(3);
   proto_Database->SetAccessorProperty(STR("valid"), FunctionTemplate::New(iso, bind_sqlite3_valid));
