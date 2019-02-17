@@ -13,11 +13,11 @@ static void invokeConsoleCommandCallback(FunctionCallbackInfo<Value> const &info
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (info.Length() != 2) {
-    iso->ThrowException(Exception::ReferenceError(STR(strformat("invokeConsoleCommand requires 2 arguments(current: %d)", info.Length()))));
+    iso->ThrowException(Exception::TypeError(STR(strformat("invokeConsoleCommand requires 2 arguments(current: %d)", info.Length()))));
     return;
   }
   if (!info[0]->IsString() || !info[1]->IsString()) {
-    iso->ThrowException(Exception::ReferenceError(STR("invokeConsoleCommand requires (string, string)")));
+    iso->ThrowException(Exception::TypeError(STR("invokeConsoleCommand requires (string, string)")));
     return;
   }
   auto orig    = fromJS<std::string>(iso, info[0]);
