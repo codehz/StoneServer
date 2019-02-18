@@ -43,6 +43,7 @@ add_executable(stone
   "src/ExtAPI/invokePrivilegedCommand.cpp"
   "src/ExtAPI/registerCommand.cpp"
   "src/ExtAPI/transferPlayer.cpp"
+  "src/ExtAPI/broadcastExternalEvent.cpp"
   "src/GlobalAPI/common.h"
   "src/GlobalAPI/common.cpp"
   "src/GlobalAPI/SQLite3.cpp"

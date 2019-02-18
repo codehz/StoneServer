@@ -38,6 +38,7 @@
 #include <stone-api/Chat.h>
 #include <stone-api/Command.h>
 #include <stone-api/Core.h>
+#include <stone-api/Script.h>
 
 #include <condition_variable>
 #include <csignal>
@@ -102,7 +103,14 @@ int main() {
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService<ServerSide>>().generate();
   auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService<ServerSide>>().generate();
   auto &srv_command [[maybe_unused]]   = Locator<CommandService<ServerSide>>().generate();
-  Log::addHook([&](auto level, auto tag, auto content) { Sync << [=, &srv_core] { srv_core.log << LogEntry{ tag, level, content }; }; });
+  auto &srv_script [[maybe_unused]]    = Locator<ScriptService<ServerSide>>().generate();
+  int status                           = 0;
+  Log::addHook([&](auto level, auto tag, auto content) {
+    if (status == 0)
+      srv_core.log << LogEntry{ tag, level, content };
+    else if (status == 1)
+      Sync << [=, &srv_core] { srv_core.log << LogEntry{ tag, level, content }; };
+  });
 
   MinecraftUtils::initSymbolBindings(handle);
   Log::info("StoneServer", "Game version: %s", Common::getGameVersionStringNet().c_str());
@@ -258,7 +266,9 @@ int main() {
     }));
   };
 
+  status = 1;
   apid_start();
+  status = 2;
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();

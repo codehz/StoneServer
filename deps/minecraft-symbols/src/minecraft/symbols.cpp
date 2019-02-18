@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Feb 17 2019 09:00:14 UTC
+// Generated on Mon Feb 18 2019 02:34:30 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1348,17 +1348,33 @@ void mce::Platform::OGL::InitBindings() {
 }
 
 #include "ScriptApi.h"
-static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpDefineActor)(Actor const &, v8::Persistent<v8::Object> &);
-int MinecraftServerScriptEngine::helpDefineActor(Actor const & p1, v8::Persistent<v8::Object> & p2) {
+static void (ScriptEngine::*_ScriptEngine_fireEventToScript)(EventInfo const &, ScriptApi::ScriptObjectHandle const &);
+void ScriptEngine::fireEventToScript(EventInfo const & p1, ScriptApi::ScriptObjectHandle const & p2) {
+    (this->*_ScriptEngine_fireEventToScript)(p1, p2);
+}
+static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpDefineActor)(Actor const &, ScriptApi::ScriptObjectHandle &);
+int MinecraftServerScriptEngine::helpDefineActor(Actor const & p1, ScriptApi::ScriptObjectHandle & p2) {
     return (this->*_MinecraftServerScriptEngine_helpDefineActor)(p1, p2);
 }
-static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpGetActor)(v8::Persistent<v8::Object> const &, Actor * &);
-int MinecraftServerScriptEngine::helpGetActor(v8::Persistent<v8::Object> const & p1, Actor * & p2) {
+static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpGetActor)(ScriptApi::ScriptObjectHandle const &, Actor * &);
+int MinecraftServerScriptEngine::helpGetActor(ScriptApi::ScriptObjectHandle const & p1, Actor * & p2) {
     return (this->*_MinecraftServerScriptEngine_helpGetActor)(p1, p2);
 }
-static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_isValidEntity)(ScriptApi::ScriptVersionInfo const &, v8::Persistent<v8::Object> const &, bool &);
-int MinecraftServerScriptEngine::isValidEntity(ScriptApi::ScriptVersionInfo const & p1, v8::Persistent<v8::Object> const & p2, bool & p3) {
+static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_isValidEntity)(ScriptApi::ScriptVersionInfo const &, ScriptApi::ScriptObjectHandle const &, bool &);
+int MinecraftServerScriptEngine::isValidEntity(ScriptApi::ScriptVersionInfo const & p1, ScriptApi::ScriptObjectHandle const & p2, bool & p3) {
     return (this->*_MinecraftServerScriptEngine_isValidEntity)(p1, p2, p3);
+}
+static void (ScriptEventData::*_ScriptEventData_ScriptEventData)(mcpe::string const &);
+ScriptEventData::ScriptEventData(mcpe::string const & p1) {
+    (this->*_ScriptEventData_ScriptEventData)(p1);
+}
+static void (ScriptEventData::*_ScriptEventData_destructor)();
+ScriptEventData::~ScriptEventData() {
+    (this->*_ScriptEventData_destructor)();
+}
+static bool (ScriptEventData::*_ScriptEventData_serialize)(ScriptEngine &, EventInfo &, ScriptApi::ScriptObjectHandle &) const;
+bool ScriptEventData::serialize(ScriptEngine & p1, EventInfo & p2, ScriptApi::ScriptObjectHandle & p3) const {
+    return (this->*_ScriptEventData_serialize)(p1, p2, p3);
 }
 
 #include "Multitouch.h"
@@ -2248,12 +2264,20 @@ void minecraft_symbols_init(void* handle) {
     if (_gl_getOpenGLExtensions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl19getOpenGLExtensionsEv");
     ((void*&) _mce_Platform_OGL_InitBindings) = hybris_dlsym(handle, "_ZN3mce8Platform3OGL12InitBindingsEv");
     if (_mce_Platform_OGL_InitBindings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce8Platform3OGL12InitBindingsEv");
+    ((void*&) _ScriptEngine_fireEventToScript) = hybris_dlsym(handle, "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
+    if (_ScriptEngine_fireEventToScript == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _MinecraftServerScriptEngine_helpDefineActor) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE");
     if (_MinecraftServerScriptEngine_helpDefineActor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _MinecraftServerScriptEngine_helpGetActor) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE12helpGetActorERKN9ScriptApi18ScriptObjectHandleEPP5Actor");
     if (_MinecraftServerScriptEngine_helpGetActor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN23ScriptEngineWithContextI19ScriptServerContextE12helpGetActorERKN9ScriptApi18ScriptObjectHandleEPP5Actor");
     ((void*&) _MinecraftServerScriptEngine_isValidEntity) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptClientContextE13isValidEntityERKN9ScriptApi17ScriptVersionInfoERKNS2_18ScriptObjectHandleERb");
     if (_MinecraftServerScriptEngine_isValidEntity == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN23ScriptEngineWithContextI19ScriptClientContextE13isValidEntityERKN9ScriptApi17ScriptVersionInfoERKNS2_18ScriptObjectHandleERb");
+    ((void*&) _ScriptEventData_ScriptEventData) = hybris_dlsym(handle, "_ZN15ScriptEventDataC2ERKSs");
+    if (_ScriptEventData_ScriptEventData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ScriptEventDataC2ERKSs");
+    ((void*&) _ScriptEventData_destructor) = hybris_dlsym(handle, "_ZN15ScriptEventDataD2Ev");
+    if (_ScriptEventData_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ScriptEventDataD2Ev");
+    ((void*&) _ScriptEventData_serialize) = hybris_dlsym(handle, "_ZNK15ScriptEventData9serializeER12ScriptEngineR9EventInfoRN9ScriptApi18ScriptObjectHandleE");
+    if (_ScriptEventData_serialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15ScriptEventData9serializeER12ScriptEngineR9EventInfoRN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _Multitouch_feed) = hybris_dlsym(handle, "_ZN10Multitouch4feedEccssi");
     if (_Multitouch_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Multitouch4feedEccssi");
     ((void*&) _ResourceLoadManager_ResourceLoadManager) = hybris_dlsym(handle, "_ZN19ResourceLoadManagerC2Ev");

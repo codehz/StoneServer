@@ -38,7 +38,7 @@ template <typename F> void SetTimeout(long long m, F f) {
 
 inline static struct _Sync {
   template <typename F> void operator<<(F f) { SetTimeout(0, f); }
-} Sync;
+} Sync [[maybe_unused]];
 #endif
 
 struct Empty {};

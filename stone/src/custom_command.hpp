@@ -97,7 +97,7 @@ template <typename T> struct FetchGenerator<CommandSelector<T>> {
     auto &engine = Locator<MinecraftServerScriptEngine>();
     int index    = 0;
     for (auto actor : *results) {
-      v8::Persistent<v8::Object> pers;
+      v8::Persistent<v8::Value> pers;
       engine->helpDefineActor(*actor, pers);
       ret->Set(index++, pers.Get(iso));
     }

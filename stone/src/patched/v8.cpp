@@ -1,4 +1,5 @@
 #include <minecraft/V8.h>
+#include <stone-api/Script.h>
 #include <stone/hook_helper.h>
 #include <stone/server_hook.h>
 
@@ -65,5 +66,18 @@ SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReport
   for (auto fn : GlobalAPI::Register::registry) fn(global, iso, ctx);
   return ret;
 }
+
+static patched::details::RegisterPatchInit pinit([] {
+  using namespace api;
+  Locator<ScriptService<ServerSide>>()->emit >> [](EventData const &data) {
+    auto &core = *Locator<ScriptApi::V8CoreInterface>();
+    auto iso   = V8Isolate[core];
+    HandleScope scope{ iso };
+    Isolate::Scope iso_scope{ iso };
+    auto ctx = V8Context[core].Get(iso);
+    Context::Scope ctx_scope{ ctx };
+    Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, toJS(iso, data.data) });
+  };
+});
 
 } // namespace
