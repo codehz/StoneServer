@@ -9,7 +9,6 @@
 #include "../operators.h"
 #include "../patched.h"
 #include "../v8_utils.hpp"
-#include "../server_properties.h"
 #include "ScriptInterface.h"
 
 #include "Flags.h"
@@ -57,7 +56,6 @@ SHook(
 }
 
 SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReportE, ScriptApi::V8CoreInterface, void *report) {
-  if (!Locator<ServerProperties>()->experimentMode) return 0;
   auto ret = original(this, report);
   if (!ret) return ret;
   auto iso = V8Isolate[*this];

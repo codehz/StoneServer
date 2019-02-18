@@ -162,6 +162,7 @@ int main() {
   levelSettings.serverChunkTickRange  = props.tickDistance;
   levelSettings.overrideSavedSettings = true;
   levelSettings.achievementsDisabled  = false;
+  if (props.experimentMode) Log::warn("StoneServer", "Experiment mode is enabled in config file!");
 
   Log::trace("StoneServer", "Initializing FilePathManager");
   FilePathManager pathmgr(appPlatform->getCurrentStoragePath(), false);
