@@ -26,5 +26,8 @@ action "push" {
 action "appleboy/telegram-action@master" {
   uses = "appleboy/telegram-action@master"
   needs = ["push"]
-  secrets = ["TELEGRAM_TOKEN", "TELEGRAM_TO"]
+  secrets = [
+    "TELEGRAM_TOKEN",
+    "TELEGRAM_TO",
+  ]
 }
