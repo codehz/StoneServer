@@ -5,11 +5,9 @@
 #include <minecraft/Level.h>
 #include <properties/property.h>
 
-namespace {
-
-using namespace properties;
-
 class ServerProperties {
+  using property_list                  = properties::property_list;
+  template <typename T> using property = properties::property<T>;
 
 public:
   std::string config;
@@ -78,5 +76,3 @@ public:
     properties.save(propertiesFile);
   }
 };
-
-} // namespace

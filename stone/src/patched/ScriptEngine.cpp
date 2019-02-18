@@ -2,6 +2,8 @@
 #include "../server_properties.h"
 #include <stone/server_hook.h>
 
+extern bool GlobalExperimentMode;
+
 namespace {
 
 using namespace interface;
