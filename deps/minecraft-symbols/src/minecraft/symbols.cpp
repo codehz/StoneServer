@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Feb 18 2019 02:34:30 UTC
+// Generated on Mon Feb 18 2019 11:27:28 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -63,9 +63,17 @@ static void (CommandOutput::*_CommandOutput_addMessage)(mcpe::string const &, st
 void CommandOutput::addMessage(mcpe::string const & p1, std::vector<CommandOutputParameter> const & p2, CommandOutputMessageType p3) {
     (this->*_CommandOutput_addMessage)(p1, p2, p3);
 }
-static void (CommandOutput::*_CommandOutput_success)();
+static void (CommandOutput::*_CommandOutput_error)(mcpe::string const &, std::vector<CommandOutputParameter> const &);
+void CommandOutput::error(mcpe::string const & p1, std::vector<CommandOutputParameter> const & p2) {
+    (this->*_CommandOutput_error)(p1, p2);
+}
+static void (CommandOutput::*_CommandOutput_success)(mcpe::string const &, std::vector<CommandOutputParameter> const &);
+void CommandOutput::success(mcpe::string const & p1, std::vector<CommandOutputParameter> const & p2) {
+    (this->*_CommandOutput_success)(p1, p2);
+}
+static void (CommandOutput::*_CommandOutput_success2)();
 void CommandOutput::success() {
-    (this->*_CommandOutput_success)();
+    (this->*_CommandOutput_success2)();
 }
 static void (CommandOutputParameter::*_CommandOutputParameter_CommandOutputParameter)(mcpe::string const &);
 CommandOutputParameter::CommandOutputParameter(mcpe::string const & p1) {
@@ -643,6 +651,10 @@ static void * (*_v8_V8_GlobalizeReference)(v8::Isolate *, void *);
 void * v8::V8::GlobalizeReference(v8::Isolate * p1, void * p2) {
     return _v8_V8_GlobalizeReference(p1, p2);
 }
+static void (*_v8_V8_DisposeGlobal)(void *);
+void v8::V8::DisposeGlobal(void * p1) {
+    _v8_V8_DisposeGlobal(p1);
+}
 static void * (*_v8_V8_CreateHandle)(v8::Isolate *, void *);
 void * v8::V8::CreateHandle(v8::Isolate * p1, void * p2) {
     return _v8_V8_CreateHandle(p1, p2);
@@ -1031,6 +1043,10 @@ static void (v8::TryCatch::*_v8_TryCatch_SetCaptureMessage)(bool);
 void v8::TryCatch::SetCaptureMessage(bool p1) {
     (this->*_v8_TryCatch_SetCaptureMessage)(p1);
 }
+static v8::Local<v8::String> (v8::Message::*_v8_Message_Get)() const;
+v8::Local<v8::String> v8::Message::Get() const {
+    return (this->*_v8_Message_Get)();
+}
 static v8::Local<v8::Value> (v8::Isolate::*_v8_Isolate_ThrowException)(v8::Local<v8::Value>);
 v8::Local<v8::Value> v8::Isolate::ThrowException(v8::Local<v8::Value> p1) {
     return (this->*_v8_Isolate_ThrowException)(p1);
@@ -1054,6 +1070,10 @@ void v8::Isolate::Enter() {
 static void (v8::Isolate::*_v8_Isolate_Exit)();
 void v8::Isolate::Exit() {
     (this->*_v8_Isolate_Exit)();
+}
+static void (v8::Isolate::*_v8_Isolate_RunMicrotasks)();
+void v8::Isolate::RunMicrotasks() {
+    (this->*_v8_Isolate_RunMicrotasks)();
 }
 static void (v8::Context::*_v8_Context_Enter)();
 void v8::Context::Enter() {
@@ -1159,8 +1179,8 @@ static void (*_v8_ArrayBuffer_CheckCast)(v8::Value *);
 void v8::ArrayBuffer::CheckCast(v8::Value * p1) {
     _v8_ArrayBuffer_CheckCast(p1);
 }
-static v8::Local<v8::Value> (v8::Function::*_v8_Function_Call)(v8::Local<v8::Value>, int, v8::Local<v8::Value> *);
-v8::Local<v8::Value> v8::Function::Call(v8::Local<v8::Value> p1, int p2, v8::Local<v8::Value> * p3) {
+static v8::MaybeLocal<v8::Value> (v8::Function::*_v8_Function_Call)(v8::Local<v8::Value>, int, v8::Local<v8::Value> *);
+v8::MaybeLocal<v8::Value> v8::Function::Call(v8::Local<v8::Value> p1, int p2, v8::Local<v8::Value> * p3) {
     return (this->*_v8_Function_Call)(p1, p2, p3);
 }
 static v8::Local<v8::Object> (v8::Function::*_v8_Function_NewInstance)(v8::Local<v8::Context>, int, v8::Local<v8::Value> *);
@@ -1243,8 +1263,8 @@ static v8::Local<v8::Value> (*_v8_Exception_Error)(v8::Local<v8::String>);
 v8::Local<v8::Value> v8::Exception::Error(v8::Local<v8::String> p1) {
     return _v8_Exception_Error(p1);
 }
-static v8::MaybeLocal<v8::Promise::Resolver> (*_v8_Promise_Resolver_New)(v8::Local<v8::Context>);
-v8::MaybeLocal<v8::Promise::Resolver> v8::Promise::Resolver::New(v8::Local<v8::Context> p1) {
+static v8::Local<v8::Promise::Resolver> (*_v8_Promise_Resolver_New)(v8::Local<v8::Context>);
+v8::Local<v8::Promise::Resolver> v8::Promise::Resolver::New(v8::Local<v8::Context> p1) {
     return _v8_Promise_Resolver_New(p1);
 }
 static v8::Maybe<bool> (v8::Promise::Resolver::*_v8_Promise_Resolver_Resolve)(v8::Local<v8::Context>, v8::Local<v8::Value>);
@@ -1254,6 +1274,10 @@ v8::Maybe<bool> v8::Promise::Resolver::Resolve(v8::Local<v8::Context> p1, v8::Lo
 static v8::Maybe<bool> (v8::Promise::Resolver::*_v8_Promise_Resolver_Reject)(v8::Local<v8::Context>, v8::Local<v8::Value>);
 v8::Maybe<bool> v8::Promise::Resolver::Reject(v8::Local<v8::Context> p1, v8::Local<v8::Value> p2) {
     return (this->*_v8_Promise_Resolver_Reject)(p1, p2);
+}
+static v8::Local<v8::Promise> (v8::Promise::Resolver::*_v8_Promise_Resolver_GetPromise)();
+v8::Local<v8::Promise> v8::Promise::Resolver::GetPromise() {
+    return (this->*_v8_Promise_Resolver_GetPromise)();
 }
 static void (*_v8_Promise_Resolver_CheckCast)(v8::Value *);
 void v8::Promise::Resolver::CheckCast(v8::Value * p1) {
@@ -1346,6 +1370,10 @@ static void (*_mce_Platform_OGL_InitBindings)();
 void mce::Platform::OGL::InitBindings() {
     _mce_Platform_OGL_InitBindings();
 }
+
+#include "ModalForm.h"
+void * ModalFormRequestPacket::myVtable;
+void * ModalFormResponsePacket::myVtable;
 
 #include "ScriptApi.h"
 static void (ScriptEngine::*_ScriptEngine_fireEventToScript)(EventInfo const &, ScriptApi::ScriptObjectHandle const &);
@@ -1641,8 +1669,12 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandOutput_getMessages == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK13CommandOutput11getMessagesEv");
     ((void*&) _CommandOutput_addMessage) = hybris_dlsym(handle, "_ZN13CommandOutput10addMessageERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE24CommandOutputMessageType");
     if (_CommandOutput_addMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput10addMessageERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE24CommandOutputMessageType");
-    ((void*&) _CommandOutput_success) = hybris_dlsym(handle, "_ZN13CommandOutput7successEv");
-    if (_CommandOutput_success == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput7successEv");
+    ((void*&) _CommandOutput_error) = hybris_dlsym(handle, "_ZN13CommandOutput5errorERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE");
+    if (_CommandOutput_error == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput5errorERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE");
+    ((void*&) _CommandOutput_success) = hybris_dlsym(handle, "_ZN13CommandOutput7successERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE");
+    if (_CommandOutput_success == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput7successERKSsRKSt6vectorI22CommandOutputParameterSaIS3_EE");
+    ((void*&) _CommandOutput_success2) = hybris_dlsym(handle, "_ZN13CommandOutput7successEv");
+    if (_CommandOutput_success2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13CommandOutput7successEv");
     ((void*&) _CommandOutputParameter_CommandOutputParameter) = hybris_dlsym(handle, "_ZN22CommandOutputParameterC2ERKSs");
     if (_CommandOutputParameter_CommandOutputParameter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22CommandOutputParameterC2ERKSs");
     ((void*&) _CommandOutputParameter_CommandOutputParameter2) = hybris_dlsym(handle, "_ZN22CommandOutputParameterC2Ei");
@@ -1925,6 +1957,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_V8_InitializePlatform == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V818InitializePlatformEPNS_8PlatformE");
     ((void*&) _v8_V8_GlobalizeReference) = hybris_dlsym(handle, "_ZN2v82V818GlobalizeReferenceEPNS_8internal7IsolateEPPNS1_6ObjectE");
     if (_v8_V8_GlobalizeReference == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V818GlobalizeReferenceEPNS_8internal7IsolateEPPNS1_6ObjectE");
+    ((void*&) _v8_V8_DisposeGlobal) = hybris_dlsym(handle, "_ZN2v82V813DisposeGlobalEPPNS_8internal6ObjectE");
+    if (_v8_V8_DisposeGlobal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V813DisposeGlobalEPPNS_8internal6ObjectE");
     ((void*&) _v8_V8_CreateHandle) = hybris_dlsym(handle, "_ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE");
     if (_v8_V8_CreateHandle == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE");
     ((void*&) _v8_Value_IsTrue) = hybris_dlsym(handle, "_ZNK2v85Value6IsTrueEv");
@@ -2119,6 +2153,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_TryCatch_SetVerbose == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch10SetVerboseEb");
     ((void*&) _v8_TryCatch_SetCaptureMessage) = hybris_dlsym(handle, "_ZN2v88TryCatch17SetCaptureMessageEb");
     if (_v8_TryCatch_SetCaptureMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v88TryCatch17SetCaptureMessageEb");
+    ((void*&) _v8_Message_Get) = hybris_dlsym(handle, "_ZNK2v87Message3GetEv");
+    if (_v8_Message_Get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v87Message3GetEv");
     ((void*&) _v8_Isolate_ThrowException) = hybris_dlsym(handle, "_ZN2v87Isolate14ThrowExceptionENS_5LocalINS_5ValueEEE");
     if (_v8_Isolate_ThrowException == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate14ThrowExceptionENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Isolate_GetCurrent) = hybris_dlsym(handle, "_ZN2v87Isolate10GetCurrentEv");
@@ -2131,6 +2167,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Isolate_Enter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate5EnterEv");
     ((void*&) _v8_Isolate_Exit) = hybris_dlsym(handle, "_ZN2v87Isolate4ExitEv");
     if (_v8_Isolate_Exit == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate4ExitEv");
+    ((void*&) _v8_Isolate_RunMicrotasks) = hybris_dlsym(handle, "_ZN2v87Isolate13RunMicrotasksEv");
+    if (_v8_Isolate_RunMicrotasks == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate13RunMicrotasksEv");
     ((void*&) _v8_Context_Enter) = hybris_dlsym(handle, "_ZN2v87Context5EnterEv");
     if (_v8_Context_Enter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Context5EnterEv");
     ((void*&) _v8_Context_Exit) = hybris_dlsym(handle, "_ZN2v87Context4ExitEv");
@@ -2231,6 +2269,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Promise_Resolver_Resolve == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
     ((void*&) _v8_Promise_Resolver_Reject) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
     if (_v8_Promise_Resolver_Reject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    ((void*&) _v8_Promise_Resolver_GetPromise) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver10GetPromiseEv");
+    if (_v8_Promise_Resolver_GetPromise == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver10GetPromiseEv");
     ((void*&) _v8_Promise_Resolver_CheckCast) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver9CheckCastEPNS_5ValueE");
     if (_v8_Promise_Resolver_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver9CheckCastEPNS_5ValueE");
     ((void*&) _ServerCommandOrigin_ServerCommandOrigin) = hybris_dlsym(handle, "_ZN19ServerCommandOriginC2ERKSsR11ServerLevel");
@@ -2264,6 +2304,10 @@ void minecraft_symbols_init(void* handle) {
     if (_gl_getOpenGLExtensions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2gl19getOpenGLExtensionsEv");
     ((void*&) _mce_Platform_OGL_InitBindings) = hybris_dlsym(handle, "_ZN3mce8Platform3OGL12InitBindingsEv");
     if (_mce_Platform_OGL_InitBindings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce8Platform3OGL12InitBindingsEv");
+    ((void*&) ModalFormRequestPacket::myVtable) = hybris_dlsym(handle, "_ZTV22ModalFormRequestPacket");
+    if (ModalFormRequestPacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV22ModalFormRequestPacket");
+    ((void*&) ModalFormResponsePacket::myVtable) = hybris_dlsym(handle, "_ZTV23ModalFormResponsePacket");
+    if (ModalFormResponsePacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV23ModalFormResponsePacket");
     ((void*&) _ScriptEngine_fireEventToScript) = hybris_dlsym(handle, "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     if (_ScriptEngine_fireEventToScript == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _MinecraftServerScriptEngine_helpDefineActor) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE");

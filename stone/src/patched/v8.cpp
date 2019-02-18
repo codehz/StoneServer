@@ -1,3 +1,4 @@
+#include <interface/tick.h>
 #include <minecraft/V8.h>
 #include <stone-api/Script.h>
 #include <stone/hook_helper.h>
@@ -26,7 +27,7 @@ SHook(void, _ZN9ScriptApi13LogV8CallbackERKN2v820FunctionCallbackInfoINS0_5Value
   const auto max = info.Length();
   for (auto i = 0;; i++) {
     auto current      = info[i];
-    Local<String> str = current->IsString() ? Local(String::Cast(current)) : current->ToString(iso);
+    Local<String> str = current->IsString() ? Local<String>(current) : current->ToString(iso);
     ss << V8Str(str);
     if (i < max - 1) {
       ss << ", ";
@@ -59,11 +60,14 @@ SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReport
   auto iso = V8Isolate[*this];
   HandleScope scope{ iso };
   auto ctx = V8Context[*this].Get(iso);
+  Isolate::Scope iscope{ iso };
   Context::Scope ctx_scope{ ctx };
   auto global       = ctx->Global();
   auto s_globalThis = toJS<std::string>(iso, "globalThis");
   if (!global->Has(s_globalThis)) { global->Set(s_globalThis, global); }
   for (auto fn : GlobalAPI::Register::registry) fn(global, iso, ctx);
+  for (auto fn : ExtAPI::Register::injecteds) fn(iso, ctx);
+  Locator<Tick>()->tick >> std::bind(&Isolate::RunMicrotasks, iso);
   return ret;
 }
 

@@ -15,36 +15,36 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
     iso->ThrowException(Exception::TypeError(STR("registerCommand requires (string, string, number, array)")));
     return;
   }
-  const auto command = String::Cast(info[0]);
-  const auto desc    = String::Cast(info[1]);
-  const auto lvl     = Integer::Cast(info[2]);
+  const auto command = fromJS<std::string>(iso, info[0]);
+  const auto desc    = fromJS<std::string>(iso, info[1]);
+  const auto lvl     = fromJS<int>(iso, info[2]);
   auto strArguments  = toJS<std::string>(iso, "arguments");
   auto strHandler    = toJS<std::string>(iso, "handler");
   auto strName       = toJS<std::string>(iso, "name");
   auto strType       = toJS<std::string>(iso, "type");
   auto strOptional   = toJS<std::string>(iso, "optional");
-  auto definitions   = Array::Cast(info[3]);
+  auto definitions   = Local<Array>(info[3]);
 
-  auto registerOverload = registerCustomCommand(command >> V8Str >> StdStr, desc >> V8Str >> StdStr, (int)lvl->Value());
+  auto registerOverload = registerCustomCommand(command, desc, lvl);
   for (unsigned i = 0; i < definitions->Length(); i++) {
     const auto val = definitions->Get(i);
     if (!val->IsObject()) {
       iso->ThrowException(Exception::TypeError(STR("registerCommand definition requires object")));
       return;
     }
-    auto obj = Object::Cast(val);
-    if (!obj->Has((Value *)strArguments) || !obj->Has((Value *)strHandler)) {
+    auto obj = Local<Object>(val);
+    if (!obj->Has(strArguments) || !obj->Has(strHandler)) {
       iso->ThrowException(
           Exception::TypeError(STR("registerCommand definition requires { arguments: array, handler: function, optional?: boolean }")));
       return;
     }
-    auto srcArguments = obj->Get((Value *)strArguments);
+    auto srcArguments = obj->Get(strArguments);
     if (!srcArguments->IsArray()) {
       iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires array")));
       return;
     }
-    auto arguments  = Array::Cast(srcArguments);
-    auto srcHandler = obj->Get((Value *)strHandler);
+    auto arguments  = Local<Array>(srcArguments);
+    auto srcHandler = obj->Get(strHandler);
     if (!srcHandler->IsFunction()) {
       iso->ThrowException(Exception::TypeError(STR("registerCommand definition handler requires function")));
       return;
@@ -57,23 +57,23 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires object")));
         return;
       }
-      auto arg = Object::Cast(srcArg);
-      if (!arg->Has((Value *)strName) || !arg->Has((Value *)strType)) {
+      auto arg = Local<Object>(srcArg);
+      if (!arg->Has(strName) || !arg->Has(strType)) {
         iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires { name: string, type: string }")));
         return;
       }
-      auto argName = arg->Get((Value *)strName);
+      auto argName = arg->Get(strName);
       if (!argName->IsString()) {
         iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments name requires string")));
         return;
       }
-      auto argType = arg->Get((Value *)strType);
+      auto argType = arg->Get(strType);
       if (!argType->IsString()) {
         iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments type requires string")));
         return;
       }
-      auto theName = String::Cast(argName) >> V8Str;
-      auto theType = String::Cast(argType) >> V8Str;
+      auto theName = fromJS<std::string>(iso, argName);
+      auto theType = fromJS<std::string>(iso, argType);
       if (theType == "message") {
         mvt.defs.push_back(messageParameter(theName));
       } else if (theType == "string") {
@@ -96,12 +96,12 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments type is unknown")));
         return;
       }
-      auto optional = arg->Get((Value *)strOptional)->BooleanValue();
+      auto optional = arg->Get(strOptional)->BooleanValue();
       if (optional) mvt.defs.rbegin()->makeOptional();
     }
     mvt.iso  = iso;
-    mvt.exec = [self = Persistent<Value>(iso, info.This()), handler = Persistent<Function>(iso, Function::Cast(srcHandler))](
-                   Isolate *iso, int argc, v8::Local<v8::Value> *argv) -> v8::Local<v8::Value> {
+    mvt.exec = [self = Persistent<Value>(iso, info.This()), handler = Persistent<Function>(iso, Local<Function>(srcHandler))](
+                   Isolate *iso, int argc, v8::Local<v8::Value> *argv) -> v8::MaybeLocal<v8::Value> {
       auto origin = self.Get(iso);
       auto func   = handler.Get(iso);
       return func->Call(origin, argc, argv);

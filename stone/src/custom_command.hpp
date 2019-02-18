@@ -16,8 +16,8 @@
 #include <stone/magic_func.h>
 #include <stone/server_hook.h>
 
-#include "patched/ScriptInterface.h"
 #include "operators.h"
+#include "patched/ScriptInterface.h"
 
 struct ParameterDef {
   size_t size;
@@ -37,7 +37,7 @@ struct ParameterDef {
 struct MyCommandVTable {
   v8::Isolate *iso;
   std::vector<ParameterDef> defs;
-  std::function<v8::Local<v8::Value>(v8::Isolate *, int, v8::Local<v8::Value> *)> exec;
+  std::function<v8::MaybeLocal<v8::Value>(v8::Isolate *, int, v8::Local<v8::Value> *)> exec;
 };
 
 static inline ParameterDef messageParameter(std::string const &name) {
@@ -152,8 +152,9 @@ struct CustomCommand : Command {
 
     HandleScope scope{ iso };
     auto &core = Locator<ScriptApi::V8CoreInterface>();
-    auto ctx = V8Context[*core].Get(iso);
+    auto ctx   = V8Context[*core].Get(iso);
     Context::Scope ctx_scope{ ctx };
+    TryCatch ex{ iso };
 
     for (size_t i = 0; i < size; i++) {
       auto &def = vt->defs[i];
@@ -163,9 +164,13 @@ struct CustomCommand : Command {
     current_orig = &orig;
     auto result  = vt->exec(iso, size, params);
     current_orig = nullptr;
-    if (!result->IsNullOrUndefined()) {
-      auto str = result->ToString(iso) >> V8Str;
-      if (str.size() != 0) outp.addMessage(str, {}, 0);
+    if (ex.HasCaught()) {
+      outp.error(ex.Message()->Get() >> V8Str >> CStr, {});
+      return;
+    }
+    if (!result.isNothing() || !result.fromJust()->IsNullOrUndefined()) {
+      auto str = result.fromJust()->ToString(iso) >> V8Str;
+      if (str.size() != 0) return outp.success(str, {});
     }
     outp.success();
   }

@@ -23,6 +23,7 @@ SInstanceHook(void, _ZN5Level4tickEv, Level) {
   static auto last  = clock();
   static auto flame = 0;
   flame++;
+  Locator<Tick>()->tick();
   if (auto now = clock(); now - last > CLOCKS_PER_SEC) {
     Locator<Tick>()->tps = flame;
 

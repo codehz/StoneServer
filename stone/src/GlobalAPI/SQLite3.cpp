@@ -54,7 +54,7 @@ static void bind_sqlite3_exec(FunctionCallbackInfo<Value> const &info) {
       info.GetReturnValue().Set(v8::Integer::New(iso, ret));
     } else if (info.Length() == 2 && info[0]->IsString() && info[1]->IsFunction()) {
       TryCatch tc{ iso };
-      auto tuple = std::tuple{ iso, Function::Cast(info[1]), &tc };
+      auto tuple = std::tuple{ iso, Local<Function>(info[1]), &tc };
       auto ret   = sqlite3_exec(db, info[0] >> V8Str >> CStr,
                               +[](void *data, int num, char **values, char **keys) -> int {
                                 auto &[iso, fn, tc] = *(decltype(tuple) *)data;
@@ -96,19 +96,19 @@ static void fill_stmt(Isolate *iso, sqlite3 *db, sqlite3_stmt *stmt, Local<Objec
     auto key  = keys->Get(i);
     int numid = -1;
     if (key->IsNumber()) {
-      numid = Number::Cast(key)->Value() + 1;
+      numid = fromJS<int>(iso, key) + 1;
     } else {
       numid = sqlite3_bind_parameter_index(stmt, key >> V8Str >> CStr);
     }
     if (numid == 0) { throw Exception::ReferenceError(STR(strformat("param`%s` not found", key->ToString(iso) >> V8Str >> CStr))); }
     auto value = param->Get(key);
     if (value->IsArrayBuffer()) {
-      auto buffer = ArrayBuffer::Cast(value)->GetContents();
+      auto buffer = Local<ArrayBuffer>(value)->GetContents();
       sqlite3_bind_blob(stmt, numid, buffer.Data(), buffer.ByteLength(), SQLITE_TRANSIENT);
     } else if (value->IsString()) {
-      sqlite3_bind_text(stmt, numid, value >> V8Str >> CStr, -1, nullptr);
+      sqlite3_bind_text(stmt, numid, fromJS<std::string>(iso, value) >> CStr, -1, nullptr);
     } else if (value->IsNumber()) {
-      sqlite3_bind_double(stmt, numid, Number::Cast(value)->Value());
+      sqlite3_bind_double(stmt, numid, fromJS<int>(iso, value));
     } else if (value->IsNullOrUndefined()) {
       sqlite3_bind_null(stmt, numid);
     } else {
@@ -128,7 +128,7 @@ static void bind_sqlite3_query(FunctionCallbackInfo<Value> const &info) {
       auto smap = (StatmentMap *)info.Holder()->GetAlignedPointerFromInternalField(2);
       if (info.Length() == 2 && info[0]->IsString() && info[1]->IsObject()) {
         auto sql     = info[0] >> V8Str >> StdStr;
-        auto param   = Object::Cast(info[1]);
+        auto param   = Local<Object>(info[1]);
         auto it_stmt = smap->find(sql);
         auto stmt    = it_stmt == smap->end() ? create_stmt(smap, db, sql) : it_stmt->second;
         FailGuard stmt_guard{ [&] {
@@ -189,7 +189,7 @@ static void bind_sqlite3_update(FunctionCallbackInfo<Value> const &info) {
       auto smap = (StatmentMap *)info.Holder()->GetAlignedPointerFromInternalField(2);
       if (info.Length() == 2 && info[0]->IsString() && info[1]->IsObject()) {
         auto sql     = info[0] >> V8Str >> StdStr;
-        auto param   = Object::Cast(info[1]);
+        auto param   = Local<Object>(info[1]);
         auto it_stmt = smap->find(sql);
         auto stmt    = it_stmt == smap->end() ? create_stmt(smap, db, sql) : it_stmt->second;
         FailGuard stmt_guard{ [&] {

@@ -2,6 +2,7 @@
 
 #include "V8Internals.h"
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 #include <type_traits>
 
@@ -15,34 +16,51 @@ public:
       : val_(val) {}
   bool IsEmpty() const { return val_ == nullptr; }
   void Clear() { val_ = nullptr; }
-  T *operator->() const { return val_; }
-  T *operator*() const { return val_; }
-  operator T *() const { return val_; }
+  explicit operator T *() const { return val_; }
 
 protected:
   T *val_;
 };
+
+template <class T> struct Local;
+template <class T> struct Maybe;
+template <class T> struct MaybeLocal;
 
 template <class T> struct Local : BaseLocal<T> {
   Local()
       : BaseLocal<T>() {}
   Local(T *val)
       : BaseLocal<T>(val) {}
+  /// @skipped
+  template <typename F> Local(Maybe<F> &&) = delete;
+  /// @skipped
+  template <typename F> Local(MaybeLocal<F> &&) = delete;
   template <typename F>
   Local(Local<F> rhs)
       : BaseLocal<T>(T::Cast(*rhs)) {}
+
+  T *operator->() const { return this->val_; }
+  T *operator*() const { return this->val_; }
+  T *operator+() const { return this->val_; }
 };
 template <class T> struct Maybe : BaseLocal<T> {
   Maybe()
       : BaseLocal<T>() {}
   Maybe(T *val)
       : BaseLocal<T>(val) {}
+  /// @skipped
+  template <typename F> Maybe(MaybeLocal<F> &&) = delete;
 };
 template <class T> struct MaybeLocal : BaseLocal<T> {
   MaybeLocal()
       : BaseLocal<T>() {}
   MaybeLocal(T *val)
       : BaseLocal<T>(val) {}
+  bool isNothing() { return this->val_ == nullptr; }
+  Local<T> fromJust() {
+    assert(this->val_);
+    return Local<T>(this->val_);
+  }
 };
 
 class Isolate;
@@ -55,7 +73,7 @@ class Boolean;
 class Number;
 class Name;
 class String;
-class Message;
+struct Message;
 class Integer;
 class Int32;
 class Uint32;
@@ -71,6 +89,8 @@ struct V8 {
   static void InitializePlatform(v8::Platform *platform);
   /// @symbol _ZN2v82V818GlobalizeReferenceEPNS_8internal7IsolateEPPNS1_6ObjectE
   static void *GlobalizeReference(v8::Isolate *iso, void *inp);
+  /// @symbol _ZN2v82V813DisposeGlobalEPPNS_8internal6ObjectE
+  static void DisposeGlobal(void *inp);
   /// @symbol _ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE
   static void *CreateHandle(v8::Isolate *, void *);
 };
@@ -387,6 +407,10 @@ private:
   bool has_terminated_ : 1;
 };
 
+struct Message {
+  v8::Local<v8::String> Get() const;
+};
+
 class ExtensionConfiguration;
 class ObjectTemplate;
 
@@ -402,6 +426,9 @@ public:
   bool InContext();
   void Enter();
   void Exit();
+
+  /// @symbol _ZN2v87Isolate13RunMicrotasksEv
+  void RunMicrotasks();
 
   class Scope {
     Isolate *iso;
@@ -561,7 +588,7 @@ public:
     return (Function *)obj;
   }
   /// @symbol _ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_
-  v8::Local<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
+  v8::MaybeLocal<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
   /// @symbol _ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE
   v8::Local<v8::Object> NewInstance(v8::Local<v8::Context> context, int argc, v8::Local<v8::Value> *argv);
   /// @symbol _ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi
@@ -623,15 +650,46 @@ public:
   void SetInternalFieldCount(int value);
 };
 
-template <class T> class Persistent : BaseLocal<void *> {
-
+template <class T> class Persistent : BaseLocal<void> {
 public:
   Persistent()
-      : BaseLocal<void *>() {}
+      : BaseLocal<void>() {}
+  Persistent(void *ptr)
+      : BaseLocal<void>(ptr) {}
   Persistent(Isolate *iso, Local<T> local)
-      : BaseLocal<void *>((void **)V8::GlobalizeReference(iso, (void *)local)) {}
-  inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *this->val_)); }
-  inline void Set(void *target) { this->val_ = (void **)target; }
+      : BaseLocal<void>(V8::GlobalizeReference(iso, (void *)+local)) {}
+  inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *(void **)this->val_)); }
+  inline void Set(void *target) { this->val_ = target; }
+  inline void Reset() {
+    if (this->val_) V8::DisposeGlobal(this->val_);
+  }
+  inline void *RawPointer() { return this->val_; }
+};
+
+template <class T> struct AutoReleasePersistent : BaseLocal<void> {
+public:
+  inline AutoReleasePersistent()
+      : BaseLocal<void>() {}
+  inline AutoReleasePersistent(void *ptr)
+      : BaseLocal<void>(ptr) {}
+  inline AutoReleasePersistent(Isolate *iso, Local<T> local)
+      : BaseLocal<void>(V8::GlobalizeReference(iso, (void *)+local)) {}
+  inline AutoReleasePersistent(AutoReleasePersistent const &) = delete;
+  inline AutoReleasePersistent(AutoReleasePersistent &&rhs)
+      : BaseLocal<void>(rhs.val_) {
+    rhs.val_ = nullptr;
+  }
+  ~AutoReleasePersistent() { Reset(); }
+  inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *(void **)this->val_)); }
+  inline void Set(void *target) {
+    Reset();
+    this->val_ = target;
+  }
+  inline void Reset() {
+    if (this->val_) V8::DisposeGlobal(this->val_);
+  }
+  inline operator bool() { return this->val_; }
+  inline void *RawPointer() { return this->val_; }
 };
 
 class Exception {
@@ -646,6 +704,8 @@ public:
   static v8::Local<v8::Value> TypeError(v8::Local<v8::String> message);
   /// @symbol _ZN2v89Exception5ErrorENS_5LocalINS_6StringEEE
   static v8::Local<v8::Value> Error(v8::Local<v8::String> message);
+  /// @symbol _ZN2v89Exception13CreateMessageEPNS_7IsolateENS_5LocalINS_5ValueEEE
+  static v8::Local<v8::Message> CreateMessage(v8::Local<v8::Value>);
 };
 
 class Promise : public Object {
@@ -661,11 +721,13 @@ public:
       return (Resolver *)obj;
     }
     /// @symbol _ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE
-    static v8::MaybeLocal<v8::Promise::Resolver> New(v8::Local<v8::Context> context);
+    static v8::Local<v8::Promise::Resolver> New(v8::Local<v8::Context> context);
     /// @symbol _ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE
     v8::Maybe<bool> Resolve(v8::Local<v8::Context> context, v8::Local<v8::Value> value);
     /// @symbol _ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE
     v8::Maybe<bool> Reject(v8::Local<v8::Context> context, v8::Local<v8::Value> value);
+    /// @symbol _ZN2v87Promise8Resolver10GetPromiseEv
+    v8::Local<v8::Promise> GetPromise();
   };
 };
 
