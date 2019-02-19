@@ -16,8 +16,8 @@ namespace GlobalAPI {
 using namespace v8;
 
 struct Register {
-  static std::vector<void (*)(Local<Object> &, Isolate *, Local<Context> &)> registry;
-  inline Register(void (*func)(Local<Object> &, Isolate *, Local<Context> &)) { registry.emplace_back(func); }
+  static std::vector<void (*)(Local<ObjectTemplate> &, Isolate *)> registry;
+  inline Register(void (*func)(Local<ObjectTemplate> &, Isolate *)) { registry.emplace_back(func); }
 };
 
 } // namespace GlobalAPI

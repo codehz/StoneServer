@@ -25,7 +25,7 @@ struct ReqTicket {
     Isolate::Scope isos{ iso };
     auto ctx = patched::V8Context[*core].Get(iso);
     Context::Scope ctx_scope{ ctx };
-    resolver.Get(iso)->Resolve(ctx, toJS(iso, data));
+    resolver.Get(iso)->Resolve(ctx, ToJS(data));
   }
   void reject(std::string const &data) {
     auto &core = Locator<ScriptApi::V8CoreInterface>();
@@ -34,7 +34,7 @@ struct ReqTicket {
     Isolate::Scope isos{ iso };
     auto ctx = patched::V8Context[*core].Get(iso);
     Context::Scope ctx_scope{ ctx };
-    resolver.Get(iso)->Reject(ctx, toJS(iso, data));
+    resolver.Get(iso)->Reject(ctx, ToJS(data));
   }
   ~ReqTicket() {
     if (resolver) reject("Canceled");
@@ -49,17 +49,17 @@ static void openModalFormCallback(FunctionCallbackInfo<Value> const &info) {
   auto &core = Locator<ScriptApi::V8CoreInterface>();
   auto ctx   = patched::V8Context[*core].Get(iso);
   if (info.Length() != 2) {
-    iso->ThrowException(Exception::TypeError(STR(strformat("openModalForm requires 2 arguments(current: %d)", info.Length()))));
+    iso->ThrowException(Exception::TypeError(ToJS(strformat("openModalForm requires 2 arguments(current: %d)", info.Length()))));
     return;
   }
   if (!info[0]->IsObject() || !info[1]->IsString()) {
-    iso->ThrowException(Exception::TypeError(STR("openModalForm requires (player, string)")));
+    iso->ThrowException(Exception::TypeError(ToJS("openModalForm requires (player, string)")));
     return;
   }
   auto actor = fromJS<Actor *>(iso, info[0]);
   auto data  = fromJS<std::string>(iso, info[1]);
   if (!actor || *(void **)actor != BUILD_HELPER(GetAddress, void, 0x8, "_ZTV12ServerPlayer").Address()) {
-    iso->ThrowException(Exception::TypeError(STR("openModalForm requires (player, string)")));
+    iso->ThrowException(Exception::TypeError(ToJS("openModalForm requires (player, string)")));
     return;
   }
   auto player   = (Player *)actor;
@@ -71,11 +71,8 @@ static void openModalFormCallback(FunctionCallbackInfo<Value> const &info) {
   Locator<ModalForm>()->send(player, id, data);
 }
 
-static Register reg{ "registerComponent", "openModalForm", &openModalFormCallback, +[](Isolate *iso, Local<Context> &ctx) {
+static Register reg{ "registerComponent", "openModalForm", &openModalFormCallback, +[](Isolate *iso) {
                       Locator<PlayerList>()->onPlayerRemoved >> [](Player &player) { reqCache.erase(&player); };
-                      // Locator<ModalForm>()->recv >> [](unsigned id, Player *player, std::string const &data) {
-                      //   printf("id: %d player: %p, data: %s\n", id, player, data.c_str());
-                      // };
                       Locator<ModalForm>()->recv >> [](unsigned id, Player *player, std::string const &data) {
                         auto req_it = reqCache.find(player);
                         if (req_it == reqCache.end()) return;

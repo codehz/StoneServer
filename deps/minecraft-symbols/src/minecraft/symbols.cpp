@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Feb 18 2019 11:27:28 UTC
+// Generated on Tue Feb 19 2019 15:04:12 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1107,21 +1107,21 @@ static v8::Local<v8::Object> (*_v8_Object_New)(v8::Isolate *);
 v8::Local<v8::Object> v8::Object::New(v8::Isolate * p1) {
     return _v8_Object_New(p1);
 }
-static bool (v8::Object::*_v8_Object_Set)(unsigned, v8::Local<v8::Value>);
+static bool (v8::Object::*_v8_Object_SetIndex)(unsigned, v8::Local<v8::Value>);
 bool v8::Object::Set(unsigned p1, v8::Local<v8::Value> p2) {
+    return (this->*_v8_Object_SetIndex)(p1, p2);
+}
+static bool (v8::Object::*_v8_Object_Set)(v8::Local<v8::Value>, v8::Local<v8::Value>);
+bool v8::Object::Set(v8::Local<v8::Value> p1, v8::Local<v8::Value> p2) {
     return (this->*_v8_Object_Set)(p1, p2);
 }
-static bool (v8::Object::*_v8_Object_Set2)(v8::Local<v8::Value>, v8::Local<v8::Value>);
-bool v8::Object::Set(v8::Local<v8::Value> p1, v8::Local<v8::Value> p2) {
-    return (this->*_v8_Object_Set2)(p1, p2);
-}
-static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get)(unsigned);
+static v8::Local<v8::Value> (v8::Object::*_v8_Object_GetIndex)(unsigned);
 v8::Local<v8::Value> v8::Object::Get(unsigned p1) {
-    return (this->*_v8_Object_Get)(p1);
+    return (this->*_v8_Object_GetIndex)(p1);
 }
-static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get2)(v8::Local<v8::Value>);
+static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get)(v8::Local<v8::Value>);
 v8::Local<v8::Value> v8::Object::Get(v8::Local<v8::Value> p1) {
-    return (this->*_v8_Object_Get2)(p1);
+    return (this->*_v8_Object_Get)(p1);
 }
 static bool (v8::Object::*_v8_Object_Has)(v8::Local<v8::Value>);
 bool v8::Object::Has(v8::Local<v8::Value> p1) {
@@ -1243,6 +1243,10 @@ static void (v8::ObjectTemplate::*_v8_ObjectTemplate_SetInternalFieldCount)(int)
 void v8::ObjectTemplate::SetInternalFieldCount(int p1) {
     (this->*_v8_ObjectTemplate_SetInternalFieldCount)(p1);
 }
+static v8::Local<v8::ObjectTemplate> (*_v8_ObjectTemplate_New)(v8::Isolate *, v8::Local<v8::FunctionTemplate>);
+v8::Local<v8::ObjectTemplate> v8::ObjectTemplate::New(v8::Isolate * p1, v8::Local<v8::FunctionTemplate> p2) {
+    return _v8_ObjectTemplate_New(p1, p2);
+}
 static v8::Local<v8::Value> (*_v8_Exception_RangeError)(v8::Local<v8::String>);
 v8::Local<v8::Value> v8::Exception::RangeError(v8::Local<v8::String> p1) {
     return _v8_Exception_RangeError(p1);
@@ -1262,6 +1266,10 @@ v8::Local<v8::Value> v8::Exception::TypeError(v8::Local<v8::String> p1) {
 static v8::Local<v8::Value> (*_v8_Exception_Error)(v8::Local<v8::String>);
 v8::Local<v8::Value> v8::Exception::Error(v8::Local<v8::String> p1) {
     return _v8_Exception_Error(p1);
+}
+static v8::Local<v8::Message> (*_v8_Exception_CreateMessage)(v8::Local<v8::Value>);
+v8::Local<v8::Message> v8::Exception::CreateMessage(v8::Local<v8::Value> p1) {
+    return _v8_Exception_CreateMessage(p1);
 }
 static v8::Local<v8::Promise::Resolver> (*_v8_Promise_Resolver_New)(v8::Local<v8::Context>);
 v8::Local<v8::Promise::Resolver> v8::Promise::Resolver::New(v8::Local<v8::Context> p1) {
@@ -2185,14 +2193,14 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_EscapableHandleScope_EscapableHandleScope == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v820EscapableHandleScopeC2EPNS_7IsolateE");
     ((void*&) _v8_Object_New) = hybris_dlsym(handle, "_ZN2v86Object3NewEPNS_7IsolateE");
     if (_v8_Object_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3NewEPNS_7IsolateE");
-    ((void*&) _v8_Object_Set) = hybris_dlsym(handle, "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
-    if (_v8_Object_Set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
-    ((void*&) _v8_Object_Set2) = hybris_dlsym(handle, "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
-    if (_v8_Object_Set2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
-    ((void*&) _v8_Object_Get) = hybris_dlsym(handle, "_ZN2v86Object3GetEj");
-    if (_v8_Object_Get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetEj");
-    ((void*&) _v8_Object_Get2) = hybris_dlsym(handle, "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
-    if (_v8_Object_Get2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_SetIndex) = hybris_dlsym(handle, "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
+    if (_v8_Object_SetIndex == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_Set) = hybris_dlsym(handle, "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
+    if (_v8_Object_Set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
+    ((void*&) _v8_Object_GetIndex) = hybris_dlsym(handle, "_ZN2v86Object3GetEj");
+    if (_v8_Object_GetIndex == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetEj");
+    ((void*&) _v8_Object_Get) = hybris_dlsym(handle, "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
+    if (_v8_Object_Get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Object_Has) = hybris_dlsym(handle, "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
     if (_v8_Object_Has == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Object_SetInternalField) = hybris_dlsym(handle, "_ZN2v86Object16SetInternalFieldEiNS_5LocalINS_5ValueEEE");
@@ -2253,6 +2261,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_ObjectTemplate_SetImmutableProto == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate17SetImmutableProtoEv");
     ((void*&) _v8_ObjectTemplate_SetInternalFieldCount) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate21SetInternalFieldCountEi");
     if (_v8_ObjectTemplate_SetInternalFieldCount == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate21SetInternalFieldCountEi");
+    ((void*&) _v8_ObjectTemplate_New) = hybris_dlsym(handle, "_ZN2v814ObjectTemplate3NewEPNS_7IsolateENS_5LocalINS_16FunctionTemplateEEE");
+    if (_v8_ObjectTemplate_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v814ObjectTemplate3NewEPNS_7IsolateENS_5LocalINS_16FunctionTemplateEEE");
     ((void*&) _v8_Exception_RangeError) = hybris_dlsym(handle, "_ZN2v89Exception10RangeErrorENS_5LocalINS_6StringEEE");
     if (_v8_Exception_RangeError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception10RangeErrorENS_5LocalINS_6StringEEE");
     ((void*&) _v8_Exception_ReferenceError) = hybris_dlsym(handle, "_ZN2v89Exception14ReferenceErrorENS_5LocalINS_6StringEEE");
@@ -2263,6 +2273,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Exception_TypeError == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception9TypeErrorENS_5LocalINS_6StringEEE");
     ((void*&) _v8_Exception_Error) = hybris_dlsym(handle, "_ZN2v89Exception5ErrorENS_5LocalINS_6StringEEE");
     if (_v8_Exception_Error == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception5ErrorENS_5LocalINS_6StringEEE");
+    ((void*&) _v8_Exception_CreateMessage) = hybris_dlsym(handle, "_ZN2v89Exception13CreateMessageEPNS_7IsolateENS_5LocalINS_5ValueEEE");
+    if (_v8_Exception_CreateMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception13CreateMessageEPNS_7IsolateENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Promise_Resolver_New) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
     if (_v8_Promise_Resolver_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
     ((void*&) _v8_Promise_Resolver_Resolve) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");

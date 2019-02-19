@@ -8,11 +8,11 @@ static void broadcastMessageCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (info.Length() != 1) {
-    iso->ThrowException(Exception::TypeError(STR(strformat("broadcastMessage requires 1 arguments(current: %d)", info.Length()))));
+    iso->ThrowException(Exception::TypeError(ToJS(strformat("broadcastMessage requires 1 arguments(current: %d)", info.Length()))));
     return;
   }
   if (!info[0]->IsString()) {
-    iso->ThrowException(Exception::TypeError(STR("broadcastMessage requires (string)")));
+    iso->ThrowException(Exception::TypeError(ToJS("broadcastMessage requires (string)")));
     return;
   }
   auto content = fromJS<std::string>(iso, info[0]);

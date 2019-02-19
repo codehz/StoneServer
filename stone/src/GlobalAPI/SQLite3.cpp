@@ -12,14 +12,14 @@ static void bind_sqlite3_open(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (!info.IsConstructCall()) {
-    iso->ThrowException(Exception::TypeError(STR("Use the new operator to create new Database objects")));
+    iso->ThrowException(Exception::TypeError(ToJS("Use the new operator to create new Database objects")));
   } else if (!info[0]->IsString()) {
-    iso->ThrowException(Exception::TypeError(STR("Use new SQLite3(path: string)")));
+    iso->ThrowException(Exception::TypeError(ToJS("Use new SQLite3(path: string)")));
   } else {
     auto dbname = info[0]->ToString(iso) >> V8Str;
     sqlite3 *db;
     if (sqlite3_open(dbname.c_str(), &db) != SQLITE_OK) {
-      iso->ThrowException(STR("cannot open the database"));
+      iso->ThrowException(ToJS("cannot open the database"));
     } else {
       info.Holder()->SetAlignedPointerInInternalField(0, db);
       info.Holder()->SetInternalField(1, v8::True(iso));
@@ -50,7 +50,7 @@ static void bind_sqlite3_exec(FunctionCallbackInfo<Value> const &info) {
     char *errmsg = nullptr;
     if (info.Length() == 1 && info[0]->IsString()) {
       auto ret = sqlite3_exec(db, info[0] >> V8Str >> CStr, nullptr, nullptr, &errmsg);
-      if (errmsg) iso->ThrowException(Exception::Error(STR(errmsg)));
+      if (errmsg) iso->ThrowException(Exception::Error(ToJS(errmsg)));
       info.GetReturnValue().Set(v8::Integer::New(iso, ret));
     } else if (info.Length() == 2 && info[0]->IsString() && info[1]->IsFunction()) {
       TryCatch tc{ iso };
@@ -59,7 +59,7 @@ static void bind_sqlite3_exec(FunctionCallbackInfo<Value> const &info) {
                               +[](void *data, int num, char **values, char **keys) -> int {
                                 auto &[iso, fn, tc] = *(decltype(tuple) *)data;
                                 auto arg            = Object::New(iso);
-                                for (int i = 0; i < num; i++) arg->Set(STR(keys[i]), STR(values[i]));
+                                for (int i = 0; i < num; i++) arg->Set(ToJS(keys[i]), ToJS(values[i]));
                                 fn->Call(v8::Undefined(iso), 1, (Local<Value> *)&arg);
                                 return tc->HasCaught();
                               },
@@ -67,15 +67,15 @@ static void bind_sqlite3_exec(FunctionCallbackInfo<Value> const &info) {
       if (tc.HasCaught())
         tc.ReThrow();
       else if (errmsg)
-        iso->ThrowException(Exception::Error(STR(errmsg)));
+        iso->ThrowException(Exception::Error(ToJS(errmsg)));
       else if (ret != SQLITE_OK)
-        iso->ThrowException(Exception::Error(STR(sqlite3_errstr(ret))));
+        iso->ThrowException(Exception::Error(ToJS(sqlite3_errstr(ret))));
     } else {
-      iso->ThrowException(Exception::TypeError(STR("Use exec(sql: string, callback?: (line: { [index: string]: string })): number")));
+      iso->ThrowException(Exception::TypeError(ToJS("Use exec(sql: string, callback?: (line: { [index: string]: string })): number")));
     }
     if (errmsg) sqlite3_free(errmsg);
   } else {
-    iso->ThrowException(Exception::Error(STR("Database is closed")));
+    iso->ThrowException(Exception::Error(ToJS("Database is closed")));
   }
 }
 
@@ -100,7 +100,7 @@ static void fill_stmt(Isolate *iso, sqlite3 *db, sqlite3_stmt *stmt, Local<Objec
     } else {
       numid = sqlite3_bind_parameter_index(stmt, key >> V8Str >> CStr);
     }
-    if (numid == 0) { throw Exception::ReferenceError(STR(strformat("param`%s` not found", key->ToString(iso) >> V8Str >> CStr))); }
+    if (numid == 0) { throw Exception::ReferenceError(ToJS(strformat("param`%s` not found", key->ToString(iso) >> V8Str >> CStr))); }
     auto value = param->Get(key);
     if (value->IsArrayBuffer()) {
       auto buffer = Local<ArrayBuffer>(value)->GetContents();
@@ -112,7 +112,7 @@ static void fill_stmt(Isolate *iso, sqlite3 *db, sqlite3_stmt *stmt, Local<Objec
     } else if (value->IsNullOrUndefined()) {
       sqlite3_bind_null(stmt, numid);
     } else {
-      throw Exception::TypeError(STR(strformat("%s is unsupported", value->TypeOf(iso) >> V8Str >> CStr)));
+      throw Exception::TypeError(ToJS(strformat("%s is unsupported", value->TypeOf(iso) >> V8Str >> CStr)));
       return;
     }
   }
@@ -149,7 +149,7 @@ static void bind_sqlite3_query(FunctionCallbackInfo<Value> const &info) {
             switch (vtype) {
             case SQLITE_INTEGER: value = Integer::New(iso, sqlite3_column_int(stmt, i)); break;
             case SQLITE_FLOAT: value = Number::New(iso, sqlite3_column_double(stmt, i)); break;
-            case SQLITE_TEXT: value = STR((char const *)sqlite3_column_text(stmt, i)); break;
+            case SQLITE_TEXT: value = ToJS((char const *)sqlite3_column_text(stmt, i)); break;
             case SQLITE_BLOB: {
               auto abuffer = ArrayBuffer::New(iso, sqlite3_column_bytes(stmt, i));
               auto buffer  = abuffer->GetContents();
@@ -159,7 +159,7 @@ static void bind_sqlite3_query(FunctionCallbackInfo<Value> const &info) {
             case SQLITE_NULL: value = v8::Null(iso); break;
             default: value = v8::Undefined(iso); break;
             }
-            obj->Set(STR(key), value);
+            obj->Set(ToJS(key), value);
           }
           arr->Set(idx++, obj);
         }
@@ -174,7 +174,7 @@ static void bind_sqlite3_query(FunctionCallbackInfo<Value> const &info) {
     } else {
       throw "Database is closed";
     }
-  } catch (char const *err) { info.GetIsolate()->ThrowException(Exception::Error(STR(err))); } catch (Local<Value> &ex) {
+  } catch (char const *err) { info.GetIsolate()->ThrowException(Exception::Error(ToJS(err))); } catch (Local<Value> &ex) {
     info.GetIsolate()->ThrowException(ex);
   }
 }
@@ -204,27 +204,27 @@ static void bind_sqlite3_update(FunctionCallbackInfo<Value> const &info) {
         default: throw sqlite3_errmsg(db);
         }
       } else {
-        throw Exception::TypeError(STR("Use update(sql: string, params: { [index: string | number]: any }): number"));
+        throw Exception::TypeError(ToJS("Use update(sql: string, params: { [index: string | number]: any }): number"));
       }
     } else {
-      iso->ThrowException(Exception::Error(STR("Database is closed")));
+      iso->ThrowException(Exception::Error(ToJS("Database is closed")));
     }
-  } catch (char const *err) { info.GetIsolate()->ThrowException(Exception::Error(STR(err))); } catch (Local<Value> &ex) {
+  } catch (char const *err) { info.GetIsolate()->ThrowException(Exception::Error(ToJS(err))); } catch (Local<Value> &ex) {
     info.GetIsolate()->ThrowException(ex);
   }
 }
 
-Register reg([](Local<Object> &obj, Isolate *iso, Local<Context> &ctx) {
+Register reg([](Local<ObjectTemplate> &obj, Isolate *iso) {
   auto tmp_Database = FunctionTemplate::New(iso, bind_sqlite3_open, 1);
-  tmp_Database->SetClassName(STR("SQLite3"));
+  tmp_Database->SetClassName(ToJS("SQLite3"));
   auto proto_Database = tmp_Database->InstanceTemplate();
   proto_Database->SetInternalFieldCount(3);
-  proto_Database->SetAccessorProperty(STR("valid"), FunctionTemplate::New(iso, bind_sqlite3_valid));
-  proto_Database->Set(STR("close"), FunctionTemplate::New(iso, bind_sqlite3_close));
-  proto_Database->Set(STR("exec"), FunctionTemplate::New(iso, bind_sqlite3_exec));
-  proto_Database->Set(STR("query"), FunctionTemplate::New(iso, bind_sqlite3_query));
-  proto_Database->Set(STR("update"), FunctionTemplate::New(iso, bind_sqlite3_update));
-  obj->Set(STR("SQLite3"), tmp_Database->GetFunction(ctx));
+  proto_Database->SetAccessorProperty(ToJS("valid"), FunctionTemplate::New(iso, bind_sqlite3_valid));
+  proto_Database->Set(ToJS("close"), FunctionTemplate::New(iso, bind_sqlite3_close));
+  proto_Database->Set(ToJS("exec"), FunctionTemplate::New(iso, bind_sqlite3_exec));
+  proto_Database->Set(ToJS("query"), FunctionTemplate::New(iso, bind_sqlite3_query));
+  proto_Database->Set(ToJS("update"), FunctionTemplate::New(iso, bind_sqlite3_update));
+  obj->Set(ToJS("SQLite3"), tmp_Database);
 });
 
 } // namespace GlobalAPI

@@ -57,6 +57,7 @@ template <class T> struct MaybeLocal : BaseLocal<T> {
   MaybeLocal(T *val)
       : BaseLocal<T>(val) {}
   bool isNothing() { return this->val_ == nullptr; }
+  operator bool() { return this->val_ != nullptr; }
   Local<T> fromJust() {
     assert(this->val_);
     return Local<T>(this->val_);
@@ -648,6 +649,9 @@ public:
 
   /// @symbol _ZN2v814ObjectTemplate21SetInternalFieldCountEi
   void SetInternalFieldCount(int value);
+
+  /// @symbol _ZN2v814ObjectTemplate3NewEPNS_7IsolateENS_5LocalINS_16FunctionTemplateEEE
+  static v8::Local<v8::ObjectTemplate> New(v8::Isolate *isolate, v8::Local<v8::FunctionTemplate> constructor);
 };
 
 template <class T> class Persistent : BaseLocal<void> {

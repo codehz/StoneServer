@@ -8,14 +8,14 @@
 #include <array>
 #include <type_traits>
 
-#define STR(s) toJS<std::string>(iso, s)
+#define ToJS(s) toJS(iso, s)
 
 namespace v8 {
 
 template <typename T> struct Convertable; // type, fromJS, toJS
 
 template <typename T> T fromJS(Isolate *iso, Local<typename Convertable<T>::type> src) { return Convertable<T>::fromJS(iso, src); }
-template <typename T> Local<typename Convertable<T>::type> toJS(Isolate *iso, T src) { return Convertable<T>::toJS(iso, src); }
+template <typename T> Local<typename Convertable<T>::type> toJS(Isolate *iso, T src) { return Convertable<T>::ToJS(src); }
 
 template <typename T> struct IntegralConvertable {
   using type = Integer;
@@ -53,6 +53,10 @@ template <> struct Convertable<char const *> {
   using type = String;
   static Local<type> toJS(Isolate *iso, char const *src) { return String::NewFromUtf8(iso, src); }
 };
+template <> struct Convertable<char *> {
+  using type = String;
+  static Local<type> toJS(Isolate *iso, char *src) { return String::NewFromUtf8(iso, src); }
+};
 
 template <typename T, std::size_t length> struct Convertable<std::array<T, length>> {
   using type = Array;
@@ -64,7 +68,7 @@ template <typename T, std::size_t length> struct Convertable<std::array<T, lengt
   }
   static Local<type> toJS(Isolate *iso, std::array<T, length> src) {
     auto ret = Array::New(iso, length);
-    for (size_t i = 0; i < length; i++) ret->Set(i, Convertable<T>::toJS(iso, src[i]));
+    for (size_t i = 0; i < length; i++) ret->Set(i, Convertable<T>::ToJS(src[i]));
     return ret;
   }
 };

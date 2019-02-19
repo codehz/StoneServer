@@ -8,11 +8,11 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (info.Length() != 4) {
-    iso->ThrowException(Exception::TypeError(STR(strformat("registerCommand requires 4 arguments(current: %d)", info.Length()))));
+    iso->ThrowException(Exception::TypeError(ToJS(strformat("registerCommand requires 4 arguments(current: %d)", info.Length()))));
     return;
   }
   if (!info[0]->IsString() || !info[1]->IsString() || !info[2]->IsNumber() || !info[3]->IsArray()) {
-    iso->ThrowException(Exception::TypeError(STR("registerCommand requires (string, string, number, array)")));
+    iso->ThrowException(Exception::TypeError(ToJS("registerCommand requires (string, string, number, array)")));
     return;
   }
   const auto command = fromJS<std::string>(iso, info[0]);
@@ -29,24 +29,24 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   for (unsigned i = 0; i < definitions->Length(); i++) {
     const auto val = definitions->Get(i);
     if (!val->IsObject()) {
-      iso->ThrowException(Exception::TypeError(STR("registerCommand definition requires object")));
+      iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition requires object")));
       return;
     }
     auto obj = Local<Object>(val);
     if (!obj->Has(strArguments) || !obj->Has(strHandler)) {
       iso->ThrowException(
-          Exception::TypeError(STR("registerCommand definition requires { arguments: array, handler: function, optional?: boolean }")));
+          Exception::TypeError(ToJS("registerCommand definition requires { arguments: array, handler: function, optional?: boolean }")));
       return;
     }
     auto srcArguments = obj->Get(strArguments);
     if (!srcArguments->IsArray()) {
-      iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires array")));
+      iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires array")));
       return;
     }
     auto arguments  = Local<Array>(srcArguments);
     auto srcHandler = obj->Get(strHandler);
     if (!srcHandler->IsFunction()) {
-      iso->ThrowException(Exception::TypeError(STR("registerCommand definition handler requires function")));
+      iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition handler requires function")));
       return;
     }
     MyCommandVTable mvt;
@@ -54,22 +54,22 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
     for (unsigned i = 0; i < argc; i++) {
       auto srcArg = arguments->Get(i);
       if (!srcArg->IsObject()) {
-        iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires object")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires object")));
         return;
       }
       auto arg = Local<Object>(srcArg);
       if (!arg->Has(strName) || !arg->Has(strType)) {
-        iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments requires { name: string, type: string }")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires { name: string, type: string }")));
         return;
       }
       auto argName = arg->Get(strName);
       if (!argName->IsString()) {
-        iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments name requires string")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments name requires string")));
         return;
       }
       auto argType = arg->Get(strType);
       if (!argType->IsString()) {
-        iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments type requires string")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments type requires string")));
         return;
       }
       auto theName = fromJS<std::string>(iso, argName);
@@ -93,7 +93,7 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       } else if (theType == "player-selector") {
         mvt.defs.push_back(commonParameter<CommandSelector<Player>>(theName));
       } else {
-        iso->ThrowException(Exception::TypeError(STR("registerCommand definition arguments type is unknown")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments type is unknown")));
         return;
       }
       auto optional = arg->Get(strOptional)->BooleanValue();

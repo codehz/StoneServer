@@ -55,21 +55,16 @@ SHook(
   return original(a, b, c, name, callback, external);
 }
 
-SInstanceHook(int, _ZN9ScriptApi15V8CoreInterface10initializeERNS_12ScriptReportE, ScriptApi::V8CoreInterface, void *report) {
-  auto ret = original(this, report);
-  if (!ret) return ret;
-  auto iso = V8Isolate[*this];
-  HandleScope scope{ iso };
-  auto ctx = V8Context[*this].Get(iso);
-  Isolate::Scope iscope{ iso };
-  Context::Scope ctx_scope{ ctx };
-  auto global       = ctx->Global();
-  auto s_globalThis = toJS<std::string>(iso, "globalThis");
-  if (!global->Has(s_globalThis)) { global->Set(s_globalThis, global); }
-  for (auto fn : GlobalAPI::Register::registry) fn(global, iso, ctx);
-  for (auto fn : ExtAPI::Register::injecteds) fn(iso, ctx);
+SStaticHook(Local<Value>, _ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigurationENS_10MaybeLocalINS_14ObjectTemplateEEENS5_INS_5ValueEEE,
+              Context, v8::Isolate *iso, v8::ExtensionConfiguration *config, v8::Local<v8::ObjectTemplate> temp, v8::MaybeLocal<v8::Value> global) {
+  auto new_temp = ObjectTemplate::New(iso, v8::Local<v8::FunctionTemplate>());
+  new_temp->SetAccessorProperty(ToJS("globalThis"), v8::FunctionTemplate::New(iso, +[](v8::FunctionCallbackInfo<v8::Value> const &info) {
+                                  info.GetReturnValue().Set(info.This());
+                                }));
+  for (auto fn : GlobalAPI::Register::registry) fn(new_temp, iso);
+  for (auto fn : ExtAPI::Register::injecteds) fn(iso);
   Locator<Tick>()->tick >> std::bind(&Isolate::RunMicrotasks, iso);
-  return ret;
+  return original(iso, config, new_temp, global);
 }
 
 static patched::details::RegisterPatchInit pinit([] {
@@ -81,7 +76,7 @@ static patched::details::RegisterPatchInit pinit([] {
     Isolate::Scope iso_scope{ iso };
     auto ctx = V8Context[core].Get(iso);
     Context::Scope ctx_scope{ ctx };
-    Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, toJS(iso, data.data) });
+    Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, ToJS(data.data) });
   };
 });
 
