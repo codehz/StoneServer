@@ -25,15 +25,21 @@ template <typename F> inline F *copy_function(F f) {
 
 #ifndef APID_USE_LIBUV
 template <typename F> void SetTimeout(long long m, F f) {
-  auto loop = (aeEventLoop *)apid_underlying_context();
+  static std::mutex mtx;
+  std::unique_lock lock{ mtx };
+  auto copied = copy_function(f);
+  auto loop   = (aeEventLoop *)apid_loop_handle();
   aeCreateTimeEvent(loop, m,
-                    +[](aeEventLoop *loop, long long id, void *client) {
+                    +[](aeEventLoop *loop, int fd, void *client, int mask) {
+                      std::unique_lock lock{ mtx };
                       auto f = (F *)client;
                       (*f)();
-                      if constexpr (!std::is_function_v<F>) delete f;
-                      return 0;
+                      aeDeleteTimeEvent(loop, fd);
                     },
-                    copy_function(f), nullptr);
+                    copied,
+                    +[](aeEventLoop *loop, void *client) {
+                      if constexpr (!std::is_function_v<F>) delete (F *)client;
+                    });
 }
 
 inline static struct _Sync {
