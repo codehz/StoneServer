@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Feb 19 2019 15:04:12 UTC
+// Generated on Wed Feb 20 2019 08:16:57 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -659,6 +659,10 @@ static void * (*_v8_V8_CreateHandle)(v8::Isolate *, void *);
 void * v8::V8::CreateHandle(v8::Isolate * p1, void * p2) {
     return _v8_V8_CreateHandle(p1, p2);
 }
+static void * (*_v8_V8_MakeWeak)(void *, void *, v8::V8::VoidWeakCallback, v8::WeakCallbackType);
+void * v8::V8::MakeWeak(void * p1, void * p2, v8::V8::VoidWeakCallback p3, v8::WeakCallbackType p4) {
+    return _v8_V8_MakeWeak(p1, p2, p3, p4);
+}
 static bool (v8::Value::*_v8_Value_IsTrue)() const;
 bool v8::Value::IsTrue() const {
     return (this->*_v8_Value_IsTrue)();
@@ -1071,6 +1075,10 @@ static void (v8::Isolate::*_v8_Isolate_Exit)();
 void v8::Isolate::Exit() {
     (this->*_v8_Isolate_Exit)();
 }
+static void (v8::Isolate::*_v8_Isolate_RequestGarbageCollectionForTesting)(v8::Isolate::GarbageCollectionType);
+void v8::Isolate::RequestGarbageCollectionForTesting(v8::Isolate::GarbageCollectionType p1) {
+    (this->*_v8_Isolate_RequestGarbageCollectionForTesting)(p1);
+}
 static void (v8::Isolate::*_v8_Isolate_RunMicrotasks)();
 void v8::Isolate::RunMicrotasks() {
     (this->*_v8_Isolate_RunMicrotasks)();
@@ -1107,21 +1115,21 @@ static v8::Local<v8::Object> (*_v8_Object_New)(v8::Isolate *);
 v8::Local<v8::Object> v8::Object::New(v8::Isolate * p1) {
     return _v8_Object_New(p1);
 }
-static bool (v8::Object::*_v8_Object_SetIndex)(unsigned, v8::Local<v8::Value>);
+static bool (v8::Object::*_v8_Object_Set)(unsigned, v8::Local<v8::Value>);
 bool v8::Object::Set(unsigned p1, v8::Local<v8::Value> p2) {
-    return (this->*_v8_Object_SetIndex)(p1, p2);
-}
-static bool (v8::Object::*_v8_Object_Set)(v8::Local<v8::Value>, v8::Local<v8::Value>);
-bool v8::Object::Set(v8::Local<v8::Value> p1, v8::Local<v8::Value> p2) {
     return (this->*_v8_Object_Set)(p1, p2);
 }
-static v8::Local<v8::Value> (v8::Object::*_v8_Object_GetIndex)(unsigned);
-v8::Local<v8::Value> v8::Object::Get(unsigned p1) {
-    return (this->*_v8_Object_GetIndex)(p1);
+static bool (v8::Object::*_v8_Object_Set2)(v8::Local<v8::Value>, v8::Local<v8::Value>);
+bool v8::Object::Set(v8::Local<v8::Value> p1, v8::Local<v8::Value> p2) {
+    return (this->*_v8_Object_Set2)(p1, p2);
 }
-static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get)(v8::Local<v8::Value>);
-v8::Local<v8::Value> v8::Object::Get(v8::Local<v8::Value> p1) {
+static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get)(unsigned);
+v8::Local<v8::Value> v8::Object::Get(unsigned p1) {
     return (this->*_v8_Object_Get)(p1);
+}
+static v8::Local<v8::Value> (v8::Object::*_v8_Object_Get2)(v8::Local<v8::Value>);
+v8::Local<v8::Value> v8::Object::Get(v8::Local<v8::Value> p1) {
+    return (this->*_v8_Object_Get2)(p1);
 }
 static bool (v8::Object::*_v8_Object_Has)(v8::Local<v8::Value>);
 bool v8::Object::Has(v8::Local<v8::Value> p1) {
@@ -1419,6 +1427,348 @@ void Multitouch::feed(char p1, char p2, short p3, short p4, int p5) {
     _Multitouch_feed(p1, p2, p3, p4, p5);
 }
 
+#include "Tag.h"
+static void (Tag::*_Tag_destructor)();
+Tag::~Tag() {
+    (this->*_Tag_destructor)();
+}
+static void (Tag::*_Tag_deleteChildren)();
+void Tag::deleteChildren() {
+    (this->*_Tag_deleteChildren)();
+}
+static bool (Tag::*_Tag_equals)(Tag const &) const;
+bool Tag::equals(Tag const & p1) const {
+    return (this->*_Tag_equals)(p1);
+}
+static void (Tag::*_Tag_print)(PrintStream &) const;
+void Tag::print(PrintStream & p1) const {
+    (this->*_Tag_print)(p1);
+}
+static void (Tag::*_Tag_print2)(mcpe::string const &, PrintStream &) const;
+void Tag::print(mcpe::string const & p1, PrintStream & p2) const {
+    (this->*_Tag_print2)(p1, p2);
+}
+static void (Tag::*_Tag_setName)(mcpe::string const &);
+void Tag::setName(mcpe::string const & p1) {
+    (this->*_Tag_setName)(p1);
+}
+static mcpe::string (Tag::*_Tag_getName)() const;
+mcpe::string Tag::getName() const {
+    return (this->*_Tag_getName)();
+}
+void * * EndTag::vt;
+static void (EndTag::*_EndTag_write)(IDataOutput &) const;
+void EndTag::write(IDataOutput & p1) const {
+    (this->*_EndTag_write)(p1);
+}
+static void (EndTag::*_EndTag_load)(IDataInput &);
+void EndTag::load(IDataInput & p1) {
+    (this->*_EndTag_load)(p1);
+}
+static mcpe::string (EndTag::*_EndTag_toString)() const;
+mcpe::string EndTag::toString() const {
+    return (this->*_EndTag_toString)();
+}
+static int (EndTag::*_EndTag_getId)() const;
+int EndTag::getId() const {
+    return (this->*_EndTag_getId)();
+}
+static bool (EndTag::*_EndTag_equals)(Tag const &) const;
+bool EndTag::equals(Tag const & p1) const {
+    return (this->*_EndTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (EndTag::*_EndTag_copy)() const;
+std::unique_ptr<Tag> EndTag::copy() const {
+    return (this->*_EndTag_copy)();
+}
+void * * DoubleTag::vt;
+static void (DoubleTag::*_DoubleTag_write)(IDataOutput &) const;
+void DoubleTag::write(IDataOutput & p1) const {
+    (this->*_DoubleTag_write)(p1);
+}
+static void (DoubleTag::*_DoubleTag_load)(IDataInput &);
+void DoubleTag::load(IDataInput & p1) {
+    (this->*_DoubleTag_load)(p1);
+}
+static mcpe::string (DoubleTag::*_DoubleTag_toString)() const;
+mcpe::string DoubleTag::toString() const {
+    return (this->*_DoubleTag_toString)();
+}
+static int (DoubleTag::*_DoubleTag_getId)() const;
+int DoubleTag::getId() const {
+    return (this->*_DoubleTag_getId)();
+}
+static bool (DoubleTag::*_DoubleTag_equals)(Tag const &) const;
+bool DoubleTag::equals(Tag const & p1) const {
+    return (this->*_DoubleTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (DoubleTag::*_DoubleTag_copy)() const;
+std::unique_ptr<Tag> DoubleTag::copy() const {
+    return (this->*_DoubleTag_copy)();
+}
+void * * ByteArrayTag::vt;
+static void (ByteArrayTag::*_ByteArrayTag_write)(IDataOutput &) const;
+void ByteArrayTag::write(IDataOutput & p1) const {
+    (this->*_ByteArrayTag_write)(p1);
+}
+static void (ByteArrayTag::*_ByteArrayTag_load)(IDataInput &);
+void ByteArrayTag::load(IDataInput & p1) {
+    (this->*_ByteArrayTag_load)(p1);
+}
+static mcpe::string (ByteArrayTag::*_ByteArrayTag_toString)() const;
+mcpe::string ByteArrayTag::toString() const {
+    return (this->*_ByteArrayTag_toString)();
+}
+static int (ByteArrayTag::*_ByteArrayTag_getId)() const;
+int ByteArrayTag::getId() const {
+    return (this->*_ByteArrayTag_getId)();
+}
+static bool (ByteArrayTag::*_ByteArrayTag_equals)(Tag const &) const;
+bool ByteArrayTag::equals(Tag const & p1) const {
+    return (this->*_ByteArrayTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (ByteArrayTag::*_ByteArrayTag_copy)() const;
+std::unique_ptr<Tag> ByteArrayTag::copy() const {
+    return (this->*_ByteArrayTag_copy)();
+}
+void * * CompoundTag::vt;
+static void (CompoundTag::*_CompoundTag_write)(IDataOutput &) const;
+void CompoundTag::write(IDataOutput & p1) const {
+    (this->*_CompoundTag_write)(p1);
+}
+static void (CompoundTag::*_CompoundTag_load)(IDataInput &);
+void CompoundTag::load(IDataInput & p1) {
+    (this->*_CompoundTag_load)(p1);
+}
+static mcpe::string (CompoundTag::*_CompoundTag_toString)() const;
+mcpe::string CompoundTag::toString() const {
+    return (this->*_CompoundTag_toString)();
+}
+static int (CompoundTag::*_CompoundTag_getId)() const;
+int CompoundTag::getId() const {
+    return (this->*_CompoundTag_getId)();
+}
+static bool (CompoundTag::*_CompoundTag_equals)(Tag const &) const;
+bool CompoundTag::equals(Tag const & p1) const {
+    return (this->*_CompoundTag_equals)(p1);
+}
+static void (CompoundTag::*_CompoundTag_print)(mcpe::string const &, PrintStream &) const;
+void CompoundTag::print(mcpe::string const & p1, PrintStream & p2) const {
+    (this->*_CompoundTag_print)(p1, p2);
+}
+static std::unique_ptr<Tag> (CompoundTag::*_CompoundTag_copy)() const;
+std::unique_ptr<Tag> CompoundTag::copy() const {
+    return (this->*_CompoundTag_copy)();
+}
+void * * ListTag::vt;
+static void (ListTag::*_ListTag_deleteChildren)();
+void ListTag::deleteChildren() {
+    (this->*_ListTag_deleteChildren)();
+}
+static void (ListTag::*_ListTag_write)(IDataOutput &) const;
+void ListTag::write(IDataOutput & p1) const {
+    (this->*_ListTag_write)(p1);
+}
+static void (ListTag::*_ListTag_load)(IDataInput &);
+void ListTag::load(IDataInput & p1) {
+    (this->*_ListTag_load)(p1);
+}
+static mcpe::string (ListTag::*_ListTag_toString)() const;
+mcpe::string ListTag::toString() const {
+    return (this->*_ListTag_toString)();
+}
+static int (ListTag::*_ListTag_getId)() const;
+int ListTag::getId() const {
+    return (this->*_ListTag_getId)();
+}
+static bool (ListTag::*_ListTag_equals)(Tag const &) const;
+bool ListTag::equals(Tag const & p1) const {
+    return (this->*_ListTag_equals)(p1);
+}
+static void (ListTag::*_ListTag_print)(mcpe::string const &, PrintStream &) const;
+void ListTag::print(mcpe::string const & p1, PrintStream & p2) const {
+    (this->*_ListTag_print)(p1, p2);
+}
+static std::unique_ptr<Tag> (ListTag::*_ListTag_copy)() const;
+std::unique_ptr<Tag> ListTag::copy() const {
+    return (this->*_ListTag_copy)();
+}
+void * * FloatTag::vt;
+static void (FloatTag::*_FloatTag_write)(IDataOutput &) const;
+void FloatTag::write(IDataOutput & p1) const {
+    (this->*_FloatTag_write)(p1);
+}
+static void (FloatTag::*_FloatTag_load)(IDataInput &);
+void FloatTag::load(IDataInput & p1) {
+    (this->*_FloatTag_load)(p1);
+}
+static mcpe::string (FloatTag::*_FloatTag_toString)() const;
+mcpe::string FloatTag::toString() const {
+    return (this->*_FloatTag_toString)();
+}
+static int (FloatTag::*_FloatTag_getId)() const;
+int FloatTag::getId() const {
+    return (this->*_FloatTag_getId)();
+}
+static bool (FloatTag::*_FloatTag_equals)(Tag const &) const;
+bool FloatTag::equals(Tag const & p1) const {
+    return (this->*_FloatTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (FloatTag::*_FloatTag_copy)() const;
+std::unique_ptr<Tag> FloatTag::copy() const {
+    return (this->*_FloatTag_copy)();
+}
+void * * ByteTag::vt;
+static void (ByteTag::*_ByteTag_write)(IDataOutput &) const;
+void ByteTag::write(IDataOutput & p1) const {
+    (this->*_ByteTag_write)(p1);
+}
+static void (ByteTag::*_ByteTag_load)(IDataInput &);
+void ByteTag::load(IDataInput & p1) {
+    (this->*_ByteTag_load)(p1);
+}
+static mcpe::string (ByteTag::*_ByteTag_toString)() const;
+mcpe::string ByteTag::toString() const {
+    return (this->*_ByteTag_toString)();
+}
+static int (ByteTag::*_ByteTag_getId)() const;
+int ByteTag::getId() const {
+    return (this->*_ByteTag_getId)();
+}
+static bool (ByteTag::*_ByteTag_equals)(Tag const &) const;
+bool ByteTag::equals(Tag const & p1) const {
+    return (this->*_ByteTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (ByteTag::*_ByteTag_copy)() const;
+std::unique_ptr<Tag> ByteTag::copy() const {
+    return (this->*_ByteTag_copy)();
+}
+void * * ShortTag::vt;
+static void (ShortTag::*_ShortTag_write)(IDataOutput &) const;
+void ShortTag::write(IDataOutput & p1) const {
+    (this->*_ShortTag_write)(p1);
+}
+static void (ShortTag::*_ShortTag_load)(IDataInput &);
+void ShortTag::load(IDataInput & p1) {
+    (this->*_ShortTag_load)(p1);
+}
+static mcpe::string (ShortTag::*_ShortTag_toString)() const;
+mcpe::string ShortTag::toString() const {
+    return (this->*_ShortTag_toString)();
+}
+static int (ShortTag::*_ShortTag_getId)() const;
+int ShortTag::getId() const {
+    return (this->*_ShortTag_getId)();
+}
+static bool (ShortTag::*_ShortTag_equals)(Tag const &) const;
+bool ShortTag::equals(Tag const & p1) const {
+    return (this->*_ShortTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (ShortTag::*_ShortTag_copy)() const;
+std::unique_ptr<Tag> ShortTag::copy() const {
+    return (this->*_ShortTag_copy)();
+}
+void * * Int64Tag::vt;
+static void (Int64Tag::*_Int64Tag_write)(IDataOutput &) const;
+void Int64Tag::write(IDataOutput & p1) const {
+    (this->*_Int64Tag_write)(p1);
+}
+static void (Int64Tag::*_Int64Tag_load)(IDataInput &);
+void Int64Tag::load(IDataInput & p1) {
+    (this->*_Int64Tag_load)(p1);
+}
+static mcpe::string (Int64Tag::*_Int64Tag_toString)() const;
+mcpe::string Int64Tag::toString() const {
+    return (this->*_Int64Tag_toString)();
+}
+static int (Int64Tag::*_Int64Tag_getId)() const;
+int Int64Tag::getId() const {
+    return (this->*_Int64Tag_getId)();
+}
+static bool (Int64Tag::*_Int64Tag_equals)(Tag const &) const;
+bool Int64Tag::equals(Tag const & p1) const {
+    return (this->*_Int64Tag_equals)(p1);
+}
+static std::unique_ptr<Tag> (Int64Tag::*_Int64Tag_copy)() const;
+std::unique_ptr<Tag> Int64Tag::copy() const {
+    return (this->*_Int64Tag_copy)();
+}
+void * * IntArrayTag::vt;
+static void (IntArrayTag::*_IntArrayTag_write)(IDataOutput &) const;
+void IntArrayTag::write(IDataOutput & p1) const {
+    (this->*_IntArrayTag_write)(p1);
+}
+static void (IntArrayTag::*_IntArrayTag_load)(IDataInput &);
+void IntArrayTag::load(IDataInput & p1) {
+    (this->*_IntArrayTag_load)(p1);
+}
+static mcpe::string (IntArrayTag::*_IntArrayTag_toString)() const;
+mcpe::string IntArrayTag::toString() const {
+    return (this->*_IntArrayTag_toString)();
+}
+static int (IntArrayTag::*_IntArrayTag_getId)() const;
+int IntArrayTag::getId() const {
+    return (this->*_IntArrayTag_getId)();
+}
+static bool (IntArrayTag::*_IntArrayTag_equals)(Tag const &) const;
+bool IntArrayTag::equals(Tag const & p1) const {
+    return (this->*_IntArrayTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (IntArrayTag::*_IntArrayTag_copy)() const;
+std::unique_ptr<Tag> IntArrayTag::copy() const {
+    return (this->*_IntArrayTag_copy)();
+}
+void * * IntTag::vt;
+static void (IntTag::*_IntTag_write)(IDataOutput &) const;
+void IntTag::write(IDataOutput & p1) const {
+    (this->*_IntTag_write)(p1);
+}
+static void (IntTag::*_IntTag_load)(IDataInput &);
+void IntTag::load(IDataInput & p1) {
+    (this->*_IntTag_load)(p1);
+}
+static mcpe::string (IntTag::*_IntTag_toString)() const;
+mcpe::string IntTag::toString() const {
+    return (this->*_IntTag_toString)();
+}
+static int (IntTag::*_IntTag_getId)() const;
+int IntTag::getId() const {
+    return (this->*_IntTag_getId)();
+}
+static bool (IntTag::*_IntTag_equals)(Tag const &) const;
+bool IntTag::equals(Tag const & p1) const {
+    return (this->*_IntTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (IntTag::*_IntTag_copy)() const;
+std::unique_ptr<Tag> IntTag::copy() const {
+    return (this->*_IntTag_copy)();
+}
+void * * StringTag::vt;
+static void (StringTag::*_StringTag_write)(IDataOutput &) const;
+void StringTag::write(IDataOutput & p1) const {
+    (this->*_StringTag_write)(p1);
+}
+static void (StringTag::*_StringTag_load)(IDataInput &);
+void StringTag::load(IDataInput & p1) {
+    (this->*_StringTag_load)(p1);
+}
+static mcpe::string (StringTag::*_StringTag_toString)() const;
+mcpe::string StringTag::toString() const {
+    return (this->*_StringTag_toString)();
+}
+static int (StringTag::*_StringTag_getId)() const;
+int StringTag::getId() const {
+    return (this->*_StringTag_getId)();
+}
+static bool (StringTag::*_StringTag_equals)(Tag const &) const;
+bool StringTag::equals(Tag const & p1) const {
+    return (this->*_StringTag_equals)(p1);
+}
+static std::unique_ptr<Tag> (StringTag::*_StringTag_copy)() const;
+std::unique_ptr<Tag> StringTag::copy() const {
+    return (this->*_StringTag_copy)();
+}
+
 #include "I18n.h"
 static void (ResourceLoadManager::*_ResourceLoadManager_ResourceLoadManager)();
 ResourceLoadManager::ResourceLoadManager() {
@@ -1608,6 +1958,10 @@ ActorDefinitionIdentifier & Actor::getActorIdentifier() const {
 static int64_t & (Actor::*_Actor_getUniqueID)() const;
 int64_t & Actor::getUniqueID() const {
     return (this->*_Actor_getUniqueID)();
+}
+static bool (Actor::*_Actor_save)(CompoundTag &);
+bool Actor::save(CompoundTag & p1) {
+    return (this->*_Actor_save)(p1);
 }
 
 #include "legacy/App.h"
@@ -1969,6 +2323,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_V8_DisposeGlobal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V813DisposeGlobalEPPNS_8internal6ObjectE");
     ((void*&) _v8_V8_CreateHandle) = hybris_dlsym(handle, "_ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE");
     if (_v8_V8_CreateHandle == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE");
+    ((void*&) _v8_V8_MakeWeak) = hybris_dlsym(handle, "_ZN2v82V88MakeWeakEPPNS_8internal6ObjectEPvPFvRKNS_16WeakCallbackInfoIvEEENS_16WeakCallbackTypeE");
+    if (_v8_V8_MakeWeak == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v82V88MakeWeakEPPNS_8internal6ObjectEPvPFvRKNS_16WeakCallbackInfoIvEEENS_16WeakCallbackTypeE");
     ((void*&) _v8_Value_IsTrue) = hybris_dlsym(handle, "_ZNK2v85Value6IsTrueEv");
     if (_v8_Value_IsTrue == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v85Value6IsTrueEv");
     ((void*&) _v8_Value_IsFalse) = hybris_dlsym(handle, "_ZNK2v85Value7IsFalseEv");
@@ -2175,6 +2531,8 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Isolate_Enter == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate5EnterEv");
     ((void*&) _v8_Isolate_Exit) = hybris_dlsym(handle, "_ZN2v87Isolate4ExitEv");
     if (_v8_Isolate_Exit == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate4ExitEv");
+    ((void*&) _v8_Isolate_RequestGarbageCollectionForTesting) = hybris_dlsym(handle, "_ZN2v87Isolate34RequestGarbageCollectionForTestingENS0_21GarbageCollectionTypeE");
+    if (_v8_Isolate_RequestGarbageCollectionForTesting == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate34RequestGarbageCollectionForTestingENS0_21GarbageCollectionTypeE");
     ((void*&) _v8_Isolate_RunMicrotasks) = hybris_dlsym(handle, "_ZN2v87Isolate13RunMicrotasksEv");
     if (_v8_Isolate_RunMicrotasks == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Isolate13RunMicrotasksEv");
     ((void*&) _v8_Context_Enter) = hybris_dlsym(handle, "_ZN2v87Context5EnterEv");
@@ -2193,14 +2551,14 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_EscapableHandleScope_EscapableHandleScope == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v820EscapableHandleScopeC2EPNS_7IsolateE");
     ((void*&) _v8_Object_New) = hybris_dlsym(handle, "_ZN2v86Object3NewEPNS_7IsolateE");
     if (_v8_Object_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3NewEPNS_7IsolateE");
-    ((void*&) _v8_Object_SetIndex) = hybris_dlsym(handle, "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
-    if (_v8_Object_SetIndex == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
-    ((void*&) _v8_Object_Set) = hybris_dlsym(handle, "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
-    if (_v8_Object_Set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
-    ((void*&) _v8_Object_GetIndex) = hybris_dlsym(handle, "_ZN2v86Object3GetEj");
-    if (_v8_Object_GetIndex == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetEj");
-    ((void*&) _v8_Object_Get) = hybris_dlsym(handle, "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
-    if (_v8_Object_Get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_Set) = hybris_dlsym(handle, "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
+    if (_v8_Object_Set == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetEjNS_5LocalINS_5ValueEEE");
+    ((void*&) _v8_Object_Set2) = hybris_dlsym(handle, "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
+    if (_v8_Object_Set2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3SetENS_5LocalINS_5ValueEEES3_");
+    ((void*&) _v8_Object_Get) = hybris_dlsym(handle, "_ZN2v86Object3GetEj");
+    if (_v8_Object_Get == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetEj");
+    ((void*&) _v8_Object_Get2) = hybris_dlsym(handle, "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
+    if (_v8_Object_Get2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3GetENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Object_Has) = hybris_dlsym(handle, "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
     if (_v8_Object_Has == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86Object3HasENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Object_SetInternalField) = hybris_dlsym(handle, "_ZN2v86Object16SetInternalFieldEiNS_5LocalINS_5ValueEEE");
@@ -2336,6 +2694,194 @@ void minecraft_symbols_init(void* handle) {
     if (_ScriptEventData_serialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15ScriptEventData9serializeER12ScriptEngineR9EventInfoRN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _Multitouch_feed) = hybris_dlsym(handle, "_ZN10Multitouch4feedEccssi");
     if (_Multitouch_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Multitouch4feedEccssi");
+    ((void*&) _Tag_destructor) = hybris_dlsym(handle, "_ZN3TagD2Ev");
+    if (_Tag_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3TagD2Ev");
+    ((void*&) _Tag_deleteChildren) = hybris_dlsym(handle, "_ZN3Tag14deleteChildrenEv");
+    if (_Tag_deleteChildren == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3Tag14deleteChildrenEv");
+    ((void*&) _Tag_equals) = hybris_dlsym(handle, "_ZNK3Tag6equalsERKS_");
+    if (_Tag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3Tag6equalsERKS_");
+    ((void*&) _Tag_print) = hybris_dlsym(handle, "_ZNK3Tag5printER11PrintStream");
+    if (_Tag_print == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3Tag5printER11PrintStream");
+    ((void*&) _Tag_print2) = hybris_dlsym(handle, "_ZNK3Tag5printERKSsR11PrintStream");
+    if (_Tag_print2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3Tag5printERKSsR11PrintStream");
+    ((void*&) _Tag_setName) = hybris_dlsym(handle, "_ZN3Tag7setNameERKSs");
+    if (_Tag_setName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3Tag7setNameERKSs");
+    ((void*&) _Tag_getName) = hybris_dlsym(handle, "_ZNK3Tag7getNameEv");
+    if (_Tag_getName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3Tag7getNameEv");
+    ((void*&) EndTag::vt) = hybris_dlsym(handle, "_ZTV6EndTag");
+    if (EndTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6EndTag");
+    ((void*&) _EndTag_write) = hybris_dlsym(handle, "_ZNK6EndTag5writeER11IDataOutput");
+    if (_EndTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6EndTag5writeER11IDataOutput");
+    ((void*&) _EndTag_load) = hybris_dlsym(handle, "_ZN6EndTag4loadER10IDataInput");
+    if (_EndTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6EndTag4loadER10IDataInput");
+    ((void*&) _EndTag_toString) = hybris_dlsym(handle, "_ZNK6EndTag8toStringEv");
+    if (_EndTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6EndTag8toStringEv");
+    ((void*&) _EndTag_getId) = hybris_dlsym(handle, "_ZNK6EndTag5getIdEv");
+    if (_EndTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6EndTag5getIdEv");
+    ((void*&) _EndTag_equals) = hybris_dlsym(handle, "_ZNK6EndTag6equalsERK3Tag");
+    if (_EndTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6EndTag6equalsERK3Tag");
+    ((void*&) _EndTag_copy) = hybris_dlsym(handle, "_ZNK6EndTag4copyEv");
+    if (_EndTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6EndTag4copyEv");
+    ((void*&) DoubleTag::vt) = hybris_dlsym(handle, "_ZTV9DoubleTag");
+    if (DoubleTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV9DoubleTag");
+    ((void*&) _DoubleTag_write) = hybris_dlsym(handle, "_ZNK9DoubleTag5writeER11IDataOutput");
+    if (_DoubleTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9DoubleTag5writeER11IDataOutput");
+    ((void*&) _DoubleTag_load) = hybris_dlsym(handle, "_ZN9DoubleTag4loadER10IDataInput");
+    if (_DoubleTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9DoubleTag4loadER10IDataInput");
+    ((void*&) _DoubleTag_toString) = hybris_dlsym(handle, "_ZNK9DoubleTag8toStringEv");
+    if (_DoubleTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9DoubleTag8toStringEv");
+    ((void*&) _DoubleTag_getId) = hybris_dlsym(handle, "_ZNK9DoubleTag5getIdEv");
+    if (_DoubleTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9DoubleTag5getIdEv");
+    ((void*&) _DoubleTag_equals) = hybris_dlsym(handle, "_ZNK9DoubleTag6equalsERK3Tag");
+    if (_DoubleTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9DoubleTag6equalsERK3Tag");
+    ((void*&) _DoubleTag_copy) = hybris_dlsym(handle, "_ZNK9DoubleTag4copyEv");
+    if (_DoubleTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9DoubleTag4copyEv");
+    ((void*&) ByteArrayTag::vt) = hybris_dlsym(handle, "_ZTV12ByteArrayTag");
+    if (ByteArrayTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV12ByteArrayTag");
+    ((void*&) _ByteArrayTag_write) = hybris_dlsym(handle, "_ZNK12ByteArrayTag5writeER11IDataOutput");
+    if (_ByteArrayTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ByteArrayTag5writeER11IDataOutput");
+    ((void*&) _ByteArrayTag_load) = hybris_dlsym(handle, "_ZN12ByteArrayTag4loadER10IDataInput");
+    if (_ByteArrayTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ByteArrayTag4loadER10IDataInput");
+    ((void*&) _ByteArrayTag_toString) = hybris_dlsym(handle, "_ZNK12ByteArrayTag8toStringEv");
+    if (_ByteArrayTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ByteArrayTag8toStringEv");
+    ((void*&) _ByteArrayTag_getId) = hybris_dlsym(handle, "_ZNK12ByteArrayTag5getIdEv");
+    if (_ByteArrayTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ByteArrayTag5getIdEv");
+    ((void*&) _ByteArrayTag_equals) = hybris_dlsym(handle, "_ZNK12ByteArrayTag6equalsERK3Tag");
+    if (_ByteArrayTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ByteArrayTag6equalsERK3Tag");
+    ((void*&) _ByteArrayTag_copy) = hybris_dlsym(handle, "_ZNK12ByteArrayTag4copyEv");
+    if (_ByteArrayTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ByteArrayTag4copyEv");
+    ((void*&) CompoundTag::vt) = hybris_dlsym(handle, "_ZTV11CompoundTag");
+    if (CompoundTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11CompoundTag");
+    ((void*&) _CompoundTag_write) = hybris_dlsym(handle, "_ZNK11CompoundTag5writeER11IDataOutput");
+    if (_CompoundTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag5writeER11IDataOutput");
+    ((void*&) _CompoundTag_load) = hybris_dlsym(handle, "_ZN11CompoundTag4loadER10IDataInput");
+    if (_CompoundTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11CompoundTag4loadER10IDataInput");
+    ((void*&) _CompoundTag_toString) = hybris_dlsym(handle, "_ZNK11CompoundTag8toStringEv");
+    if (_CompoundTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag8toStringEv");
+    ((void*&) _CompoundTag_getId) = hybris_dlsym(handle, "_ZNK11CompoundTag5getIdEv");
+    if (_CompoundTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag5getIdEv");
+    ((void*&) _CompoundTag_equals) = hybris_dlsym(handle, "_ZNK11CompoundTag6equalsERK3Tag");
+    if (_CompoundTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag6equalsERK3Tag");
+    ((void*&) _CompoundTag_print) = hybris_dlsym(handle, "_ZNK11CompoundTag5printERKSsR11PrintStream");
+    if (_CompoundTag_print == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag5printERKSsR11PrintStream");
+    ((void*&) _CompoundTag_copy) = hybris_dlsym(handle, "_ZNK11CompoundTag4copyEv");
+    if (_CompoundTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11CompoundTag4copyEv");
+    ((void*&) ListTag::vt) = hybris_dlsym(handle, "_ZTV7ListTag");
+    if (ListTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV7ListTag");
+    ((void*&) _ListTag_deleteChildren) = hybris_dlsym(handle, "_ZN7ListTag14deleteChildrenEv");
+    if (_ListTag_deleteChildren == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7ListTag14deleteChildrenEv");
+    ((void*&) _ListTag_write) = hybris_dlsym(handle, "_ZNK7ListTag5writeER11IDataOutput");
+    if (_ListTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag5writeER11IDataOutput");
+    ((void*&) _ListTag_load) = hybris_dlsym(handle, "_ZN7ListTag4loadER10IDataInput");
+    if (_ListTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7ListTag4loadER10IDataInput");
+    ((void*&) _ListTag_toString) = hybris_dlsym(handle, "_ZNK7ListTag8toStringEv");
+    if (_ListTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag8toStringEv");
+    ((void*&) _ListTag_getId) = hybris_dlsym(handle, "_ZNK7ListTag5getIdEv");
+    if (_ListTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag5getIdEv");
+    ((void*&) _ListTag_equals) = hybris_dlsym(handle, "_ZNK7ListTag6equalsERK3Tag");
+    if (_ListTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag6equalsERK3Tag");
+    ((void*&) _ListTag_print) = hybris_dlsym(handle, "_ZNK7ListTag5printERKSsR11PrintStream");
+    if (_ListTag_print == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag5printERKSsR11PrintStream");
+    ((void*&) _ListTag_copy) = hybris_dlsym(handle, "_ZNK7ListTag4copyEv");
+    if (_ListTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ListTag4copyEv");
+    ((void*&) FloatTag::vt) = hybris_dlsym(handle, "_ZTV8FloatTag");
+    if (FloatTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV8FloatTag");
+    ((void*&) _FloatTag_write) = hybris_dlsym(handle, "_ZNK8FloatTag5writeER11IDataOutput");
+    if (_FloatTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8FloatTag5writeER11IDataOutput");
+    ((void*&) _FloatTag_load) = hybris_dlsym(handle, "_ZN8FloatTag4loadER10IDataInput");
+    if (_FloatTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8FloatTag4loadER10IDataInput");
+    ((void*&) _FloatTag_toString) = hybris_dlsym(handle, "_ZNK8FloatTag8toStringEv");
+    if (_FloatTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8FloatTag8toStringEv");
+    ((void*&) _FloatTag_getId) = hybris_dlsym(handle, "_ZNK8FloatTag5getIdEv");
+    if (_FloatTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8FloatTag5getIdEv");
+    ((void*&) _FloatTag_equals) = hybris_dlsym(handle, "_ZNK8FloatTag6equalsERK3Tag");
+    if (_FloatTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8FloatTag6equalsERK3Tag");
+    ((void*&) _FloatTag_copy) = hybris_dlsym(handle, "_ZNK8FloatTag4copyEv");
+    if (_FloatTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8FloatTag4copyEv");
+    ((void*&) ByteTag::vt) = hybris_dlsym(handle, "_ZTV7ByteTag");
+    if (ByteTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV7ByteTag");
+    ((void*&) _ByteTag_write) = hybris_dlsym(handle, "_ZNK7ByteTag5writeER11IDataOutput");
+    if (_ByteTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ByteTag5writeER11IDataOutput");
+    ((void*&) _ByteTag_load) = hybris_dlsym(handle, "_ZN7ByteTag4loadER10IDataInput");
+    if (_ByteTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7ByteTag4loadER10IDataInput");
+    ((void*&) _ByteTag_toString) = hybris_dlsym(handle, "_ZNK7ByteTag8toStringEv");
+    if (_ByteTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ByteTag8toStringEv");
+    ((void*&) _ByteTag_getId) = hybris_dlsym(handle, "_ZNK7ByteTag5getIdEv");
+    if (_ByteTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ByteTag5getIdEv");
+    ((void*&) _ByteTag_equals) = hybris_dlsym(handle, "_ZNK7ByteTag6equalsERK3Tag");
+    if (_ByteTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ByteTag6equalsERK3Tag");
+    ((void*&) _ByteTag_copy) = hybris_dlsym(handle, "_ZNK7ByteTag4copyEv");
+    if (_ByteTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7ByteTag4copyEv");
+    ((void*&) ShortTag::vt) = hybris_dlsym(handle, "_ZTV8ShortTag");
+    if (ShortTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV8ShortTag");
+    ((void*&) _ShortTag_write) = hybris_dlsym(handle, "_ZNK8ShortTag5writeER11IDataOutput");
+    if (_ShortTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8ShortTag5writeER11IDataOutput");
+    ((void*&) _ShortTag_load) = hybris_dlsym(handle, "_ZN8ShortTag4loadER10IDataInput");
+    if (_ShortTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8ShortTag4loadER10IDataInput");
+    ((void*&) _ShortTag_toString) = hybris_dlsym(handle, "_ZNK8ShortTag8toStringEv");
+    if (_ShortTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8ShortTag8toStringEv");
+    ((void*&) _ShortTag_getId) = hybris_dlsym(handle, "_ZNK8ShortTag5getIdEv");
+    if (_ShortTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8ShortTag5getIdEv");
+    ((void*&) _ShortTag_equals) = hybris_dlsym(handle, "_ZNK8ShortTag6equalsERK3Tag");
+    if (_ShortTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8ShortTag6equalsERK3Tag");
+    ((void*&) _ShortTag_copy) = hybris_dlsym(handle, "_ZNK8ShortTag4copyEv");
+    if (_ShortTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8ShortTag4copyEv");
+    ((void*&) Int64Tag::vt) = hybris_dlsym(handle, "_ZTV8Int64Tag");
+    if (Int64Tag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV8Int64Tag");
+    ((void*&) _Int64Tag_write) = hybris_dlsym(handle, "_ZNK8Int64Tag5writeER11IDataOutput");
+    if (_Int64Tag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8Int64Tag5writeER11IDataOutput");
+    ((void*&) _Int64Tag_load) = hybris_dlsym(handle, "_ZN8Int64Tag4loadER10IDataInput");
+    if (_Int64Tag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8Int64Tag4loadER10IDataInput");
+    ((void*&) _Int64Tag_toString) = hybris_dlsym(handle, "_ZNK8Int64Tag8toStringEv");
+    if (_Int64Tag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8Int64Tag8toStringEv");
+    ((void*&) _Int64Tag_getId) = hybris_dlsym(handle, "_ZNK8Int64Tag5getIdEv");
+    if (_Int64Tag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8Int64Tag5getIdEv");
+    ((void*&) _Int64Tag_equals) = hybris_dlsym(handle, "_ZNK8Int64Tag6equalsERK3Tag");
+    if (_Int64Tag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8Int64Tag6equalsERK3Tag");
+    ((void*&) _Int64Tag_copy) = hybris_dlsym(handle, "_ZNK8Int64Tag4copyEv");
+    if (_Int64Tag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK8Int64Tag4copyEv");
+    ((void*&) IntArrayTag::vt) = hybris_dlsym(handle, "_ZTV11IntArrayTag");
+    if (IntArrayTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11IntArrayTag");
+    ((void*&) _IntArrayTag_write) = hybris_dlsym(handle, "_ZNK11IntArrayTag5writeER11IDataOutput");
+    if (_IntArrayTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11IntArrayTag5writeER11IDataOutput");
+    ((void*&) _IntArrayTag_load) = hybris_dlsym(handle, "_ZN11IntArrayTag4loadER10IDataInput");
+    if (_IntArrayTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11IntArrayTag4loadER10IDataInput");
+    ((void*&) _IntArrayTag_toString) = hybris_dlsym(handle, "_ZNK11IntArrayTag8toStringEv");
+    if (_IntArrayTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11IntArrayTag8toStringEv");
+    ((void*&) _IntArrayTag_getId) = hybris_dlsym(handle, "_ZNK11IntArrayTag5getIdEv");
+    if (_IntArrayTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11IntArrayTag5getIdEv");
+    ((void*&) _IntArrayTag_equals) = hybris_dlsym(handle, "_ZNK11IntArrayTag6equalsERK3Tag");
+    if (_IntArrayTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11IntArrayTag6equalsERK3Tag");
+    ((void*&) _IntArrayTag_copy) = hybris_dlsym(handle, "_ZNK11IntArrayTag4copyEv");
+    if (_IntArrayTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11IntArrayTag4copyEv");
+    ((void*&) IntTag::vt) = hybris_dlsym(handle, "_ZTV6IntTag");
+    if (IntTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6IntTag");
+    ((void*&) _IntTag_write) = hybris_dlsym(handle, "_ZNK6IntTag5writeER11IDataOutput");
+    if (_IntTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6IntTag5writeER11IDataOutput");
+    ((void*&) _IntTag_load) = hybris_dlsym(handle, "_ZN6IntTag4loadER10IDataInput");
+    if (_IntTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6IntTag4loadER10IDataInput");
+    ((void*&) _IntTag_toString) = hybris_dlsym(handle, "_ZNK6IntTag8toStringEv");
+    if (_IntTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6IntTag8toStringEv");
+    ((void*&) _IntTag_getId) = hybris_dlsym(handle, "_ZNK6IntTag5getIdEv");
+    if (_IntTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6IntTag5getIdEv");
+    ((void*&) _IntTag_equals) = hybris_dlsym(handle, "_ZNK6IntTag6equalsERK3Tag");
+    if (_IntTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6IntTag6equalsERK3Tag");
+    ((void*&) _IntTag_copy) = hybris_dlsym(handle, "_ZNK6IntTag4copyEv");
+    if (_IntTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6IntTag4copyEv");
+    ((void*&) StringTag::vt) = hybris_dlsym(handle, "_ZTV9StringTag");
+    if (StringTag::vt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV9StringTag");
+    ((void*&) _StringTag_write) = hybris_dlsym(handle, "_ZNK9StringTag5writeER11IDataOutput");
+    if (_StringTag_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9StringTag5writeER11IDataOutput");
+    ((void*&) _StringTag_load) = hybris_dlsym(handle, "_ZN9StringTag4loadER10IDataInput");
+    if (_StringTag_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9StringTag4loadER10IDataInput");
+    ((void*&) _StringTag_toString) = hybris_dlsym(handle, "_ZNK9StringTag8toStringEv");
+    if (_StringTag_toString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9StringTag8toStringEv");
+    ((void*&) _StringTag_getId) = hybris_dlsym(handle, "_ZNK9StringTag5getIdEv");
+    if (_StringTag_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9StringTag5getIdEv");
+    ((void*&) _StringTag_equals) = hybris_dlsym(handle, "_ZNK9StringTag6equalsERK3Tag");
+    if (_StringTag_equals == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9StringTag6equalsERK3Tag");
+    ((void*&) _StringTag_copy) = hybris_dlsym(handle, "_ZNK9StringTag4copyEv");
+    if (_StringTag_copy == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9StringTag4copyEv");
     ((void*&) _ResourceLoadManager_ResourceLoadManager) = hybris_dlsym(handle, "_ZN19ResourceLoadManagerC2Ev");
     if (_ResourceLoadManager_ResourceLoadManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourceLoadManagerC2Ev");
     ((void*&) _ResourceLoadManager_sync) = hybris_dlsym(handle, "_ZN19ResourceLoadManager4syncE16ResourceLoadType");
@@ -2432,6 +2978,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getActorIdentifier == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor18getActorIdentifierEv");
     ((void*&) _Actor_getUniqueID) = hybris_dlsym(handle, "_ZNK5Actor11getUniqueIDEv");
     if (_Actor_getUniqueID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getUniqueIDEv");
+    ((void*&) _Actor_save) = hybris_dlsym(handle, "_ZN5Actor4saveER11CompoundTag");
+    if (_Actor_save == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4saveER11CompoundTag");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");

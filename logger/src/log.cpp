@@ -5,10 +5,8 @@
 LogLevel Log::MIN_LEVEL = LogLevel::LOG_INFO;
 
 void Log::vlog(LogLevel level, const char *tag, const char *text, va_list args) {
-  char buffer[4096];
-  int len = vsnprintf(buffer, sizeof(buffer), text, args);
-  if (len > sizeof(buffer)) len = sizeof(buffer);
-  while (len > 0 && (buffer[len - 1] == '\r' || buffer[len - 1] == '\n')) buffer[--len] = '\0';
+  char *buffer;
+  vasprintf(&buffer, text, args);
 
   char tbuf[16];
   tbuf[0] = '\0';
@@ -20,10 +18,14 @@ void Log::vlog(LogLevel level, const char *tag, const char *text, va_list args) 
 
   for (auto hook : hooks) hook(static_cast<int>(level), tag, buffer);
 
-  if (static_cast<int>(level) < static_cast<int>(MIN_LEVEL)) return;
+  if (static_cast<int>(level) < static_cast<int>(MIN_LEVEL)) {
+    free(buffer);
+    return;
+  }
 
   printf("%s %s [%s] %s\n", tbuf, getLogLevelString(level), tag, buffer);
   fflush(stdout);
+  free(buffer);
 }
 
 std::vector<std::function<void(int, std::string, std::string)>> Log::hooks;

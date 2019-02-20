@@ -1,6 +1,7 @@
 #pragma once
 
 #include <interface/locator.hpp>
+#include <minecraft/Tag.h>
 #include <minecraft/V8.h>
 
 #include "operators.h"
@@ -14,8 +15,8 @@ namespace v8 {
 
 template <typename T> struct Convertable; // type, fromJS, toJS
 
-template <typename T> T fromJS(Isolate *iso, Local<typename Convertable<T>::type> src) { return Convertable<T>::fromJS(iso, src); }
-template <typename T> Local<typename Convertable<T>::type> toJS(Isolate *iso, T src) { return Convertable<T>::ToJS(src); }
+template <typename T> auto fromJS(Isolate *iso, Local<typename Convertable<T>::type> src) { return Convertable<T>::fromJS(iso, src); }
+template <typename T> auto toJS(Isolate *iso, T src) { return Convertable<T>::toJS(iso, src); }
 
 template <typename T> struct IntegralConvertable {
   using type = Integer;
@@ -57,6 +58,140 @@ template <> struct Convertable<char *> {
   using type = String;
   static Local<type> toJS(Isolate *iso, char *src) { return String::NewFromUtf8(iso, src); }
 };
+
+template <> struct Convertable<Tag const &> {
+  using type = Value;
+  static Local<type> toJS(Isolate *iso, Tag const &tag);
+};
+
+template <> struct Convertable<CompoundTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, CompoundTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "compound"));
+    auto xobj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), xobj);
+    for (auto &[k, v] : tag.value) xobj->Set(Convertable<std::string>::toJS(iso, k.std()), Convertable<Tag const &>::toJS(iso, *v));
+    return obj;
+  }
+};
+
+template <> struct Convertable<ListTag const &> {
+  using type = Array;
+  static Local<type> toJS(Isolate *iso, ListTag const &tag) {
+    auto arr = Array::New(iso, tag.value.size());
+    int i    = 0;
+    for (auto &child : tag.value) arr->Set(i++, Convertable<Tag const &>::toJS(iso, *child));
+    return arr;
+  }
+};
+template <> struct Convertable<DoubleTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, DoubleTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "double"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<double>::toJS(iso, tag.value));
+    return obj;
+  }
+};
+template <> struct Convertable<StringTag const &> {
+  using type = String;
+  static Local<type> toJS(Isolate *iso, StringTag const &tag) { return Convertable<std::string>::toJS(iso, tag.value.std()); }
+};
+template <> struct Convertable<ShortTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, ShortTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "short"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<short>::toJS(iso, tag.value));
+    return obj;
+  }
+};
+template <> struct Convertable<Int64Tag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, Int64Tag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "int64"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<std::string>::toJS(iso, std::to_string(tag.value)));
+    return obj;
+  }
+};
+template <> struct Convertable<FloatTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, FloatTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "float"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<float>::toJS(iso, tag.value));
+    return obj;
+  }
+};
+template <> struct Convertable<IntTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, IntTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "int"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<int>::toJS(iso, tag.value));
+    return obj;
+  }
+};
+template <> struct Convertable<ByteTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, ByteTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "byte"));
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<unsigned char>::toJS(iso, tag.value));
+    return obj;
+  }
+};
+template <> struct Convertable<IntArrayTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, IntArrayTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "int-array"));
+    auto arr = ArrayBuffer::New(iso, tag.value.size());
+    memcpy(arr->GetContents().Data(), tag.value.data(), tag.value.size());
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), arr);
+    return obj;
+  }
+};
+template <> struct Convertable<ByteArrayTag const &> {
+  using type = Object;
+  static Local<type> toJS(Isolate *iso, ByteArrayTag const &tag) {
+    auto obj = Object::New(iso);
+    obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "byte-array"));
+    auto arr = ArrayBuffer::New(iso, tag.value.size());
+    memcpy(arr->GetContents().Data(), tag.value.data(), tag.value.size());
+    obj->Set(Convertable<char const *>::toJS(iso, "value"), arr);
+    return obj;
+  }
+};
+template <> struct Convertable<EndTag const &> {
+  using type = Value;
+  static Local<type> toJS(Isolate *iso, EndTag const &tag) {
+    return Undefined(iso);
+  }
+};
+
+#define CASE(T)                                                                                                                                      \
+  if (*(void ***)&tag == T::vt + 2) return Convertable<T const &>::toJS(iso, (T const &)tag)
+
+inline Local<Value> Convertable<Tag const &>::toJS(Isolate *iso, const Tag &tag) {
+  CASE(CompoundTag);
+  CASE(StringTag);
+  CASE(ListTag);
+  CASE(DoubleTag);
+  CASE(ShortTag);
+  CASE(Int64Tag);
+  CASE(FloatTag);
+  CASE(IntTag);
+  CASE(ByteTag);
+  CASE(IntArrayTag);
+  CASE(ByteArrayTag);
+  CASE(EndTag);
+  printf("Cannot convert back: %p\n", *(void ***)&tag);
+  return Undefined(iso);
+}
+#undef CASE
 
 template <typename T, std::size_t length> struct Convertable<std::array<T, length>> {
   using type = Array;

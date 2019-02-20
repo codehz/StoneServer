@@ -84,7 +84,25 @@ class FunctionTemplate;
 class Signature;
 using Primitive = Value;
 
+enum WeakCallbackType { kParameter, kInternalFields, kFinalizer };
+
+static const int kInternalFieldsInWeakCallback = 2;
+
+template <typename T> struct WeakCallbackInfo {
+  using Callback = void (*)(const WeakCallbackInfo<T> &data);
+  Isolate *GetIsolate() const { return isolate_; }
+  T *GetParameter() const { return parameter_; }
+  void SetSecondPassCallback(Callback callback) const { *callback_ = callback; }
+
+private:
+  Isolate *isolate_;
+  T *parameter_;
+  Callback *callback_;
+  void *internal_fields_[kInternalFieldsInWeakCallback];
+};
+
 struct V8 {
+  using VoidWeakCallback = v8::WeakCallbackInfo<void>::Callback;
   static bool Initialize();
   /// @symbol _ZN2v82V818InitializePlatformEPNS_8PlatformE
   static void InitializePlatform(v8::Platform *platform);
@@ -94,6 +112,8 @@ struct V8 {
   static void DisposeGlobal(void *inp);
   /// @symbol _ZN2v811HandleScope12CreateHandleEPNS_8internal7IsolateEPNS1_6ObjectE
   static void *CreateHandle(v8::Isolate *, void *);
+  /// @symbol _ZN2v82V88MakeWeakEPPNS_8internal6ObjectEPvPFvRKNS_16WeakCallbackInfoIvEEENS_16WeakCallbackTypeE
+  static void *MakeWeak(void *inp, void *data, v8::V8::VoidWeakCallback weak_callback, v8::WeakCallbackType type);
 };
 
 struct Task {
@@ -419,6 +439,7 @@ class Isolate {
   char filler[0x10000];
 
 public:
+  enum GarbageCollectionType { kFullGarbageCollection, kMinorGarbageCollection };
   /// @symbol _ZN2v87Isolate14ThrowExceptionENS_5LocalINS_5ValueEEE
   v8::Local<v8::Value> ThrowException(v8::Local<v8::Value>);
 
@@ -427,6 +448,8 @@ public:
   bool InContext();
   void Enter();
   void Exit();
+  /// @symbol _ZN2v87Isolate34RequestGarbageCollectionForTestingENS0_21GarbageCollectionTypeE
+  void RequestGarbageCollectionForTesting(v8::Isolate::GarbageCollectionType type);
 
   /// @symbol _ZN2v87Isolate13RunMicrotasksEv
   void RunMicrotasks();
@@ -668,6 +691,7 @@ public:
     if (this->val_) V8::DisposeGlobal(this->val_);
   }
   inline void *RawPointer() { return this->val_; }
+  template <typename P> inline void SetWeak(P *parameter, typename WeakCallbackInfo<P>::Callback callback) { V8::MakeWeak(this->val_, parameter, (v8::V8::VoidWeakCallback)callback, v8::kParameter); }
 };
 
 template <class T> struct AutoReleasePersistent : BaseLocal<void> {
@@ -694,6 +718,7 @@ public:
   }
   inline operator bool() { return this->val_; }
   inline void *RawPointer() { return this->val_; }
+  template <typename P> inline void SetWeak(P *parameter, typename WeakCallbackInfo<P>::Callback callback) { V8::MakeWeak(this->val_, parameter, (v8::V8::VoidWeakCallback)callback, v8::kParameter); }
 };
 
 class Exception {

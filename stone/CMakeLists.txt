@@ -46,6 +46,7 @@ add_executable(stone
   "src/ExtAPI/transferPlayer.cpp"
   "src/ExtAPI/broadcastExternalEvent.cpp"
   "src/ExtAPI/openModalForm.cpp"
+  "src/ExtAPI/loadTag.cpp"
   "src/GlobalAPI/common.h"
   "src/GlobalAPI/common.cpp"
   "src/GlobalAPI/SQLite3.cpp"

@@ -214,7 +214,7 @@ static void bind_sqlite3_update(FunctionCallbackInfo<Value> const &info) {
   }
 }
 
-Register reg([](Local<ObjectTemplate> &obj, Isolate *iso) {
+static Register reg([](Local<ObjectTemplate> &obj, Isolate *iso) {
   auto tmp_Database = FunctionTemplate::New(iso, bind_sqlite3_open, 1);
   tmp_Database->SetClassName(ToJS("SQLite3"));
   auto proto_Database = tmp_Database->InstanceTemplate();
