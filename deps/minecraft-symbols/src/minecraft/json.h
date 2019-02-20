@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include "std/string.h"
+#include <iostream>
 
 namespace Json {
 
@@ -50,6 +50,9 @@ struct Value {
 
   /// @symbol _ZN4Json5ValueC2ENS_9ValueTypeE
   Value(Json::ValueType);
+
+  /// @symbol _ZN4Json5ValueD2Ev
+  ~Value();
 };
 
 }

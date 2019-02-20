@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 20 2019 12:37:59 UTC
+// Generated on Wed Feb 20 2019 14:39:45 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -164,6 +164,10 @@ mcpe::string Json::FastWriter::write(Json::Value const & p1) {
 static void (Json::Value::*_Json_Value_Value)(Json::ValueType);
 Json::Value::Value(Json::ValueType p1) {
     (this->*_Json_Value_Value)(p1);
+}
+static void (Json::Value::*_Json_Value_destructor)();
+Json::Value::~Value() {
+    (this->*_Json_Value_destructor)();
 }
 
 #include "ContentIdentity.h"
@@ -1818,6 +1822,10 @@ static void (Whitelist::*_Whitelist_Whitelist)(mcpe::function<void ( )>);
 Whitelist::Whitelist(mcpe::function<void ( )> p1) {
     (this->*_Whitelist_Whitelist)(p1);
 }
+static void (Whitelist::*_Whitelist_destructor)();
+Whitelist::~Whitelist() {
+    (this->*_Whitelist_destructor)();
+}
 static void (Whitelist::*_Whitelist_deserialize)(Json::Value &);
 void Whitelist::deserialize(Json::Value & p1) {
     (this->*_Whitelist_deserialize)(p1);
@@ -2077,6 +2085,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Json_FastWriter_write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json10FastWriter5writeERKNS_5ValueE");
     ((void*&) _Json_Value_Value) = hybris_dlsym(handle, "_ZN4Json5ValueC2ENS_9ValueTypeE");
     if (_Json_Value_Value == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json5ValueC2ENS_9ValueTypeE");
+    ((void*&) _Json_Value_destructor) = hybris_dlsym(handle, "_ZN4Json5ValueD2Ev");
+    if (_Json_Value_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN4Json5ValueD2Ev");
     ((void*&) ContentIdentity::EMPTY) = hybris_dlsym(handle, "_ZN15ContentIdentity5EMPTYE");
     if (ContentIdentity::EMPTY == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ContentIdentity5EMPTYE");
     ((void*&) _App_init) = hybris_dlsym(handle, "_ZN3App4initER10AppContext");
@@ -2910,6 +2920,8 @@ void minecraft_symbols_init(void* handle) {
     if (_WhitelistEntry_WhitelistEntry == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14WhitelistEntryC2ESsN3mce4UUIDESsb");
     ((void*&) _Whitelist_Whitelist) = hybris_dlsym(handle, "_ZN9WhitelistC2ESt8functionIFvvEE");
     if (_Whitelist_Whitelist == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9WhitelistC2ESt8functionIFvvEE");
+    ((void*&) _Whitelist_destructor) = hybris_dlsym(handle, "_ZN9WhitelistD2Ev");
+    if (_Whitelist_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9WhitelistD2Ev");
     ((void*&) _Whitelist_deserialize) = hybris_dlsym(handle, "_ZN9Whitelist11deserializeERN4Json5ValueE");
     if (_Whitelist_deserialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN9Whitelist11deserializeERN4Json5ValueE");
     ((void*&) _Whitelist_serialize) = hybris_dlsym(handle, "_ZN9Whitelist9serializeERN4Json5ValueE");

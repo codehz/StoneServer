@@ -19,6 +19,9 @@ struct Whitelist {
   /// @symbol _ZN9WhitelistC2ESt8functionIFvvEE
   Whitelist(mcpe::function<void()> fn);
 
+  /// @symbol _ZN9WhitelistD2Ev
+  ~Whitelist();
+
   /// @symbol _ZN9Whitelist11deserializeERN4Json5ValueE
   void deserialize(Json::Value &);
   /// @symbol _ZN9Whitelist9serializeERN4Json5ValueE
