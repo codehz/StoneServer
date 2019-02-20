@@ -15,4 +15,5 @@ public:
   int64_t &getUniqueID() const;
 
   bool save(CompoundTag &);
+  bool load(CompoundTag const &);
 };

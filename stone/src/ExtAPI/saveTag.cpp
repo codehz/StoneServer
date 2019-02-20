@@ -9,13 +9,13 @@
 namespace ExtAPI {
 using namespace interface;
 
-static void loadTagCallback(FunctionCallbackInfo<Value> const &info) {
+static void saveTagCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (info.Length() == 1 && info[0]->IsObject()) {
     auto actor   = fromJS<Actor *>(iso, info[0]);
     if (!actor) {
-      iso->ThrowException(Exception::TypeError(ToJS("loadTag requires (actor)")));
+      iso->ThrowException(Exception::TypeError(ToJS("saveTag requires (actor)")));
       return;
     }
     CompoundTag compound;
@@ -25,10 +25,10 @@ static void loadTagCallback(FunctionCallbackInfo<Value> const &info) {
     }
     info.GetReturnValue().Set(toJS<CompoundTag const &>(iso, compound));
   } else {
-    iso->ThrowException(Exception::TypeError(ToJS("loadTag requires (object)")));
+    iso->ThrowException(Exception::TypeError(ToJS("saveTag requires (object)")));
   }
 }
 
-static Register reg{ "registerComponent", "loadTag", &loadTagCallback };
+static Register reg{ "registerComponent", "saveTag", &saveTagCallback };
 
 } // namespace ExtAPI

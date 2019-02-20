@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 20 2019 08:16:57 UTC
+// Generated on Wed Feb 20 2019 12:37:59 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1963,6 +1963,10 @@ static bool (Actor::*_Actor_save)(CompoundTag &);
 bool Actor::save(CompoundTag & p1) {
     return (this->*_Actor_save)(p1);
 }
+static bool (Actor::*_Actor_load)(CompoundTag const &);
+bool Actor::load(CompoundTag const & p1) {
+    return (this->*_Actor_load)(p1);
+}
 
 #include "legacy/App.h"
 static int vti_Legacy_Pre_1_8_App_quit;
@@ -2980,6 +2984,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getUniqueID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getUniqueIDEv");
     ((void*&) _Actor_save) = hybris_dlsym(handle, "_ZN5Actor4saveER11CompoundTag");
     if (_Actor_save == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4saveER11CompoundTag");
+    ((void*&) _Actor_load) = hybris_dlsym(handle, "_ZN5Actor4loadERK11CompoundTag");
+    if (_Actor_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4loadERK11CompoundTag");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");

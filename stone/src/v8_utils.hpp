@@ -7,6 +7,7 @@
 #include "operators.h"
 
 #include <array>
+#include <string>
 #include <type_traits>
 
 #define ToJS(s) toJS(iso, s)
@@ -63,6 +64,10 @@ template <> struct Convertable<Tag const &> {
   using type = Value;
   static Local<type> toJS(Isolate *iso, Tag const &tag);
 };
+template <> struct Convertable<std::unique_ptr<Tag>> {
+  using type = Value;
+  static std::unique_ptr<Tag> fromJS(Isolate *iso, Local<type> src);
+};
 
 template <> struct Convertable<CompoundTag const &> {
   using type = Object;
@@ -75,6 +80,24 @@ template <> struct Convertable<CompoundTag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<CompoundTag>> {
+  using type = Object;
+  static std::unique_ptr<CompoundTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsObject()) {
+      auto ret   = std::make_unique<CompoundTag>();
+      auto vobj  = Object::Cast((Value *)value);
+      auto names = vobj->GetOwnPropertyNames(iso->GetCurrentContext(), v8::PropertyFilter::SKIP_SYMBOLS);
+      for (unsigned i = 0; i < names->Length(); i++) {
+        auto name = names->Get(i);
+        if (!name->IsString()) throw Exception::TypeError(Convertable<char const *>::toJS(iso, "compound kay need to be string"));
+        ret->value.emplace(name >> V8Str, Convertable<std::unique_ptr<Tag>>::fromJS(iso, vobj->Get(name)));
+      }
+      return ret;
+    }
+    throw "Cannot convert back to CompoundTag";
+  }
+};
 
 template <> struct Convertable<ListTag const &> {
   using type = Array;
@@ -83,6 +106,15 @@ template <> struct Convertable<ListTag const &> {
     int i    = 0;
     for (auto &child : tag.value) arr->Set(i++, Convertable<Tag const &>::toJS(iso, *child));
     return arr;
+  }
+};
+template <> struct Convertable<std::unique_ptr<ListTag>> {
+  using type = Array;
+  static std::unique_ptr<ListTag> fromJS(Isolate *iso, Local<type> src) {
+    auto ret = std::make_unique<ListTag>();
+    ret->value.resize(src->Length());
+    for (unsigned i = 0; i < src->Length(); i++) ret->value.emplace_back(Convertable<std::unique_ptr<Tag>>::fromJS(iso, src->Get(i)));
+    return ret;
   }
 };
 template <> struct Convertable<DoubleTag const &> {
@@ -94,9 +126,33 @@ template <> struct Convertable<DoubleTag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<DoubleTag>> {
+  using type = Object;
+  static std::unique_ptr<DoubleTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsNumber()) {
+      auto vobj  = Number::Cast((Value *)value);
+      auto ret   = std::make_unique<DoubleTag>();
+      ret->value = vobj->Value();
+      return ret;
+    }
+    throw "Cannot convert back to DoubleTag";
+  }
+};
 template <> struct Convertable<StringTag const &> {
   using type = String;
   static Local<type> toJS(Isolate *iso, StringTag const &tag) { return Convertable<std::string>::toJS(iso, tag.value.std()); }
+};
+template <> struct Convertable<std::unique_ptr<StringTag>> {
+  using type = String;
+  static std::unique_ptr<StringTag> fromJS(Isolate *iso, Local<type> src) {
+    if (src->IsString()) {
+      auto ret   = std::make_unique<StringTag>();
+      ret->value = src >> V8Str;
+      return ret;
+    }
+    throw "Cannot convert back to StringTag";
+  }
 };
 template <> struct Convertable<ShortTag const &> {
   using type = Object;
@@ -105,6 +161,19 @@ template <> struct Convertable<ShortTag const &> {
     obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "short"));
     obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<short>::toJS(iso, tag.value));
     return obj;
+  }
+};
+template <> struct Convertable<std::unique_ptr<ShortTag>> {
+  using type = Object;
+  static std::unique_ptr<ShortTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsNumber()) {
+      auto vobj  = Number::Cast((Value *)value);
+      auto ret   = std::make_unique<ShortTag>();
+      ret->value = vobj->Value();
+      return ret;
+    }
+    throw "Cannot convert back to ShortTag";
   }
 };
 template <> struct Convertable<Int64Tag const &> {
@@ -116,6 +185,19 @@ template <> struct Convertable<Int64Tag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<Int64Tag>> {
+  using type = Object;
+  static std::unique_ptr<Int64Tag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsString()) {
+      auto vobj  = String::Cast((Value *)value);
+      auto ret   = std::make_unique<Int64Tag>();
+      ret->value = std::stoll(vobj >> V8Str >> StdStr);
+      return ret;
+    }
+    throw "Cannot convert back to ShortTag";
+  }
+};
 template <> struct Convertable<FloatTag const &> {
   using type = Object;
   static Local<type> toJS(Isolate *iso, FloatTag const &tag) {
@@ -123,6 +205,19 @@ template <> struct Convertable<FloatTag const &> {
     obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "float"));
     obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<float>::toJS(iso, tag.value));
     return obj;
+  }
+};
+template <> struct Convertable<std::unique_ptr<FloatTag>> {
+  using type = Object;
+  static std::unique_ptr<FloatTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsNumber()) {
+      auto vobj  = Number::Cast((Value *)value);
+      auto ret   = std::make_unique<FloatTag>();
+      ret->value = vobj->Value();
+      return ret;
+    }
+    throw "Cannot convert back to FloatTag";
   }
 };
 template <> struct Convertable<IntTag const &> {
@@ -134,6 +229,19 @@ template <> struct Convertable<IntTag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<IntTag>> {
+  using type = Object;
+  static std::unique_ptr<IntTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsNumber()) {
+      auto vobj  = Number::Cast((Value *)value);
+      auto ret   = std::make_unique<IntTag>();
+      ret->value = vobj->Value();
+      return ret;
+    }
+    throw "Cannot convert back to IntTag";
+  }
+};
 template <> struct Convertable<ByteTag const &> {
   using type = Object;
   static Local<type> toJS(Isolate *iso, ByteTag const &tag) {
@@ -141,6 +249,19 @@ template <> struct Convertable<ByteTag const &> {
     obj->Set(Convertable<char const *>::toJS(iso, "type"), Convertable<char const *>::toJS(iso, "byte"));
     obj->Set(Convertable<char const *>::toJS(iso, "value"), Convertable<unsigned char>::toJS(iso, tag.value));
     return obj;
+  }
+};
+template <> struct Convertable<std::unique_ptr<ByteTag>> {
+  using type = Object;
+  static std::unique_ptr<ByteTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsNumber()) {
+      auto vobj  = Number::Cast((Value *)value);
+      auto ret   = std::make_unique<ByteTag>();
+      ret->value = vobj->Value();
+      return ret;
+    }
+    throw "Cannot convert back to ByteTag";
   }
 };
 template <> struct Convertable<IntArrayTag const &> {
@@ -154,6 +275,23 @@ template <> struct Convertable<IntArrayTag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<IntArrayTag>> {
+  using type = Object;
+  static std::unique_ptr<IntArrayTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsArrayBuffer()) {
+      auto vobj         = ArrayBuffer::Cast((Value *)value);
+      auto contents     = vobj->GetContents();
+      auto ret          = std::make_unique<IntArrayTag>();
+      ret->value.m_cap  = contents.ByteLength();
+      ret->value.m_size = contents.ByteLength();
+      ret->value.m_data.reset(new std::byte[contents.ByteLength()]);
+      memcpy((char *)ret->value.m_data.get(), contents.Data(), contents.ByteLength());
+      return ret;
+    }
+    throw "Cannot convert back to IntArrayTag";
+  }
+};
 template <> struct Convertable<ByteArrayTag const &> {
   using type = Object;
   static Local<type> toJS(Isolate *iso, ByteArrayTag const &tag) {
@@ -165,11 +303,30 @@ template <> struct Convertable<ByteArrayTag const &> {
     return obj;
   }
 };
+template <> struct Convertable<std::unique_ptr<ByteArrayTag>> {
+  using type = Object;
+  static std::unique_ptr<ByteArrayTag> fromJS(Isolate *iso, Local<type> src) {
+    auto s_value = Convertable<char const *>::toJS(iso, "value");
+    if (auto value = src->Get(s_value); value->IsArrayBuffer()) {
+      auto vobj         = ArrayBuffer::Cast((Value *)value);
+      auto contents     = vobj->GetContents();
+      auto ret          = std::make_unique<ByteArrayTag>();
+      ret->value.m_cap  = contents.ByteLength();
+      ret->value.m_size = contents.ByteLength();
+      ret->value.m_data.reset(new std::byte[contents.ByteLength()]);
+      memcpy((char *)ret->value.m_data.get(), contents.Data(), contents.ByteLength());
+      return ret;
+    }
+    throw "Cannot convert back to ByteArrayTag";
+  }
+};
 template <> struct Convertable<EndTag const &> {
   using type = Value;
-  static Local<type> toJS(Isolate *iso, EndTag const &tag) {
-    return Undefined(iso);
-  }
+  static Local<type> toJS(Isolate *iso, EndTag const &tag) { return Undefined(iso); }
+};
+template <> struct Convertable<std::unique_ptr<EndTag>> {
+  using type = Value;
+  static std::unique_ptr<EndTag> fromJS(Isolate *iso, Local<type> src) { return {}; }
 };
 
 #define CASE(T)                                                                                                                                      \
@@ -188,10 +345,35 @@ inline Local<Value> Convertable<Tag const &>::toJS(Isolate *iso, const Tag &tag)
   CASE(IntArrayTag);
   CASE(ByteArrayTag);
   CASE(EndTag);
-  printf("Cannot convert back: %p\n", *(void ***)&tag);
   return Undefined(iso);
 }
 #undef CASE
+
+inline std::unique_ptr<Tag> Convertable<std::unique_ptr<Tag>>::fromJS(Isolate *iso, Local<type> src) {
+  if (src->IsString()) return Convertable<std::unique_ptr<StringTag>>::fromJS(iso, src);
+  if (src->IsArray()) return Convertable<std::unique_ptr<ListTag>>::fromJS(iso, src);
+  if (src->IsNullOrUndefined()) return Convertable<std::unique_ptr<EndTag>>::fromJS(iso, src);
+  if (src->IsObject()) {
+    auto s_type = Convertable<char const *>::toJS(iso, "type");
+    auto objsrc = Object::Cast((Value *)src);
+    if (objsrc->Has(s_type)) {
+      auto v_type = objsrc->Get(s_type);
+      if (v_type->IsString()) {
+        auto vstype = v_type >> V8Str;
+        if (vstype == "compound") return Convertable<std::unique_ptr<CompoundTag>>::fromJS(iso, src);
+        if (vstype == "double") return Convertable<std::unique_ptr<DoubleTag>>::fromJS(iso, src);
+        if (vstype == "short") return Convertable<std::unique_ptr<ShortTag>>::fromJS(iso, src);
+        if (vstype == "int64") return Convertable<std::unique_ptr<Int64Tag>>::fromJS(iso, src);
+        if (vstype == "float") return Convertable<std::unique_ptr<FloatTag>>::fromJS(iso, src);
+        if (vstype == "int") return Convertable<std::unique_ptr<IntTag>>::fromJS(iso, src);
+        if (vstype == "byte") return Convertable<std::unique_ptr<ByteTag>>::fromJS(iso, src);
+        if (vstype == "int-array") return Convertable<std::unique_ptr<IntArrayTag>>::fromJS(iso, src);
+        if (vstype == "byte-array") return Convertable<std::unique_ptr<ByteArrayTag>>::fromJS(iso, src);
+      }
+    }
+  }
+  throw "Cannot convert back to Tag";
+}
 
 template <typename T, std::size_t length> struct Convertable<std::array<T, length>> {
   using type = Array;
