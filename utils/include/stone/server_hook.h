@@ -13,8 +13,9 @@ GetServerHookRegistry();
 struct RegisterServerHook {
   static inline void InitHooks() {
     for (auto const &[sym, hook, org] : GetServerHookRegistry()) {
-      Log::debug("hook", "Hook %s", sym);
-      HookManager::instance.createHook(MinecraftHandle(), sym, hook, org);
+      if (HookManager::instance.createHook(MinecraftHandle(), sym, hook, org) == nullptr) {
+        Log::warn("hook", "Failed to hook %s", sym);
+      }
     }
     HookManager::instance.applyHooks();
   }

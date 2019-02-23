@@ -39,10 +39,10 @@ SHook(void, _ZN9ScriptApi13LogV8CallbackERKN2v820FunctionCallbackInfoINS0_5Value
   Log::info("Scripting", "log: %s", ss.str().c_str());
 }
 
-SInstanceHook(void, _ZN27MinecraftServerScriptEngineC2Ev, MinecraftServerScriptEngine) {
+SInstanceHook(void, _ZN27MinecraftServerScriptEngineC1Ev, MinecraftServerScriptEngine) {
   original(this);
   Locator<MinecraftServerScriptEngine>() = this;
-  Locator<MinecraftServerScriptEngine>() >> FieldRef(&MinecraftServerScriptEngine::core);
+  Locator<ScriptApi::V8CoreInterface>() = this->core;
 }
 
 SHook(
@@ -72,7 +72,7 @@ static patched::details::RegisterPatchInit pinit([] {
   using namespace api;
   Locator<ScriptService<ServerSide>>()->emit >> [](EventData const &data) {
     auto &core = *Locator<ScriptApi::V8CoreInterface>();
-    auto iso   = V8Isolate[core];
+    auto &iso   = V8Isolate[core];
     HandleScope scope{ iso };
     Isolate::Scope iso_scope{ iso };
     auto ctx = V8Context[core].Get(iso);
@@ -82,7 +82,7 @@ static patched::details::RegisterPatchInit pinit([] {
   Locator<Chat>() >> [](auto &chat) {
     chat.onPlayerChat >> [](Player &player, std::string const text) {
       auto &core = *Locator<ScriptApi::V8CoreInterface>();
-      auto iso   = V8Isolate[core];
+      auto &iso   = V8Isolate[core];
       HandleScope scope{ iso };
       Isolate::Scope iso_scope{ iso };
       auto ctx = V8Context[core].Get(iso);
