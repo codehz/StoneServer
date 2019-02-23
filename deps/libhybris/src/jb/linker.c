@@ -467,7 +467,7 @@ static Elf32_Sym *_elf_lookup(soinfo *si, unsigned hash, const char *name)
     return NULL;
 }
 
-static unsigned elfhash(const char *_name)
+unsigned elfhash(const char *_name)
 {
     const unsigned char *name = (const unsigned char *) _name;
     unsigned h = 0, g;
