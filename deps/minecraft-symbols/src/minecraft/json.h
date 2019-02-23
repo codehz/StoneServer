@@ -49,7 +49,7 @@ struct Value {
   char filler[0x10];
 
   /// @symbol _ZN4Json5ValueC2ENS_9ValueTypeE
-  Value(Json::ValueType);
+  Value(Json::ValueType type = nullValue);
 
   /// @symbol _ZN4Json5ValueD2Ev
   ~Value();

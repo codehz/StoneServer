@@ -16,7 +16,7 @@ struct WhitelistManager {
 
   inline void reload() {
     Json::Reader reader;
-    Json::Value value(Json::nullValue);
+    Json::Value value;
     std::ifstream ifs(path);
     if (!ifs) return;
     reader.parse(ifs, value, false);
@@ -25,7 +25,7 @@ struct WhitelistManager {
 
   inline void save() {
     Json::StyledWriter writer;
-    Json::Value value(Json::nullValue);
+    Json::Value value;
     std::ofstream ofs(path);
     list.serialize(value);
     ofs << writer.write(value);
