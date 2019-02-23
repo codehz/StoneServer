@@ -79,17 +79,19 @@ static patched::details::RegisterPatchInit pinit([] {
     Context::Scope ctx_scope{ ctx };
     Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, ToJS(data.data) });
   };
-  Locator<Chat>()->onPlayerChat >> [](Player &player, std::string const text) {
-    auto &core = *Locator<ScriptApi::V8CoreInterface>();
-    auto iso   = V8Isolate[core];
-    HandleScope scope{ iso };
-    Isolate::Scope iso_scope{ iso };
-    auto ctx = V8Context[core].Get(iso);
-    Context::Scope ctx_scope{ ctx };
-    auto obj = Object::New(iso);
-    obj->Set(ToJS("sender"), ToJS((Actor *)&player));
-    obj->Set(ToJS("content"), ToJS(text));
-    Locator<MinecraftServerScriptEngine>()->fireEventToScript("stoneserver:chat_received", { iso, obj });
+  Locator<Chat>() >> [](auto &chat) {
+    chat.onPlayerChat >> [](Player &player, std::string const text) {
+      auto &core = *Locator<ScriptApi::V8CoreInterface>();
+      auto iso   = V8Isolate[core];
+      HandleScope scope{ iso };
+      Isolate::Scope iso_scope{ iso };
+      auto ctx = V8Context[core].Get(iso);
+      Context::Scope ctx_scope{ ctx };
+      auto obj = Object::New(iso);
+      obj->Set(ToJS("sender"), ToJS((Actor *)&player));
+      obj->Set(ToJS("content"), ToJS(text));
+      Locator<MinecraftServerScriptEngine>()->fireEventToScript("stoneserver:chat_received", { iso, obj });
+    };
   };
 });
 
