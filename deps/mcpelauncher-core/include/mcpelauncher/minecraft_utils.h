@@ -7,6 +7,8 @@ class MinecraftUtils {
 private:
     static void* loadLibM();
 
+    static void setupHookApi();
+
 public:
     static void workaroundLocaleBug();
 

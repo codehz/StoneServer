@@ -76,7 +76,9 @@ void MinecraftUtils::setupHybris() {
         Log::warn("Launcher", "EGL stub called");
     });
     HybrisUtils::hookAndroidLog();
-    hybris_hook("mcpelauncher_hook", (void*) HookManager::hookFunction);
+    setupHookApi();
+    hybris_hook("mcpelauncher_log", (void*) Log::log);
+    hybris_hook("mcpelauncher_vlog", (void*) Log::vlog);
     // load stub libraries
 #ifdef USE_BIONIC_LIBC
     if (!load_empty_library("ld-android.so") ||
@@ -94,11 +96,44 @@ void MinecraftUtils::setupHybris() {
     load_empty_library("libstdc++.so");
 }
 
+void MinecraftUtils::setupHookApi() {
+    hybris_hook("mcpelauncher_hook", (void*) (void* (*)(void*, void*, void**)) [](void* sym, void* hook, void** orig) {
+        Dl_info i;
+        if (!hybris_dladdr(sym, &i)) {
+            Log::error("Hook", "Failed to resolve hook for symbol %lx", (long unsigned) sym);
+            return (void*) nullptr;
+        }
+        void* handle = hybris_dlopen(i.dli_fname, 0);
+        std::string tName = HookManager::translateConstructorName(i.dli_sname);
+        auto ret = HookManager::instance.createHook(handle, tName.empty() ? i.dli_sname : tName.c_str(), hook, orig);
+        hybris_dlclose(handle);
+        HookManager::instance.applyHooks();
+        return (void*) ret;
+    });
+
+    hybris_hook("mcpelauncher_hook2", (void *) (void *(*)(void *, const char *, void *, void **))
+            [](void *lib, const char *sym, void *hook, void **orig) {
+                return (void *) HookManager::instance.createHook(lib, sym, hook, orig);
+            });
+    hybris_hook("mcpelauncher_hook2_add_library", (void *) (void (*)(void*)) [](void* lib) {
+        HookManager::instance.addLibrary(lib);
+    });
+    hybris_hook("mcpelauncher_hook2_remove_library", (void *) (void (*)(void*)) [](void* lib) {
+        HookManager::instance.removeLibrary(lib);
+    });
+    hybris_hook("mcpelauncher_hook2_delete", (void *) (void (*)(void*)) [](void* hook) {
+        HookManager::instance.deleteHook((HookManager::HookInstance*) hook);
+    });
+    hybris_hook("mcpelauncher_hook2_apply", (void *) (void (*)()) []() {
+        HookManager::instance.applyHooks();
+    });
+}
+
 void* MinecraftUtils::loadMinecraftLib(std::string const& path) {
     void* handle = hybris_dlopen(path.c_str(), RTLD_LAZY);
     if (handle == nullptr)
         throw std::runtime_error(std::string("Failed to load Minecraft: ") + hybris_dlerror());
-    HookManager::addHookLibrary(handle, path);
+    HookManager::instance.addLibrary(handle);
     return handle;
 }
 

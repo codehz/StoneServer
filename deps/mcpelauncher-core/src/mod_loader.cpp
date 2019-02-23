@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <elf.h>
 #include <queue>
+#include <mcpelauncher/hook.h>
 
 void* ModLoader::loadMod(std::string const& path) {
     void* handle = hybris_dlopen(path.c_str(), RTLD_LAZY);
@@ -11,6 +12,7 @@ void* ModLoader::loadMod(std::string const& path) {
         Log::error("ModLoader", "Failed to load mod %s: %s", path.c_str(), hybris_dlerror());
         return nullptr;
     }
+    HookManager::instance.addLibrary(handle);
 
     void (*initFunc)();
     initFunc = (void (*)()) hybris_dlsym(handle, "mod_init");
@@ -31,7 +33,6 @@ void ModLoader::loadModMulti(std::string const& path, std::string const& fileNam
             otherMods.erase(dep);
             loadModMulti(path, modName, otherMods);
             otherMods.erase(dep);
-            break;
         }
     }
 
@@ -67,6 +68,7 @@ void ModLoader::loadModsFromDirectory(std::string const& path) {
         loadModMulti(path, fileName, modsToLoad);
     }
     Log::info("ModLoader", "Loaded %li mods", mods.size());
+    HookManager::instance.applyHooks();
 }
 
 void ModLoader::onGameInitialized(MinecraftGame* game) {
