@@ -47,6 +47,7 @@ add_executable(stone
   "src/ExtAPI/broadcastExternalEvent.cpp"
   "src/ExtAPI/openModalForm.cpp"
   "src/ExtAPI/saveTag.cpp"
+  "src/ExtAPI/muteChat.cpp"
   "src/GlobalAPI/common.h"
   "src/GlobalAPI/common.cpp"
   "src/GlobalAPI/SQLite3.cpp"
