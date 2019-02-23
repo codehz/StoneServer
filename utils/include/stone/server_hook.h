@@ -7,18 +7,16 @@
 #include <tuple>
 #include <vector>
 
-extern std::vector<std::tuple<const char *, void *, void **>> &GetServerHookRegistry();
+extern std::vector<std::tuple<const char *, void *, void **>> &
+GetServerHookRegistry();
 
 struct RegisterServerHook {
   static inline void InitHooks() {
     for (auto const &[sym, hook, org] : GetServerHookRegistry()) {
       Log::debug("hook", "Hook %s", sym);
-      auto r = hybris_dlsym(MinecraftHandle(), sym);
-      if (r == nullptr)
-        Log::error("hook", "Symbol not found: %s", sym);
-      else
-        HookManager::hookFunction(r, hook, org);
+      HookManager::instance.createHook(MinecraftHandle(), sym, hook, org);
     }
+    HookManager::instance.applyHooks();
   }
 
   RegisterServerHook(const char *sym, void *hook, void **org) {
