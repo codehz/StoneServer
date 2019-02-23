@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 20 2019 14:43:24 UTC
+// Generated on Sat Feb 23 2019 13:47:40 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1929,14 +1929,6 @@ static Certificate * (Player::*_Player_getCertificate)() const;
 Certificate * Player::getCertificate() const {
     return (this->*_Player_getCertificate)();
 }
-static std::tuple<float, float, float> & (Player::*_Player_getPos)() const;
-std::tuple<float, float, float> & Player::getPos() const {
-    return (this->*_Player_getPos)();
-}
-static std::pair<float, float> (Player::*_Player_getRotation)() const;
-std::pair<float, float> Player::getRotation() const {
-    return (this->*_Player_getRotation)();
-}
 static bool (Player::*_Player_isCreative)();
 bool Player::isCreative() {
     return (this->*_Player_isCreative)();
@@ -1974,6 +1966,22 @@ bool Actor::save(CompoundTag & p1) {
 static bool (Actor::*_Actor_load)(CompoundTag const &);
 bool Actor::load(CompoundTag const & p1) {
     return (this->*_Actor_load)(p1);
+}
+static std::array<float, 3> & (Actor::*_Actor_getPos)() const;
+std::array<float, 3> & Actor::getPos() const {
+    return (this->*_Actor_getPos)();
+}
+static std::array<float, 2> (Actor::*_Actor_getRotation)() const;
+std::array<float, 2> Actor::getRotation() const {
+    return (this->*_Actor_getRotation)();
+}
+static mcpe::string const & (Actor::*_Actor_getNameTag)() const;
+mcpe::string const & Actor::getNameTag() const {
+    return (this->*_Actor_getNameTag)();
+}
+static std::tuple<int> (Actor::*_Actor_getDimensionId)() const;
+std::tuple<int> Actor::getDimensionId() const {
+    return (this->*_Actor_getDimensionId)();
 }
 
 #include "legacy/App.h"
@@ -2976,10 +2984,6 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_getPlatformOnlineId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player19getPlatformOnlineIdEv");
     ((void*&) _Player_getCertificate) = hybris_dlsym(handle, "_ZNK6Player14getCertificateEv");
     if (_Player_getCertificate == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player14getCertificateEv");
-    ((void*&) _Player_getPos) = hybris_dlsym(handle, "_ZNK5Actor6getPosEv");
-    if (_Player_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
-    ((void*&) _Player_getRotation) = hybris_dlsym(handle, "_ZNK5Actor11getRotationEv");
-    if (_Player_getRotation == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getRotationEv");
     ((void*&) _Player_isCreative) = hybris_dlsym(handle, "_ZNK5Actor10isCreativeEv");
     if (_Player_isCreative == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10isCreativeEv");
     ((void*&) _Player_getLevelProgress) = hybris_dlsym(handle, "_ZNK6Player16getLevelProgressEv");
@@ -2998,6 +3002,14 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_save == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4saveER11CompoundTag");
     ((void*&) _Actor_load) = hybris_dlsym(handle, "_ZN5Actor4loadERK11CompoundTag");
     if (_Actor_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4loadERK11CompoundTag");
+    ((void*&) _Actor_getPos) = hybris_dlsym(handle, "_ZNK5Actor6getPosEv");
+    if (_Actor_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
+    ((void*&) _Actor_getRotation) = hybris_dlsym(handle, "_ZNK5Actor11getRotationEv");
+    if (_Actor_getRotation == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getRotationEv");
+    ((void*&) _Actor_getNameTag) = hybris_dlsym(handle, "_ZNK5Actor10getNameTagEv");
+    if (_Actor_getNameTag == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10getNameTagEv");
+    ((void*&) _Actor_getDimensionId) = hybris_dlsym(handle, "_ZNK5Actor14getDimensionIdEv");
+    if (_Actor_getDimensionId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor14getDimensionIdEv");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");
