@@ -1,3 +1,4 @@
+#include <interface/chat.h>
 #include <interface/tick.h>
 #include <minecraft/V8.h>
 #include <stone-api/Script.h>
@@ -56,7 +57,7 @@ SHook(
 }
 
 SStaticHook(Local<Value>, _ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigurationENS_10MaybeLocalINS_14ObjectTemplateEEENS5_INS_5ValueEEE,
-              Context, v8::Isolate *iso, v8::ExtensionConfiguration *config, v8::Local<v8::ObjectTemplate> temp, v8::MaybeLocal<v8::Value> global) {
+            Context, v8::Isolate *iso, v8::ExtensionConfiguration *config, v8::Local<v8::ObjectTemplate> temp, v8::MaybeLocal<v8::Value> global) {
   auto new_temp = ObjectTemplate::New(iso, v8::Local<v8::FunctionTemplate>());
   new_temp->SetAccessorProperty(ToJS("globalThis"), v8::FunctionTemplate::New(iso, +[](v8::FunctionCallbackInfo<v8::Value> const &info) {
                                   info.GetReturnValue().Set(info.This());
@@ -77,6 +78,18 @@ static patched::details::RegisterPatchInit pinit([] {
     auto ctx = V8Context[core].Get(iso);
     Context::Scope ctx_scope{ ctx };
     Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, ToJS(data.data) });
+  };
+  Locator<Chat>()->onPlayerChat >> [](Player &player, std::string const text) {
+    auto &core = *Locator<ScriptApi::V8CoreInterface>();
+    auto iso   = V8Isolate[core];
+    HandleScope scope{ iso };
+    Isolate::Scope iso_scope{ iso };
+    auto ctx = V8Context[core].Get(iso);
+    Context::Scope ctx_scope{ ctx };
+    auto obj = Object::New(iso);
+    obj->Set(ToJS("sender"), ToJS((Actor *)&player));
+    obj->Set(ToJS("content"), ToJS(text));
+    Locator<MinecraftServerScriptEngine>()->fireEventToScript("stoneserver:chat_received", { iso, obj });
   };
 });
 
