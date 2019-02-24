@@ -53,9 +53,7 @@
 #include "v8_platform.h"
 #include "whitelist_mgr.hpp"
 
-#ifndef BUILD_VERSION
-#define BUILD_VERSION "UNKNOWN VERSION"
-#endif
+#include <stone/version.h>
 
 #define LOAD_ENV(env, def) static const auto env = GetEnvironmentVariableOrDefault(#env, def)
 
@@ -88,7 +86,7 @@ int main() {
   PathHelper::setDataDir(cwd + "data/");
   PathHelper::setCacheDir(cwd + "cache/");
   Log::getLogLevelString(LogLevel::LOG_TRACE); // Generate level string cache
-  Log::info("StoneServer", "StoneServer (version: %s)", BUILD_VERSION);
+  Log::info("StoneServer", "StoneServer (version: %s)", build_version);
 
   MinecraftUtils::setupForHeadless();
 

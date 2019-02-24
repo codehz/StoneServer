@@ -11,7 +11,10 @@ include(cotire)
 
 include(GetGitRevisionDescription)
 git_describe(VERSION --always --tags --dirty=-modified --long --abbrev=40)
-add_compile_options(-DBUILD_VERSION=\"${VERSION}\")
+
+add_library(build_version version/src/version.c)
+target_include_directories(build_version PUBLIC version/include)
+target_compile_definitions(build_version PRIVATE BUILD_VERSION=\"${VERSION}\")
 
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -s")
 
