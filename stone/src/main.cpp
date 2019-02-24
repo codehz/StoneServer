@@ -66,6 +66,18 @@ LOAD_ENV(BUSNAME_SUFFIX, "default");
 
 void initDependencies();
 
+void rakDebugLog(char const *format, ...) {
+  char *cpd = strdup(format);
+  if (format[0]) {
+    cpd[strlen(cpd) - 1] = 0;
+  }
+  va_list args;
+  va_start(args, format);
+  Log::vlog(LogLevel::LOG_TRACE, "RakNet", cpd, args);
+  va_end(args);
+  free(cpd);
+}
+
 int main() {
   using namespace interface;
   using namespace std;
@@ -110,7 +122,7 @@ int main() {
   Log::info("StoneServer", "Applying patches");
   hack(handle, "_ZN5Level17_checkUserStorageEv");
   *reinterpret_cast<bool *>(hybris_dlsym(handle, "_ZN10BedrockLog15gLogFileCreatedE")) = true;
-  *reinterpret_cast<void **>(hybris_dlsym(handle, "_ZN6RakNet19rakDebugLogCallbackE")) = nullptr;
+  *reinterpret_cast<void **>(hybris_dlsym(handle, "_ZN6RakNet19rakDebugLogCallbackE")) = (void *)&rakDebugLog;
   RegisterServerHook::InitHooks();
 
   ModLoader modLoader;
