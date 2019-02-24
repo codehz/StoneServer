@@ -6,7 +6,6 @@ add_library(utils
   "src/utils.cpp"
   "src/server_hook.cpp"
   "include/stone/utils.h"
-  "include/stone/static_hook.h"
   "include/stone/server_hook.h"
   "include/stone/magic_func.h"
   "include/stone/symbol.h"
