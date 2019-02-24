@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include "fix.h"
 
 class ResourcePack;
 class ResourcePackRepository;
@@ -17,7 +18,7 @@ struct PackInstance {
 struct ResourcePackStack {
 
     /// @symbol _ZTV17ResourcePackStack
-    static void** vtable_sym;
+    static XPointer vtable_sym;
 
     void** vtable;
     char filler[0x10];

@@ -254,17 +254,14 @@ public:
   bool IsExternalOneByte() const;
 
   /// @symbol _ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi
-  static v8::Local<v8::String> NewFromUtf8Impl(v8::Isolate *isolate, char const *data, v8::NewStringType type, int length);
-  inline static v8::Local<v8::String> NewFromUtf8(v8::Isolate *isolate, char const *data, v8::NewStringType type = kNormal, int length = -1) { return NewFromUtf8Impl(isolate, data, type, length); }
+  static v8::Local<v8::String> NewFromUtf8(v8::Isolate *isolate, char const *data, v8::NewStringType type = kNormal, int length = -1);
 
   /// @symbol _ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi
-  static v8::Local<v8::String> NewFromTwoByteImpl(v8::Isolate *isolate, char16_t const *data, v8::NewStringType type, int length);
-  inline static v8::Local<v8::String> NewFromTwoByte(v8::Isolate *isolate, char16_t const *data, v8::NewStringType type = kNormal, int length = -1) { return NewFromTwoByteImpl(isolate, data, type, length); }
+  static v8::Local<v8::String> NewFromTwoByte(v8::Isolate *isolate, char16_t const *data, v8::NewStringType type = kNormal, int length = -1);
 
   enum WriteOptions { NO_OPTIONS = 0, HINT_MANY_WRITES_EXPECTED = 1, NO_NULL_TERMINATION = 2, PRESERVE_ONE_BYTE_NULL = 4, REPLACE_INVALID_UTF8 = 8 };
   /// @symbol _ZNK2v86String5WriteEPtiii
-  int WriteImpl(unsigned short *buffer, int start, int length, int options) const;
-  inline int Write(unsigned short *buffer, int start = 0, int length = -1, int options = NO_OPTIONS) const { return WriteImpl(buffer, start, length, options); }
+  int Write(unsigned short *buffer, int start = 0, int length = -1, int options = NO_OPTIONS) const;
 
   class Utf8Value {
     char *str_;
@@ -629,18 +626,14 @@ public:
   void Set(v8::Local<v8::Name> name, v8::Local<v8::Data> data) { Set(name, data, PropertyAttribute::None); }
 
   /// @symbol _ZN2v88Template19SetAccessorPropertyENS_5LocalINS_4NameEEENS1_INS_16FunctionTemplateEEES5_NS_17PropertyAttributeENS_13AccessControlE
-  void SetAccessorProperty(v8::Local<v8::Name>, v8::Local<v8::FunctionTemplate>, v8::Local<v8::FunctionTemplate>, v8::PropertyAttribute, v8::AccessControl);
-  void SetAccessorProperty(v8::Local<v8::Name> name, v8::Local<v8::FunctionTemplate> getter) { SetAccessorProperty(name, getter, Local<FunctionTemplate>(), PropertyAttribute::None, AccessControl::DEFAULT); }
+  void SetAccessorProperty(v8::Local<v8::Name> name, v8::Local<v8::FunctionTemplate> getter, v8::Local<v8::FunctionTemplate> setter = Local<FunctionTemplate>(), v8::PropertyAttribute attribute = PropertyAttribute::None, v8::AccessControl ac = AccessControl::DEFAULT);
 };
 
 class FunctionTemplate : public Template {
 public:
   inline static FunctionTemplate *Cast(Value *obj) { return (FunctionTemplate *)obj; }
   /// @symbol _ZN2v816FunctionTemplate3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EENSA_INS_9SignatureEEEiNS_19ConstructorBehaviorE
-  static v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, v8::Local<v8::Value> data, v8::Local<v8::Signature> signature, int length);
-  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate) { return New(isolate, nullptr); }
-  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback) { return New(isolate, callback, Local<Value>()); }
-  static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, v8::Local<v8::Value> data) { return New(isolate, callback, data, Local<Signature>(), 0); }
+  static v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback = nullptr, v8::Local<v8::Value> data = Local<Value>(), v8::Local<v8::Signature> signature = Local<Signature>(), int length = 0);
   static inline v8::Local<v8::FunctionTemplate> New(v8::Isolate *isolate, v8::FunctionCallback callback, int length) { return New(isolate, callback, Local<Value>(), Local<Signature>(), length); }
 
   /// @symbol _ZN2v816FunctionTemplate7InheritENS_5LocalIS0_EE

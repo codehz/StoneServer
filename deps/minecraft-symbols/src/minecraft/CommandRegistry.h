@@ -10,7 +10,7 @@ using CommandPermissionLevel   = int;
 using CommandFlag              = int;
 using CommandParameterDataType = int;
 class Command;
-class CommandRegistry;
+struct CommandRegistry;
 class CommandParameterData;
 
 template <typename T> struct typeid_t {
@@ -64,8 +64,7 @@ struct CommandRegistry {
   struct ParseToken;
 };
 
-using Parser = bool (CommandRegistry::*)(void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &,
-                                         std::vector<mcpe::string> &) const;
+using Parser = bool (CommandRegistry::*)(void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &, std::vector<mcpe::string> &) const;
 
 class CommandParameterData {
 

@@ -5,6 +5,7 @@ struct IDataOutput;
 struct PrintStream;
 
 #include "std/string.h"
+#include "fix.h"
 
 #include <map>
 #include <memory>
@@ -27,7 +28,7 @@ struct Tag {
 
 struct EndTag : Tag {
   /// @symbol _ZTV6EndTag
-  static void **vt;
+  static XPointer vt;
 
   virtual void write(IDataOutput &) const;
   virtual void load(IDataInput &);
@@ -39,7 +40,7 @@ struct EndTag : Tag {
 
 struct DoubleTag : Tag {
   /// @symbol _ZTV9DoubleTag
-  static void **vt;
+  static XPointer vt;
 
   double value;
   virtual void write(IDataOutput &) const;
@@ -75,7 +76,7 @@ struct TagMemoryChunk {
 
 struct ByteArrayTag : Tag {
   /// @symbol _ZTV12ByteArrayTag
-  static void **vt;
+  static XPointer vt;
 
   TagMemoryChunk value;
   virtual void write(IDataOutput &) const;
@@ -88,7 +89,7 @@ struct ByteArrayTag : Tag {
 
 struct CompoundTag : Tag {
   /// @symbol _ZTV11CompoundTag
-  static void **vt;
+  static XPointer vt;
 
   std::map<mcpe::string, std::unique_ptr<Tag>> value;
   virtual void write(IDataOutput &) const;
@@ -102,7 +103,7 @@ struct CompoundTag : Tag {
 
 struct ListTag : Tag {
   /// @symbol _ZTV7ListTag
-  static void **vt;
+  static XPointer vt;
 
   std::vector<std::unique_ptr<Tag>> value;
   size_t unk;
@@ -118,7 +119,7 @@ struct ListTag : Tag {
 
 struct FloatTag : Tag {
   /// @symbol _ZTV8FloatTag
-  static void **vt;
+  static XPointer vt;
 
   float value;
   virtual void write(IDataOutput &) const;
@@ -131,7 +132,7 @@ struct FloatTag : Tag {
 
 struct ByteTag : Tag {
   /// @symbol _ZTV7ByteTag
-  static void **vt;
+  static XPointer vt;
 
   unsigned char value;
   virtual void write(IDataOutput &) const;
@@ -144,7 +145,7 @@ struct ByteTag : Tag {
 
 struct ShortTag : Tag {
   /// @symbol _ZTV8ShortTag
-  static void **vt;
+  static XPointer vt;
 
   short value;
   virtual void write(IDataOutput &) const;
@@ -157,7 +158,7 @@ struct ShortTag : Tag {
 
 struct Int64Tag : Tag {
   /// @symbol _ZTV8Int64Tag
-  static void **vt;
+  static XPointer vt;
 
   int64_t value;
   virtual void write(IDataOutput &) const;
@@ -170,7 +171,7 @@ struct Int64Tag : Tag {
 
 struct IntArrayTag : Tag {
   /// @symbol _ZTV11IntArrayTag
-  static void **vt;
+  static XPointer vt;
 
   TagMemoryChunk value;
   virtual void write(IDataOutput &) const;
@@ -183,7 +184,7 @@ struct IntArrayTag : Tag {
 
 struct IntTag : Tag {
   /// @symbol _ZTV6IntTag
-  static void **vt;
+  static XPointer vt;
 
   int32_t value;
   virtual void write(IDataOutput &) const;
@@ -196,7 +197,7 @@ struct IntTag : Tag {
 
 struct StringTag : Tag {
   /// @symbol _ZTV9StringTag
-  static void **vt;
+  static XPointer vt;
 
   mcpe::string value;
   virtual void write(IDataOutput &) const;

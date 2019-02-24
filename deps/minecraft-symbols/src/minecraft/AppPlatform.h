@@ -1,13 +1,15 @@
 #pragma once
 
 #include "std/string.h"
+#include "fix.h"
+
 class Vec2;
 
 class AppPlatform {
 
 public:
     /// @symbol _ZTV11AppPlatform
-    static void** myVtable;
+    static XPointer myVtable;
 
     /// @symbol _ZN14ServiceLocatorI11AppPlatformE15mDefaultServiceE
     static AppPlatform** instance;

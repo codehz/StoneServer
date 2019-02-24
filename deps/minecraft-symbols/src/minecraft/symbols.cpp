@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Feb 23 2019 13:47:40 UTC
+// Generated on Sun Feb 24 2019 05:53:02 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -382,7 +382,7 @@ NetworkPeer * ServerNetworkHandler::getPeerForUser(NetworkIdentifier const & p1)
 void * Packet::myVtable;
 
 #include "AppPlatform.h"
-void * * AppPlatform::myVtable;
+XPointer AppPlatform::myVtable;
 AppPlatform * * AppPlatform::instance;
 static void (AppPlatform::*_AppPlatform_AppPlatform)();
 AppPlatform::AppPlatform() {
@@ -524,6 +524,10 @@ static void (LevelSettings::*_LevelSettings_LevelSettings2)(LevelSettings const 
 LevelSettings::LevelSettings(LevelSettings const & p1) {
     (this->*_LevelSettings_LevelSettings2)(p1);
 }
+static void (LevelSettings::*_LevelSettings_destructor)();
+LevelSettings::~LevelSettings() {
+    (this->*_LevelSettings_destructor)();
+}
 static int (*_LevelSettings_parseSeedString)(mcpe::string const &, unsigned int);
 int LevelSettings::parseSeedString(mcpe::string const & p1, unsigned int p2) {
     return _LevelSettings_parseSeedString(p1, p2);
@@ -563,12 +567,14 @@ mcpe::string mce::UUID::asString() const {
 #include "TransferPacket.h"
 void * TransferPacket::myVtable;
 
+#include "fix.h"
+
 #include "ResourcePackStack.h"
 static void (PackInstance::*_PackInstance_PackInstance)(ResourcePack *, int, bool, PackSettings *);
 PackInstance::PackInstance(ResourcePack * p1, int p2, bool p3, PackSettings * p4) {
     (this->*_PackInstance_PackInstance)(p1, p2, p3, p4);
 }
-void * * ResourcePackStack::vtable_sym;
+XPointer ResourcePackStack::vtable_sym;
 static void (ResourcePackStack::*_ResourcePackStack_add)(PackInstance const &, ResourcePackRepository const &, bool);
 void ResourcePackStack::add(PackInstance const & p1, ResourcePackRepository const & p2, bool p3) {
     (this->*_ResourcePackStack_add)(p1, p2, p3);
@@ -943,17 +949,17 @@ static bool (v8::String::*_v8_String_IsExternalOneByte)() const;
 bool v8::String::IsExternalOneByte() const {
     return (this->*_v8_String_IsExternalOneByte)();
 }
-static v8::Local<v8::String> (*_v8_String_NewFromUtf8Impl)(v8::Isolate *, char const *, v8::NewStringType, int);
-v8::Local<v8::String> v8::String::NewFromUtf8Impl(v8::Isolate * p1, char const * p2, v8::NewStringType p3, int p4) {
-    return _v8_String_NewFromUtf8Impl(p1, p2, p3, p4);
+static v8::Local<v8::String> (*_v8_String_NewFromUtf8)(v8::Isolate *, char const *, v8::NewStringType, int);
+v8::Local<v8::String> v8::String::NewFromUtf8(v8::Isolate * p1, char const * p2, v8::NewStringType p3, int p4) {
+    return _v8_String_NewFromUtf8(p1, p2, p3, p4);
 }
-static v8::Local<v8::String> (*_v8_String_NewFromTwoByteImpl)(v8::Isolate *, char16_t const *, v8::NewStringType, int);
-v8::Local<v8::String> v8::String::NewFromTwoByteImpl(v8::Isolate * p1, char16_t const * p2, v8::NewStringType p3, int p4) {
-    return _v8_String_NewFromTwoByteImpl(p1, p2, p3, p4);
+static v8::Local<v8::String> (*_v8_String_NewFromTwoByte)(v8::Isolate *, char16_t const *, v8::NewStringType, int);
+v8::Local<v8::String> v8::String::NewFromTwoByte(v8::Isolate * p1, char16_t const * p2, v8::NewStringType p3, int p4) {
+    return _v8_String_NewFromTwoByte(p1, p2, p3, p4);
 }
-static int (v8::String::*_v8_String_WriteImpl)(unsigned short *, int, int, int) const;
-int v8::String::WriteImpl(unsigned short * p1, int p2, int p3, int p4) const {
-    return (this->*_v8_String_WriteImpl)(p1, p2, p3, p4);
+static int (v8::String::*_v8_String_Write)(unsigned short *, int, int, int) const;
+int v8::String::Write(unsigned short * p1, int p2, int p3, int p4) const {
+    return (this->*_v8_String_Write)(p1, p2, p3, p4);
 }
 static void (*_v8_String_CheckCast)(v8::Value *);
 void v8::String::CheckCast(v8::Value * p1) {
@@ -1460,7 +1466,7 @@ static mcpe::string (Tag::*_Tag_getName)() const;
 mcpe::string Tag::getName() const {
     return (this->*_Tag_getName)();
 }
-void * * EndTag::vt;
+XPointer EndTag::vt;
 static void (EndTag::*_EndTag_write)(IDataOutput &) const;
 void EndTag::write(IDataOutput & p1) const {
     (this->*_EndTag_write)(p1);
@@ -1485,7 +1491,7 @@ static std::unique_ptr<Tag> (EndTag::*_EndTag_copy)() const;
 std::unique_ptr<Tag> EndTag::copy() const {
     return (this->*_EndTag_copy)();
 }
-void * * DoubleTag::vt;
+XPointer DoubleTag::vt;
 static void (DoubleTag::*_DoubleTag_write)(IDataOutput &) const;
 void DoubleTag::write(IDataOutput & p1) const {
     (this->*_DoubleTag_write)(p1);
@@ -1510,7 +1516,7 @@ static std::unique_ptr<Tag> (DoubleTag::*_DoubleTag_copy)() const;
 std::unique_ptr<Tag> DoubleTag::copy() const {
     return (this->*_DoubleTag_copy)();
 }
-void * * ByteArrayTag::vt;
+XPointer ByteArrayTag::vt;
 static void (ByteArrayTag::*_ByteArrayTag_write)(IDataOutput &) const;
 void ByteArrayTag::write(IDataOutput & p1) const {
     (this->*_ByteArrayTag_write)(p1);
@@ -1535,7 +1541,7 @@ static std::unique_ptr<Tag> (ByteArrayTag::*_ByteArrayTag_copy)() const;
 std::unique_ptr<Tag> ByteArrayTag::copy() const {
     return (this->*_ByteArrayTag_copy)();
 }
-void * * CompoundTag::vt;
+XPointer CompoundTag::vt;
 static void (CompoundTag::*_CompoundTag_write)(IDataOutput &) const;
 void CompoundTag::write(IDataOutput & p1) const {
     (this->*_CompoundTag_write)(p1);
@@ -1564,7 +1570,7 @@ static std::unique_ptr<Tag> (CompoundTag::*_CompoundTag_copy)() const;
 std::unique_ptr<Tag> CompoundTag::copy() const {
     return (this->*_CompoundTag_copy)();
 }
-void * * ListTag::vt;
+XPointer ListTag::vt;
 static void (ListTag::*_ListTag_deleteChildren)();
 void ListTag::deleteChildren() {
     (this->*_ListTag_deleteChildren)();
@@ -1597,7 +1603,7 @@ static std::unique_ptr<Tag> (ListTag::*_ListTag_copy)() const;
 std::unique_ptr<Tag> ListTag::copy() const {
     return (this->*_ListTag_copy)();
 }
-void * * FloatTag::vt;
+XPointer FloatTag::vt;
 static void (FloatTag::*_FloatTag_write)(IDataOutput &) const;
 void FloatTag::write(IDataOutput & p1) const {
     (this->*_FloatTag_write)(p1);
@@ -1622,7 +1628,7 @@ static std::unique_ptr<Tag> (FloatTag::*_FloatTag_copy)() const;
 std::unique_ptr<Tag> FloatTag::copy() const {
     return (this->*_FloatTag_copy)();
 }
-void * * ByteTag::vt;
+XPointer ByteTag::vt;
 static void (ByteTag::*_ByteTag_write)(IDataOutput &) const;
 void ByteTag::write(IDataOutput & p1) const {
     (this->*_ByteTag_write)(p1);
@@ -1647,7 +1653,7 @@ static std::unique_ptr<Tag> (ByteTag::*_ByteTag_copy)() const;
 std::unique_ptr<Tag> ByteTag::copy() const {
     return (this->*_ByteTag_copy)();
 }
-void * * ShortTag::vt;
+XPointer ShortTag::vt;
 static void (ShortTag::*_ShortTag_write)(IDataOutput &) const;
 void ShortTag::write(IDataOutput & p1) const {
     (this->*_ShortTag_write)(p1);
@@ -1672,7 +1678,7 @@ static std::unique_ptr<Tag> (ShortTag::*_ShortTag_copy)() const;
 std::unique_ptr<Tag> ShortTag::copy() const {
     return (this->*_ShortTag_copy)();
 }
-void * * Int64Tag::vt;
+XPointer Int64Tag::vt;
 static void (Int64Tag::*_Int64Tag_write)(IDataOutput &) const;
 void Int64Tag::write(IDataOutput & p1) const {
     (this->*_Int64Tag_write)(p1);
@@ -1697,7 +1703,7 @@ static std::unique_ptr<Tag> (Int64Tag::*_Int64Tag_copy)() const;
 std::unique_ptr<Tag> Int64Tag::copy() const {
     return (this->*_Int64Tag_copy)();
 }
-void * * IntArrayTag::vt;
+XPointer IntArrayTag::vt;
 static void (IntArrayTag::*_IntArrayTag_write)(IDataOutput &) const;
 void IntArrayTag::write(IDataOutput & p1) const {
     (this->*_IntArrayTag_write)(p1);
@@ -1722,7 +1728,7 @@ static std::unique_ptr<Tag> (IntArrayTag::*_IntArrayTag_copy)() const;
 std::unique_ptr<Tag> IntArrayTag::copy() const {
     return (this->*_IntArrayTag_copy)();
 }
-void * * IntTag::vt;
+XPointer IntTag::vt;
 static void (IntTag::*_IntTag_write)(IDataOutput &) const;
 void IntTag::write(IDataOutput & p1) const {
     (this->*_IntTag_write)(p1);
@@ -1747,7 +1753,7 @@ static std::unique_ptr<Tag> (IntTag::*_IntTag_copy)() const;
 std::unique_ptr<Tag> IntTag::copy() const {
     return (this->*_IntTag_copy)();
 }
-void * * StringTag::vt;
+XPointer StringTag::vt;
 static void (StringTag::*_StringTag_write)(IDataOutput &) const;
 void StringTag::write(IDataOutput & p1) const {
     (this->*_StringTag_write)(p1);
@@ -2283,6 +2289,8 @@ void minecraft_symbols_init(void* handle) {
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");
     if (_LevelSettings_LevelSettings2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2ERKS_");
+    ((void*&) _LevelSettings_destructor) = hybris_dlsym(handle, "_ZN13LevelSettingsD2Ev");
+    if (_LevelSettings_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsD2Ev");
     ((void*&) _LevelSettings_parseSeedString) = hybris_dlsym(handle, "_ZN13LevelSettings15parseSeedStringERKSsj");
     if (_LevelSettings_parseSeedString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettings15parseSeedStringERKSsj");
     ((void*&) _SaveTransactionManager_SaveTransactionManager) = hybris_dlsym(handle, "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
@@ -2485,12 +2493,12 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_String_IsExternal == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String10IsExternalEv");
     ((void*&) _v8_String_IsExternalOneByte) = hybris_dlsym(handle, "_ZNK2v86String17IsExternalOneByteEv");
     if (_v8_String_IsExternalOneByte == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String17IsExternalOneByteEv");
-    ((void*&) _v8_String_NewFromUtf8Impl) = hybris_dlsym(handle, "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
-    if (_v8_String_NewFromUtf8Impl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
-    ((void*&) _v8_String_NewFromTwoByteImpl) = hybris_dlsym(handle, "_ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi");
-    if (_v8_String_NewFromTwoByteImpl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi");
-    ((void*&) _v8_String_WriteImpl) = hybris_dlsym(handle, "_ZNK2v86String5WriteEPtiii");
-    if (_v8_String_WriteImpl == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String5WriteEPtiii");
+    ((void*&) _v8_String_NewFromUtf8) = hybris_dlsym(handle, "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
+    if (_v8_String_NewFromUtf8 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String11NewFromUtf8EPNS_7IsolateEPKcNS_13NewStringTypeEi");
+    ((void*&) _v8_String_NewFromTwoByte) = hybris_dlsym(handle, "_ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi");
+    if (_v8_String_NewFromTwoByte == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String14NewFromTwoByteEPNS_7IsolateEPKtNS_13NewStringTypeEi");
+    ((void*&) _v8_String_Write) = hybris_dlsym(handle, "_ZNK2v86String5WriteEPtiii");
+    if (_v8_String_Write == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK2v86String5WriteEPtiii");
     ((void*&) _v8_String_CheckCast) = hybris_dlsym(handle, "_ZN2v86String9CheckCastEPNS_5ValueE");
     if (_v8_String_CheckCast == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v86String9CheckCastEPNS_5ValueE");
     ((void*&) _v8_String_Utf8Value_Utf8Value) = hybris_dlsym(handle, "_ZN2v86String9Utf8ValueC2ENS_5LocalINS_5ValueEEE");
