@@ -18,6 +18,8 @@ template <typename T> struct typeid_t {
 
   inline typeid_t()
       : id(-1) {}
+  inline typeid_t(short id)
+      : id(id) {}
   inline typeid_t(typeid_t const &t) { id = t.id; }
   bool operator==(std::nullptr_t nt) { return id == -1; }
 };
@@ -60,8 +62,15 @@ struct CommandRegistry {
     f(overload);
     registerOverloadInternal(*signature, overload);
   }
+  void addSoftEnum(mcpe::string const &name, std::vector<mcpe::string> values, bool case_sensitive);
 
   struct ParseToken;
+
+  bool parseEnum(void *ret, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &, std::vector<mcpe::string> &) const {
+    *(mcpe::string *)ret = "test";
+    printf("$$\n");
+    return true;
+  }
 };
 
 using Parser = bool (CommandRegistry::*)(void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &, std::vector<mcpe::string> &) const;

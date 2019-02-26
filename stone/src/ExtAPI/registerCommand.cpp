@@ -7,25 +7,43 @@ using namespace interface;
 static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
-  if (info.Length() != 4) {
-    iso->ThrowException(Exception::TypeError(ToJS(strformat("registerCommand requires 4 arguments(current: %d)", info.Length()))));
+  if (info.Length() != 2) {
+    iso->ThrowException(Exception::TypeError(ToJS(strformat("registerCommand requires 2 arguments(current: %d)", info.Length()))));
     return;
   }
-  if (!info[0]->IsString() || !info[1]->IsString() || !info[2]->IsNumber() || !info[3]->IsArray()) {
-    iso->ThrowException(Exception::TypeError(ToJS("registerCommand requires (string, string, number, array)")));
+  if (!info[0]->IsString() || !info[1]->IsObject()) {
+    iso->ThrowException(Exception::TypeError(ToJS("registerCommand requires (string, object)")));
     return;
   }
-  const auto command = fromJS<std::string>(iso, info[0]);
-  const auto desc    = fromJS<std::string>(iso, info[1]);
-  const auto lvl     = fromJS<int>(iso, info[2]);
-  auto strArguments  = toJS<std::string>(iso, "arguments");
-  auto strHandler    = toJS<std::string>(iso, "handler");
-  auto strName       = toJS<std::string>(iso, "name");
-  auto strType       = toJS<std::string>(iso, "type");
-  auto strOptional   = toJS<std::string>(iso, "optional");
-  auto definitions   = Local<Array>(info[3]);
+  const auto command    = fromJS<std::string>(iso, info[0]);
+  const auto definition = Local<Object>(info[1]);
+  auto strDescription   = toJS<std::string>(iso, "description");
+  auto strPermission    = toJS<std::string>(iso, "permission");
+  auto strOverloads     = toJS<std::string>(iso, "overloads");
+  auto strParameters    = toJS<std::string>(iso, "parameters");
+  auto strHandler       = toJS<std::string>(iso, "handler");
+  auto strName          = toJS<std::string>(iso, "name");
+  auto strEnum          = toJS<std::string>(iso, "enum");
+  auto strType          = toJS<std::string>(iso, "type");
+  auto strOptional      = toJS<std::string>(iso, "optional");
+  std::string desc;
+  int level = 0;
+  Local<Array> definitions;
 
-  auto registerOverload = registerCustomCommand(command, desc, lvl);
+  if (!definition->Has(strDescription) || !definition->Get(strDescription)->IsString()) {
+    iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition require description field")));
+    return;
+  }
+  desc = definition->Get(strDescription) >> V8Str >> StdStr;
+  if (definition->Has(strPermission) && definition->Get(strPermission)->IsNumber()) level = Local<Number>(definition->Get(strPermission))->Value();
+
+  if (!definition->Has(strOverloads) || !definition->Get(strOverloads)->IsArray()) {
+    iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition require overloads field")));
+    return;
+  }
+  definitions = Local<Array>(definition->Get(strOverloads));
+
+  auto registerOverload = registerCustomCommand(command, desc, level);
   for (unsigned i = 0; i < definitions->Length(); i++) {
     const auto val = definitions->Get(i);
     if (!val->IsObject()) {
@@ -33,43 +51,43 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
       return;
     }
     auto obj = Local<Object>(val);
-    if (!obj->Has(strArguments) || !obj->Has(strHandler)) {
+    if (!obj->Has(strParameters) || !obj->Has(strHandler)) {
       iso->ThrowException(
-          Exception::TypeError(ToJS("registerCommand definition requires { arguments: array, handler: function, optional?: boolean }")));
+          Exception::TypeError(ToJS("registerCommand definition requires { parameters: array, handler: function, optional?: boolean }")));
       return;
     }
-    auto srcArguments = obj->Get(strArguments);
-    if (!srcArguments->IsArray()) {
-      iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires array")));
+    auto srcParameters = obj->Get(strParameters);
+    if (!srcParameters->IsArray()) {
+      iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameters requires array")));
       return;
     }
-    auto arguments  = Local<Array>(srcArguments);
+    auto parameters = Local<Array>(srcParameters);
     auto srcHandler = obj->Get(strHandler);
     if (!srcHandler->IsFunction()) {
       iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition handler requires function")));
       return;
     }
     MyCommandVTable mvt;
-    auto argc = arguments->Length();
+    auto argc = parameters->Length();
     for (unsigned i = 0; i < argc; i++) {
-      auto srcArg = arguments->Get(i);
+      auto srcArg = parameters->Get(i);
       if (!srcArg->IsObject()) {
-        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires object")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameter requires object")));
         return;
       }
       auto arg = Local<Object>(srcArg);
       if (!arg->Has(strName) || !arg->Has(strType)) {
-        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments requires { name: string, type: string }")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameter requires { name: string, type: string }")));
         return;
       }
       auto argName = arg->Get(strName);
       if (!argName->IsString()) {
-        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments name requires string")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameter name requires string")));
         return;
       }
       auto argType = arg->Get(strType);
       if (!argType->IsString()) {
-        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments type requires string")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameter type requires string")));
         return;
       }
       auto theName = fromJS<std::string>(iso, argName);
@@ -92,8 +110,14 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         mvt.defs.push_back(commonParameter<CommandSelector<Actor>>(theName));
       } else if (theType == "player-selector") {
         mvt.defs.push_back(commonParameter<CommandSelector<Player>>(theName));
+      } else if (theType == "soft-enum") {
+        if (!arg->Has(strEnum) || !arg->Get(strEnum)->IsString()) {
+          iso->ThrowException(Exception::TypeError(ToJS("enum name is required")));
+          return;
+        }
+        mvt.defs.push_back(enumParameter(theName, arg->Get(strEnum) >> V8Str >> StdStr));
       } else {
-        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition arguments type is unknown")));
+        iso->ThrowException(Exception::TypeError(ToJS("registerCommand definition parameter type is unknown")));
         return;
       }
       auto optional = arg->Get(strOptional)->BooleanValue();

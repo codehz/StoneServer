@@ -28,7 +28,6 @@ struct ParameterDef {
   void (*deinit)(void *);
   v8::Local<v8::Value> (*fetch)(void *, CommandOrigin &, v8::Isolate *iso);
   std::string softEnum;
-  std::vector<std::string> enumItems;
   bool optional;
 
   void makeOptional() { optional = true; }
@@ -39,7 +38,6 @@ struct MyCommandVTable {
   std::vector<ParameterDef> defs;
   std::function<v8::MaybeLocal<v8::Value>(v8::Isolate *, int, v8::Local<v8::Value> *)> exec;
 };
-
 static inline ParameterDef messageParameter(std::string const &name) {
   return {
     .size   = sizeof(CommandMessage),
@@ -116,6 +114,12 @@ template <typename T> static inline ParameterDef commonParameter(std::string con
     .fetch  = &genfetch<T>,
   };
 };
+
+static inline ParameterDef enumParameter(std::string const &name, std::string const &type) {
+  auto ret     = commonParameter<mcpe::string>(name);
+  ret.softEnum = type;
+  return ret;
+}
 
 CommandOrigin *current_orig = nullptr;
 
@@ -195,10 +199,19 @@ auto registerCustomCommand(std::string name, std::string desc, int lvl) {
     Locator<CommandRegistry>()->registerCustomOverload(
         name, { 0, INT32_MAX }, gen_function(new MyCommandVTable(rvt), CustomCommand::create), [&](CommandRegistry::Overload &overload) {
           size_t offset = sizeof(CustomCommand);
-          for (auto p : rvt.defs) {
-            overload.params.emplace_back(CommandParameterData(p.type, p.parser, p.name.c_str(), 0, nullptr, offset, p.optional, -1));
+          for (auto &p : rvt.defs) {
+            if (p.softEnum.length()) {
+              overload.params.emplace_back(CommandParameterData(p.type, p.parser, p.name.c_str(), 2, p.softEnum.c_str(), offset, p.optional, -1));
+            } else {
+              overload.params.emplace_back(CommandParameterData(p.type, p.parser, p.name.c_str(), 0, nullptr, offset, p.optional, -1));
+            }
             offset += p.size;
           }
         });
   };
+}
+
+void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list, bool case_sensitive) {
+  using namespace interface;
+  Locator<CommandRegistry>()->addSoftEnum(name, list, case_sensitive);
 }
