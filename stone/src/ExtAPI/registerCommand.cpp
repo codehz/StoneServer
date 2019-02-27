@@ -110,6 +110,8 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         mvt.defs.push_back(commonParameter<CommandSelector<Actor>>(theName));
       } else if (theType == "player-selector") {
         mvt.defs.push_back(commonParameter<CommandSelector<Player>>(theName));
+      } else if (theType == "block") {
+        mvt.defs.push_back(commonParameter<Block *>(theName));
       } else if (theType == "soft-enum") {
         if (!arg->Has(strEnum) || !arg->Get(strEnum)->IsString()) {
           iso->ThrowException(Exception::TypeError(ToJS("enum name is required")));

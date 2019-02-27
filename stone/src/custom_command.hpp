@@ -6,6 +6,7 @@
 #include <pthread.h>
 
 #include <interface/locator.hpp>
+#include <minecraft/Block.h>
 #include <minecraft/Command.h>
 #include <minecraft/CommandMessage.h>
 #include <minecraft/CommandOutput.h>
@@ -18,6 +19,7 @@
 
 #include "operators.h"
 #include "patched/ScriptInterface.h"
+#include "v8_utils.hpp"
 
 struct ParameterDef {
   size_t size;
@@ -74,6 +76,9 @@ template <> inline v8::Local<v8::Value> genfetch<bool>(void *self, CommandOrigin
 }
 template <> inline v8::Local<v8::Value> genfetch<CommandRawText>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   return v8::String::NewFromUtf8(iso, ((mcpe::string *)self)->c_str());
+}
+template <> inline v8::Local<v8::Value> genfetch<Block *>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  return v8::toJS<CompoundTag const &>(iso, (*(Block **)self)->tag2);
 }
 template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   auto strX      = v8::String::NewFromUtf8(iso, "x");
