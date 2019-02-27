@@ -1,6 +1,7 @@
 #pragma once
 
 #include "V8.h"
+#include "json.h"
 #include "std/string.h"
 
 struct Minecraft;
@@ -42,6 +43,12 @@ class ScriptEngine : public ScriptApi::ScriptFramework {
 public:
   /// @symbol _ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE
   void fireEventToScript(EventInfo const &, ScriptApi::ScriptObjectHandle const &);
+
+  /// @symbol _ZN12ScriptEngine35deserializeScriptObjectHandleToJsonERKN9ScriptApi18ScriptObjectHandleERN4Json5ValueE
+  void deserializeScriptObjectHandleToJson(ScriptApi::ScriptObjectHandle const &, Json::Value &);
+
+  /// @symbol _ZN12ScriptEngine33serializeJsonToScriptObjectHandleERN9ScriptApi18ScriptObjectHandleERKN4Json5ValueE
+  void serializeJsonToScriptObjectHandle(ScriptApi::ScriptObjectHandle &, Json::Value const &);
 };
 
 struct Actor;

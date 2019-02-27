@@ -91,6 +91,12 @@ template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, Co
   ret->Set(strZ, v8::Number::New(iso, z));
   return ret;
 }
+template <> inline v8::Local<v8::Value> genfetch<Json::Value>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
+  using namespace interface;
+  v8::AutoReleasePersistent<v8::Value> per;
+  Locator<MinecraftServerScriptEngine>()->serializeJsonToScriptObjectHandle(per, *((Json::Value const *)self));
+  return per.Get(iso);
+}
 
 template <typename T> struct FetchGenerator<CommandSelector<T>> {
   static inline v8::Local<v8::Value> generate(void *self, CommandOrigin &orig, v8::Isolate *iso) {

@@ -112,6 +112,8 @@ static void registerCommandCallback(FunctionCallbackInfo<Value> const &info) {
         mvt.defs.push_back(commonParameter<CommandSelector<Player>>(theName));
       } else if (theType == "block") {
         mvt.defs.push_back(commonParameter<Block *>(theName));
+      } else if (theType == "json") {
+        mvt.defs.push_back(commonParameter<Json::Value>(theName));
       } else if (theType == "soft-enum") {
         if (!arg->Has(strEnum) || !arg->Get(strEnum)->IsString()) {
           iso->ThrowException(Exception::TypeError(ToJS("enum name is required")));

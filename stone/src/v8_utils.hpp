@@ -395,13 +395,13 @@ template <> struct Convertable<Actor *> {
   static Actor *fromJS(Isolate *iso, Local<type> obj) {
     using namespace interface;
     Actor *actor;
-    Locator<MinecraftServerScriptEngine>()->helpGetActor(Persistent<Value>(iso, obj), actor);
+    Locator<MinecraftServerScriptEngine>()->helpGetActor(AutoReleasePersistent<Value>(iso, obj), actor);
     return actor;
   }
   static Local<type> toJS(Isolate *iso, Actor *src) {
     using namespace interface;
     if (!src) return Null(iso);
-    v8::Persistent<v8::Value> pers;
+    v8::AutoReleasePersistent<v8::Value> pers;
     Locator<MinecraftServerScriptEngine>()->helpDefineActor(*src, pers);
     return pers.Get(iso);
   }

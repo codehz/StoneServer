@@ -670,7 +670,7 @@ public:
   static v8::Local<v8::ObjectTemplate> New(v8::Isolate *isolate, v8::Local<v8::FunctionTemplate> constructor);
 };
 
-template <class T> class Persistent : BaseLocal<void> {
+template <class T> class Persistent : public BaseLocal<void> {
 public:
   Persistent()
       : BaseLocal<void>() {}
@@ -684,34 +684,24 @@ public:
     if (this->val_) V8::DisposeGlobal(this->val_);
   }
   inline void *RawPointer() { return this->val_; }
+  inline operator bool() { return this->val_; }
   template <typename P> inline void SetWeak(P *parameter, typename WeakCallbackInfo<P>::Callback callback) { V8::MakeWeak(this->val_, parameter, (v8::V8::VoidWeakCallback)callback, v8::kParameter); }
 };
 
-template <class T> struct AutoReleasePersistent : BaseLocal<void> {
+template <class T> struct AutoReleasePersistent : Persistent<T> {
 public:
   inline AutoReleasePersistent()
-      : BaseLocal<void>() {}
+      : Persistent<T>() {}
   inline AutoReleasePersistent(void *ptr)
-      : BaseLocal<void>(ptr) {}
+      : Persistent<T>(ptr) {}
   inline AutoReleasePersistent(Isolate *iso, Local<T> local)
-      : BaseLocal<void>(V8::GlobalizeReference(iso, (void *)+local)) {}
+      : Persistent<T>(iso, local) {}
   inline AutoReleasePersistent(AutoReleasePersistent const &) = delete;
   inline AutoReleasePersistent(AutoReleasePersistent &&rhs)
-      : BaseLocal<void>(rhs.val_) {
+      : Persistent<T>(rhs.val_) {
     rhs.val_ = nullptr;
   }
-  ~AutoReleasePersistent() { Reset(); }
-  inline Local<T> Get(Isolate *iso) const { return Local<T>((T *)V8::CreateHandle(iso, *(void **)this->val_)); }
-  inline void Set(void *target) {
-    Reset();
-    this->val_ = target;
-  }
-  inline void Reset() {
-    if (this->val_) V8::DisposeGlobal(this->val_);
-  }
-  inline operator bool() { return this->val_; }
-  inline void *RawPointer() { return this->val_; }
-  template <typename P> inline void SetWeak(P *parameter, typename WeakCallbackInfo<P>::Callback callback) { V8::MakeWeak(this->val_, parameter, (v8::V8::VoidWeakCallback)callback, v8::kParameter); }
+  ~AutoReleasePersistent() { this->Reset(); }
 };
 
 class Exception {

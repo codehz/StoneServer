@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 27 2019 07:40:11 UTC
+// Generated on Wed Feb 27 2019 11:17:31 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -522,6 +522,8 @@ typeid_t<CommandRegistry> * CommonType<CommandPosition>::tid;
 Parser CommonType<CommandPosition>::parser;
 typeid_t<CommandRegistry> * CommonType<Block*>::tid;
 Parser CommonType<Block*>::parser;
+typeid_t<CommandRegistry> * CommonType<Json::Value>::tid;
+Parser CommonType<Json::Value>::parser;
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -1414,6 +1416,14 @@ static void (ScriptEngine::*_ScriptEngine_fireEventToScript)(EventInfo const &, 
 void ScriptEngine::fireEventToScript(EventInfo const & p1, ScriptApi::ScriptObjectHandle const & p2) {
     (this->*_ScriptEngine_fireEventToScript)(p1, p2);
 }
+static void (ScriptEngine::*_ScriptEngine_deserializeScriptObjectHandleToJson)(ScriptApi::ScriptObjectHandle const &, Json::Value &);
+void ScriptEngine::deserializeScriptObjectHandleToJson(ScriptApi::ScriptObjectHandle const & p1, Json::Value & p2) {
+    (this->*_ScriptEngine_deserializeScriptObjectHandleToJson)(p1, p2);
+}
+static void (ScriptEngine::*_ScriptEngine_serializeJsonToScriptObjectHandle)(ScriptApi::ScriptObjectHandle &, Json::Value const &);
+void ScriptEngine::serializeJsonToScriptObjectHandle(ScriptApi::ScriptObjectHandle & p1, Json::Value const & p2) {
+    (this->*_ScriptEngine_serializeJsonToScriptObjectHandle)(p1, p2);
+}
 static int (MinecraftServerScriptEngine::*_MinecraftServerScriptEngine_helpDefineActor)(Actor const &, ScriptApi::ScriptObjectHandle &);
 int MinecraftServerScriptEngine::helpDefineActor(Actor const & p1, ScriptApi::ScriptObjectHandle & p2) {
     return (this->*_MinecraftServerScriptEngine_helpDefineActor)(p1, p2);
@@ -2299,6 +2309,10 @@ void minecraft_symbols_init(void* handle) {
     if (CommonType<Block*>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistryPK5BlockE8typeid_tIT_EvE2id");
     ((void*&) CommonType<Block*>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIPK5BlockEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     if (CommonType<Block*>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIPK5BlockEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) CommonType<Json::Value>::tid) = hybris_dlsym(handle, "_ZZ7type_idI15CommandRegistryN4Json5ValueEE8typeid_tIT_EvE2id");
+    if (CommonType<Json::Value>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistryN4Json5ValueEE8typeid_tIT_EvE2id");
+    ((void*&) CommonType<Json::Value>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIN4Json5ValueEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    if (CommonType<Json::Value>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIN4Json5ValueEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");
@@ -2724,6 +2738,10 @@ void minecraft_symbols_init(void* handle) {
     if (ModalFormResponsePacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV23ModalFormResponsePacket");
     ((void*&) _ScriptEngine_fireEventToScript) = hybris_dlsym(handle, "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     if (_ScriptEngine_fireEventToScript == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
+    ((void*&) _ScriptEngine_deserializeScriptObjectHandleToJson) = hybris_dlsym(handle, "_ZN12ScriptEngine35deserializeScriptObjectHandleToJsonERKN9ScriptApi18ScriptObjectHandleERN4Json5ValueE");
+    if (_ScriptEngine_deserializeScriptObjectHandleToJson == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine35deserializeScriptObjectHandleToJsonERKN9ScriptApi18ScriptObjectHandleERN4Json5ValueE");
+    ((void*&) _ScriptEngine_serializeJsonToScriptObjectHandle) = hybris_dlsym(handle, "_ZN12ScriptEngine33serializeJsonToScriptObjectHandleERN9ScriptApi18ScriptObjectHandleERKN4Json5ValueE");
+    if (_ScriptEngine_serializeJsonToScriptObjectHandle == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine33serializeJsonToScriptObjectHandleERN9ScriptApi18ScriptObjectHandleERKN4Json5ValueE");
     ((void*&) _MinecraftServerScriptEngine_helpDefineActor) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE");
     if (_MinecraftServerScriptEngine_helpDefineActor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN23ScriptEngineWithContextI19ScriptServerContextE15helpDefineActorERK5ActorRN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _MinecraftServerScriptEngine_helpGetActor) = hybris_dlsym(handle, "_ZN23ScriptEngineWithContextI19ScriptServerContextE12helpGetActorERKN9ScriptApi18ScriptObjectHandleEPP5Actor");

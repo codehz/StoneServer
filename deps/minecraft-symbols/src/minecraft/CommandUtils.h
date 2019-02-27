@@ -2,6 +2,7 @@
 
 #include "CommandRegistry.h"
 #include "CommandSelector.h"
+#include "json.h"
 
 using CDT = void (*)(void *);
 
@@ -64,5 +65,12 @@ template <> struct CommonType<Block *> {
   /// @symbol _ZZ7type_idI15CommandRegistryPK5BlockE8typeid_tIT_EvE2id
   static typeid_t<CommandRegistry> *tid;
   /// @symbol _ZNK15CommandRegistry5parseIPK5BlockEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
+  static Parser parser;
+};
+
+template <> struct CommonType<Json::Value> {
+  /// @symbol _ZZ7type_idI15CommandRegistryN4Json5ValueEE8typeid_tIT_EvE2id
+  static typeid_t<CommandRegistry> *tid;
+  /// @symbol _ZNK15CommandRegistry5parseIN4Json5ValueEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE
   static Parser parser;
 };
