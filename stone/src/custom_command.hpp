@@ -83,9 +83,9 @@ template <> inline v8::Local<v8::Value> genfetch<Block *>(void *self, CommandOri
 template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   auto ret       = v8::Array::New(iso, 3);
   auto [x, y, z] = ((CommandPosition *)self)->getPosition(orig);
-  ret->Set(0, v8::Number::New(iso, x));
+  ret->Set(2, v8::Number::New(iso, x));
   ret->Set(1, v8::Number::New(iso, y));
-  ret->Set(2, v8::Number::New(iso, z));
+  ret->Set(0, v8::Number::New(iso, z));
   return ret;
 }
 template <> inline v8::Local<v8::Value> genfetch<Json::Value>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
