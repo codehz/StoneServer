@@ -81,14 +81,11 @@ template <> inline v8::Local<v8::Value> genfetch<Block *>(void *self, CommandOri
   return v8::toJS<CompoundTag const &>(iso, (*(Block **)self)->tag2);
 }
 template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
-  auto strX      = v8::String::NewFromUtf8(iso, "x");
-  auto strY      = v8::String::NewFromUtf8(iso, "y");
-  auto strZ      = v8::String::NewFromUtf8(iso, "z");
-  auto ret       = v8::Object::New(iso);
+  auto ret       = v8::Array::New(iso, 3);
   auto [x, y, z] = ((CommandPosition *)self)->getPosition(orig);
-  ret->Set(strX, v8::Number::New(iso, x));
-  ret->Set(strY, v8::Number::New(iso, y));
-  ret->Set(strZ, v8::Number::New(iso, z));
+  ret->Set(0, v8::Number::New(iso, x));
+  ret->Set(1, v8::Number::New(iso, y));
+  ret->Set(2, v8::Number::New(iso, z));
   return ret;
 }
 template <> inline v8::Local<v8::Value> genfetch<Json::Value>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
