@@ -216,7 +216,7 @@ auto registerCustomCommand(std::string name, std::string desc, int lvl) {
   };
 }
 
-void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list, bool case_sensitive) {
+void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list) {
   using namespace interface;
-  Locator<CommandRegistry>()->addSoftEnum(name, list, case_sensitive);
+  Locator<CommandRegistry>()->addSoftEnum(name, list, true);
 }

@@ -7,7 +7,7 @@ using namespace interface;
 static void registerSoftEnumCallback(FunctionCallbackInfo<Value> const &info) {
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
-  if (info.Length() != 2 && info.Length() != 3) {
+  if (info.Length() != 2) {
     iso->ThrowException(Exception::TypeError(ToJS(strformat("registerSoftEnum requires 2 arguments(current: %d)", info.Length()))));
     return;
   }
@@ -28,7 +28,7 @@ static void registerSoftEnumCallback(FunctionCallbackInfo<Value> const &info) {
     vec.push_back(it >> V8Str);
   }
 
-  registerCustomEnum(name, vec, info.Length() == 3 && info[2]->IsTrue());
+  registerCustomEnum(name, vec);
 }
 
 static Register reg{ "registerComponent", "registerSoftEnum", &registerSoftEnumCallback };
