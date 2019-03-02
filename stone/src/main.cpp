@@ -271,6 +271,8 @@ int main() {
     }));
   };
 
+  chdir((pathmgr.getWorldsPath().std() + props.worldDir.get()).c_str());
+
   apid_start();
 
   Log::info("StoneServer", "Server is stopping");
