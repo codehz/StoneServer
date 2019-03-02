@@ -19,6 +19,12 @@ template <typename T> struct Convertable; // type, fromJS, toJS
 template <typename T> auto fromJS(Isolate *iso, Local<typename Convertable<T>::type> src) { return Convertable<T>::fromJS(iso, src); }
 template <typename T> auto toJS(Isolate *iso, T src) { return Convertable<T>::toJS(iso, src); }
 
+template <> struct Convertable<bool> {
+  using type = Boolean;
+  static bool fromJS(Isolate *iso, Local<type> src) { return src->IsTrue(); }
+  static Local<type> toJS(Isolate *iso, bool src) { return src ? True(iso) : False(iso); }
+};
+
 template <typename T> struct IntegralConvertable {
   using type = Integer;
   static T fromJS(Isolate *iso, Local<type> src) { return src->Value(); }
@@ -406,5 +412,7 @@ template <> struct Convertable<Actor *> {
     return pers.Get(iso);
   }
 };
+
+template <> struct Convertable<Player *> : Convertable<Actor *> {};
 
 } // namespace v8

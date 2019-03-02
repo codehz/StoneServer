@@ -1,6 +1,7 @@
 #pragma once
 
 #include "V8Internals.h"
+#include <cassert>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
