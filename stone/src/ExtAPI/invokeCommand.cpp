@@ -19,12 +19,9 @@ static void invokeCommandCallback(FunctionCallbackInfo<Value> const &info) {
       iso->ThrowException(Exception::ReferenceError(ToJS("invokeCommand need be invoked inside custom command execution context")));
       return;
     }
-    auto command = fromJS<std::string>(iso, info[0]);
-    auto result  = patched::withCommandOutput([&] {
-      auto commandOrigin = current_orig->clone();
-      Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
-    });
-    info.GetReturnValue().Set(ToJS(result));
+    auto command       = fromJS<std::string>(iso, info[0]);
+    auto commandOrigin = current_orig->clone();
+    Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), command, 4, true);
   } else if (info.Length() == 2) {
     if (!info[0]->IsObject() || !info[1]->IsString()) {
       iso->ThrowException(Exception::TypeError(ToJS("invokeCommand requires (object, string)")));
