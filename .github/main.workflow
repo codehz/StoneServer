@@ -9,11 +9,11 @@ action "login" {
 }
 
 action "build" {
-  uses = "codehz/StoneActions/build@debug"
+  uses = "codehz/StoneActions/build@master"
 }
 
 action "package" {
-  uses = "codehz/StoneActions/package@7e12c8c0bdde6f4d52ab74d8348de46f38e48ae7"
+  uses = "codehz/StoneActions/package@master"
   needs = ["build"]
 }
 
