@@ -30,6 +30,7 @@ public:
   inline T *operator&() { return raw_pointer; }
   inline operator T *() { return raw_pointer; }
   inline operator T &() { return *raw_pointer; }
+  inline operator bool() { return raw_pointer; }
 
   template <typename F> inline void operator>>(F const &f) {
     if (raw_pointer)

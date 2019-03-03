@@ -17,6 +17,7 @@ static void checkAbilityCallback(FunctionCallbackInfo<Value> const &info) {
   }
   Locator<Policy>()->checkAbility >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                       callback = Persistent<Function>{ iso, info[0] }](Player *player, std::string const &name, bool &result) {
+    if (!Locator<ScriptApi::V8CoreInterface>()) return;
     HandleScope scope{ iso };
     auto &core = Locator<ScriptApi::V8CoreInterface>();
     auto ctx   = V8Context[*core].Get(iso);
