@@ -6,3 +6,4 @@
 extern CommandOrigin *current_orig;
 
 void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list);
+void updateCustomEnum(mcpe::string name, std::vector<mcpe::string> list);

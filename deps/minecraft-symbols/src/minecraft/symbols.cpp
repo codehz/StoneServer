@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Mar 03 2019 08:15:16 UTC
+// Generated on Sun Mar 03 2019 14:49:07 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -42,6 +42,10 @@ void CommandRegistry::buildOverload(CommandRegistry::Overload & p1) {
 static void (CommandRegistry::*_CommandRegistry_addSoftEnum)(mcpe::string const &, std::vector<mcpe::string>, bool);
 void CommandRegistry::addSoftEnum(mcpe::string const & p1, std::vector<mcpe::string> p2, bool p3) {
     (this->*_CommandRegistry_addSoftEnum)(p1, p2, p3);
+}
+static void (CommandRegistry::*_CommandRegistry_setSoftEnumValues)(mcpe::string const &, std::vector<mcpe::string>);
+void CommandRegistry::setSoftEnumValues(mcpe::string const & p1, std::vector<mcpe::string> p2) {
+    (this->*_CommandRegistry_setSoftEnumValues)(p1, p2);
 }
 static void (CommandParameterData::*_CommandParameterData_CommandParameterData)(typeid_t<CommandRegistry>, Parser, char const *, CommandParameterDataType, char const *, int, bool, int);
 CommandParameterData::CommandParameterData(typeid_t<CommandRegistry> p1, Parser p2, char const * p3, CommandParameterDataType p4, char const * p5, int p6, bool p7, int p8) {
@@ -2071,6 +2075,8 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandRegistry_buildOverload == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry13buildOverloadERNS_8OverloadE");
     ((void*&) _CommandRegistry_addSoftEnum) = hybris_dlsym(handle, "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEEb");
     if (_CommandRegistry_addSoftEnum == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEEb");
+    ((void*&) _CommandRegistry_setSoftEnumValues) = hybris_dlsym(handle, "_ZN15CommandRegistry17setSoftEnumValuesERKSsSt6vectorISsSaISsEE");
+    if (_CommandRegistry_setSoftEnumValues == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry17setSoftEnumValuesERKSsSt6vectorISsSaISsEE");
     ((void*&) _CommandParameterData_CommandParameterData) = hybris_dlsym(handle, "_ZN20CommandParameterDataC2E8typeid_tI15CommandRegistryEMS1_KFbPvRKNS1_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEEEPKc24CommandParameterDataTypeSI_ibi");
     if (_CommandParameterData_CommandParameterData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20CommandParameterDataC2E8typeid_tI15CommandRegistryEMS1_KFbPvRKNS1_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEEEPKc24CommandParameterDataTypeSI_ibi");
     ((void*&) _CommandParameterData_CommandParameterData2) = hybris_dlsym(handle, "_ZN20CommandParameterDataC2ERKS_");

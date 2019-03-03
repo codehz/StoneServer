@@ -46,6 +46,7 @@ add_executable(stone
   "src/ExtAPI/invokePrivilegedCommand.cpp"
   "src/ExtAPI/registerCommand.cpp"
   "src/ExtAPI/registerSoftEnum.cpp"
+  "src/ExtAPI/updateSoftEnum.cpp"
   "src/ExtAPI/transferPlayer.cpp"
   "src/ExtAPI/broadcastExternalEvent.cpp"
   "src/ExtAPI/openModalForm.cpp"

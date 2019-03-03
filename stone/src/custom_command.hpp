@@ -223,3 +223,8 @@ void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list) {
   using namespace interface;
   Locator<CommandRegistry>()->addSoftEnum(name, list, true);
 }
+
+void updateCustomEnum(mcpe::string name, std::vector<mcpe::string> list) {
+  using namespace interface;
+  Locator<CommandRegistry>()->setSoftEnumValues(name, list);
+}

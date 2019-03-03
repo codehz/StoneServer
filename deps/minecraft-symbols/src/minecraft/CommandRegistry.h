@@ -63,14 +63,9 @@ struct CommandRegistry {
     registerOverloadInternal(*signature, overload);
   }
   void addSoftEnum(mcpe::string const &name, std::vector<mcpe::string> values, bool case_sensitive);
+  void setSoftEnumValues(mcpe::string const &name, std::vector<mcpe::string> values);
 
   struct ParseToken;
-
-  bool parseEnum(void *ret, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &, std::vector<mcpe::string> &) const {
-    *(mcpe::string *)ret = "test";
-    printf("$$\n");
-    return true;
-  }
 };
 
 using Parser = bool (CommandRegistry::*)(void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, mcpe::string &, std::vector<mcpe::string> &) const;
