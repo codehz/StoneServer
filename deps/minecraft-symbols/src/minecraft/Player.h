@@ -25,4 +25,6 @@ public:
   void sendNetworkPacket(Packet &) const;
 
   bool canUseAbility(mcpe::string const &);
+
+  int getCommandPermissionLevel() const;
 };

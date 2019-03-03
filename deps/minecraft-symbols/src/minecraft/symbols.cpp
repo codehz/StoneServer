@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Wed Feb 27 2019 11:17:31 UTC
+// Generated on Sun Mar 03 2019 08:15:16 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -1969,6 +1969,10 @@ static bool (Player::*_Player_canUseAbility)(mcpe::string const &);
 bool Player::canUseAbility(mcpe::string const & p1) {
     return (this->*_Player_canUseAbility)(p1);
 }
+static int (Player::*_Player_getCommandPermissionLevel)() const;
+int Player::getCommandPermissionLevel() const {
+    return (this->*_Player_getCommandPermissionLevel)();
+}
 
 #include "Actor.h"
 static mcpe::string (ActorDefinitionIdentifier::*_ActorDefinitionIdentifier_getCanonicalName)() const;
@@ -3032,6 +3036,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_sendNetworkPacket == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ServerPlayer17sendNetworkPacketER6Packet");
     ((void*&) _Player_canUseAbility) = hybris_dlsym(handle, "_ZN6Player13canUseAbilityERKSs");
     if (_Player_canUseAbility == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player13canUseAbilityERKSs");
+    ((void*&) _Player_getCommandPermissionLevel) = hybris_dlsym(handle, "_ZNK6Player25getCommandPermissionLevelEv");
+    if (_Player_getCommandPermissionLevel == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player25getCommandPermissionLevelEv");
     ((void*&) _ActorDefinitionIdentifier_getCanonicalName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     if (_ActorDefinitionIdentifier_getCanonicalName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     ((void*&) _Actor_getActorIdentifier) = hybris_dlsym(handle, "_ZNK5Actor18getActorIdentifierEv");
