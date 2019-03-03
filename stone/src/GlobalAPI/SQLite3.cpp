@@ -106,7 +106,7 @@ static void fill_stmt(Isolate *iso, sqlite3 *db, sqlite3_stmt *stmt, Local<Objec
       auto buffer = Local<ArrayBuffer>(value)->GetContents();
       sqlite3_bind_blob(stmt, numid, buffer.Data(), buffer.ByteLength(), SQLITE_TRANSIENT);
     } else if (value->IsString()) {
-      sqlite3_bind_text(stmt, numid, fromJS<std::string>(iso, value) >> CStr, -1, nullptr);
+      sqlite3_bind_text(stmt, numid, fromJS<std::string>(iso, value) >> CStr, -1, SQLITE_TRANSIENT);
     } else if (value->IsNumber()) {
       sqlite3_bind_double(stmt, numid, fromJS<int>(iso, value));
     } else if (value->IsNullOrUndefined()) {
