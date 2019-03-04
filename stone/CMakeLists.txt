@@ -22,6 +22,7 @@ add_executable(stone
   "src/patched/ServerLevelEventCoordinator.cpp"
   "src/patched/PlayerCommandOrigin.cpp"
   "src/patched/ScriptEventCoordinator.cpp"
+  "src/patched/FlatWorldGeneratorOptions.cpp"
   "src/patched/TextPacket.cpp"
   "src/patched/Ability.cpp"
   "src/patched/Common.cpp"
