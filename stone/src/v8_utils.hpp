@@ -6,6 +6,8 @@
 
 #include "operators.h"
 
+#include "patched/HardcodedOffsets.h"
+
 #include <array>
 #include <string>
 #include <type_traits>
@@ -414,5 +416,24 @@ template <> struct Convertable<Actor *> {
 };
 
 template <> struct Convertable<Player *> : Convertable<Actor *> {};
+
+template <> struct Convertable<ItemInstance *> {
+  using type = Value;
+  static Local<type> toJS(Isolate *iso, ItemInstance *src) {
+    using namespace interface;
+    using namespace patched;
+    if (!src || src->isNull()) return Null(iso);
+    auto ret = Object::New(iso);
+    ret->Set(Convertable<char const *>::ToJS("name"), Convertable<std::string>::ToJS(src->getRawNameId().std()));
+    ret->Set(Convertable<char const *>::ToJS("custom_name"), Convertable<std::string>::ToJS(src->getCustomName().std()));
+    ret->Set(Convertable<char const *>::ToJS("count"), Convertable<char>::ToJS((*src) >> ItemInstanceCount));
+    return ret;
+  }
+};
+
+template <typename... TS> MaybeLocal<Value> Function::Call(Local<Value> recv, Isolate *iso, TS... ts) {
+  Local<Value> args[] = { Convertable<TS>::ToJS(ts)... };
+  return Call(recv, sizeof...(TS), args);
+}
 
 } // namespace v8

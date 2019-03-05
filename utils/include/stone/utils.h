@@ -1,6 +1,7 @@
 #pragma once
 #include <interface/locator.hpp>
 #include <minecraft/ServerInstance.h>
+#include <minecraft/fix.h>
 
 #include <condition_variable>
 #include <cstdarg>
@@ -58,3 +59,5 @@ template <typename Func> struct FailGuard {
     if (!canceled) fn();
   }
 };
+
+void dump_vtable(XPointer vtable, int size);

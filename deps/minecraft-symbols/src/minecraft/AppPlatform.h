@@ -2,8 +2,7 @@
 
 #include "std/string.h"
 #include "fix.h"
-
-class Vec2;
+#include "types.h"
 
 class AppPlatform {
 

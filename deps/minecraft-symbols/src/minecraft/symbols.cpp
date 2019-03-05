@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Mar 03 2019 14:49:07 UTC
+// Generated on Tue Mar 05 2019 06:44:05 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -554,6 +554,28 @@ SaveTransactionManager::SaveTransactionManager(std::function<void ( bool )> p1) 
 }
 
 #include "ImagePickingCallback.h"
+
+#include "ItemInstance.h"
+static bool (ItemInstance::*_ItemInstance_isNull)() const;
+bool ItemInstance::isNull() const {
+    return (this->*_ItemInstance_isNull)();
+}
+static int (ItemInstance::*_ItemInstance_getId)() const;
+int ItemInstance::getId() const {
+    return (this->*_ItemInstance_getId)();
+}
+static mcpe::string (ItemInstance::*_ItemInstance_getName)() const;
+mcpe::string ItemInstance::getName() const {
+    return (this->*_ItemInstance_getName)();
+}
+static mcpe::string (ItemInstance::*_ItemInstance_getRawNameId)() const;
+mcpe::string ItemInstance::getRawNameId() const {
+    return (this->*_ItemInstance_getRawNameId)();
+}
+static mcpe::string (ItemInstance::*_ItemInstance_getCustomName)() const;
+mcpe::string ItemInstance::getCustomName() const {
+    return (this->*_ItemInstance_getCustomName)();
+}
 
 #include "ExtendedCertificate.h"
 static mcpe::string (*_ExtendedCertificate_getXuid)(Certificate const &);
@@ -1339,15 +1361,15 @@ mcpe::string CommandOrigin::getName() {
     return (this->*u.funcp)();
 }
 static int vti_CommandOrigin_getBlockPosition;
-std::array<int, 3> CommandOrigin::getBlockPosition() {
-    union { void* voidp; std::array<int, 3> (CommandOrigin::*funcp)(); } u;
+BlockPos CommandOrigin::getBlockPosition() {
+    union { void* voidp; BlockPos (CommandOrigin::*funcp)(); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_CommandOrigin_getBlockPosition];
     return (this->*u.funcp)();
 }
 static int vti_CommandOrigin_getWorldPosition;
-std::array<float, 3> CommandOrigin::getWorldPosition() {
-    union { void* voidp; std::array<float, 3> (CommandOrigin::*funcp)(); } u;
+Vec3 CommandOrigin::getWorldPosition() {
+    union { void* voidp; Vec3 (CommandOrigin::*funcp)(); } u;
     u.funcp = nullptr;
     u.voidp = vtable[vti_CommandOrigin_getWorldPosition];
     return (this->*u.funcp)();
@@ -1451,6 +1473,13 @@ ScriptEventData::~ScriptEventData() {
 static bool (ScriptEventData::*_ScriptEventData_serialize)(ScriptEngine &, EventInfo &, ScriptApi::ScriptObjectHandle &) const;
 bool ScriptEventData::serialize(ScriptEngine & p1, EventInfo & p2, ScriptApi::ScriptObjectHandle & p3) const {
     return (this->*_ScriptEventData_serialize)(p1, p2, p3);
+}
+
+#include "GameMode.h"
+XPointer GameMode::vtable;
+static void (GameMode::*_GameMode_destructor)();
+GameMode::~GameMode() {
+    (this->*_GameMode_destructor)();
 }
 
 #include "Multitouch.h"
@@ -1877,6 +1906,8 @@ void MinecraftEventing::init() {
     (this->*_MinecraftEventing_init)();
 }
 
+#include "types.h"
+
 #include "TextPacket.h"
 static void (TextPacket::*_TextPacket_TextPacket)(TextPacketType, mcpe::string const &, mcpe::string const &, std::vector<mcpe::string> const &, bool, mcpe::string const &, mcpe::string const &);
 TextPacket::TextPacket(TextPacketType p1, mcpe::string const & p2, mcpe::string const & p3, std::vector<mcpe::string> const & p4, bool p5, mcpe::string const & p6, mcpe::string const & p7) {
@@ -1999,12 +2030,12 @@ static bool (Actor::*_Actor_load)(CompoundTag const &);
 bool Actor::load(CompoundTag const & p1) {
     return (this->*_Actor_load)(p1);
 }
-static std::array<float, 3> & (Actor::*_Actor_getPos)() const;
-std::array<float, 3> & Actor::getPos() const {
+static Vec3 & (Actor::*_Actor_getPos)() const;
+Vec3 & Actor::getPos() const {
     return (this->*_Actor_getPos)();
 }
-static std::array<float, 2> (Actor::*_Actor_getRotation)() const;
-std::array<float, 2> Actor::getRotation() const {
+static Vec2 (Actor::*_Actor_getRotation)() const;
+Vec2 Actor::getRotation() const {
     return (this->*_Actor_getRotation)();
 }
 static mcpe::string const & (Actor::*_Actor_getNameTag)() const;
@@ -2333,6 +2364,16 @@ void minecraft_symbols_init(void* handle) {
     if (_LevelSettings_parseSeedString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettings15parseSeedStringERKSsj");
     ((void*&) _SaveTransactionManager_SaveTransactionManager) = hybris_dlsym(handle, "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
     if (_SaveTransactionManager_SaveTransactionManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
+    ((void*&) _ItemInstance_isNull) = hybris_dlsym(handle, "_ZNK12ItemInstance6isNullEv");
+    if (_ItemInstance_isNull == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance6isNullEv");
+    ((void*&) _ItemInstance_getId) = hybris_dlsym(handle, "_ZNK12ItemInstance5getIdEv");
+    if (_ItemInstance_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance5getIdEv");
+    ((void*&) _ItemInstance_getName) = hybris_dlsym(handle, "_ZNK12ItemInstance7getNameEv");
+    if (_ItemInstance_getName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance7getNameEv");
+    ((void*&) _ItemInstance_getRawNameId) = hybris_dlsym(handle, "_ZNK12ItemInstance12getRawNameIdEv");
+    if (_ItemInstance_getRawNameId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance12getRawNameIdEv");
+    ((void*&) _ItemInstance_getCustomName) = hybris_dlsym(handle, "_ZNK12ItemInstance13getCustomNameEv");
+    if (_ItemInstance_getCustomName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance13getCustomNameEv");
     ((void*&) _ExtendedCertificate_getXuid) = hybris_dlsym(handle, "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     if (_ExtendedCertificate_getXuid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     ((void*&) _Crypto_Random_generateUUID) = hybris_dlsym(handle, "_ZN6Crypto6Random12generateUUIDEv");
@@ -2764,6 +2805,10 @@ void minecraft_symbols_init(void* handle) {
     if (_ScriptEventData_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15ScriptEventDataD2Ev");
     ((void*&) _ScriptEventData_serialize) = hybris_dlsym(handle, "_ZNK15ScriptEventData9serializeER12ScriptEngineR9EventInfoRN9ScriptApi18ScriptObjectHandleE");
     if (_ScriptEventData_serialize == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15ScriptEventData9serializeER12ScriptEngineR9EventInfoRN9ScriptApi18ScriptObjectHandleE");
+    ((void*&) GameMode::vtable) = hybris_dlsym(handle, "_ZTV8GameMode");
+    if (GameMode::vtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV8GameMode");
+    ((void*&) _GameMode_destructor) = hybris_dlsym(handle, "_ZN8GameModeD2Ev");
+    if (_GameMode_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN8GameModeD2Ev");
     ((void*&) _Multitouch_feed) = hybris_dlsym(handle, "_ZN10Multitouch4feedEccssi");
     if (_Multitouch_feed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN10Multitouch4feedEccssi");
     ((void*&) _Tag_destructor) = hybris_dlsym(handle, "_ZN3TagD2Ev");

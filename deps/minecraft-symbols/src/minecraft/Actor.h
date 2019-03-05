@@ -1,6 +1,7 @@
 #pragma once
 
 #include "std/string.h"
+#include "types.h"
 #include <array>
 
 class ActorDefinitionIdentifier {
@@ -20,8 +21,8 @@ public:
   bool save(CompoundTag &);
   bool load(CompoundTag const &);
 
-  std::array<float, 3> &getPos() const;
-  std::array<float, 2> getRotation() const;
+  Vec3 &getPos() const;
+  Vec2 getRotation() const;
   mcpe::string const &getNameTag() const;
   std::tuple<int> getDimensionId() const;
 };

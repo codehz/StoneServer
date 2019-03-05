@@ -611,6 +611,8 @@ public:
   }
   /// @symbol _ZN2v88Function4CallENS_5LocalINS_5ValueEEEiPS3_
   v8::MaybeLocal<v8::Value> Call(v8::Local<v8::Value> recv, int argc, v8::Local<v8::Value> *argv);
+  /// @skipped
+  template <typename... TS> v8::MaybeLocal<v8::Value> Call(v8::Local<v8::Value> recv, v8::Isolate *iso, TS... ts);
   /// @symbol _ZNK2v88Function11NewInstanceENS_5LocalINS_7ContextEEEiPNS1_INS_5ValueEEE
   v8::Local<v8::Object> NewInstance(v8::Local<v8::Context> context, int argc, v8::Local<v8::Value> *argv);
   /// @symbol _ZN2v88Function3NewEPNS_7IsolateEPFvRKNS_20FunctionCallbackInfoINS_5ValueEEEENS_5LocalIS4_EEi

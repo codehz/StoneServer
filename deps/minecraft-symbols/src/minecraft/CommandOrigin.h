@@ -2,6 +2,7 @@
 
 #include "UUID.h"
 #include "std/string.h"
+#include "types.h"
 #include <array>
 #include <memory>
 
@@ -17,7 +18,7 @@ enum class CommandOriginType {
   Actor            = 8,
   Virtual          = 9,
   GameArgument     = 10,
-  ActorServer      = 11
+  ActorServer      = 11,
 };
 
 struct Actor;
@@ -30,9 +31,9 @@ public:
   /// @vtable PlayerCommandOrigin _ZNK19PlayerCommandOrigin7getNameEv
   mcpe::string getName();
   /// @vtable PlayerCommandOrigin _ZNK19PlayerCommandOrigin16getBlockPositionEv
-  std::array<int, 3> getBlockPosition();
+  BlockPos getBlockPosition();
   /// @vtable PlayerCommandOrigin _ZNK19PlayerCommandOrigin16getWorldPositionEv
-  std::array<float, 3> getWorldPosition();
+  Vec3 getWorldPosition();
   /// @vtable PlayerCommandOrigin _ZNK19PlayerCommandOrigin5cloneEv
   std::unique_ptr<CommandOrigin> clone();
   /// @vtable PlayerCommandOrigin _ZNK19PlayerCommandOrigin13getOriginTypeEv
@@ -49,6 +50,7 @@ struct Player;
 
 class PlayerCommandOrigin : public CommandOrigin {
   char filler[0x50];
+
 public:
   PlayerCommandOrigin(Player &);
 };

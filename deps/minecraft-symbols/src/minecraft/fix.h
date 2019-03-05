@@ -30,5 +30,5 @@ struct XPointer {
 
   constexpr void **operator+(std::intptr_t off) { return ((void **)*this) + off; }
 
-  constexpr void *operator[](std::intptr_t off) { return ((void **)*this)[off]; }
+  constexpr void *&operator[](std::intptr_t off) { return ((void **)*this)[off]; }
 };

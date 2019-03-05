@@ -39,7 +39,7 @@ add_executable(stone
   "src/patched/ModalForm.cpp"
   "src/ExtAPI/common.h"
   "src/ExtAPI/common.cpp"
-  "src/ExtAPI/checkAbility.cpp"
+  "src/ExtAPI/checks.cpp"
   "src/ExtAPI/broadcastMessage.cpp"
   "src/ExtAPI/currentCommandOrigin.cpp"
   "src/ExtAPI/invokeCommand.cpp"

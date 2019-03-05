@@ -1,6 +1,7 @@
 #pragma once
 
 #include <minecraft/ExtendedCertificate.h>
+#include <minecraft/ItemInstance.h>
 #include <minecraft/Minecraft.h>
 #include <minecraft/NetworkIdentifier.h>
 #include <minecraft/Player.h>
@@ -30,6 +31,7 @@ inline static const auto PlayerRot [[maybe_unused]] = makeOperator(&Player::getR
 inline static const auto PlayerLvl [[maybe_unused]] = makeOperator(&Player::getLevelProgress);
 inline static const auto PlayerStats [[maybe_unused]] =
     makeOperator(+[](Player const &player) { return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus(); });
+inline static const auto ItemInstanceCount [[maybe_unused]] = StaticFieldAccessor<ItemInstance, 0xe, char>{};
 
 inline static const auto MinecraftFromServerInstance [[maybe_unused]] = StaticFieldAccessor<ServerInstance, 0x10, Minecraft *>{};
 
