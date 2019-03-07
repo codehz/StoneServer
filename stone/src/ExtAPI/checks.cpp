@@ -12,7 +12,7 @@ template <typename F> auto checkFn(FunctionCallbackInfo<Value> const &info, F f)
   auto iso = info.GetIsolate();
   Isolate::Scope isos{ iso };
   if (info.Length() != 1 || !info[0]->IsFunction()) {
-    iso->ThrowException(Exception::TypeError(ToJS(strformat("checkAbility requires (function)"))));
+    iso->ThrowException(Exception::TypeError(ToJS(strformat("checks requires (function)"))));
     return;
   }
   f(iso);
@@ -28,7 +28,7 @@ template <typename F> auto handleFn(Isolate *iso, bool &result, F f) {
 
   auto ret = f();
   if (ex.HasCaught()) {
-    Log::error("Scripting", "Uncaught exception from checkAbility: %s", ex.Message()->Get() >> V8Str >> CStr);
+    Log::error("Scripting", "Uncaught exception from checks: %s", ex.Message()->Get() >> V8Str >> CStr);
     return;
   }
   if (ret.isNothing()) return;
