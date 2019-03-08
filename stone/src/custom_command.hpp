@@ -180,7 +180,7 @@ struct CustomCommand : Command {
       outp.error(ex.Message()->Get() >> V8Str >> CStr, {});
       return;
     }
-    if (!result.isNothing() || !result.fromJust()->IsNullOrUndefined()) {
+    if (!result.isNothing() && !result.fromJust()->IsNullOrUndefined()) {
       auto str = result.fromJust()->ToString(iso) >> V8Str;
       if (str.size() != 0) return outp.success(str, {});
     }
