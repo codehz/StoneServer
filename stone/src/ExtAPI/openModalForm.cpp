@@ -12,12 +12,15 @@ namespace ExtAPI {
 using namespace interface;
 
 struct ReqTicket {
+  uint32_t id;
   AutoReleasePersistent<Promise::Resolver> resolver;
-  ReqTicket(AutoReleasePersistent<Promise::Resolver> &&resolver)
-      : resolver(std::move(resolver)) {}
+  ReqTicket(uint32_t id, AutoReleasePersistent<Promise::Resolver> &&resolver)
+      : id(id)
+      , resolver(std::move(resolver)) {}
   ReqTicket(ReqTicket &&ticket)
-      : resolver(std::move(ticket.resolver)) {}
-  unsigned get_id() { return (unsigned)resolver.RawPointer(); }
+      : id(ticket.id)
+      , resolver(std::move(ticket.resolver)) {}
+  uint32_t get_id() { return id; }
   void resolve(std::string const &data) {
     auto &core = Locator<ScriptApi::V8CoreInterface>();
     auto iso   = patched::V8Isolate[*core];
@@ -65,8 +68,8 @@ static void openModalFormCallback(FunctionCallbackInfo<Value> const &info) {
   auto player   = (Player *)actor;
   auto resolver = Promise::Resolver::New(ctx);
   AutoReleasePersistent pres{ iso, resolver };
-  auto id          = (unsigned)pres.RawPointer();
-  reqCache.emplace(player, ReqTicket{ std::move(pres) });
+  auto id = (uint32_t)rand();
+  reqCache.emplace(player, ReqTicket{ id, std::move(pres) });
   info.GetReturnValue().Set(resolver->GetPromise());
   Locator<ModalForm>()->send(player, id, data);
 }
@@ -76,12 +79,10 @@ static Register reg{ "registerComponent", "openModalForm", &openModalFormCallbac
                       Locator<ModalForm>()->recv >> [](unsigned id, Player *player, std::string const &data) {
                         auto req_it = reqCache.find(player);
                         if (req_it == reqCache.end()) return;
-                        if (req_it->second.get_id() != id) {
-                          req_it->second.reject("Wrong response");
-                        } else {
+                        if (req_it->second.get_id() == id) {
                           req_it->second.resolve(data);
+                          reqCache.erase(req_it);
                         }
-                        reqCache.erase(req_it);
                       };
                     } };
 
