@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Tue Mar 05 2019 06:44:05 UTC
+// Generated on Sun Mar 10 2019 07:59:57 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -2744,10 +2744,10 @@ void minecraft_symbols_init(void* handle) {
     if (_v8_Exception_CreateMessage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v89Exception13CreateMessageEPNS_7IsolateENS_5LocalINS_5ValueEEE");
     ((void*&) _v8_Promise_Resolver_New) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
     if (_v8_Promise_Resolver_New == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE");
-    ((void*&) _v8_Promise_Resolver_Resolve) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
-    if (_v8_Promise_Resolver_Resolve == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
-    ((void*&) _v8_Promise_Resolver_Reject) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
-    if (_v8_Promise_Resolver_Reject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    ((void*&) _v8_Promise_Resolver_Resolve) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    if (_v8_Promise_Resolver_Resolve == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    ((void*&) _v8_Promise_Resolver_Reject) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
+    if (_v8_Promise_Resolver_Reject == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE");
     ((void*&) _v8_Promise_Resolver_GetPromise) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver10GetPromiseEv");
     if (_v8_Promise_Resolver_GetPromise == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN2v87Promise8Resolver10GetPromiseEv");
     ((void*&) _v8_Promise_Resolver_CheckCast) = hybris_dlsym(handle, "_ZN2v87Promise8Resolver9CheckCastEPNS_5ValueE");

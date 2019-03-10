@@ -737,9 +737,9 @@ public:
     }
     /// @symbol _ZN2v87Promise8Resolver3NewENS_5LocalINS_7ContextEEE
     static v8::Local<v8::Promise::Resolver> New(v8::Local<v8::Context> context);
-    /// @symbol _ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE
-    v8::Maybe<bool> Resolve(v8::Local<v8::Context> context, v8::Local<v8::Value> value);
     /// @symbol _ZN2v87Promise8Resolver7ResolveENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE
+    v8::Maybe<bool> Resolve(v8::Local<v8::Context> context, v8::Local<v8::Value> value);
+    /// @symbol _ZN2v87Promise8Resolver6RejectENS_5LocalINS_7ContextEEENS2_INS_5ValueEEE
     v8::Maybe<bool> Reject(v8::Local<v8::Context> context, v8::Local<v8::Value> value);
     /// @symbol _ZN2v87Promise8Resolver10GetPromiseEv
     v8::Local<v8::Promise> GetPromise();
