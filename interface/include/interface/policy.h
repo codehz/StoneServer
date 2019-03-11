@@ -2,6 +2,7 @@
 
 #include <minecraft/ItemInstance.h>
 #include <minecraft/Player.h>
+#include <minecraft/Block.h>
 
 #include "base_interface.h"
 #include "event_emitter.h"
@@ -16,6 +17,7 @@ struct Policy : BaseInterface {
   EventEmitter<Player *, ItemInstance &, BlockPos const &, Vec3 const &, bool &> checkUseOn;
   EventEmitter<Player *, Actor &, Vec3 const &, bool &> checkInteract;
   EventEmitter<Player *, Actor &, bool &> checkAttack;
+  EventEmitter<Player *, Block &, BlockPos const &, bool &> checkUseBlock;
 };
 
 } // namespace interface

@@ -1,3 +1,4 @@
+#include "../dumper.h"
 #include "../patched.h"
 
 #include <interface/locator.hpp>
@@ -58,6 +59,13 @@ SInstanceHook(bool, _ZN8GameMode6attackER5Actor, GameMode, Actor &target) {
   bool result = true;
   Locator<Policy>()->checkAttack(this->player, target, result);
   if (result) original(this, target);
+  return false;
+}
+
+SInstanceHook(bool, _ZNK5Block3useER6PlayerRK8BlockPos, Block, Player *player, BlockPos const &pos) {
+  bool result = true;
+  Locator<Policy>()->checkUseBlock(player, *this, pos, result);
+  if (result) return original(this, player, pos);
   return false;
 }
 

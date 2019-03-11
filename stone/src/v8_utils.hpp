@@ -1,6 +1,7 @@
 #pragma once
 
 #include <interface/locator.hpp>
+#include <minecraft/Block.h>
 #include <minecraft/Tag.h>
 #include <minecraft/V8.h>
 
@@ -428,6 +429,16 @@ template <> struct Convertable<ItemInstance *> {
     ret->Set(Convertable<char const *>::ToJS("custom_name"), Convertable<std::string>::ToJS(src->getCustomName().std()));
     ret->Set(Convertable<char const *>::ToJS("count"), Convertable<char>::ToJS((*src) >> ItemInstanceCount));
     return ret;
+  }
+};
+
+template <> struct Convertable<Block *> {
+  using type = Value;
+  static Local<type> toJS(Isolate *iso, Block *src) {
+    using namespace interface;
+    using namespace patched;
+    if (!src) return Null(iso);
+    return Convertable<Tag const &>::toJS(iso, src->tag2);
   }
 };
 

@@ -5,6 +5,8 @@ project(stone LANGUAGES CXX)
 add_executable(stone
   "src/main.cpp"
 
+  "src/dumper.h"
+  "src/dumper.cpp"
   "src/server_properties.h"
   "src/server_minecraft_app.h"
   "src/v8_utils.hpp"

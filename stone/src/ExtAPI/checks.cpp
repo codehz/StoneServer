@@ -74,6 +74,15 @@ static Register regs[] = {
         };
       });
     } },
+  { "registerComponent", "checkUseBlock",
+    +[](FunctionCallbackInfo<Value> const &info) {
+      checkFn(info, [&](Isolate *iso) {
+        Locator<Policy>()->checkUseBlock >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
+                                                Player *player, Block &block, BlockPos const &pos, bool &result) {
+          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &block, pos, result); });
+        };
+      });
+    } },
   { "registerComponent", "checkUseOn",
     +[](FunctionCallbackInfo<Value> const &info) {
       checkFn(info, [&](Isolate *iso) {
