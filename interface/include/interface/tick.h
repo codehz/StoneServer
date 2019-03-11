@@ -6,7 +6,7 @@
 namespace interface {
 
 struct Tick : BaseInterface {
-  unsigned tps;
+  float tps;
 
   EventEmitter<> tick;
 };

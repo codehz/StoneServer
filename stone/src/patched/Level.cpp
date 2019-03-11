@@ -20,16 +20,14 @@ SInstanceHook(int, _ZN11ServerLevel10initializeERKSsRK13LevelSettingsP9LevelData
 }
 
 SInstanceHook(void, _ZN5Level4tickEv, Level) {
-  static auto last  = clock();
-  static auto flame = 0;
-  flame++;
+  using namespace std::chrono;
+  using hrc             = std::chrono::high_resolution_clock;
+  static auto start     = hrc::now();
+  auto end              = hrc::now();
+  long int frametime_us = (std::chrono::duration_cast<milliseconds>(end - start).count());
+  start = end;
   Locator<Tick>()->tick();
-  if (auto now = clock(); now - last > CLOCKS_PER_SEC) {
-    Locator<Tick>()->tps = flame;
-
-    flame = 0;
-    last  = now;
-  }
+  Locator<Tick>()->tps = (float)duration_cast<milliseconds>(1s).count() / frametime_us;
   original(this);
 }
 

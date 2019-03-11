@@ -46,7 +46,7 @@ struct PlayerInfo {
 template <typename Side> struct CoreService : ProxiedService<Side, CoreService> {
   ProxiedAction<Side, Empty> stop{ "stop" };
   ProxiedMethod<Side, Empty, Empty> ping{ "ping" };
-  ProxiedMethod<Side, Empty, int> tps{ "tps" };
+  ProxiedMethod<Side, Empty, float> tps{ "tps" };
   ProxiedProperty<Side, std::string> config{ "config" };
   ProxiedPatternBoardcast<Side, LogEntry> log{ "log" };
   ProxiedHash<Side, std::string, PlayerInfo> players{ "players" };

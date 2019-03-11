@@ -95,6 +95,11 @@ template <> struct Serializble<int> {
   static inline int read(char const *data) { return atoi(data); }
 };
 
+template <> struct Serializble<float> {
+  static inline Buffer write(float value) { return Buffer::format("%f", value); }
+  static inline float read(char const *data) { return atof(data); }
+};
+
 template <> struct Serializble<std::string> {
   static inline Buffer write(std::string const &input) { return Buffer::copy(input); }
   static inline std::string read(char const *input) { return input; }
