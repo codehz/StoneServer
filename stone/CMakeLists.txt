@@ -59,6 +59,7 @@ add_executable(stone
   "src/GlobalAPI/common.h"
   "src/GlobalAPI/common.cpp"
   "src/GlobalAPI/SQLite3.cpp"
+  "src/GlobalAPI/checkApiLevel.cpp"
 )
 
 target_compile_definitions(stone PRIVATE SIMPPL_HAVE_INTROSPECTION=true)
