@@ -42,6 +42,7 @@ add_executable(stone
   "src/ExtAPI/common.h"
   "src/ExtAPI/common.cpp"
   "src/ExtAPI/checks.cpp"
+  "src/ExtAPI/log.cpp"
   "src/ExtAPI/broadcastMessage.cpp"
   "src/ExtAPI/invokeCommand.cpp"
   "src/ExtAPI/invokeConsoleCommand.cpp"
