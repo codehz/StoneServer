@@ -17,6 +17,8 @@ struct NetworkPeer {
   NetworkStats getNetworkStatus();
 };
 
+struct ClientToServerHandshakePacket;
+
 class ServerNetworkHandler {
 public:
   /// @symbol _ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs
@@ -30,4 +32,6 @@ public:
 
   /// @symbol _ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier
   NetworkPeer *getPeerForUser(NetworkIdentifier const&);
+
+  void handle(NetworkIdentifier const&, ClientToServerHandshakePacket const&);
 };

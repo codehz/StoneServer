@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Mar 16 2019 11:45:30 UTC
+// Generated on Sat Mar 16 2019 14:41:45 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -387,9 +387,14 @@ static NetworkPeer * (ServerNetworkHandler::*_ServerNetworkHandler_getPeerForUse
 NetworkPeer * ServerNetworkHandler::getPeerForUser(NetworkIdentifier const & p1) {
     return (this->*_ServerNetworkHandler_getPeerForUser)(p1);
 }
+static void (ServerNetworkHandler::*_ServerNetworkHandler_handle)(NetworkIdentifier const &, ClientToServerHandshakePacket const &);
+void ServerNetworkHandler::handle(NetworkIdentifier const & p1, ClientToServerHandshakePacket const & p2) {
+    (this->*_ServerNetworkHandler_handle)(p1, p2);
+}
 
 #include "Packet.h"
-void * Packet::myVtable;
+XPointer Packet::myVtable;
+XPointer Packet::vt_serverToClientHandshake;
 
 #include "AppPlatform.h"
 XPointer AppPlatform::myVtable;
@@ -2280,8 +2285,12 @@ void minecraft_symbols_init(void* handle) {
     if (_ServerNetworkHandler_disconnectClient == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler16disconnectClientERK17NetworkIdentifierRKSsb");
     ((void*&) _ServerNetworkHandler_getPeerForUser) = hybris_dlsym(handle, "_ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier");
     if (_ServerNetworkHandler_getPeerForUser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier");
+    ((void*&) _ServerNetworkHandler_handle) = hybris_dlsym(handle, "_ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK29ClientToServerHandshakePacket");
+    if (_ServerNetworkHandler_handle == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK29ClientToServerHandshakePacket");
     ((void*&) Packet::myVtable) = hybris_dlsym(handle, "_ZTV6Packet");
     if (Packet::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV6Packet");
+    ((void*&) Packet::vt_serverToClientHandshake) = hybris_dlsym(handle, "_ZTV29ServerToClientHandshakePacket");
+    if (Packet::vt_serverToClientHandshake == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV29ServerToClientHandshakePacket");
     ((void*&) AppPlatform::myVtable) = hybris_dlsym(handle, "_ZTV11AppPlatform");
     if (AppPlatform::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV11AppPlatform");
     ((void*&) AppPlatform::instance) = hybris_dlsym(handle, "_ZN14ServiceLocatorI11AppPlatformE15mDefaultServiceE");
