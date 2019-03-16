@@ -17,7 +17,11 @@
 
 namespace v8 {
 
-template <typename T> struct Convertable; // type, fromJS, toJS
+template <typename T> struct Convertable {
+  using type = T;
+  static T fromJS(Isolate *iso, T src) { return src; }
+  static T toJS(Isolate *iso, T src) { return src; }
+};
 
 template <typename T> auto fromJS(Isolate *iso, Local<typename Convertable<T>::type> src) { return Convertable<T>::fromJS(iso, src); }
 template <typename T> auto toJS(Isolate *iso, T src) { return Convertable<T>::toJS(iso, src); }

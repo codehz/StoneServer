@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Mar 11 2019 05:15:54 UTC
+// Generated on Sat Mar 16 2019 11:45:30 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -528,6 +528,24 @@ typeid_t<CommandRegistry> * CommonType<Block*>::tid;
 Parser CommonType<Block*>::parser;
 typeid_t<CommandRegistry> * CommonType<Json::Value>::tid;
 Parser CommonType<Json::Value>::parser;
+
+#include "BlockSource.h"
+static Biome * (BlockSource::*_BlockSource_getBiome)(BlockPos const &);
+Biome * BlockSource::getBiome(BlockPos const & p1) {
+    return (this->*_BlockSource_getBiome)(p1);
+}
+static Block * (BlockSource::*_BlockSource_getBlock)(BlockPos const &) const;
+Block * BlockSource::getBlock(BlockPos const & p1) const {
+    return (this->*_BlockSource_getBlock)(p1);
+}
+static Block * (BlockSource::*_BlockSource_getExtraBlock)(BlockPos const &) const;
+Block * BlockSource::getExtraBlock(BlockPos const & p1) const {
+    return (this->*_BlockSource_getExtraBlock)(p1);
+}
+static void (BlockSource::*_BlockSource_setBlock)(int, int, int, Block const &, int);
+void BlockSource::setBlock(int p1, int p2, int p3, Block const & p4, int p5) {
+    (this->*_BlockSource_setBlock)(p1, p2, p3, p4, p5);
+}
 
 #include "LevelSettings.h"
 static void (LevelSettings::*_LevelSettings_LevelSettings)();
@@ -2038,6 +2056,10 @@ static Vec2 (Actor::*_Actor_getRotation)() const;
 Vec2 Actor::getRotation() const {
     return (this->*_Actor_getRotation)();
 }
+static BlockSource & (Actor::*_Actor_getRegion)() const;
+BlockSource & Actor::getRegion() const {
+    return (this->*_Actor_getRegion)();
+}
 static mcpe::string const & (Actor::*_Actor_getNameTag)() const;
 mcpe::string const & Actor::getNameTag() const {
     return (this->*_Actor_getNameTag)();
@@ -2354,6 +2376,14 @@ void minecraft_symbols_init(void* handle) {
     if (CommonType<Json::Value>::tid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZZ7type_idI15CommandRegistryN4Json5ValueEE8typeid_tIT_EvE2id");
     ((void*&) CommonType<Json::Value>::parser) = hybris_dlsym(handle, "_ZNK15CommandRegistry5parseIN4Json5ValueEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
     if (CommonType<Json::Value>::parser == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK15CommandRegistry5parseIN4Json5ValueEEEbPvRKNS_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEE");
+    ((void*&) _BlockSource_getBiome) = hybris_dlsym(handle, "_ZN11BlockSource8getBiomeERK8BlockPos");
+    if (_BlockSource_getBiome == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11BlockSource8getBiomeERK8BlockPos");
+    ((void*&) _BlockSource_getBlock) = hybris_dlsym(handle, "_ZNK11BlockSource8getBlockERK8BlockPos");
+    if (_BlockSource_getBlock == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11BlockSource8getBlockERK8BlockPos");
+    ((void*&) _BlockSource_getExtraBlock) = hybris_dlsym(handle, "_ZNK11BlockSource13getExtraBlockERK8BlockPos");
+    if (_BlockSource_getExtraBlock == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK11BlockSource13getExtraBlockERK8BlockPos");
+    ((void*&) _BlockSource_setBlock) = hybris_dlsym(handle, "_ZN11BlockSource8setBlockEiiiRK5Blocki");
+    if (_BlockSource_setBlock == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN11BlockSource8setBlockEiiiRK5Blocki");
     ((void*&) _LevelSettings_LevelSettings) = hybris_dlsym(handle, "_ZN13LevelSettingsC2Ev");
     if (_LevelSettings_LevelSettings == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettingsC2Ev");
     ((void*&) _LevelSettings_LevelSettings2) = hybris_dlsym(handle, "_ZN13LevelSettingsC2ERKS_");
@@ -3103,6 +3133,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
     ((void*&) _Actor_getRotation) = hybris_dlsym(handle, "_ZNK5Actor11getRotationEv");
     if (_Actor_getRotation == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getRotationEv");
+    ((void*&) _Actor_getRegion) = hybris_dlsym(handle, "_ZNK5Actor9getRegionEv");
+    if (_Actor_getRegion == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor9getRegionEv");
     ((void*&) _Actor_getNameTag) = hybris_dlsym(handle, "_ZNK5Actor10getNameTagEv");
     if (_Actor_getNameTag == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10getNameTagEv");
     ((void*&) _Actor_getDimensionId) = hybris_dlsym(handle, "_ZNK5Actor14getDimensionIdEv");

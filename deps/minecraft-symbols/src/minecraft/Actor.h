@@ -10,6 +10,7 @@ public:
 };
 
 struct CompoundTag;
+struct BlockSource;
 
 class Actor {
 public:
@@ -23,6 +24,7 @@ public:
 
   Vec3 &getPos() const;
   Vec2 getRotation() const;
+  BlockSource &getRegion() const;
   mcpe::string const &getNameTag() const;
   std::tuple<int> getDimensionId() const;
 };

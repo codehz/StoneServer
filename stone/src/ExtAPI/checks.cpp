@@ -1,6 +1,10 @@
 #include "common.h"
 #include <interface/policy.h>
 
+#include <minecraft/Actor.h>
+#include <minecraft/BlockSource.h>
+#include <minecraft/Player.h>
+
 #include "../custom_command.h"
 #include "../patched/ScriptInterface.h"
 
@@ -43,7 +47,12 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkAbility >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                             callback = Persistent<Function>{ iso, info[0] }](Player *player, std::string const &name, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, name, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("ability"));
+            obj->Set(ToJS("ability"), ToJS(name));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -52,7 +61,14 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkDestroy >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                             callback = Persistent<Function>{ iso, info[0] }](Player *player, BlockPos const &pos, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, pos, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("destroy"));
+            auto &region = player->getRegion();
+            obj->Set(ToJS("block"), ToJS(region.getBlock(pos)));
+            obj->Set(ToJS("blockpos"), ToJS(pos));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -61,7 +77,12 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkBuild >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                           callback = Persistent<Function>{ iso, info[0] }](Player *player, BlockPos const &pos, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, pos, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("build"));
+            obj->Set(ToJS("blockpos"), ToJS(pos));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -70,7 +91,12 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUse >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                         callback = Persistent<Function>{ iso, info[0] }](Player *player, ItemInstance &item, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &item, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("use"));
+            obj->Set(ToJS("item"), ToJS(&item));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -79,7 +105,13 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUseBlock >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
                                                 Player *player, Block &block, BlockPos const &pos, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &block, pos, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("use_block"));
+            obj->Set(ToJS("block"), ToJS(&block));
+            obj->Set(ToJS("blockpos"), ToJS(pos));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -88,7 +120,16 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUseOn >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
                                              Player *player, ItemInstance &item, BlockPos const &pos, Vec3 const &vec, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &item, pos, vec, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("use_on"));
+            auto &region = player->getRegion();
+            obj->Set(ToJS("block"), ToJS(region.getBlock(pos)));
+            obj->Set(ToJS("item"), ToJS(&item));
+            obj->Set(ToJS("blockpos"), ToJS(pos));
+            obj->Set(ToJS("position"), ToJS(vec));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -97,7 +138,13 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkInteract >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
                                                 Player *player, Actor &target, Vec3 const &pos, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &target, pos, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("interact"));
+            obj->Set(ToJS("target"), ToJS(&target));
+            obj->Set(ToJS("blockpos"), ToJS(pos));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
@@ -106,7 +153,12 @@ static Register regs[] = {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkAttack >> [iso, origin = Persistent<Value>{ iso, info.This() },
                                            callback = Persistent<Function>{ iso, info[0] }](Player *player, Actor &target, bool &result) {
-          handleFn(iso, result, [&]() { return callback.Get(iso)->Call(origin.Get(iso), iso, player, &target, result); });
+          handleFn(iso, result, [&]() {
+            auto obj = Object::New(iso);
+            obj->Set(ToJS("type"), ToJS("attack"));
+            obj->Set(ToJS("target"), ToJS(&target));
+            return callback.Get(iso)->Call(origin.Get(iso), iso, player, obj, result);
+          });
         };
       });
     } },
