@@ -159,22 +159,38 @@ struct CustomCommand : Command {
     auto size     = vt->defs.size();
     size_t offset = 0;
     auto &iso     = vt->iso;
-    assert(size < 32);
-    Local<Value> params[size];
+    Local<Value> params[2];
 
     HandleScope scope{ iso };
     auto &core = Locator<ScriptApi::V8CoreInterface>();
     auto ctx   = V8Context[*core].Get(iso);
     Context::Scope ctx_scope{ ctx };
     TryCatch ex{ iso };
+    auto array = Array::New(iso, size);
 
     for (size_t i = 0; i < size; i++) {
       auto &def = vt->defs[i];
-      params[i] = def.fetch((void *)((size_t)this + sizeof(CustomCommand) + offset), orig, iso);
+      array->Set(i, def.fetch((void *)((size_t)this + sizeof(CustomCommand) + offset), orig, iso));
       offset += def.size;
     }
     current_orig = &orig;
-    auto result  = vt->exec(iso, size, params);
+
+    auto pass_orig          = Object::New(iso);
+    auto strName            = ToJS("name");
+    auto strBlockPos        = ToJS("blockPos");
+    auto strWorldPos        = ToJS("worldPos");
+    auto strEntity          = ToJS("entity");
+    auto strPermissionLevel = ToJS("permissionLevel");
+    pass_orig->Set(strName, ToJS(current_orig->getName().std()));
+    pass_orig->Set(strBlockPos, ToJS(current_orig->getBlockPosition()));
+    pass_orig->Set(strWorldPos, ToJS(current_orig->getWorldPosition()));
+    pass_orig->Set(strEntity, ToJS(current_orig->getEntity()));
+    pass_orig->Set(strPermissionLevel, ToJS(current_orig->getPermissionLevel()));
+
+    params[0] = pass_orig;
+    params[1] = array;
+
+    auto result  = vt->exec(iso, 2, params);
     current_orig = nullptr;
     if (ex.HasCaught()) {
       outp.error(ex.Message()->Get() >> V8Str >> CStr, {});

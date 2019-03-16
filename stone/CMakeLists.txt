@@ -43,7 +43,6 @@ add_executable(stone
   "src/ExtAPI/common.cpp"
   "src/ExtAPI/checks.cpp"
   "src/ExtAPI/broadcastMessage.cpp"
-  "src/ExtAPI/currentCommandOrigin.cpp"
   "src/ExtAPI/invokeCommand.cpp"
   "src/ExtAPI/invokeConsoleCommand.cpp"
   "src/ExtAPI/invokePrivilegedCommand.cpp"
