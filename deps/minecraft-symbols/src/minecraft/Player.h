@@ -8,6 +8,8 @@ class Certificate;
 
 class Packet;
 
+class ItemInstance;
+
 class Player : public Actor {
 public:
   explicit Player(Player const &) = delete;
@@ -26,5 +28,17 @@ public:
 
   bool canUseAbility(mcpe::string const &);
 
-  int getCommandPermissionLevel() const;
+  unsigned char getCommandPermissionLevel() const;
+
+  BlockPos getSpawnPosition();
+
+  ItemInstance &getSelectedItem() const;
+
+  int getSleepTimer() const;
+
+  float getLuck();
+
+  int getAttackDamage();
+
+  Actor *getAgent() const;
 };

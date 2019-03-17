@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Mar 16 2019 14:41:45 UTC
+// Generated on Sun Mar 17 2019 04:27:03 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -2027,9 +2027,33 @@ static bool (Player::*_Player_canUseAbility)(mcpe::string const &);
 bool Player::canUseAbility(mcpe::string const & p1) {
     return (this->*_Player_canUseAbility)(p1);
 }
-static int (Player::*_Player_getCommandPermissionLevel)() const;
-int Player::getCommandPermissionLevel() const {
+static unsigned char (Player::*_Player_getCommandPermissionLevel)() const;
+unsigned char Player::getCommandPermissionLevel() const {
     return (this->*_Player_getCommandPermissionLevel)();
+}
+static BlockPos (Player::*_Player_getSpawnPosition)();
+BlockPos Player::getSpawnPosition() {
+    return (this->*_Player_getSpawnPosition)();
+}
+static ItemInstance & (Player::*_Player_getSelectedItem)() const;
+ItemInstance & Player::getSelectedItem() const {
+    return (this->*_Player_getSelectedItem)();
+}
+static int (Player::*_Player_getSleepTimer)() const;
+int Player::getSleepTimer() const {
+    return (this->*_Player_getSleepTimer)();
+}
+static float (Player::*_Player_getLuck)();
+float Player::getLuck() {
+    return (this->*_Player_getLuck)();
+}
+static int (Player::*_Player_getAttackDamage)();
+int Player::getAttackDamage() {
+    return (this->*_Player_getAttackDamage)();
+}
+static Actor * (Player::*_Player_getAgent)() const;
+Actor * Player::getAgent() const {
+    return (this->*_Player_getAgent)();
 }
 
 #include "Actor.h"
@@ -2072,6 +2096,54 @@ mcpe::string const & Actor::getNameTag() const {
 static std::tuple<int> (Actor::*_Actor_getDimensionId)() const;
 std::tuple<int> Actor::getDimensionId() const {
     return (this->*_Actor_getDimensionId)();
+}
+static int (Actor::*_Actor_getVariant)() const;
+int Actor::getVariant() const {
+    return (this->*_Actor_getVariant)();
+}
+static short (Actor::*_Actor_getAirSupply)() const;
+short Actor::getAirSupply() const {
+    return (this->*_Actor_getAirSupply)();
+}
+static short (Actor::*_Actor_getTotalAirSupply)() const;
+short Actor::getTotalAirSupply() const {
+    return (this->*_Actor_getTotalAirSupply)();
+}
+static int (Actor::*_Actor_getStrength)() const;
+int Actor::getStrength() const {
+    return (this->*_Actor_getStrength)();
+}
+static int (Actor::*_Actor_getStrengthMax)() const;
+int Actor::getStrengthMax() const {
+    return (this->*_Actor_getStrengthMax)();
+}
+static int (Actor::*_Actor_getAge)() const;
+int Actor::getAge() const {
+    return (this->*_Actor_getAge)();
+}
+static int (Actor::*_Actor_getHealth)() const;
+int Actor::getHealth() const {
+    return (this->*_Actor_getHealth)();
+}
+static int (Actor::*_Actor_getMaxHealth)() const;
+int Actor::getMaxHealth() const {
+    return (this->*_Actor_getMaxHealth)();
+}
+static Actor * (Actor::*_Actor_getRide)() const;
+Actor * Actor::getRide() const {
+    return (this->*_Actor_getRide)();
+}
+static Actor * (Actor::*_Actor_getRideRoot)() const;
+Actor * Actor::getRideRoot() const {
+    return (this->*_Actor_getRideRoot)();
+}
+static Actor * (Actor::*_Actor_getTarget)() const;
+Actor * Actor::getTarget() const {
+    return (this->*_Actor_getTarget)();
+}
+static ItemInstance & (Actor::*_Actor_getArmor)(ArmorSlot) const;
+ItemInstance & Actor::getArmor(ArmorSlot p1) const {
+    return (this->*_Actor_getArmor)(p1);
 }
 
 #include "legacy/App.h"
@@ -3128,6 +3200,18 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_canUseAbility == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player13canUseAbilityERKSs");
     ((void*&) _Player_getCommandPermissionLevel) = hybris_dlsym(handle, "_ZNK6Player25getCommandPermissionLevelEv");
     if (_Player_getCommandPermissionLevel == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player25getCommandPermissionLevelEv");
+    ((void*&) _Player_getSpawnPosition) = hybris_dlsym(handle, "_ZN6Player16getSpawnPositionEv");
+    if (_Player_getSpawnPosition == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player16getSpawnPositionEv");
+    ((void*&) _Player_getSelectedItem) = hybris_dlsym(handle, "_ZNK6Player15getSelectedItemEv");
+    if (_Player_getSelectedItem == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player15getSelectedItemEv");
+    ((void*&) _Player_getSleepTimer) = hybris_dlsym(handle, "_ZNK6Player13getSleepTimerEv");
+    if (_Player_getSleepTimer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player13getSleepTimerEv");
+    ((void*&) _Player_getLuck) = hybris_dlsym(handle, "_ZN6Player7getLuckEv");
+    if (_Player_getLuck == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player7getLuckEv");
+    ((void*&) _Player_getAttackDamage) = hybris_dlsym(handle, "_ZN6Player15getAttackDamageEv");
+    if (_Player_getAttackDamage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player15getAttackDamageEv");
+    ((void*&) _Player_getAgent) = hybris_dlsym(handle, "_ZNK6Player8getAgentEv");
+    if (_Player_getAgent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player8getAgentEv");
     ((void*&) _ActorDefinitionIdentifier_getCanonicalName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     if (_ActorDefinitionIdentifier_getCanonicalName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
     ((void*&) _Actor_getActorIdentifier) = hybris_dlsym(handle, "_ZNK5Actor18getActorIdentifierEv");
@@ -3148,6 +3232,30 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getNameTag == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10getNameTagEv");
     ((void*&) _Actor_getDimensionId) = hybris_dlsym(handle, "_ZNK5Actor14getDimensionIdEv");
     if (_Actor_getDimensionId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor14getDimensionIdEv");
+    ((void*&) _Actor_getVariant) = hybris_dlsym(handle, "_ZNK5Actor10getVariantEv");
+    if (_Actor_getVariant == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor10getVariantEv");
+    ((void*&) _Actor_getAirSupply) = hybris_dlsym(handle, "_ZNK5Actor12getAirSupplyEv");
+    if (_Actor_getAirSupply == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor12getAirSupplyEv");
+    ((void*&) _Actor_getTotalAirSupply) = hybris_dlsym(handle, "_ZNK5Actor17getTotalAirSupplyEv");
+    if (_Actor_getTotalAirSupply == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor17getTotalAirSupplyEv");
+    ((void*&) _Actor_getStrength) = hybris_dlsym(handle, "_ZNK5Actor11getStrengthEv");
+    if (_Actor_getStrength == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getStrengthEv");
+    ((void*&) _Actor_getStrengthMax) = hybris_dlsym(handle, "_ZNK5Actor14getStrengthMaxEv");
+    if (_Actor_getStrengthMax == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor14getStrengthMaxEv");
+    ((void*&) _Actor_getAge) = hybris_dlsym(handle, "_ZNK5Actor6getAgeEv");
+    if (_Actor_getAge == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getAgeEv");
+    ((void*&) _Actor_getHealth) = hybris_dlsym(handle, "_ZNK5Actor9getHealthEv");
+    if (_Actor_getHealth == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor9getHealthEv");
+    ((void*&) _Actor_getMaxHealth) = hybris_dlsym(handle, "_ZNK5Actor12getMaxHealthEv");
+    if (_Actor_getMaxHealth == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor12getMaxHealthEv");
+    ((void*&) _Actor_getRide) = hybris_dlsym(handle, "_ZNK5Actor7getRideEv");
+    if (_Actor_getRide == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor7getRideEv");
+    ((void*&) _Actor_getRideRoot) = hybris_dlsym(handle, "_ZNK5Actor11getRideRootEv");
+    if (_Actor_getRideRoot == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getRideRootEv");
+    ((void*&) _Actor_getTarget) = hybris_dlsym(handle, "_ZNK5Actor9getTargetEv");
+    if (_Actor_getTarget == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor9getTargetEv");
+    ((void*&) _Actor_getArmor) = hybris_dlsym(handle, "_ZNK5Actor8getArmorE9ArmorSlot");
+    if (_Actor_getArmor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor8getArmorE9ArmorSlot");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");

@@ -11,6 +11,8 @@ public:
 
 struct CompoundTag;
 struct BlockSource;
+struct ItemInstance;
+enum ArmorSlot {};
 
 class Actor {
 public:
@@ -27,4 +29,16 @@ public:
   BlockSource &getRegion() const;
   mcpe::string const &getNameTag() const;
   std::tuple<int> getDimensionId() const;
+  int getVariant() const;
+  short getAirSupply() const;
+  short getTotalAirSupply() const;
+  int getStrength() const;
+  int getStrengthMax() const;
+  int getAge() const;
+  int getHealth() const;
+  int getMaxHealth() const;
+  Actor *getRide() const;
+  Actor *getRideRoot() const;
+  Actor *getTarget() const;
+  ItemInstance &getArmor(ArmorSlot slot) const;
 };

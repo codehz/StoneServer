@@ -32,6 +32,35 @@ template <> struct Convertable<bool> {
   static Local<type> toJS(Isolate *iso, bool src) { return src ? True(iso) : False(iso); }
 };
 
+template <typename T> struct Convertable<std::tuple<T>> {
+  using type = Array;
+  static std::tuple<T> fromJS(Isolate *iso, Local<type> src) {
+    if (src->Length() == 1) { return { Convertable<T>::fromJS(iso, src->Get(0)) }; }
+    throw "Cannot convert back!";
+  }
+  static Local<type> toJS(Isolate *iso, std::tuple<T> src) {
+    auto ret     = Array::New(iso, 1);
+    auto [value] = src;
+    ret->Set(0, Convertable<T>::toJS(iso, value));
+    return ret;
+  }
+};
+
+template <typename T1, typename T2> struct Convertable<std::tuple<T1, T2>> {
+  using type = Array;
+  static std::tuple<T1, T2> fromJS(Isolate *iso, Local<type> src) {
+    if (src->Length() == 2) { return { Convertable<T1>::fromJS(iso, src->Get(0)), Convertable<T2>::fromJS(iso, src->Get(1)) }; }
+    throw "Cannot convert back!";
+  }
+  static Local<type> toJS(Isolate *iso, std::tuple<T1, T2> src) {
+    auto ret      = Array::New(iso, 2);
+    auto [v0, v1] = src;
+    ret->Set(0, Convertable<T1>::toJS(iso, v0));
+    ret->Set(1, Convertable<T2>::toJS(iso, v1));
+    return ret;
+  }
+};
+
 template <typename T> struct IntegralConvertable {
   using type = Integer;
   static T fromJS(Isolate *iso, Local<type> src) { return src->Value(); }
