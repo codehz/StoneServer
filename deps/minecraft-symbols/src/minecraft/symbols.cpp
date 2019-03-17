@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Mar 17 2019 04:27:03 UTC
+// Generated on Sun Mar 17 2019 13:35:02 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -579,6 +579,22 @@ SaveTransactionManager::SaveTransactionManager(std::function<void ( bool )> p1) 
 #include "ImagePickingCallback.h"
 
 #include "ItemInstance.h"
+std::vector<std::unique_ptr<Enchant> > * Enchant::mEnchants;
+static mcpe::string & (Enchant::*_Enchant_getDescriptionId)() const;
+mcpe::string & Enchant::getDescriptionId() const {
+    return (this->*_Enchant_getDescriptionId)();
+}
+static int vti_Enchant_getMaxLevel;
+int Enchant::getMaxLevel() {
+    union { void* voidp; int (Enchant::*funcp)(); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_Enchant_getMaxLevel];
+    return (this->*u.funcp)();
+}
+static std::vector<EnchantmentInstance> (ItemEnchants::*_ItemEnchants_getEnchants)(int) const;
+std::vector<EnchantmentInstance> ItemEnchants::getEnchants(int p1) const {
+    return (this->*_ItemEnchants_getEnchants)(p1);
+}
 static bool (ItemInstance::*_ItemInstance_isNull)() const;
 bool ItemInstance::isNull() const {
     return (this->*_ItemInstance_isNull)();
@@ -598,6 +614,10 @@ mcpe::string ItemInstance::getRawNameId() const {
 static mcpe::string (ItemInstance::*_ItemInstance_getCustomName)() const;
 mcpe::string ItemInstance::getCustomName() const {
     return (this->*_ItemInstance_getCustomName)();
+}
+static ItemEnchants (ItemInstance::*_ItemInstance_getEnchantsFromUserData)() const;
+ItemEnchants ItemInstance::getEnchantsFromUserData() const {
+    return (this->*_ItemInstance_getEnchantsFromUserData)();
 }
 
 #include "ExtendedCertificate.h"
@@ -2475,6 +2495,15 @@ void minecraft_symbols_init(void* handle) {
     if (_LevelSettings_parseSeedString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelSettings15parseSeedStringERKSsj");
     ((void*&) _SaveTransactionManager_SaveTransactionManager) = hybris_dlsym(handle, "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
     if (_SaveTransactionManager_SaveTransactionManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22SaveTransactionManagerC2ESt8functionIFvbEE");
+    ((void*&) Enchant::mEnchants) = hybris_dlsym(handle, "_ZN7Enchant9mEnchantsE");
+    if (Enchant::mEnchants == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN7Enchant9mEnchantsE");
+    ((void*&) _Enchant_getDescriptionId) = hybris_dlsym(handle, "_ZNK7Enchant16getDescriptionIdEv");
+    if (_Enchant_getDescriptionId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK7Enchant16getDescriptionIdEv");
+    void** vt_Enchant = (void**) hybris_dlsym(handle, "_ZTV7Enchant") + 2;
+    vti_Enchant_getMaxLevel = resolve_vtable_func(vt_Enchant, hybris_dlsym(handle, "_ZNK7Enchant11getMaxLevelEv"));
+    if (vti_Enchant_getMaxLevel == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZNK7Enchant11getMaxLevelEv");
+    ((void*&) _ItemEnchants_getEnchants) = hybris_dlsym(handle, "_ZNK12ItemEnchants11getEnchantsEi");
+    if (_ItemEnchants_getEnchants == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemEnchants11getEnchantsEi");
     ((void*&) _ItemInstance_isNull) = hybris_dlsym(handle, "_ZNK12ItemInstance6isNullEv");
     if (_ItemInstance_isNull == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance6isNullEv");
     ((void*&) _ItemInstance_getId) = hybris_dlsym(handle, "_ZNK12ItemInstance5getIdEv");
@@ -2485,6 +2514,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ItemInstance_getRawNameId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance12getRawNameIdEv");
     ((void*&) _ItemInstance_getCustomName) = hybris_dlsym(handle, "_ZNK12ItemInstance13getCustomNameEv");
     if (_ItemInstance_getCustomName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance13getCustomNameEv");
+    ((void*&) _ItemInstance_getEnchantsFromUserData) = hybris_dlsym(handle, "_ZNK12ItemInstance23getEnchantsFromUserDataEv");
+    if (_ItemInstance_getEnchantsFromUserData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance23getEnchantsFromUserDataEv");
     ((void*&) _ExtendedCertificate_getXuid) = hybris_dlsym(handle, "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     if (_ExtendedCertificate_getXuid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     ((void*&) _Crypto_Random_generateUUID) = hybris_dlsym(handle, "_ZN6Crypto6Random12generateUUIDEv");
