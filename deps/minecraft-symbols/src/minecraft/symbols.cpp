@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sun Mar 17 2019 13:35:02 UTC
+// Generated on Mon Mar 18 2019 13:08:07 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -2165,6 +2165,13 @@ static ItemInstance & (Actor::*_Actor_getArmor)(ArmorSlot) const;
 ItemInstance & Actor::getArmor(ArmorSlot p1) const {
     return (this->*_Actor_getArmor)(p1);
 }
+static int vti_Actor_changeDimension;
+void Actor::changeDimension(int p1, bool p2) {
+    union { void* voidp; void (Actor::*funcp)(int, bool); } u;
+    u.funcp = nullptr;
+    u.voidp = vtable[vti_Actor_changeDimension];
+    (this->*u.funcp)(p1, p2);
+}
 
 #include "legacy/App.h"
 static int vti_Legacy_Pre_1_8_App_quit;
@@ -3287,6 +3294,9 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getTarget == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor9getTargetEv");
     ((void*&) _Actor_getArmor) = hybris_dlsym(handle, "_ZNK5Actor8getArmorE9ArmorSlot");
     if (_Actor_getArmor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor8getArmorE9ArmorSlot");
+    void** vt_ServerPlayer = (void**) hybris_dlsym(handle, "_ZTV12ServerPlayer") + 2;
+    vti_Actor_changeDimension = resolve_vtable_func(vt_ServerPlayer, hybris_dlsym(handle, "_ZN12ServerPlayer15changeDimensionE11AutomaticIDI9DimensioniEb"));
+    if (vti_Actor_changeDimension == -1) Log::error("MinecraftSymbols", "Unresolved vtable symbol: %s", "_ZN12ServerPlayer15changeDimensionE11AutomaticIDI9DimensioniEb");
     vti_Legacy_Pre_1_8_App_quit = resolve_vtable_func(vt_App, hybris_dlsym(handle, "_ZN3App4quitEv"));
     ((void*&) _Legacy_Pre_1_2_10_MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSs");
     ((void*&) _Legacy_Pre_1_2_10_AppPlatform_showKeyboard) = hybris_dlsym(handle, "_ZN11AppPlatform12showKeyboardERKSsibbbRK4Vec2");

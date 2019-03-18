@@ -41,4 +41,7 @@ public:
   Actor *getRideRoot() const;
   Actor *getTarget() const;
   ItemInstance &getArmor(ArmorSlot slot) const;
+
+  /// @vtable ServerPlayer _ZN12ServerPlayer15changeDimensionE11AutomaticIDI9DimensioniEb
+  void changeDimension(int id, bool show);
 };

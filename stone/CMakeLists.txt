@@ -52,6 +52,7 @@ add_executable(stone
   "src/ExtAPI/registerSoftEnum.cpp"
   "src/ExtAPI/updateSoftEnum.cpp"
   "src/ExtAPI/transferPlayer.cpp"
+  "src/ExtAPI/changeDimension.cpp"
   "src/ExtAPI/broadcastExternalEvent.cpp"
   "src/ExtAPI/openModalForm.cpp"
   "src/ExtAPI/saveTag.cpp"

@@ -8,7 +8,7 @@ class Certificate;
 
 class Packet;
 
-class ItemInstance;
+struct ItemInstance;
 
 class Player : public Actor {
 public:
