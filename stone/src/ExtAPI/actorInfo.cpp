@@ -27,7 +27,7 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   auto strAirSupply    = ToJS("airSupply");
   auto strStrength     = ToJS("strength");
   auto strHealth       = ToJS("health");
-  auto strAge          = ToJS("getAge");
+  auto strAge          = ToJS("age");
   auto strPos          = ToJS("pos");
   auto strDim          = ToJS("dim");
   auto strRide         = ToJS("ride");
