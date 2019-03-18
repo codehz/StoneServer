@@ -477,8 +477,6 @@ template <> struct Convertable<ItemInstance *> {
       obj->Set(strMaxLevel, Convertable<int>::ToJS(enchant->getMaxLevel()));
       enchants->Set(idx++, obj);
     };
-    printf("%d\n", Enchant::mEnchants->size());
-    for (auto &enchant : *Enchant::mEnchants) { printf("%s\n", enchant->getDescriptionId().c_str()); }
     for (auto enchant : src->getEnchantsFromUserData().getEnchants(0)) append(enchant);
     for (auto enchant : src->getEnchantsFromUserData().getEnchants(1)) append(enchant);
     for (auto enchant : src->getEnchantsFromUserData().getEnchants(2)) append(enchant);
