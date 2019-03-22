@@ -32,6 +32,7 @@ public:
   property<bool> onlineMode;
   property<float> playerIdleTimeout;
   property<bool> activateWhitelist;
+  property<bool> overrideSavedSettings;
 
   inline std::string cfg() {
     const char *value = getenv("STONE_CONFIG");
@@ -58,7 +59,8 @@ public:
       , tickDistance(properties, "tick-distance", 4)
       , onlineMode(properties, "online-mode", true)
       , playerIdleTimeout(properties, "player-idle-timeout", 0.f)
-      , activateWhitelist(properties, "activate-whitelist", false) {
+      , activateWhitelist(properties, "activate-whitelist", false)
+      , overrideSavedSettings(properties, "override-saved-settings", true) {
     config = cfg();
   }
 

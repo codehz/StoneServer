@@ -68,9 +68,7 @@ void initDependencies();
 
 void rakDebugLog(char const *format, ...) {
   char *cpd = strdup(format);
-  if (format[0]) {
-    cpd[strlen(cpd) - 1] = 0;
-  }
+  if (format[0]) { cpd[strlen(cpd) - 1] = 0; }
   va_list args;
   va_start(args, format);
   Log::vlog(LogLevel::LOG_TRACE, "RakNet", cpd, args);
@@ -164,7 +162,7 @@ int main() {
   levelSettings.defaultSpawnY         = INT_MIN;
   levelSettings.defaultSpawnZ         = INT_MIN;
   levelSettings.serverChunkTickRange  = props.tickDistance;
-  levelSettings.overrideSavedSettings = true;
+  levelSettings.overrideSavedSettings = props.overrideSavedSettings;
   levelSettings.achievementsDisabled  = false;
   if (props.experimentMode) Log::warn("StoneServer", "Experiment mode is enabled in config file!");
 
@@ -188,7 +186,7 @@ int main() {
   eventing.init();
   Log::trace("StoneServer", "Initializing ResourcePackManager");
   ContentTierManager ctm;
-  ResourcePackManager *resourcePackManager = new ResourcePackManager([&pathmgr]() { return pathmgr.getRootPath(); }, ctm);
+  ResourcePackManager *resourcePackManager = new ResourcePackManager([&pathmgr]() { return pathmgr.getRootPath(); }, ctm, false);
   ResourceLoaders::registerLoader((ResourceFileSystem)0, std::unique_ptr<ResourceLoader>(resourcePackManager));
   Log::trace("StoneServer", "Initializing PackManifestFactory");
   PackManifestFactory packManifestFactory(eventing);
@@ -234,11 +232,11 @@ int main() {
   v8::V8::Initialize();
   Log::trace("StoneServer", "Initializing Server");
   instance.initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
-                            props.motd.get(), levelSettings, props.viewDistance, true, props.port, props.portV6, props.maxPlayers, props.onlineMode,
-                            {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc,
-                            pathmgr.getWorldsPath(), nullptr, mcpe::string(), mcpe::string(), std::move(eduOptions), nullptr,
-                            [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
-                            [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); }, nullptr);
+                            props.motd.get(), levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers },
+                            props.onlineMode, {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager,
+                            createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test", std::move(eduOptions), nullptr,
+                            [](mcpe::string const &s) { Log::info("Minecraft", "Unloading level: %s", s.c_str()); },
+                            [](mcpe::string const &s) { Log::info("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
   Locator<ServerInstance>() = &instance;
   if (props.activateWhitelist) {
     Locator<Minecraft>()->activateWhitelist();
@@ -282,6 +280,6 @@ int main() {
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
-  exit(0);
+  _exit(0);
   return 0;
 }

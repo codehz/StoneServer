@@ -202,7 +202,7 @@ HookManager::HookInstance* HookManager::createHook(void *lib, const char *symbol
         throw std::runtime_error("No such lib registered");
     Elf32_Word sym_index = getSymbolIndex(lib, symbol_name);
     if (sym_index == (Elf32_Word) -1)
-        throw std::runtime_error("No such symbol");
+        throw std::runtime_error(symbol_name);
     return createHook(lib, sym_index, replacement, orig);
 }
 

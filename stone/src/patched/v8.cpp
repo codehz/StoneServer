@@ -39,8 +39,8 @@ SHook(void, _ZN9ScriptApi13LogV8CallbackERKN2v820FunctionCallbackInfoINS0_5Value
   Log::info("Scripting", "log: %s", ss.str().c_str());
 }
 
-SInstanceHook(void, _ZN27MinecraftServerScriptEngineC1Ev, MinecraftServerScriptEngine) {
-  original(this);
+SInstanceHook(void, _ZN27MinecraftServerScriptEngineC1ER14ServerInstance, MinecraftServerScriptEngine, ServerInstance &instance) {
+  original(this, instance);
   Locator<MinecraftServerScriptEngine>() = this;
   Locator<ScriptApi::V8CoreInterface>()  = this->core;
 }
@@ -78,7 +78,7 @@ static patched::details::RegisterPatchInit pinit([] {
     Isolate::Scope iso_scope{ iso };
     auto ctx = V8Context[core].Get(iso);
     Context::Scope ctx_scope{ ctx };
-    Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, { iso, ToJS(data.data) });
+    Locator<MinecraftServerScriptEngine>()->fireEventToScript("script:" + data.name, Persistent<Value>{ iso, ToJS(data.data) });
   };
   Locator<Chat>() >> [](auto &chat) {
     chat.onPlayerChat >> [](Player &player, std::string const text) {
@@ -92,7 +92,7 @@ static patched::details::RegisterPatchInit pinit([] {
       auto obj = Object::New(iso);
       obj->Set(ToJS("sender"), ToJS((Actor *)&player));
       obj->Set(ToJS("content"), ToJS(text));
-      Locator<MinecraftServerScriptEngine>()->fireEventToScript("stoneserver:chat_received", { iso, obj });
+      Locator<MinecraftServerScriptEngine>()->fireEventToScript("stoneserver:chat_received", Persistent<Value>{ iso, obj });
     };
   };
 });

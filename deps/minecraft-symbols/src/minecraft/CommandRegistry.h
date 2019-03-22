@@ -62,7 +62,7 @@ struct CommandRegistry {
     f(overload);
     registerOverloadInternal(*signature, overload);
   }
-  void addSoftEnum(mcpe::string const &name, std::vector<mcpe::string> values, bool case_sensitive);
+  void addSoftEnum(mcpe::string const &name, std::vector<mcpe::string> values);
   void setSoftEnumValues(mcpe::string const &name, std::vector<mcpe::string> values);
 
   struct ParseToken;

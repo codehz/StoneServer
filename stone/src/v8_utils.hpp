@@ -437,15 +437,15 @@ template <> struct Convertable<Actor *> {
   static Actor *fromJS(Isolate *iso, Local<type> obj) {
     using namespace interface;
     Actor *actor;
-    Locator<MinecraftServerScriptEngine>()->helpGetActor(AutoReleasePersistent<Value>(iso, obj), actor);
+    Locator<MinecraftServerScriptEngine>()->helpGetActor(Persistent<Value>(iso, obj), actor);
     return actor;
   }
   static Local<type> toJS(Isolate *iso, Actor *src) {
     using namespace interface;
     if (!src) return Null(iso);
-    v8::AutoReleasePersistent<v8::Value> pers;
-    Locator<MinecraftServerScriptEngine>()->helpDefineActor(*src, pers);
-    return pers.Get(iso);
+    ScriptApi::ScriptObjectHandle handle;
+    Locator<MinecraftServerScriptEngine>()->helpDefineActor(*src, handle);
+    return handle.value.Get(iso);
   }
 };
 
@@ -467,6 +467,40 @@ template <> struct Convertable<ItemInstance *> {
     ret->Set(strName, Convertable<std::string>::ToJS(src->getRawNameId().std()));
     ret->Set(strCustomName, Convertable<std::string>::ToJS(src->getCustomName().std()));
     ret->Set(strCount, Convertable<char>::ToJS((*src) >> ItemInstanceCount));
+    auto enchants = Array::New(iso, 0);
+    int idx       = 0;
+    auto append   = [&](EnchantmentInstance &instance) {
+      auto obj      = Object::New(iso);
+      auto &enchant = (*Enchant::mEnchants)[instance.type];
+      obj->Set(strName, Convertable<std::string>::ToJS(enchant->getDescriptionId().std()));
+      obj->Set(strLevel, Convertable<int>::ToJS(instance.level));
+      obj->Set(strMaxLevel, Convertable<int>::ToJS(enchant->getMaxLevel()));
+      enchants->Set(idx++, obj);
+    };
+    for (auto enchant : src->getEnchantsFromUserData().getEnchants(0)) append(enchant);
+    for (auto enchant : src->getEnchantsFromUserData().getEnchants(1)) append(enchant);
+    for (auto enchant : src->getEnchantsFromUserData().getEnchants(2)) append(enchant);
+    ret->Set(strEnchants, enchants);
+    return ret;
+  }
+};
+
+template <> struct Convertable<ItemStack *> {
+  using type = Value;
+  static Local<type> toJS(Isolate *iso, ItemStack *src) {
+    using namespace interface;
+    using namespace patched;
+    if (!src || src->isNull()) return Null(iso);
+    auto ret           = Object::New(iso);
+    auto strName       = Convertable<char const *>::ToJS("name");
+    auto strLevel      = Convertable<char const *>::ToJS("level");
+    auto strMaxLevel   = Convertable<char const *>::ToJS("max_level");
+    auto strCustomName = Convertable<char const *>::ToJS("custom_name");
+    auto strCount      = Convertable<char const *>::ToJS("count");
+    auto strEnchants   = Convertable<char const *>::ToJS("enchants");
+    ret->Set(strName, Convertable<std::string>::ToJS(src->getRawNameId().std()));
+    ret->Set(strCustomName, Convertable<std::string>::ToJS(src->getCustomName().std()));
+    ret->Set(strCount, Convertable<char>::ToJS((*src) >> ItemStackCount));
     auto enchants = Array::New(iso, 0);
     int idx       = 0;
     auto append   = [&](EnchantmentInstance &instance) {

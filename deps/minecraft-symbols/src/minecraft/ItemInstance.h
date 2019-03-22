@@ -36,3 +36,15 @@ struct ItemInstance {
 
   ItemEnchants getEnchantsFromUserData() const;
 };
+
+struct ItemStack {
+  char filler[0x100];
+
+  bool isNull() const;
+  int getId() const;
+  mcpe::string getName() const;
+  mcpe::string getRawNameId() const;
+  mcpe::string getCustomName() const;
+
+  ItemEnchants getEnchantsFromUserData() const;
+};

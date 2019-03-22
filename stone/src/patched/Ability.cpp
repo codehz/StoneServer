@@ -19,28 +19,28 @@ SHook(bool, _ZN6Player13canUseAbilityERKSs, Player *player, mcpe::string const &
   return result;
 }
 
-SInstanceHook(bool, _ZN8GameMode12destroyBlockERK8BlockPosa, GameMode, BlockPos const &pos, signed char data) {
+SInstanceHook(bool, _ZN8GameMode12destroyBlockERK8BlockPosh, GameMode, BlockPos const &pos, unsigned char data) {
   bool result = true;
   Locator<Policy>()->checkDestroy(this->player, pos, result);
   if (result) return original(this, pos, data);
   return false;
 }
 
-SInstanceHook(bool, _ZN8GameMode10buildBlockERK8BlockPosa, GameMode, BlockPos const &pos, signed char data) {
+SInstanceHook(bool, _ZN8GameMode10buildBlockERK8BlockPosh, GameMode, BlockPos const &pos, unsigned char data) {
   bool result = true;
   Locator<Policy>()->checkBuild(this->player, pos, result);
   if (result) return original(this, pos, data);
   return false;
 }
 
-SInstanceHook(bool, _ZN8GameMode7useItemER12ItemInstance, GameMode, ItemInstance &instance) {
+SInstanceHook(bool, _ZN8GameMode7useItemER9ItemStack, GameMode, ItemStack &instance) {
   bool result = true;
   Locator<Policy>()->checkUse(this->player, instance, result);
   if (result) return original(this, instance);
   return false;
 }
 
-SInstanceHook(bool, _ZN8GameMode9useItemOnER12ItemInstanceRK8BlockPosaRK4Vec3, GameMode, ItemInstance &instance, BlockPos const &pos,
+SInstanceHook(bool, _ZN8GameMode9useItemOnER9ItemStackRK8BlockPoshRK4Vec3PK5Block, GameMode, ItemStack &instance, BlockPos const &pos,
               signed char data, Vec3 const &vec) {
   bool result = true;
   Locator<Policy>()->checkUseOn(this->player, instance, pos, vec, result);

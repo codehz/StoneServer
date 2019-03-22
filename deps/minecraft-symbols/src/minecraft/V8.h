@@ -686,7 +686,7 @@ public:
   inline void Reset() {
     if (this->val_) V8::DisposeGlobal(this->val_);
   }
-  inline void *RawPointer() { return this->val_; }
+  inline void *RawPointer() const { return this->val_; }
   inline operator bool() { return this->val_; }
   template <typename P> inline void SetWeak(P *parameter, typename WeakCallbackInfo<P>::Callback callback) { V8::MakeWeak(this->val_, parameter, (v8::V8::VoidWeakCallback)callback, v8::kParameter); }
 };

@@ -3,12 +3,28 @@
 #include "V8.h"
 #include "json.h"
 #include "std/string.h"
+#include "fix.h"
 
 struct Minecraft;
 
 namespace ScriptApi {
 
-using ScriptObjectHandle = v8::Persistent<v8::Value>;
+struct ScriptObjectHandle {
+  /// @symbol _ZTVN9ScriptApi18ScriptObjectHandleE
+  static XPointer defvt;
+  XPointer vtable;
+  v8::Persistent<v8::Value> value;
+  ScriptObjectHandle() { vtable.ptr = defvt + 2; }
+  ScriptObjectHandle(v8::Persistent<v8::Value> value) {
+    vtable.ptr = defvt + 2;
+    this->value.Set(value.RawPointer());
+  }
+  operator v8::Persistent<v8::Value>() { return value; }
+
+  ~ScriptObjectHandle() {
+    ((void (*)(ScriptObjectHandle *))vtable[0])(this);
+  }
+};
 
 class ScriptReport {
   char filler[0xC];

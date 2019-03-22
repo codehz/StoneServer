@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Mar 18 2019 13:08:07 UTC
+// Generated on Fri Mar 22 2019 12:38:32 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -39,9 +39,9 @@ static void (CommandRegistry::*_CommandRegistry_buildOverload)(CommandRegistry::
 void CommandRegistry::buildOverload(CommandRegistry::Overload & p1) {
     (this->*_CommandRegistry_buildOverload)(p1);
 }
-static void (CommandRegistry::*_CommandRegistry_addSoftEnum)(mcpe::string const &, std::vector<mcpe::string>, bool);
-void CommandRegistry::addSoftEnum(mcpe::string const & p1, std::vector<mcpe::string> p2, bool p3) {
-    (this->*_CommandRegistry_addSoftEnum)(p1, p2, p3);
+static void (CommandRegistry::*_CommandRegistry_addSoftEnum)(mcpe::string const &, std::vector<mcpe::string>);
+void CommandRegistry::addSoftEnum(mcpe::string const & p1, std::vector<mcpe::string> p2) {
+    (this->*_CommandRegistry_addSoftEnum)(p1, p2);
 }
 static void (CommandRegistry::*_CommandRegistry_setSoftEnumValues)(mcpe::string const &, std::vector<mcpe::string>);
 void CommandRegistry::setSoftEnumValues(mcpe::string const & p1, std::vector<mcpe::string> p2) {
@@ -312,13 +312,17 @@ static void (EducationOptions::*_EducationOptions_EducationOptions)(ResourcePack
 EducationOptions::EducationOptions(ResourcePackManager * p1) {
     (this->*_EducationOptions_EducationOptions)(p1);
 }
+static void (ServerMetrics::*_ServerMetrics_ServerMetrics)(ServerCommunicationInterface &);
+ServerMetrics::ServerMetrics(ServerCommunicationInterface & p1) {
+    (this->*_ServerMetrics_ServerMetrics)(p1);
+}
 static void (ServerInstance::*_ServerInstance_ServerInstance)(IMinecraftApp &, ServerInstanceEventCoordinator &);
 ServerInstance::ServerInstance(IMinecraftApp & p1, ServerInstanceEventCoordinator & p2) {
     (this->*_ServerInstance_ServerInstance)(p1, p2);
 }
-static void (ServerInstance::*_ServerInstance_initializeServer)(IMinecraftApp &, Whitelist &, PermissionsFile *, FilePathManager *, std::chrono::seconds, mcpe::string, mcpe::string, mcpe::string, LevelSettings, int, bool, int, int, int, bool, std::vector<mcpe::string> const &, mcpe::string, mce::UUID const &, IMinecraftEventing &, ResourcePackRepository &, ContentTierManager const &, ResourcePackManager &, std::function<std::unique_ptr<LevelStorage> ( Scheduler & )>, mcpe::string const &, LevelData *, mcpe::string, mcpe::string, std::unique_ptr<EducationOptions>, ResourcePackManager *, std::function<void ( mcpe::string const & )>, std::function<void ( mcpe::string const & )>, ServerCommunicationInterface *);
-void ServerInstance::initializeServer(IMinecraftApp & p1, Whitelist & p2, PermissionsFile * p3, FilePathManager * p4, std::chrono::seconds p5, mcpe::string p6, mcpe::string p7, mcpe::string p8, LevelSettings p9, int p10, bool p11, int p12, int p13, int p14, bool p15, std::vector<mcpe::string> const & p16, mcpe::string p17, mce::UUID const & p18, IMinecraftEventing & p19, ResourcePackRepository & p20, ContentTierManager const & p21, ResourcePackManager & p22, std::function<std::unique_ptr<LevelStorage> ( Scheduler & )> p23, mcpe::string const & p24, LevelData * p25, mcpe::string p26, mcpe::string p27, std::unique_ptr<EducationOptions> p28, ResourcePackManager * p29, std::function<void ( mcpe::string const & )> p30, std::function<void ( mcpe::string const & )> p31, ServerCommunicationInterface * p32) {
-    (this->*_ServerInstance_initializeServer)(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, std::move(p28), p29, p30, p31, p32);
+static void (ServerInstance::*_ServerInstance_initializeServer)(IMinecraftApp &, Whitelist &, PermissionsFile *, FilePathManager *, std::chrono::seconds, mcpe::string, mcpe::string, mcpe::string, LevelSettings, int, bool, ConnectionDefinition, bool, std::vector<mcpe::string> const &, mcpe::string, mce::UUID const &, IMinecraftEventing &, ResourcePackRepository &, ContentTierManager const &, ResourcePackManager &, std::function<std::unique_ptr<LevelStorage> ( Scheduler & )>, mcpe::string const &, LevelData *, mcpe::string, mcpe::string, std::unique_ptr<EducationOptions>, ResourcePackManager *, std::function<void ( mcpe::string const & )>, std::function<void ( mcpe::string const & )>, ServerMetrics *, DebugEndPoint *);
+void ServerInstance::initializeServer(IMinecraftApp & p1, Whitelist & p2, PermissionsFile * p3, FilePathManager * p4, std::chrono::seconds p5, mcpe::string p6, mcpe::string p7, mcpe::string p8, LevelSettings p9, int p10, bool p11, ConnectionDefinition p12, bool p13, std::vector<mcpe::string> const & p14, mcpe::string p15, mce::UUID const & p16, IMinecraftEventing & p17, ResourcePackRepository & p18, ContentTierManager const & p19, ResourcePackManager & p20, std::function<std::unique_ptr<LevelStorage> ( Scheduler & )> p21, mcpe::string const & p22, LevelData * p23, mcpe::string p24, mcpe::string p25, std::unique_ptr<EducationOptions> p26, ResourcePackManager * p27, std::function<void ( mcpe::string const & )> p28, std::function<void ( mcpe::string const & )> p29, ServerMetrics * p30, DebugEndPoint * p31) {
+    (this->*_ServerInstance_initializeServer)(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, std::move(p26), p27, p28, p29, p30, p31);
 }
 static void (ServerInstance::*_ServerInstance_destructor)();
 ServerInstance::~ServerInstance() {
@@ -619,6 +623,30 @@ static ItemEnchants (ItemInstance::*_ItemInstance_getEnchantsFromUserData)() con
 ItemEnchants ItemInstance::getEnchantsFromUserData() const {
     return (this->*_ItemInstance_getEnchantsFromUserData)();
 }
+static bool (ItemStack::*_ItemStack_isNull)() const;
+bool ItemStack::isNull() const {
+    return (this->*_ItemStack_isNull)();
+}
+static int (ItemStack::*_ItemStack_getId)() const;
+int ItemStack::getId() const {
+    return (this->*_ItemStack_getId)();
+}
+static mcpe::string (ItemStack::*_ItemStack_getName)() const;
+mcpe::string ItemStack::getName() const {
+    return (this->*_ItemStack_getName)();
+}
+static mcpe::string (ItemStack::*_ItemStack_getRawNameId)() const;
+mcpe::string ItemStack::getRawNameId() const {
+    return (this->*_ItemStack_getRawNameId)();
+}
+static mcpe::string (ItemStack::*_ItemStack_getCustomName)() const;
+mcpe::string ItemStack::getCustomName() const {
+    return (this->*_ItemStack_getCustomName)();
+}
+static ItemEnchants (ItemStack::*_ItemStack_getEnchantsFromUserData)() const;
+ItemEnchants ItemStack::getEnchantsFromUserData() const {
+    return (this->*_ItemStack_getEnchantsFromUserData)();
+}
 
 #include "ExtendedCertificate.h"
 static mcpe::string (*_ExtendedCertificate_getXuid)(Certificate const &);
@@ -714,9 +742,9 @@ static void (ContentTierManager::*_ContentTierManager_ContentTierManager)();
 ContentTierManager::ContentTierManager() {
     (this->*_ContentTierManager_ContentTierManager)();
 }
-static void (ResourcePackManager::*_ResourcePackManager_ResourcePackManager)(std::function<mcpe::string ( )> const &, ContentTierManager const &);
-ResourcePackManager::ResourcePackManager(std::function<mcpe::string ( )> const & p1, ContentTierManager const & p2) {
-    (this->*_ResourcePackManager_ResourcePackManager)(p1, p2);
+static void (ResourcePackManager::*_ResourcePackManager_ResourcePackManager)(std::function<mcpe::string ( )> const &, ContentTierManager const &, bool);
+ResourcePackManager::ResourcePackManager(std::function<mcpe::string ( )> const & p1, ContentTierManager const & p2, bool p3) {
+    (this->*_ResourcePackManager_ResourcePackManager)(p1, p2, p3);
 }
 static void (ResourcePackManager::*_ResourcePackManager_setStack)(std::unique_ptr<ResourcePackStack>, ResourcePackStackType, bool);
 void ResourcePackManager::setStack(std::unique_ptr<ResourcePackStack> p1, ResourcePackStackType p2, bool p3) {
@@ -1481,6 +1509,7 @@ void * ModalFormRequestPacket::myVtable;
 void * ModalFormResponsePacket::myVtable;
 
 #include "ScriptApi.h"
+XPointer ScriptApi::ScriptObjectHandle::defvt;
 static void (ScriptEngine::*_ScriptEngine_fireEventToScript)(EventInfo const &, ScriptApi::ScriptObjectHandle const &);
 void ScriptEngine::fireEventToScript(EventInfo const & p1, ScriptApi::ScriptObjectHandle const & p2) {
     (this->*_ScriptEngine_fireEventToScript)(p1, p2);
@@ -2089,14 +2118,6 @@ static int64_t & (Actor::*_Actor_getUniqueID)() const;
 int64_t & Actor::getUniqueID() const {
     return (this->*_Actor_getUniqueID)();
 }
-static bool (Actor::*_Actor_save)(CompoundTag &);
-bool Actor::save(CompoundTag & p1) {
-    return (this->*_Actor_save)(p1);
-}
-static bool (Actor::*_Actor_load)(CompoundTag const &);
-bool Actor::load(CompoundTag const & p1) {
-    return (this->*_Actor_load)(p1);
-}
 static Vec3 & (Actor::*_Actor_getPos)() const;
 Vec3 & Actor::getPos() const {
     return (this->*_Actor_getPos)();
@@ -2136,10 +2157,6 @@ int Actor::getStrength() const {
 static int (Actor::*_Actor_getStrengthMax)() const;
 int Actor::getStrengthMax() const {
     return (this->*_Actor_getStrengthMax)();
-}
-static int (Actor::*_Actor_getAge)() const;
-int Actor::getAge() const {
-    return (this->*_Actor_getAge)();
 }
 static int (Actor::*_Actor_getHealth)() const;
 int Actor::getHealth() const {
@@ -2230,8 +2247,8 @@ void minecraft_symbols_init(void* handle) {
     if (_CommandRegistry_registerCommand == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry15registerCommandERKSsPKc22CommandPermissionLevel11CommandFlagS5_");
     ((void*&) _CommandRegistry_buildOverload) = hybris_dlsym(handle, "_ZN15CommandRegistry13buildOverloadERNS_8OverloadE");
     if (_CommandRegistry_buildOverload == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry13buildOverloadERNS_8OverloadE");
-    ((void*&) _CommandRegistry_addSoftEnum) = hybris_dlsym(handle, "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEEb");
-    if (_CommandRegistry_addSoftEnum == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEEb");
+    ((void*&) _CommandRegistry_addSoftEnum) = hybris_dlsym(handle, "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEE");
+    if (_CommandRegistry_addSoftEnum == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry11addSoftEnumERKSsSt6vectorISsSaISsEE");
     ((void*&) _CommandRegistry_setSoftEnumValues) = hybris_dlsym(handle, "_ZN15CommandRegistry17setSoftEnumValuesERKSsSt6vectorISsSaISsEE");
     if (_CommandRegistry_setSoftEnumValues == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN15CommandRegistry17setSoftEnumValuesERKSsSt6vectorISsSaISsEE");
     ((void*&) _CommandParameterData_CommandParameterData) = hybris_dlsym(handle, "_ZN20CommandParameterDataC2E8typeid_tI15CommandRegistryEMS1_KFbPvRKNS1_10ParseTokenERK13CommandOriginiRSsRSt6vectorISsSaISsEEEPKc24CommandParameterDataTypeSI_ibi");
@@ -2349,10 +2366,12 @@ void minecraft_symbols_init(void* handle) {
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _EducationOptions_EducationOptions) = hybris_dlsym(handle, "_ZN16EducationOptionsC2EP19ResourcePackManager");
     if (_EducationOptions_EducationOptions == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN16EducationOptionsC2EP19ResourcePackManager");
+    ((void*&) _ServerMetrics_ServerMetrics) = hybris_dlsym(handle, "_ZN13ServerMetricsC2ER28ServerCommunicationInterface");
+    if (_ServerMetrics_ServerMetrics == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13ServerMetricsC2ER28ServerCommunicationInterface");
     ((void*&) _ServerInstance_ServerInstance) = hybris_dlsym(handle, "_ZN14ServerInstanceC2ER13IMinecraftAppR30ServerInstanceEventCoordinator");
     if (_ServerInstance_ServerInstance == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServerInstanceC2ER13IMinecraftAppR30ServerInstanceEventCoordinator");
-    ((void*&) _ServerInstance_initializeServer) = hybris_dlsym(handle, "_ZN14ServerInstance16initializeServerER13IMinecraftAppR9WhitelistP15PermissionsFileP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsibiiibRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISY_EER9SchedulerEERKSsP9LevelDataSsSsSX_I16EducationOptionsSZ_IS1A_EEPSU_SW_IFvS17_EES1F_P28ServerCommunicationInterface");
-    if (_ServerInstance_initializeServer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServerInstance16initializeServerER13IMinecraftAppR9WhitelistP15PermissionsFileP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsibiiibRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISY_EER9SchedulerEERKSsP9LevelDataSsSsSX_I16EducationOptionsSZ_IS1A_EEPSU_SW_IFvS17_EES1F_P28ServerCommunicationInterface");
+    ((void*&) _ServerInstance_initializeServer) = hybris_dlsym(handle, "_ZN14ServerInstance16initializeServerER13IMinecraftAppR9WhitelistP15PermissionsFileP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsib20ConnectionDefinitionbRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISZ_EER9SchedulerEERKSsP9LevelDataSsSsSY_I16EducationOptionsS10_IS1B_EEPSV_SX_IFvS18_EES1G_P13ServerMetricsP13DebugEndPoint");
+    if (_ServerInstance_initializeServer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServerInstance16initializeServerER13IMinecraftAppR9WhitelistP15PermissionsFileP15FilePathManagerNSt6chrono8durationIxSt5ratioILx1ELx1EEEESsSsSs13LevelSettingsib20ConnectionDefinitionbRKSt6vectorISsSaISsEESsRKN3mce4UUIDER18IMinecraftEventingR22ResourcePackRepositoryRK18ContentTierManagerR19ResourcePackManagerSt8functionIFSt10unique_ptrI12LevelStorageSt14default_deleteISZ_EER9SchedulerEERKSsP9LevelDataSsSsSY_I16EducationOptionsS10_IS1B_EEPSV_SX_IFvS18_EES1G_P13ServerMetricsP13DebugEndPoint");
     ((void*&) _ServerInstance_destructor) = hybris_dlsym(handle, "_ZN14ServerInstanceD2Ev");
     if (_ServerInstance_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN14ServerInstanceD2Ev");
     ((void*&) _ServerInstance_startServerThread) = hybris_dlsym(handle, "_ZN14ServerInstance17startServerThreadEv");
@@ -2523,6 +2542,18 @@ void minecraft_symbols_init(void* handle) {
     if (_ItemInstance_getCustomName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance13getCustomNameEv");
     ((void*&) _ItemInstance_getEnchantsFromUserData) = hybris_dlsym(handle, "_ZNK12ItemInstance23getEnchantsFromUserDataEv");
     if (_ItemInstance_getEnchantsFromUserData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK12ItemInstance23getEnchantsFromUserDataEv");
+    ((void*&) _ItemStack_isNull) = hybris_dlsym(handle, "_ZNK9ItemStack6isNullEv");
+    if (_ItemStack_isNull == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack6isNullEv");
+    ((void*&) _ItemStack_getId) = hybris_dlsym(handle, "_ZNK9ItemStack5getIdEv");
+    if (_ItemStack_getId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack5getIdEv");
+    ((void*&) _ItemStack_getName) = hybris_dlsym(handle, "_ZNK9ItemStack7getNameEv");
+    if (_ItemStack_getName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack7getNameEv");
+    ((void*&) _ItemStack_getRawNameId) = hybris_dlsym(handle, "_ZNK9ItemStack12getRawNameIdEv");
+    if (_ItemStack_getRawNameId == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack12getRawNameIdEv");
+    ((void*&) _ItemStack_getCustomName) = hybris_dlsym(handle, "_ZNK9ItemStack13getCustomNameEv");
+    if (_ItemStack_getCustomName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack13getCustomNameEv");
+    ((void*&) _ItemStack_getEnchantsFromUserData) = hybris_dlsym(handle, "_ZNK9ItemStack23getEnchantsFromUserDataEv");
+    if (_ItemStack_getEnchantsFromUserData == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK9ItemStack23getEnchantsFromUserDataEv");
     ((void*&) _ExtendedCertificate_getXuid) = hybris_dlsym(handle, "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     if (_ExtendedCertificate_getXuid == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ExtendedCertificate7getXuidERK11Certificate");
     ((void*&) _Crypto_Random_generateUUID) = hybris_dlsym(handle, "_ZN6Crypto6Random12generateUUIDEv");
@@ -2565,8 +2596,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ResourcePackRepository_refreshPacks == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN22ResourcePackRepository12refreshPacksEv");
     ((void*&) _ContentTierManager_ContentTierManager) = hybris_dlsym(handle, "_ZN18ContentTierManagerC2Ev");
     if (_ContentTierManager_ContentTierManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN18ContentTierManagerC2Ev");
-    ((void*&) _ResourcePackManager_ResourcePackManager) = hybris_dlsym(handle, "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManager");
-    if (_ResourcePackManager_ResourcePackManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManager");
+    ((void*&) _ResourcePackManager_ResourcePackManager) = hybris_dlsym(handle, "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManagerb");
+    if (_ResourcePackManager_ResourcePackManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManagerb");
     ((void*&) _ResourcePackManager_setStack) = hybris_dlsym(handle, "_ZN19ResourcePackManager8setStackESt10unique_ptrI17ResourcePackStackSt14default_deleteIS1_EE21ResourcePackStackTypeb");
     if (_ResourcePackManager_setStack == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManager8setStackESt10unique_ptrI17ResourcePackStackSt14default_deleteIS1_EE21ResourcePackStackTypeb");
     ((void*&) _ResourcePackManager_onLanguageChanged) = hybris_dlsym(handle, "_ZN19ResourcePackManager17onLanguageChangedEv");
@@ -2936,6 +2967,8 @@ void minecraft_symbols_init(void* handle) {
     if (ModalFormRequestPacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV22ModalFormRequestPacket");
     ((void*&) ModalFormResponsePacket::myVtable) = hybris_dlsym(handle, "_ZTV23ModalFormResponsePacket");
     if (ModalFormResponsePacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV23ModalFormResponsePacket");
+    ((void*&) ScriptApi::ScriptObjectHandle::defvt) = hybris_dlsym(handle, "_ZTVN9ScriptApi18ScriptObjectHandleE");
+    if (ScriptApi::ScriptObjectHandle::defvt == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTVN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _ScriptEngine_fireEventToScript) = hybris_dlsym(handle, "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     if (_ScriptEngine_fireEventToScript == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN12ScriptEngine17fireEventToScriptERK9EventInfoRKN9ScriptApi18ScriptObjectHandleE");
     ((void*&) _ScriptEngine_deserializeScriptObjectHandleToJson) = hybris_dlsym(handle, "_ZN12ScriptEngine35deserializeScriptObjectHandleToJsonERKN9ScriptApi18ScriptObjectHandleERN4Json5ValueE");
@@ -3256,10 +3289,6 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getActorIdentifier == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor18getActorIdentifierEv");
     ((void*&) _Actor_getUniqueID) = hybris_dlsym(handle, "_ZNK5Actor11getUniqueIDEv");
     if (_Actor_getUniqueID == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getUniqueIDEv");
-    ((void*&) _Actor_save) = hybris_dlsym(handle, "_ZN5Actor4saveER11CompoundTag");
-    if (_Actor_save == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4saveER11CompoundTag");
-    ((void*&) _Actor_load) = hybris_dlsym(handle, "_ZN5Actor4loadERK11CompoundTag");
-    if (_Actor_load == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Actor4loadERK11CompoundTag");
     ((void*&) _Actor_getPos) = hybris_dlsym(handle, "_ZNK5Actor6getPosEv");
     if (_Actor_getPos == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getPosEv");
     ((void*&) _Actor_getRotation) = hybris_dlsym(handle, "_ZNK5Actor11getRotationEv");
@@ -3280,8 +3309,6 @@ void minecraft_symbols_init(void* handle) {
     if (_Actor_getStrength == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor11getStrengthEv");
     ((void*&) _Actor_getStrengthMax) = hybris_dlsym(handle, "_ZNK5Actor14getStrengthMaxEv");
     if (_Actor_getStrengthMax == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor14getStrengthMaxEv");
-    ((void*&) _Actor_getAge) = hybris_dlsym(handle, "_ZNK5Actor6getAgeEv");
-    if (_Actor_getAge == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor6getAgeEv");
     ((void*&) _Actor_getHealth) = hybris_dlsym(handle, "_ZNK5Actor9getHealthEv");
     if (_Actor_getHealth == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor9getHealthEv");
     ((void*&) _Actor_getMaxHealth) = hybris_dlsym(handle, "_ZNK5Actor12getMaxHealthEv");

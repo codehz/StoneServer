@@ -19,9 +19,9 @@ using namespace utils;
 using namespace interface;
 using namespace std;
 
-inline static const auto PlayerName [[maybe_unused]]      = StaticFieldAccessor<Player, 0x1138, mcpe::string>{};
-inline static const auto PlayerUUID [[maybe_unused]]      = StaticFieldAccessor<Player, 0x1230, mce::UUID>{};
-inline static const auto PlayerNetworkID [[maybe_unused]] = StaticFieldAccessor<Player, 0x1188, NetworkIdentifier>{};
+inline static const auto PlayerName [[maybe_unused]]      = StaticFieldAccessor<Player, 0x115c, mcpe::string>{};
+inline static const auto PlayerUUID [[maybe_unused]]      = StaticFieldAccessor<Player, 0x1254, mce::UUID>{};
+inline static const auto PlayerNetworkID [[maybe_unused]] = StaticFieldAccessor<Player, 0x11ac, NetworkIdentifier>{};
 inline static const auto PlayerXUID [[maybe_unused]] =
     makeOperator(+[](Player const &player) { return ExtendedCertificate::getXuid(*player.getCertificate()); });
 inline static const auto PlayerBasicInfo [[maybe_unused]] = makeOperator(
@@ -32,6 +32,7 @@ inline static const auto PlayerLvl [[maybe_unused]] = makeOperator(&Player::getL
 inline static const auto PlayerStats [[maybe_unused]] =
     makeOperator(+[](Player const &player) { return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus(); });
 inline static const auto ItemInstanceCount [[maybe_unused]] = StaticFieldAccessor<ItemInstance, 0xe, char>{};
+inline static const auto ItemStackCount [[maybe_unused]] = StaticFieldAccessor<ItemStack, 0xe, char>{};
 
 inline static const auto MinecraftFromServerInstance [[maybe_unused]] = StaticFieldAccessor<ServerInstance, 0x10, Minecraft *>{};
 

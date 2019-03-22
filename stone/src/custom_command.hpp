@@ -90,9 +90,9 @@ template <> inline v8::Local<v8::Value> genfetch<CommandPosition>(void *self, Co
 }
 template <> inline v8::Local<v8::Value> genfetch<Json::Value>(void *self, CommandOrigin &orig, v8::Isolate *iso) {
   using namespace interface;
-  v8::AutoReleasePersistent<v8::Value> per;
-  Locator<MinecraftServerScriptEngine>()->serializeJsonToScriptObjectHandle(per, *((Json::Value const *)self));
-  return per.Get(iso);
+  ScriptApi::ScriptObjectHandle handle;
+  Locator<MinecraftServerScriptEngine>()->serializeJsonToScriptObjectHandle(handle, *((Json::Value const *)self));
+  return handle.value.Get(iso);
 }
 
 template <typename T> struct FetchGenerator<CommandSelector<T>> {
@@ -103,9 +103,9 @@ template <typename T> struct FetchGenerator<CommandSelector<T>> {
     auto &engine = Locator<MinecraftServerScriptEngine>();
     int index    = 0;
     for (auto actor : *results) {
-      v8::Persistent<v8::Value> pers;
-      engine->helpDefineActor(*actor, pers);
-      ret->Set(index++, pers.Get(iso));
+      ScriptApi::ScriptObjectHandle handle;
+      engine->helpDefineActor(*actor, handle);
+      ret->Set(index++, handle.value.Get(iso));
     }
     return ret;
   }
@@ -237,7 +237,7 @@ auto registerCustomCommand(std::string name, std::string desc, int lvl) {
 
 void registerCustomEnum(mcpe::string name, std::vector<mcpe::string> list) {
   using namespace interface;
-  Locator<CommandRegistry>()->addSoftEnum(name, list, true);
+  Locator<CommandRegistry>()->addSoftEnum(name, list);
 }
 
 void updateCustomEnum(mcpe::string name, std::vector<mcpe::string> list) {

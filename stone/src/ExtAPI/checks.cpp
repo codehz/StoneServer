@@ -90,7 +90,7 @@ static Register regs[] = {
     +[](FunctionCallbackInfo<Value> const &info) {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUse >> [iso, origin = Persistent<Value>{ iso, info.This() },
-                                        callback = Persistent<Function>{ iso, info[0] }](Player *player, ItemInstance &item, bool &result) {
+                                        callback = Persistent<Function>{ iso, info[0] }](Player *player, ItemStack &item, bool &result) {
           handleFn(iso, result, [&]() {
             auto obj = Object::New(iso);
             obj->Set(ToJS("type"), ToJS("use"));
@@ -119,7 +119,7 @@ static Register regs[] = {
     +[](FunctionCallbackInfo<Value> const &info) {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUseOn >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
-                                             Player *player, ItemInstance &item, BlockPos const &pos, Vec3 const &vec, bool &result) {
+                                             Player *player, ItemStack &item, BlockPos const &pos, Vec3 const &vec, bool &result) {
           handleFn(iso, result, [&]() {
             auto obj = Object::New(iso);
             obj->Set(ToJS("type"), ToJS("use_on"));

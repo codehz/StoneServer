@@ -21,9 +21,6 @@ public:
   ActorDefinitionIdentifier &getActorIdentifier() const;
   int64_t &getUniqueID() const;
 
-  bool save(CompoundTag &);
-  bool load(CompoundTag const &);
-
   Vec3 &getPos() const;
   Vec2 getRotation() const;
   BlockSource &getRegion() const;
@@ -34,7 +31,6 @@ public:
   short getTotalAirSupply() const;
   int getStrength() const;
   int getStrengthMax() const;
-  int getAge() const;
   int getHealth() const;
   int getMaxHealth() const;
   Actor *getRide() const;
