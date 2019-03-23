@@ -225,19 +225,19 @@ int main() {
   };
   auto eduOptions = std::make_unique<EducationOptions>(resourcePackManager);
   ServerInstanceEventCoordinator ec;
-  ServerInstance instance(minecraftApp, ec);
+  auto instance = new ServerInstance(minecraftApp, ec);
   LauncherV8Platform::initVtable(handle);
   LauncherV8Platform v8Platform;
   v8::V8::InitializePlatform((v8::Platform *)&v8Platform);
   v8::V8::Initialize();
   Log::trace("StoneServer", "Initializing Server");
-  instance.initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
-                            props.motd.get(), levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers },
-                            props.onlineMode, {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager,
-                            createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test", std::move(eduOptions), nullptr,
-                            [](mcpe::string const &s) { Log::info("Minecraft", "Unloading level: %s", s.c_str()); },
-                            [](mcpe::string const &s) { Log::info("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
-  Locator<ServerInstance>() = &instance;
+  instance->initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
+                             props.motd.get(), levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers },
+                             props.onlineMode, {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager,
+                             createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test", std::move(eduOptions), nullptr,
+                             [](mcpe::string const &s) { Log::info("Minecraft", "Unloading level: %s", s.c_str()); },
+                             [](mcpe::string const &s) { Log::info("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
+  Locator<ServerInstance>() = instance;
   if (props.activateWhitelist) {
     Locator<Minecraft>()->activateWhitelist();
     Log::info("StoneServer", "Whitelist activated");
@@ -248,11 +248,11 @@ int main() {
   resLoadMgr.sync((ResourceLoadType)4);
   resourcePackManager->onLanguageChanged();
   Log::info("StoneServer", "Server initialized");
-  modLoader.onServerInstanceInitialized(&instance);
+  modLoader.onServerInstanceInitialized(instance);
   patched::init();
 
   Log::trace("StoneServer", "Starting server thread");
-  instance.startServerThread();
+  instance->startServerThread();
   Log::info("StoneServer", "Server is running (%f sec)", float(clock() - start_clock) / CLOCKS_PER_SEC);
 
   std::signal(SIGINT, [](int) { apid_stop(); });
@@ -275,11 +275,13 @@ int main() {
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();
-  instance.leaveGameSync();
+  instance->leaveGameSync();
+  delete instance;
+  appPlatform->teardown();
 
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
-  _exit(0);
+  exit(0);
   return 0;
 }
