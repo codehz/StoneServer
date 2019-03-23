@@ -41,10 +41,10 @@ SInstanceHook(bool, _ZN8GameMode7useItemER9ItemStack, GameMode, ItemStack &insta
 }
 
 SInstanceHook(bool, _ZN8GameMode9useItemOnER9ItemStackRK8BlockPoshRK4Vec3PK5Block, GameMode, ItemStack &instance, BlockPos const &pos,
-              signed char data, Vec3 const &vec) {
+              unsigned char data, Vec3 const &vec, Block *block) {
   bool result = true;
-  Locator<Policy>()->checkUseOn(this->player, instance, pos, vec, result);
-  if (result) original(this, instance, pos, data, vec);
+  Locator<Policy>()->checkUseOn(this->player, instance, pos, vec, *block, result);
+  if (result) original(this, instance, pos, data, vec, block);
   return false;
 }
 

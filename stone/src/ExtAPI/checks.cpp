@@ -119,12 +119,11 @@ static Register regs[] = {
     +[](FunctionCallbackInfo<Value> const &info) {
       checkFn(info, [&](Isolate *iso) {
         Locator<Policy>()->checkUseOn >> [iso, origin = Persistent<Value>{ iso, info.This() }, callback = Persistent<Function>{ iso, info[0] }](
-                                             Player *player, ItemStack &item, BlockPos const &pos, Vec3 const &vec, bool &result) {
+                                             Player *player, ItemStack &item, BlockPos const &pos, Vec3 const &vec, Block &block, bool &result) {
           handleFn(iso, result, [&]() {
             auto obj = Object::New(iso);
             obj->Set(ToJS("type"), ToJS("use_on"));
-            auto &region = player->getRegion();
-            obj->Set(ToJS("block"), ToJS(region.getBlock(pos)));
+            obj->Set(ToJS("block"), ToJS(&block));
             obj->Set(ToJS("item"), ToJS(&item));
             obj->Set(ToJS("blockpos"), ToJS(pos));
             obj->Set(ToJS("position"), ToJS(vec));
