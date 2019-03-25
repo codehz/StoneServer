@@ -31,7 +31,7 @@ struct __attribute__((__packed__)) jump {
   char jz_jnz = 0x74;
   char offset;
   bool operator==(jump const &rhs) { return jz_jnz == rhs.jz_jnz && offset == rhs.offset; }
-  friend std::ostream &operator<<(std::ostream &out, jump const &self) {
+  [[maybe_unused]] friend std::ostream &operator<<(std::ostream &out, jump const &self) {
     switch (self.jz_jnz) {
     case 0x74: out << "jz  "; break;
     case 0x75: out << "jnz "; break;
