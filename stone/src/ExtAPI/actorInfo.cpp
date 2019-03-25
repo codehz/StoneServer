@@ -26,7 +26,6 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   auto strVariant      = ToJS("variant");
   auto strAirSupply    = ToJS("airSupply");
   auto strStrength     = ToJS("strength");
-  auto strHealth       = ToJS("health");
   auto strPos          = ToJS("pos");
   auto strDim          = ToJS("dim");
   auto strRide         = ToJS("ride");
@@ -46,7 +45,6 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   temp->Set(strVariant, ToJS(actor->getVariant()));
   temp->Set(strAirSupply, ToJS(std::make_tuple(actor->getAirSupply(), actor->getTotalAirSupply())));
   temp->Set(strStrength, ToJS(std::make_tuple(actor->getStrength(), actor->getStrengthMax())));
-  temp->Set(strHealth, ToJS(std::make_tuple(actor->getHealth(), actor->getMaxHealth())));
   temp->Set(strRide, ToJS(actor->getRide()));
   temp->Set(strRideRoot, ToJS(actor->getRideRoot()));
   temp->Set(strTarget, ToJS(actor->getTarget()));
