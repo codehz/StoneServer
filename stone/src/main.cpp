@@ -187,6 +187,7 @@ int main() {
   Log::trace("StoneServer", "Initializing ResourcePackManager");
   ContentTierManager ctm;
   ResourcePackManager *resourcePackManager = new ResourcePackManager([&pathmgr]() { return pathmgr.getRootPath(); }, ctm, false);
+  resourcePackManager->setExperimental(true);
   ResourceLoaders::registerLoader((ResourceFileSystem)0, std::unique_ptr<ResourceLoader>(resourcePackManager));
   Log::trace("StoneServer", "Initializing PackManifestFactory");
   PackManifestFactory packManifestFactory(eventing);

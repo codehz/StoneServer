@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Mar 25 2019 07:39:31 UTC
+// Generated on Mon Mar 25 2019 11:22:40 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -761,6 +761,10 @@ ContentTierManager::ContentTierManager() {
 static void (ResourcePackManager::*_ResourcePackManager_ResourcePackManager)(std::function<mcpe::string ( )> const &, ContentTierManager const &, bool);
 ResourcePackManager::ResourcePackManager(std::function<mcpe::string ( )> const & p1, ContentTierManager const & p2, bool p3) {
     (this->*_ResourcePackManager_ResourcePackManager)(p1, p2, p3);
+}
+static void (ResourcePackManager::*_ResourcePackManager_setExperimental)(bool);
+void ResourcePackManager::setExperimental(bool p1) {
+    (this->*_ResourcePackManager_setExperimental)(p1);
 }
 static void (ResourcePackManager::*_ResourcePackManager_setStack)(std::unique_ptr<ResourcePackStack>, ResourcePackStackType, bool);
 void ResourcePackManager::setStack(std::unique_ptr<ResourcePackStack> p1, ResourcePackStackType p2, bool p3) {
@@ -2622,6 +2626,8 @@ void minecraft_symbols_init(void* handle) {
     if (_ContentTierManager_ContentTierManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN18ContentTierManagerC2Ev");
     ((void*&) _ResourcePackManager_ResourcePackManager) = hybris_dlsym(handle, "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManagerb");
     if (_ResourcePackManager_ResourcePackManager == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManagerb");
+    ((void*&) _ResourcePackManager_setExperimental) = hybris_dlsym(handle, "_ZN19ResourcePackManager15setExperimentalEb");
+    if (_ResourcePackManager_setExperimental == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManager15setExperimentalEb");
     ((void*&) _ResourcePackManager_setStack) = hybris_dlsym(handle, "_ZN19ResourcePackManager8setStackESt10unique_ptrI17ResourcePackStackSt14default_deleteIS1_EE21ResourcePackStackTypeb");
     if (_ResourcePackManager_setStack == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19ResourcePackManager8setStackESt10unique_ptrI17ResourcePackStackSt14default_deleteIS1_EE21ResourcePackStackTypeb");
     ((void*&) _ResourcePackManager_onLanguageChanged) = hybris_dlsym(handle, "_ZN19ResourcePackManager17onLanguageChangedEv");

@@ -86,6 +86,8 @@ public:
     /// @symbol _ZN19ResourcePackManagerC2ESt8functionIFSsvEERK18ContentTierManagerb
     ResourcePackManager(std::function<mcpe::string ()> const&, ContentTierManager const&, bool);
 
+    void setExperimental(bool);
+
     void setStack(std::unique_ptr<ResourcePackStack>, ResourcePackStackType, bool);
 
     void onLanguageChanged();
