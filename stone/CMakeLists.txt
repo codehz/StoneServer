@@ -35,7 +35,6 @@ add_executable(stone
   "src/patched/ScriptEngine.cpp"
   "src/patched/v8.cpp"
   "src/patched/Level.cpp"
-  "src/patched/FeatureToggles.cpp"
   "src/patched/HardcodedOffsets.h"
   "src/patched/ScriptInterface.h"
   "src/patched/ServerNetworkHandler.cpp"
