@@ -33,5 +33,4 @@ public:
   BlockPos const &getDefaultSpawn() const;
   void setDefaultSpawn(BlockPos const &);
   Player *getPlayer(const std::string &name) const;
-  Player *getPlayer(mce::UUID const &uuid) const;
 };

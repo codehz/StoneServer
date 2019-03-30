@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Mar 25 2019 11:22:40 UTC
+// Generated on Sat Mar 30 2019 03:23:47 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -309,10 +309,6 @@ void Level::setDefaultSpawn(BlockPos const & p1) {
 static Player * (Level::*_Level_getPlayer)(const std::string &) const;
 Player * Level::getPlayer(const std::string & p1) const {
     return (this->*_Level_getPlayer)(p1);
-}
-static Player * (Level::*_Level_getPlayer2)(mce::UUID const &) const;
-Player * Level::getPlayer(mce::UUID const & p1) const {
-    return (this->*_Level_getPlayer2)(p1);
 }
 
 #include "AppResourceLoader.h"
@@ -2388,8 +2384,6 @@ void minecraft_symbols_init(void* handle) {
     if (_Level_setDefaultSpawn == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level15setDefaultSpawnERK8BlockPos");
     ((void*&) _Level_getPlayer) = hybris_dlsym(handle, "_ZNK5Level9getPlayerERKSs");
     if (_Level_getPlayer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Level9getPlayerERKSs");
-    ((void*&) _Level_getPlayer2) = hybris_dlsym(handle, "_ZNK5Level9getPlayerERK3mce4UUID");
-    if (_Level_getPlayer2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Level9getPlayerERK3mce4UUID");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _EducationOptions_EducationOptions) = hybris_dlsym(handle, "_ZN16EducationOptionsC2EP19ResourcePackManager");
