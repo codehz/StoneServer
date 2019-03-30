@@ -5,6 +5,7 @@
 #include <cstring>
 #include <functional>
 #include <mutex>
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -103,6 +104,34 @@ template <> struct Serializble<float> {
 template <> struct Serializble<std::string> {
   static inline Buffer write(std::string const &input) { return Buffer::copy(input); }
   static inline std::string read(char const *input) { return input; }
+};
+
+template <typename T> struct Serializble<std::vector<T>> {
+  static inline Buffer write(std::vector<T> const &input) {
+    std::ostringstream oss;
+    oss << input.size() << '\n';
+    for (auto &item : input) {
+      auto buf = Serializble<T>::write(item);
+      oss << strlen(buf) << '\n' << buf << '\n';
+    }
+    return Buffer::copy(oss.str());
+  }
+  static inline std::vector<T> read(char const *input) {
+    std::istringstream iss{ input };
+    std::string buffer;
+    std::getline(iss, buffer);
+    int len = atoi(buffer.c_str());
+    std::vector<T> ret;
+    ret.reserve(len);
+    for (int i = 0; i < len; i++) {
+      std::getline(iss, buffer);
+      int size = atoi(buffer.c_str());
+      Buffer temp{ (char *)malloc(size + 2) };
+      iss.read(temp, size + 1);
+      ret.emplace_back(Serializble<T>::read(temp));
+    }
+    return ret;
+  }
 };
 
 struct Named {
@@ -374,7 +403,7 @@ struct ClientSide {
   template <typename T, typename R> class proxied_method : public Named, public service_ref {
     template <typename F> static void stub(char const *data, void *privdata) {
       F *f = (F *)privdata;
-      (*f)(Serializble<T>::read(data));
+      (*f)(Serializble<R>::read(data));
       if constexpr (!std::is_function_v<F>) delete f;
     }
 

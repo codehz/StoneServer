@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Mar 30 2019 03:23:47 UTC
+// Generated on Sat Mar 30 2019 13:35:19 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -387,8 +387,8 @@ static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist)(mce::U
 void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2) {
     (this->*_ServerNetworkHandler_addToBlacklist)(p1, p2);
 }
-static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist2)(mce::UUID const &, mcpe::string const &, mcpe::string const &, std::chrono::seconds const &);
-void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2, mcpe::string const & p3, std::chrono::seconds const & p4) {
+static void (ServerNetworkHandler::*_ServerNetworkHandler_addToBlacklist2)(mce::UUID const &, mcpe::string const &, mcpe::string const &, int const &);
+void ServerNetworkHandler::addToBlacklist(mce::UUID const & p1, mcpe::string const & p2, mcpe::string const & p3, int const & p4) {
     (this->*_ServerNetworkHandler_addToBlacklist2)(p1, p2, p3, p4);
 }
 static void (ServerNetworkHandler::*_ServerNetworkHandler_removeFromBlacklist)(mce::UUID const &, mcpe::string const &);
@@ -681,6 +681,10 @@ mce::UUID mce::UUID::fromString(mcpe::string const & p1) {
 static mcpe::string (mce::UUID::*_mce_UUID_asString)() const;
 mcpe::string mce::UUID::asString() const {
     return (this->*_mce_UUID_asString)();
+}
+static bool (mce::UUID::*_mce_UUID_isEmpty)() const;
+bool mce::UUID::isEmpty() const {
+    return (this->*_mce_UUID_isEmpty)();
 }
 
 #include "TransferPacket.h"
@@ -1984,6 +1988,8 @@ void Whitelist::removeByName(mcpe::string const & p1) {
     (this->*_Whitelist_removeByName)(p1);
 }
 
+#include "Blacklist.h"
+
 #include "MinecraftEventing.h"
 static void (MinecraftEventing::*_MinecraftEventing_MinecraftEventing)(mcpe::string const &);
 MinecraftEventing::MinecraftEventing(mcpe::string const & p1) {
@@ -2586,6 +2592,8 @@ void minecraft_symbols_init(void* handle) {
     if (_mce_UUID_fromString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN3mce4UUID10fromStringERKSs");
     ((void*&) _mce_UUID_asString) = hybris_dlsym(handle, "_ZNK3mce4UUID8asStringEv");
     if (_mce_UUID_asString == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3mce4UUID8asStringEv");
+    ((void*&) _mce_UUID_isEmpty) = hybris_dlsym(handle, "_ZNK3mce4UUID7isEmptyEv");
+    if (_mce_UUID_isEmpty == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK3mce4UUID7isEmptyEv");
     ((void*&) TransferPacket::myVtable) = hybris_dlsym(handle, "_ZTV14TransferPacket");
     if (TransferPacket::myVtable == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZTV14TransferPacket");
     ((void*&) _PackInstance_PackInstance) = hybris_dlsym(handle, "_ZN12PackInstanceC2EP12ResourcePackibP12PackSettings");

@@ -38,12 +38,14 @@ template <typename Side> struct BlacklistService : ProxiedService<Side, Blacklis
   ProxiedAction<Side, BlacklistOP<true>> add{ "add" };
   ProxiedAction<Side, BlacklistOP<false>> remove{ "remove" };
   ProxiedAction<Side, BlacklistOP<true>> kick{ "kick" };
+  ProxiedMethod<Side, Empty, std::vector<BlacklistOP<true>>> fetch{ "fetch" };
 
   BlacklistService()
       : ProxiedService<Side, BlacklistService>("blacklist") {
     this->$(add);
     this->$(remove);
     this->$(kick);
+    this->$(fetch);
   }
 };
 

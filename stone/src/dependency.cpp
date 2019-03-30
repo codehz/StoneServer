@@ -19,10 +19,13 @@
 #include <minecraft/Minecraft.h>
 #include <minecraft/MinecraftCommands.h>
 
+template <class T> struct always_false : std::false_type {};
+
 void initDependencies() {
   using namespace interface;
   using namespace patched;
   using namespace api;
+  using Blacklist = interface::Blacklist;
 
   Locator<ServerInstance>() >> [](ServerInstance &instance) { Locator<Minecraft>() = MinecraftFromServerInstance(instance); };
   Locator<Minecraft>() >> MethodGet(&Minecraft::getCommands);
@@ -75,13 +78,19 @@ void initDependencies() {
         auto [type, content, reason] = arg;
         if (type == "name") {
           auto callback = [=, &list](bool flag, auto entity) {
-            if (flag) list.add(mce::UUID::fromString(entity.uuid), arg.reason);
+            if (flag) {
+              list.add(mce::UUID::fromString(entity.uuid), arg.reason);
+              Log::debug("Blacklist", "Created blacklist entry [%s] (name: %s)", entity.uuid.c_str(), arg.content.c_str());
+            } else
+              Log::warn("Blacklist", "Player name %s not found", arg.content.c_str());
           };
           Locator<CoreService<ServerSide>>()->players.get(content, callback);
         } else if (type == "uuid") {
           list.add(mce::UUID::fromString(content), reason);
+          Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
         } else if (type == "xuid") {
           list.add(content, reason);
+          Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
         }
       };
     };
@@ -110,15 +119,39 @@ void initDependencies() {
         auto [type, content] = arg;
         if (type == "name") {
           auto callback = [=, &list](bool flag, auto entity) {
-            if (flag) list.remove(mce::UUID::fromString(entity.uuid));
+            if (flag) {
+              list.remove(mce::UUID::fromString(entity.uuid));
+              Log::debug("Blacklist", "Removed blacklist entry [%s]", entity.uuid.c_str());
+            } else {
+              Log::warn("Blacklist", "Player name %s not found", arg.content.c_str());
+            }
           };
           Locator<CoreService<ServerSide>>()->players.get(content, callback);
         } else if (type == "uuid") {
           list.remove(mce::UUID::fromString(content));
+          Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
         } else if (type == "xuid") {
           list.remove(content);
+          Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
         }
       };
+    };
+    service->fetch >> [&](auto, auto cb) {
+      std::vector<BlacklistOP<true>> ret;
+      list.forEach([&](auto vart, auto reason) {
+        std::visit(
+            [&](auto &&arg) {
+              using T = std::decay_t<decltype(arg)>;
+              if constexpr (std::is_same_v<T, std::string>) {
+                ret.emplace_back(BlacklistOP<true>{ "xuid", arg, reason });
+              } else if constexpr (std::is_same_v<T, mce::UUID>) {
+                ret.emplace_back(BlacklistOP<true>{ "uuid", arg.asString().std(), reason });
+              } else
+                static_assert(always_false<T>::value, "non-exhaustive visitor!");
+            },
+            vart);
+      });
+      cb(ret);
     };
   };
 }

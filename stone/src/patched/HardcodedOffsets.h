@@ -1,5 +1,6 @@
 #pragma once
 
+#include <minecraft/Blacklist.h>
 #include <minecraft/ExtendedCertificate.h>
 #include <minecraft/ItemInstance.h>
 #include <minecraft/Minecraft.h>
@@ -19,21 +20,26 @@ using namespace utils;
 using namespace interface;
 using namespace std;
 
-inline static const auto PlayerName [[maybe_unused]]      = StaticFieldAccessor<Player, 0x115c, mcpe::string>{};
-inline static const auto PlayerUUID [[maybe_unused]]      = StaticFieldAccessor<Player, 0x1254, mce::UUID>{};
-inline static const auto PlayerNetworkID [[maybe_unused]] = StaticFieldAccessor<Player, 0x11ac, NetworkIdentifier>{};
-inline static const auto PlayerXUID [[maybe_unused]] =
-    makeOperator(+[](Player const &player) { return ExtendedCertificate::getXuid(*player.getCertificate()); });
-inline static const auto PlayerBasicInfo [[maybe_unused]] = makeOperator(
-    +[](Player const &player) { return make_tuple(PlayerName[player].std(), PlayerUUID[player].asString().std(), PlayerXUID(player).std()); });
-inline static const auto PlayerPos [[maybe_unused]] = makeOperator(&Player::getPos);
-inline static const auto PlayerRot [[maybe_unused]] = makeOperator(&Player::getRotation);
-inline static const auto PlayerLvl [[maybe_unused]] = makeOperator(&Player::getLevelProgress);
-inline static const auto PlayerStats [[maybe_unused]] =
-    makeOperator(+[](Player const &player) { return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus(); });
-inline static const auto ItemInstanceCount [[maybe_unused]] = StaticFieldAccessor<ItemInstance, 0xe, char>{};
-inline static const auto ItemStackCount [[maybe_unused]] = StaticFieldAccessor<ItemStack, 0xe, char>{};
+#define OFF(name) inline static const auto name [[maybe_unused]]
 
-inline static const auto MinecraftFromServerInstance [[maybe_unused]] = StaticFieldAccessor<ServerInstance, 0x10, Minecraft *>{};
+OFF(PlayerName)        = StaticFieldAccessor<Player, 0x115c, mcpe::string>{};
+OFF(PlayerUUID)        = StaticFieldAccessor<Player, 0x1254, mce::UUID>{};
+OFF(PlayerNetworkID)   = StaticFieldAccessor<Player, 0x11ac, NetworkIdentifier>{};
+OFF(PlayerXUID)        = makeOperator(+[](Player const &player) { return ExtendedCertificate::getXuid(*player.getCertificate()); });
+OFF(PlayerBasicInfo)   = makeOperator(+[](Player const &player) {
+  return make_tuple(PlayerName[player].std(), PlayerUUID[player].asString().std(), PlayerXUID(player).std());
+});
+OFF(PlayerPos)         = makeOperator(&Player::getPos);
+OFF(PlayerRot)         = makeOperator(&Player::getRotation);
+OFF(PlayerLvl)         = makeOperator(&Player::getLevelProgress);
+OFF(PlayerStats)       = makeOperator(+[](Player const &player) {
+  return Locator<ServerNetworkHandler>()->getPeerForUser(PlayerNetworkID[player])->getNetworkStatus();
+});
+OFF(ItemInstanceCount) = StaticFieldAccessor<ItemInstance, 0xe, char>{};
+OFF(ItemStackCount)    = StaticFieldAccessor<ItemStack, 0xe, char>{};
+
+OFF(MinecraftFromServerInstance) = StaticFieldAccessor<ServerInstance, 0x10, Minecraft *>{};
+
+OFF(BlacklistFromNetworkHandler) = StaticFieldAccessor<ServerNetworkHandler, 0x40, ::Blacklist>{};
 
 } // namespace patched

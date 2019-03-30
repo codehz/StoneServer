@@ -7,15 +7,12 @@ namespace mce {
 class UUID {
 
 public:
-
-    static mce::UUID* EMPTY;
-
-    static mce::UUID fromString(mcpe::string const&);
-
-    char filler[0x10];
-
-    mcpe::string asString() const;
-
+  static mce::UUID *EMPTY;
+  static mce::UUID fromString(mcpe::string const &);
+  uint64_t high, low;
+  mcpe::string asString() const;
+  bool isEmpty() const;
+  inline bool operator==(mce::UUID const &rhs) { return high == rhs.high && low == rhs.low; }
 };
 
 }

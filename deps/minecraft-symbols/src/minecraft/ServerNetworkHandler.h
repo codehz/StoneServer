@@ -24,14 +24,14 @@ public:
   /// @symbol _ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs
   void addToBlacklist(mce::UUID const &uuid, mcpe::string const &xuid);
   /// @symbol _ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSsS5_RKN9Blacklist8DurationE
-  void addToBlacklist(mce::UUID const &uuid, mcpe::string const &xuid, mcpe::string const &reason, std::chrono::seconds const &duration);
+  void addToBlacklist(mce::UUID const &uuid, mcpe::string const &xuid, mcpe::string const &reason, int const &duration);
   /// @symbol _ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs
   void removeFromBlacklist(mce::UUID const &uuid, mcpe::string const &xuid);
 
   void disconnectClient(NetworkIdentifier const &id, std::string const &reason, bool flag);
 
   /// @symbol _ZN14NetworkHandler14getPeerForUserERK17NetworkIdentifier
-  NetworkPeer *getPeerForUser(NetworkIdentifier const&);
+  NetworkPeer *getPeerForUser(NetworkIdentifier const &);
 
-  void handle(NetworkIdentifier const&, ClientToServerHandshakePacket const&);
+  void handle(NetworkIdentifier const &, ClientToServerHandshakePacket const &);
 };
