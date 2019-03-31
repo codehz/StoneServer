@@ -18,10 +18,10 @@ SInstanceHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5Lev
   original(this, level, player);
 }
 
-SInstanceHook(void, _ZN27ServerLevelEventCoordinator22sendLevelRemovedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level, Player *player) {
+SInstanceHook(void, _ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayerb, ServerLevelEventCoordinator, Player *player, bool opt) {
   using namespace interface;
   Locator<PlayerList>()->onPlayerRemoved(*player);
-  original(this, level, player);
+  original(this, player, opt);
 }
 
 static patched::details::RegisterPatchInit pinit([] {
