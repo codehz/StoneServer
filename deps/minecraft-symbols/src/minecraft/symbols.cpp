@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Sat Mar 30 2019 13:35:19 UTC
+// Generated on Mon Apr 01 2019 03:55:27 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -278,6 +278,126 @@ void MinecraftGame::setTextboxText(mcpe::string const & p1, int p2) {
 }
 
 #include "Level.h"
+static void (BlockSourceListener::*_BlockSourceListener_destructor)();
+BlockSourceListener::~BlockSourceListener() {
+    (this->*_BlockSourceListener_destructor)();
+}
+static void (BlockSourceListener::*_BlockSourceListener_onSourceCreated)(BlockSource &);
+void BlockSourceListener::onSourceCreated(BlockSource & p1) {
+    (this->*_BlockSourceListener_onSourceCreated)(p1);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onSourceDestroyed)(BlockSource &);
+void BlockSourceListener::onSourceDestroyed(BlockSource & p1) {
+    (this->*_BlockSourceListener_onSourceDestroyed)(p1);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onAreaChanged)(BlockSource &, BlockPos const &, BlockPos const &);
+void BlockSourceListener::onAreaChanged(BlockSource & p1, BlockPos const & p2, BlockPos const & p3) {
+    (this->*_BlockSourceListener_onAreaChanged)(p1, p2, p3);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onBlockChanged)(BlockSource &, BlockPos const &, unsigned int, Block const &, Block const &, int, ActorBlockSyncMessage const *);
+void BlockSourceListener::onBlockChanged(BlockSource & p1, BlockPos const & p2, unsigned int p3, Block const & p4, Block const & p5, int p6, ActorBlockSyncMessage const * p7) {
+    (this->*_BlockSourceListener_onBlockChanged)(p1, p2, p3, p4, p5, p6, p7);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onBrightnessChanged)(BlockSource &, BlockPos const &);
+void BlockSourceListener::onBrightnessChanged(BlockSource & p1, BlockPos const & p2) {
+    (this->*_BlockSourceListener_onBrightnessChanged)(p1, p2);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onBlockEntityChanged)(BlockSource &, BlockActor &);
+void BlockSourceListener::onBlockEntityChanged(BlockSource & p1, BlockActor & p2) {
+    (this->*_BlockSourceListener_onBlockEntityChanged)(p1, p2);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onEntityChanged)(BlockSource &, Actor &);
+void BlockSourceListener::onEntityChanged(BlockSource & p1, Actor & p2) {
+    (this->*_BlockSourceListener_onEntityChanged)(p1, p2);
+}
+static void (BlockSourceListener::*_BlockSourceListener_onBlockEvent)(BlockSource &, int, int, int, int, int);
+void BlockSourceListener::onBlockEvent(BlockSource & p1, int p2, int p3, int p4, int p5, int p6) {
+    (this->*_BlockSourceListener_onBlockEvent)(p1, p2, p3, p4, p5, p6);
+}
+static void (LevelListener::*_LevelListener_allChanged)();
+void LevelListener::allChanged() {
+    (this->*_LevelListener_allChanged)();
+}
+static void (LevelListener::*_LevelListener_addParticle)(ParticleType, Vec3 const &, Vec3 const &, int, CompoundTag const *, bool);
+void LevelListener::addParticle(ParticleType p1, Vec3 const & p2, Vec3 const & p3, int p4, CompoundTag const * p5, bool p6) {
+    (this->*_LevelListener_addParticle)(p1, p2, p3, p4, p5, p6);
+}
+static void (LevelListener::*_LevelListener_addParticleEffect)(HashedString const &, Vec3 const &, MolangVariableMap const &);
+void LevelListener::addParticleEffect(HashedString const & p1, Vec3 const & p2, MolangVariableMap const & p3) {
+    (this->*_LevelListener_addParticleEffect)(p1, p2, p3);
+}
+static void (LevelListener::*_LevelListener_addParticleEffect2)(HashedString const &, Actor const &, HashedString const &, Vec3 const &, MolangVariableMap const &);
+void LevelListener::addParticleEffect(HashedString const & p1, Actor const & p2, HashedString const & p3, Vec3 const & p4, MolangVariableMap const & p5) {
+    (this->*_LevelListener_addParticleEffect2)(p1, p2, p3, p4, p5);
+}
+static void (LevelListener::*_LevelListener_addTerrainParticleEffect)(BlockPos const &, Block const &, Vec3 const &, float, float, float);
+void LevelListener::addTerrainParticleEffect(BlockPos const & p1, Block const & p2, Vec3 const & p3, float p4, float p5, float p6) {
+    (this->*_LevelListener_addTerrainParticleEffect)(p1, p2, p3, p4, p5, p6);
+}
+static void (LevelListener::*_LevelListener_playMusic)(mcpe::string const &, Vec3 const &, float, float);
+void LevelListener::playMusic(mcpe::string const & p1, Vec3 const & p2, float p3, float p4) {
+    (this->*_LevelListener_playMusic)(p1, p2, p3, p4);
+}
+static void (LevelListener::*_LevelListener_playStreamingMusic)(mcpe::string const &, int, int, int);
+void LevelListener::playStreamingMusic(mcpe::string const & p1, int p2, int p3, int p4) {
+    (this->*_LevelListener_playStreamingMusic)(p1, p2, p3, p4);
+}
+static void (LevelListener::*_LevelListener_onEntityAdded)(Actor &);
+void LevelListener::onEntityAdded(Actor & p1) {
+    (this->*_LevelListener_onEntityAdded)(p1);
+}
+static void (LevelListener::*_LevelListener_onEntityRemoved)(Actor &);
+void LevelListener::onEntityRemoved(Actor & p1) {
+    (this->*_LevelListener_onEntityRemoved)(p1);
+}
+static void (LevelListener::*_LevelListener_onNewChunk)(BlockSource &, LevelChunk &);
+void LevelListener::onNewChunk(BlockSource & p1, LevelChunk & p2) {
+    (this->*_LevelListener_onNewChunk)(p1, p2);
+}
+static void (LevelListener::*_LevelListener_onNewChunkFor)(Player &, LevelChunk &);
+void LevelListener::onNewChunkFor(Player & p1, LevelChunk & p2) {
+    (this->*_LevelListener_onNewChunkFor)(p1, p2);
+}
+static void (LevelListener::*_LevelListener_onChunkLoaded)(LevelChunk &);
+void LevelListener::onChunkLoaded(LevelChunk & p1) {
+    (this->*_LevelListener_onChunkLoaded)(p1);
+}
+static void (LevelListener::*_LevelListener_onChunkUnloaded)(LevelChunk &);
+void LevelListener::onChunkUnloaded(LevelChunk & p1) {
+    (this->*_LevelListener_onChunkUnloaded)(p1);
+}
+static void (LevelListener::*_LevelListener_onLevelDestruction)(mcpe::string const &);
+void LevelListener::onLevelDestruction(mcpe::string const & p1) {
+    (this->*_LevelListener_onLevelDestruction)(p1);
+}
+static void (LevelListener::*_LevelListener_levelEvent)(LevelEvent, Vec3 const &, int);
+void LevelListener::levelEvent(LevelEvent p1, Vec3 const & p2, int p3) {
+    (this->*_LevelListener_levelEvent)(p1, p2, p3);
+}
+static void (LevelListener::*_LevelListener_levelSoundEvent)(LevelSoundEvent, Vec3 const &, int, ActorDefinitionIdentifier const &, bool, bool);
+void LevelListener::levelSoundEvent(LevelSoundEvent p1, Vec3 const & p2, int p3, ActorDefinitionIdentifier const & p4, bool p5, bool p6) {
+    (this->*_LevelListener_levelSoundEvent)(p1, p2, p3, p4, p5, p6);
+}
+static void (LevelListener::*_LevelListener_levelSoundEvent2)(mcpe::string const &, Vec3 const &, float, float);
+void LevelListener::levelSoundEvent(mcpe::string const & p1, Vec3 const & p2, float p3, float p4) {
+    (this->*_LevelListener_levelSoundEvent2)(p1, p2, p3, p4);
+}
+static void (LevelListener::*_LevelListener_stopSoundEvent)(mcpe::string const &);
+void LevelListener::stopSoundEvent(mcpe::string const & p1) {
+    (this->*_LevelListener_stopSoundEvent)(p1);
+}
+static void (LevelListener::*_LevelListener_stopAllSounds)();
+void LevelListener::stopAllSounds() {
+    (this->*_LevelListener_stopAllSounds)();
+}
+static void (LevelListener::*_LevelListener_takePicture)(cg::ImageBuffer &, Actor *, Actor *, ScreenshotOptions &);
+void LevelListener::takePicture(cg::ImageBuffer & p1, Actor * p2, Actor * p3, ScreenshotOptions & p4) {
+    (this->*_LevelListener_takePicture)(p1, p2, p3, p4);
+}
+static void (LevelListener::*_LevelListener_playerListChanged)();
+void LevelListener::playerListChanged() {
+    (this->*_LevelListener_playerListChanged)();
+}
 static unsigned int (*_Level_createRandomSeed)();
 unsigned int Level::createRandomSeed() {
     return _Level_createRandomSeed();
@@ -309,6 +429,18 @@ void Level::setDefaultSpawn(BlockPos const & p1) {
 static Player * (Level::*_Level_getPlayer)(const std::string &) const;
 Player * Level::getPlayer(const std::string & p1) const {
     return (this->*_Level_getPlayer)(p1);
+}
+static void (Level::*_Level_addListener)(LevelListener &);
+void Level::addListener(LevelListener & p1) {
+    (this->*_Level_addListener)(p1);
+}
+static void (Level::*_Level_removeListener)(LevelListener &);
+void Level::removeListener(LevelListener & p1) {
+    (this->*_Level_removeListener)(p1);
+}
+static std::list<Player *> & (Level::*_Level_getPlayerList)();
+std::list<Player *> & Level::getPlayerList() {
+    return (this->*_Level_getPlayerList)();
 }
 
 #include "AppResourceLoader.h"
@@ -2374,6 +2506,66 @@ void minecraft_symbols_init(void* handle) {
     if (_MinecraftGame_continueLeaveGame == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame17continueLeaveGameEv");
     ((void*&) _MinecraftGame_setTextboxText) = hybris_dlsym(handle, "_ZN13MinecraftGame14setTextboxTextERKSsi");
     if (_MinecraftGame_setTextboxText == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13MinecraftGame14setTextboxTextERKSsi");
+    ((void*&) _BlockSourceListener_destructor) = hybris_dlsym(handle, "_ZN19BlockSourceListenerD2Ev");
+    if (_BlockSourceListener_destructor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListenerD2Ev");
+    ((void*&) _BlockSourceListener_onSourceCreated) = hybris_dlsym(handle, "_ZN19BlockSourceListener15onSourceCreatedER11BlockSource");
+    if (_BlockSourceListener_onSourceCreated == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener15onSourceCreatedER11BlockSource");
+    ((void*&) _BlockSourceListener_onSourceDestroyed) = hybris_dlsym(handle, "_ZN19BlockSourceListener17onSourceDestroyedER11BlockSource");
+    if (_BlockSourceListener_onSourceDestroyed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener17onSourceDestroyedER11BlockSource");
+    ((void*&) _BlockSourceListener_onAreaChanged) = hybris_dlsym(handle, "_ZN19BlockSourceListener13onAreaChangedER11BlockSourceRK8BlockPosS4_");
+    if (_BlockSourceListener_onAreaChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener13onAreaChangedER11BlockSourceRK8BlockPosS4_");
+    ((void*&) _BlockSourceListener_onBlockChanged) = hybris_dlsym(handle, "_ZN19BlockSourceListener14onBlockChangedER11BlockSourceRK8BlockPosjRK5BlockS7_iPK21ActorBlockSyncMessage");
+    if (_BlockSourceListener_onBlockChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener14onBlockChangedER11BlockSourceRK8BlockPosjRK5BlockS7_iPK21ActorBlockSyncMessage");
+    ((void*&) _BlockSourceListener_onBrightnessChanged) = hybris_dlsym(handle, "_ZN19BlockSourceListener19onBrightnessChangedER11BlockSourceRK8BlockPos");
+    if (_BlockSourceListener_onBrightnessChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener19onBrightnessChangedER11BlockSourceRK8BlockPos");
+    ((void*&) _BlockSourceListener_onBlockEntityChanged) = hybris_dlsym(handle, "_ZN19BlockSourceListener20onBlockEntityChangedER11BlockSourceR10BlockActor");
+    if (_BlockSourceListener_onBlockEntityChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener20onBlockEntityChangedER11BlockSourceR10BlockActor");
+    ((void*&) _BlockSourceListener_onEntityChanged) = hybris_dlsym(handle, "_ZN19BlockSourceListener15onEntityChangedER11BlockSourceR5Actor");
+    if (_BlockSourceListener_onEntityChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener15onEntityChangedER11BlockSourceR5Actor");
+    ((void*&) _BlockSourceListener_onBlockEvent) = hybris_dlsym(handle, "_ZN19BlockSourceListener12onBlockEventER11BlockSourceiiiii");
+    if (_BlockSourceListener_onBlockEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN19BlockSourceListener12onBlockEventER11BlockSourceiiiii");
+    ((void*&) _LevelListener_allChanged) = hybris_dlsym(handle, "_ZN13LevelListener10allChangedEv");
+    if (_LevelListener_allChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener10allChangedEv");
+    ((void*&) _LevelListener_addParticle) = hybris_dlsym(handle, "_ZN13LevelListener11addParticleE12ParticleTypeRK4Vec3S3_iPK11CompoundTagb");
+    if (_LevelListener_addParticle == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener11addParticleE12ParticleTypeRK4Vec3S3_iPK11CompoundTagb");
+    ((void*&) _LevelListener_addParticleEffect) = hybris_dlsym(handle, "_ZN13LevelListener17addParticleEffectERK12HashedStringRK4Vec3RK17MolangVariableMap");
+    if (_LevelListener_addParticleEffect == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener17addParticleEffectERK12HashedStringRK4Vec3RK17MolangVariableMap");
+    ((void*&) _LevelListener_addParticleEffect2) = hybris_dlsym(handle, "_ZN13LevelListener17addParticleEffectERK12HashedStringRK5ActorS2_RK4Vec3RK17MolangVariableMap");
+    if (_LevelListener_addParticleEffect2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener17addParticleEffectERK12HashedStringRK5ActorS2_RK4Vec3RK17MolangVariableMap");
+    ((void*&) _LevelListener_addTerrainParticleEffect) = hybris_dlsym(handle, "_ZN13LevelListener24addTerrainParticleEffectERK8BlockPosRK5BlockRK4Vec3fff");
+    if (_LevelListener_addTerrainParticleEffect == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener24addTerrainParticleEffectERK8BlockPosRK5BlockRK4Vec3fff");
+    ((void*&) _LevelListener_playMusic) = hybris_dlsym(handle, "_ZN13LevelListener9playMusicERKSsRK4Vec3ff");
+    if (_LevelListener_playMusic == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener9playMusicERKSsRK4Vec3ff");
+    ((void*&) _LevelListener_playStreamingMusic) = hybris_dlsym(handle, "_ZN13LevelListener18playStreamingMusicERKSsiii");
+    if (_LevelListener_playStreamingMusic == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener18playStreamingMusicERKSsiii");
+    ((void*&) _LevelListener_onEntityAdded) = hybris_dlsym(handle, "_ZN13LevelListener13onEntityAddedER5Actor");
+    if (_LevelListener_onEntityAdded == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener13onEntityAddedER5Actor");
+    ((void*&) _LevelListener_onEntityRemoved) = hybris_dlsym(handle, "_ZN13LevelListener15onEntityRemovedER5Actor");
+    if (_LevelListener_onEntityRemoved == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener15onEntityRemovedER5Actor");
+    ((void*&) _LevelListener_onNewChunk) = hybris_dlsym(handle, "_ZN13LevelListener10onNewChunkER11BlockSourceR10LevelChunk");
+    if (_LevelListener_onNewChunk == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener10onNewChunkER11BlockSourceR10LevelChunk");
+    ((void*&) _LevelListener_onNewChunkFor) = hybris_dlsym(handle, "_ZN13LevelListener13onNewChunkForER6PlayerR10LevelChunk");
+    if (_LevelListener_onNewChunkFor == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener13onNewChunkForER6PlayerR10LevelChunk");
+    ((void*&) _LevelListener_onChunkLoaded) = hybris_dlsym(handle, "_ZN13LevelListener13onChunkLoadedER10LevelChunk");
+    if (_LevelListener_onChunkLoaded == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener13onChunkLoadedER10LevelChunk");
+    ((void*&) _LevelListener_onChunkUnloaded) = hybris_dlsym(handle, "_ZN13LevelListener15onChunkUnloadedER10LevelChunk");
+    if (_LevelListener_onChunkUnloaded == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener15onChunkUnloadedER10LevelChunk");
+    ((void*&) _LevelListener_onLevelDestruction) = hybris_dlsym(handle, "_ZN13LevelListener18onLevelDestructionERKSs");
+    if (_LevelListener_onLevelDestruction == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener18onLevelDestructionERKSs");
+    ((void*&) _LevelListener_levelEvent) = hybris_dlsym(handle, "_ZN13LevelListener10levelEventE10LevelEventRK4Vec3i");
+    if (_LevelListener_levelEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener10levelEventE10LevelEventRK4Vec3i");
+    ((void*&) _LevelListener_levelSoundEvent) = hybris_dlsym(handle, "_ZN13LevelListener15levelSoundEventE15LevelSoundEventRK4Vec3iRK25ActorDefinitionIdentifierbb");
+    if (_LevelListener_levelSoundEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener15levelSoundEventE15LevelSoundEventRK4Vec3iRK25ActorDefinitionIdentifierbb");
+    ((void*&) _LevelListener_levelSoundEvent2) = hybris_dlsym(handle, "_ZN13LevelListener15levelSoundEventERKSsRK4Vec3ff");
+    if (_LevelListener_levelSoundEvent2 == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener15levelSoundEventERKSsRK4Vec3ff");
+    ((void*&) _LevelListener_stopSoundEvent) = hybris_dlsym(handle, "_ZN13LevelListener14stopSoundEventERKSs");
+    if (_LevelListener_stopSoundEvent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener14stopSoundEventERKSs");
+    ((void*&) _LevelListener_stopAllSounds) = hybris_dlsym(handle, "_ZN13LevelListener13stopAllSoundsEv");
+    if (_LevelListener_stopAllSounds == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener13stopAllSoundsEv");
+    ((void*&) _LevelListener_takePicture) = hybris_dlsym(handle, "_ZN13LevelListener11takePictureERN2cg11ImageBufferEP5ActorS4_R17ScreenshotOptions");
+    if (_LevelListener_takePicture == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener11takePictureERN2cg11ImageBufferEP5ActorS4_R17ScreenshotOptions");
+    ((void*&) _LevelListener_playerListChanged) = hybris_dlsym(handle, "_ZN13LevelListener17playerListChangedEv");
+    if (_LevelListener_playerListChanged == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN13LevelListener17playerListChangedEv");
     ((void*&) _Level_createRandomSeed) = hybris_dlsym(handle, "_ZN5Level16createRandomSeedEv");
     if (_Level_createRandomSeed == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level16createRandomSeedEv");
     ((void*&) _Level__getServerLevelEventCoordinator) = hybris_dlsym(handle, "_ZN5Level31_getServerLevelEventCoordinatorEv");
@@ -2390,6 +2582,12 @@ void minecraft_symbols_init(void* handle) {
     if (_Level_setDefaultSpawn == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level15setDefaultSpawnERK8BlockPos");
     ((void*&) _Level_getPlayer) = hybris_dlsym(handle, "_ZNK5Level9getPlayerERKSs");
     if (_Level_getPlayer == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Level9getPlayerERKSs");
+    ((void*&) _Level_addListener) = hybris_dlsym(handle, "_ZN5Level11addListenerER13LevelListener");
+    if (_Level_addListener == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level11addListenerER13LevelListener");
+    ((void*&) _Level_removeListener) = hybris_dlsym(handle, "_ZN5Level14removeListenerER13LevelListener");
+    if (_Level_removeListener == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level14removeListenerER13LevelListener");
+    ((void*&) _Level_getPlayerList) = hybris_dlsym(handle, "_ZN5Level13getPlayerListEv");
+    if (_Level_getPlayerList == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN5Level13getPlayerListEv");
     ((void*&) _AppResourceLoader_AppResourceLoader) = hybris_dlsym(handle, "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     if (_AppResourceLoader_AppResourceLoader == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN17AppResourceLoaderC2ESt8functionIFSsvEE");
     ((void*&) _EducationOptions_EducationOptions) = hybris_dlsym(handle, "_ZN16EducationOptionsC2EP19ResourcePackManager");

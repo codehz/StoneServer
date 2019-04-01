@@ -11,22 +11,20 @@
 #include <interface/player_list.h>
 
 namespace {
+using namespace interface;
 
-SInstanceHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level, Player *player) {
+SInstanceHook(void, _ZN27ServerLevelEventCoordinator20sendLevelAddedPlayerER5LevelR6Player, ServerLevelEventCoordinator, Level *level,
+              Player *player) {
   using namespace interface;
   Locator<PlayerList>()->onPlayerAdded(*player);
   original(this, level, player);
 }
 
-SInstanceHook(void, _ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayerb, ServerLevelEventCoordinator, Player *player, bool opt) {
-  using namespace interface;
+SHook(void, _ZN12ServerPlayerD2Ev, Player *player) {
   Locator<PlayerList>()->onPlayerRemoved(*player);
-  original(this, player, opt);
+  original(player);
 }
 
-static patched::details::RegisterPatchInit pinit([] {
-  using namespace interface;
-  Locator<PlayerList>().generate<>();
-});
+static patched::details::RegisterPatchInit pinit([] { Locator<PlayerList>().generate<>(); });
 
 } // namespace

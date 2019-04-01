@@ -3,8 +3,8 @@
 #include <minecraft/Player.h>
 #include <set>
 
-#include "event_emitter.h"
 #include "base_interface.h"
+#include "event_emitter.h"
 
 namespace interface {
 
