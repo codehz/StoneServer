@@ -236,8 +236,8 @@ int main() {
                              props.motd.get(), levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers },
                              props.onlineMode, {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager,
                              createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test", std::move(eduOptions), nullptr,
-                             [](mcpe::string const &s) { Log::info("Minecraft", "Unloading level: %s", s.c_str()); },
-                             [](mcpe::string const &s) { Log::info("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
+                             [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
+                             [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
   Locator<ServerInstance>() = instance;
   if (props.activateWhitelist) {
     Locator<Minecraft>()->activateWhitelist();
