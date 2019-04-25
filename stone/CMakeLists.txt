@@ -58,6 +58,7 @@ add_executable(stone
   "src/ExtAPI/muteChat.cpp"
   "src/ExtAPI/actorInfo.cpp"
   "src/ExtAPI/worldInfo.cpp"
+  "src/ExtAPI/serverInfo.cpp"
   "src/GlobalAPI/common.h"
   "src/GlobalAPI/common.cpp"
   "src/GlobalAPI/SQLite3.cpp"
