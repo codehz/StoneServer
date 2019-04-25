@@ -67,6 +67,11 @@ template <typename Object, std::ptrdiff_t Offset, char... S> struct DirectPatch 
     else
       throw std::runtime_error(prefix + DA::Name + "@" + prettyPrint(Offset) + ": " + prettyPrint(DA::Access()) + " != " + prettyPrint(from));
   }
+
+  template<typename Fn>
+  static void PatchFn(Fn fn) {
+    DA::Access() = fn(DA::Access());
+  }
 };
 
 template <typename Object, std::ptrdiff_t Offset, char... S> struct TempReplace {

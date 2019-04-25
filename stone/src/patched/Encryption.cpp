@@ -18,7 +18,7 @@ SInstanceHook(void, _ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK11Lo
 }
 
 static patched::details::RegisterPatchInit pinit([] {
-  BUILD_HELPER(DirectPatch, uint16_t, 0x12C5, "_ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK11LoginPacket").VerifiedPatch(0xD1FF, 0x9090);
+  BUILD_HELPER(DirectPatch, uint16_t, 0x12B5, "_ZN20ServerNetworkHandler6handleERK17NetworkIdentifierRK11LoginPacket").VerifiedPatch(0xD1FF, 0x9090);
 });
 
 // !! Safe but slow
