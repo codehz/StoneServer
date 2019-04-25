@@ -22,7 +22,6 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   }
   auto temp            = Object::New(iso);
   auto strName         = ToJS("name");
-  auto strIdentifier   = ToJS("identifier");
   auto strVariant      = ToJS("variant");
   auto strAirSupply    = ToJS("airSupply");
   auto strStrength     = ToJS("strength");
@@ -41,7 +40,6 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   auto strAttackDamage = ToJS("attackDamage");
   auto strAgent        = ToJS("agent");
   temp->Set(strName, ToJS(actor->getNameTag().std()));
-  temp->Set(strIdentifier, ToJS(actor->getActorIdentifier().getFullName().std()));
   temp->Set(strVariant, ToJS(actor->getVariant()));
   temp->Set(strAirSupply, ToJS(std::make_tuple(actor->getAirSupply(), actor->getTotalAirSupply())));
   temp->Set(strStrength, ToJS(std::make_tuple(actor->getStrength(), actor->getStrengthMax())));
