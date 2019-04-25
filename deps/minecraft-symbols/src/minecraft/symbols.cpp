@@ -1,5 +1,5 @@
 // This file was automatically generated using tools/process_headers.py
-// Generated on Mon Apr 01 2019 03:55:27 UTC
+// Generated on Thu Apr 25 2019 02:11:45 UTC
 
 #include <hybris/dlfcn.h>
 #include <log.h>
@@ -2260,9 +2260,9 @@ Actor * Player::getAgent() const {
 }
 
 #include "Actor.h"
-static mcpe::string (ActorDefinitionIdentifier::*_ActorDefinitionIdentifier_getCanonicalName)() const;
-mcpe::string ActorDefinitionIdentifier::getCanonicalName() const {
-    return (this->*_ActorDefinitionIdentifier_getCanonicalName)();
+static mcpe::string (ActorDefinitionIdentifier::*_ActorDefinitionIdentifier_getFullName)() const;
+mcpe::string ActorDefinitionIdentifier::getFullName() const {
+    return (this->*_ActorDefinitionIdentifier_getFullName)();
 }
 static ActorDefinitionIdentifier & (Actor::*_Actor_getActorIdentifier)() const;
 ActorDefinitionIdentifier & Actor::getActorIdentifier() const {
@@ -3513,8 +3513,8 @@ void minecraft_symbols_init(void* handle) {
     if (_Player_getAttackDamage == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZN6Player15getAttackDamageEv");
     ((void*&) _Player_getAgent) = hybris_dlsym(handle, "_ZNK6Player8getAgentEv");
     if (_Player_getAgent == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK6Player8getAgentEv");
-    ((void*&) _ActorDefinitionIdentifier_getCanonicalName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
-    if (_ActorDefinitionIdentifier_getCanonicalName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier16getCanonicalNameEv");
+    ((void*&) _ActorDefinitionIdentifier_getFullName) = hybris_dlsym(handle, "_ZNK25ActorDefinitionIdentifier11getFullNameEv");
+    if (_ActorDefinitionIdentifier_getFullName == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK25ActorDefinitionIdentifier11getFullNameEv");
     ((void*&) _Actor_getActorIdentifier) = hybris_dlsym(handle, "_ZNK5Actor18getActorIdentifierEv");
     if (_Actor_getActorIdentifier == nullptr) Log::error("MinecraftSymbols", "Unresolved symbol: %s", "_ZNK5Actor18getActorIdentifierEv");
     ((void*&) _Actor_getUniqueID) = hybris_dlsym(handle, "_ZNK5Actor11getUniqueIDEv");

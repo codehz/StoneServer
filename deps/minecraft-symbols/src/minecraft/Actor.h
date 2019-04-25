@@ -6,7 +6,7 @@
 
 class ActorDefinitionIdentifier {
 public:
-  mcpe::string getCanonicalName() const;
+  mcpe::string getFullName() const;
 };
 
 struct CompoundTag;

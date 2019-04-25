@@ -41,7 +41,7 @@ static void actorInfoCallback(FunctionCallbackInfo<Value> const &info) {
   auto strAttackDamage = ToJS("attackDamage");
   auto strAgent        = ToJS("agent");
   temp->Set(strName, ToJS(actor->getNameTag().std()));
-  temp->Set(strIdentifier, ToJS(actor->getActorIdentifier().getCanonicalName().std()));
+  temp->Set(strIdentifier, ToJS(actor->getActorIdentifier().getFullName().std()));
   temp->Set(strVariant, ToJS(actor->getVariant()));
   temp->Set(strAirSupply, ToJS(std::make_tuple(actor->getAirSupply(), actor->getTotalAirSupply())));
   temp->Set(strStrength, ToJS(std::make_tuple(actor->getStrength(), actor->getStrengthMax())));
