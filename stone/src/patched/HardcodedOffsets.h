@@ -22,9 +22,9 @@ using namespace std;
 
 #define OFF(name) inline static const auto name [[maybe_unused]]
 
-OFF(PlayerName)        = StaticFieldAccessor<Player, 0x1194, mcpe::string>{};
-OFF(PlayerUUID)        = StaticFieldAccessor<Player, 0x128C, mce::UUID>{};
-OFF(PlayerNetworkID)   = StaticFieldAccessor<Player, 0x11e4, NetworkIdentifier>{};
+OFF(PlayerName)        = StaticFieldAccessor<Player, 0x1198, mcpe::string>{};
+OFF(PlayerUUID)        = StaticFieldAccessor<Player, 0x1290, mce::UUID>{};
+OFF(PlayerNetworkID)   = StaticFieldAccessor<Player, 0x11e8, NetworkIdentifier>{};
 OFF(PlayerXUID)        = makeOperator(+[](Player const &player) { return ExtendedCertificate::getXuid(*player.getCertificate()); });
 OFF(PlayerBasicInfo)   = makeOperator(+[](Player const &player) {
   return make_tuple(PlayerName[player].std(), PlayerUUID[player].asString().std(), PlayerXUID(player).std());
