@@ -260,7 +260,10 @@ int main() {
   std::signal(SIGINT, [](int) { endpoint()->stop(); });
   std::signal(SIGTERM, [](int) { endpoint()->stop(); });
   srv_core.stop >> [](auto) { endpoint()->stop(); };
-  srv_core.ping >> [](auto) { return Empty{}; };
+  srv_core.ping >> [](auto) {
+    Log::info("API", "PING!");
+    return Empty{};
+  };
   srv_core.tps >> [](auto) { return Locator<Tick>()->tps; };
   srv_command.execute >> [](auto request) {
     return EvalInServerThread([&] {
