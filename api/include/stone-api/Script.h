@@ -7,28 +7,26 @@ namespace api {
 
 struct EventData {
   std::string name, data;
-  static inline Buffer write(EventData const &input) { return Buffer::format("%s\n%s", input.name.data(), input.data.data()); }
-  static inline EventData read(char const *input) {
-    std::istringstream iss{ input };
-    EventData event;
-    std::getline(iss, event.name);
-    std::getline(iss, event.data);
-    return event;
-  }
-  std::string build(std::string xname) const { return xname + "." + name; }
-  static inline EventData rebuild(char const *identify, char const *data) { return { strrchr(identify, '.'), data }; }
-  static inline std::string build_pattern(std::string const &name) { return name + ".*"; }
-  static inline std::string build_pattern(std::string const &name, std::string const &key) { return name + "." + key; }
 };
 
-template <typename Side> struct ScriptService : ProxiedService<Side, ScriptService> {
-  ProxiedAction<Side, EventData> emit{ "emit" };
-  ProxiedPatternBoardcast<Side, EventData> broadcast{ "broadcast" };
+inline void to_json(rpc::json &j, const EventData &i) {
+  j["name"] = i.name;
+  j["data"] = i.data;
+}
+
+inline void from_json(const rpc::json &j, EventData &i) {
+  j.at("name").get_to(i.name);
+  j.at("data").get_to(i.data);
+}
+
+struct ScriptService : Service {
+  Action<EventData> emit{ "emit" };
+  Broadcast<EventData> broadcast{ "broadcast" };
 
   ScriptService()
-      : ProxiedService<Side, ScriptService>("script") {
-    this->$(emit);
-    this->$(broadcast);
+      : Service("script") {
+    $(emit);
+    $(broadcast);
   }
 };
 

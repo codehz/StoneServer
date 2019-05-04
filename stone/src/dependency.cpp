@@ -36,34 +36,26 @@ void initDependencies() {
       Locator<PlayerList>()->set.insert(&player);
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Log::info("PlayerList", "Player %s joined(uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
-      PlayerInfo temp = { name, uuid, xuid };
-      Sync << [=, name = name] {
-        Locator<CoreService<ServerSide>>()->players.set(name, temp);
-        Locator<CoreService<ServerSide>>()->online_players += temp;
-      };
+      Locator<CoreService>()->player_join << PlayerInfo{ name, uuid, xuid };
     };
     list.onPlayerRemoved >> [](auto &player) {
       Locator<PlayerList>()->set.erase(&player);
       auto [name, uuid, xuid] = player >> PlayerBasicInfo;
       Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
-      Sync << [name = name, uuid = uuid, xuid = xuid] { Locator<CoreService<ServerSide>>()->online_players -= { name, uuid, xuid }; };
+      Locator<CoreService>()->player_left << PlayerInfo{ name, uuid, xuid };
     };
-    Locator<CoreService<ServerSide>>()->online_players.clear();
   };
   Locator<Chat>() >> [](Chat &chat) {
     using namespace std::placeholders;
-    auto &service = Locator<ChatService<ServerSide>>();
+    auto &service = Locator<ChatService>();
     chat.onPlayerChat >> [](auto &player, auto &msg) {
-      Sync << [name = player >> PlayerName, msg] {
-        Log::info("Chat", "<%s> %s", name >> CStr, msg >> CStr);
-        Locator<ChatService<ServerSide>>()->recv << NormalMessage{ name >> StdStr, msg >> StdStr };
-      };
+      auto name = player >> PlayerName;
+      Log::info("Chat", "<%s> %s", name >> CStr, msg >> CStr);
+      Locator<ChatService>()->recv << NormalMessage{ name >> StdStr, msg >> StdStr };
     };
     chat.onChat >> [](auto &sender, auto &msg) {
-      Sync << [sender, msg] {
-        Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
-        Locator<ChatService<ServerSide>>()->recv << NormalMessage{ sender >> StdStr, msg >> StdStr };
-      };
+      Log::info("Chat", "[%s] %s", sender >> CStr, msg >> CStr);
+      Locator<ChatService>()->recv << NormalMessage{ sender >> StdStr, msg >> StdStr };
     };
     service->send >> [&](auto msg) {
       auto [sender, content] = msg;
@@ -72,71 +64,64 @@ void initDependencies() {
     service->raw >> std::bind(&Chat::sendAnnouncement, &chat, _1);
   };
   Locator<Blacklist>() >> [](Blacklist &list) {
-    auto &service = Locator<BlacklistService<ServerSide>>();
+    auto &service = Locator<BlacklistService>();
     service->add >> [&](auto arg) {
-      Sync << [=, &list] {
-        auto [type, content, reason] = arg;
-        if (type == "name") {
-          auto callback = [=, &list](bool flag, auto entity) {
-            if (flag) {
-              list.add(mce::UUID::fromString(entity.uuid), arg.reason);
-              Log::debug("Blacklist", "Created blacklist entry [%s] (name: %s)", entity.uuid.c_str(), arg.content.c_str());
-            } else
-              Log::warn("Blacklist", "Player name %s not found", arg.content.c_str());
-          };
-          Locator<CoreService<ServerSide>>()->players.get(content, callback);
-        } else if (type == "uuid") {
-          list.add(mce::UUID::fromString(content), reason);
-          Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
-        } else if (type == "xuid") {
-          list.add(content, reason);
-          Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
+      auto [type, content, reason] = arg;
+      if (type == "name") {
+        for (auto player : Locator<PlayerList>()->set) {
+          auto [name, uuid, xuid] = PlayerBasicInfo(*player);
+          if (name == content) {
+            list.add(mce::UUID::fromString(uuid), reason);
+            Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
+            break;
+          }
         }
-      };
+      } else if (type == "uuid") {
+        list.add(mce::UUID::fromString(content), reason);
+        Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
+      } else if (type == "xuid") {
+        list.add(content, reason);
+        Log::debug("Blacklist", "Created blacklist entry [%s]", content.c_str());
+      }
     };
     service->kick >> [&](auto arg) {
-      Sync << [=, &list] {
-        auto [type, content, reason] = arg;
-        auto continuation            = [&](auto filter) {
-          for (auto &player : Locator<PlayerList>()->set) {
-            if (filter(player)) {
-              list.kick(*player >> PlayerNetworkID, arg.reason);
-              break;
-            }
+      auto [type, content, reason] = arg;
+      auto continuation            = [&](auto filter) {
+        for (auto &player : Locator<PlayerList>()->set) {
+          if (filter(player)) {
+            list.kick(*player >> PlayerNetworkID, arg.reason);
+            break;
           }
-        };
-        if (type == "name") {
-          continuation([&](auto player) { return PlayerName[*player] == arg.content; });
-        } else if (type == "uuid") {
-          continuation([&](auto player) { return PlayerUUID[*player].asString() == arg.content; });
-        } else if (type == "xuid") {
-          continuation([&](auto player) { return PlayerXUID(*player) == arg.content; });
         }
       };
+      if (type == "name") {
+        continuation([&](auto player) { return PlayerName[*player] == arg.content; });
+      } else if (type == "uuid") {
+        continuation([&](auto player) { return PlayerUUID[*player].asString() == arg.content; });
+      } else if (type == "xuid") {
+        continuation([&](auto player) { return PlayerXUID(*player) == arg.content; });
+      }
     };
     service->remove >> [&](auto arg) {
-      Sync << [=, &list] {
-        auto [type, content] = arg;
-        if (type == "name") {
-          auto callback = [=, &list](bool flag, auto entity) {
-            if (flag) {
-              list.remove(mce::UUID::fromString(entity.uuid));
-              Log::debug("Blacklist", "Removed blacklist entry [%s]", entity.uuid.c_str());
-            } else {
-              Log::warn("Blacklist", "Player name %s not found", arg.content.c_str());
-            }
-          };
-          Locator<CoreService<ServerSide>>()->players.get(content, callback);
-        } else if (type == "uuid") {
-          list.remove(mce::UUID::fromString(content));
-          Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
-        } else if (type == "xuid") {
-          list.remove(content);
-          Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
+      auto [type, content] = arg;
+      if (type == "name") {
+        for (auto player : Locator<PlayerList>()->set) {
+          auto [name, uuid, xuid] = PlayerBasicInfo(*player);
+          if (name == content) {
+            list.remove(mce::UUID::fromString(uuid));
+            Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
+            break;
+          }
         }
-      };
+      } else if (type == "uuid") {
+        list.remove(mce::UUID::fromString(content));
+        Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
+      } else if (type == "xuid") {
+        list.remove(content);
+        Log::debug("Blacklist", "Removed blacklist entry [%s]", content.c_str());
+      }
     };
-    service->fetch >> [&](auto, auto cb) {
+    service->fetch >> [&](auto) {
       std::vector<BlacklistOP<true>> ret;
       list.forEach([&](auto vart, auto reason) {
         std::visit(
@@ -151,7 +136,7 @@ void initDependencies() {
             },
             vart);
       });
-      cb(ret);
+      return ret;
     };
   };
 }

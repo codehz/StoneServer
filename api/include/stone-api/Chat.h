@@ -7,27 +7,28 @@ namespace api {
 
 struct NormalMessage {
   std::string sender, content;
-
-  static inline Buffer write(NormalMessage const &input) { return Buffer::format("%s\n%s", input.sender.data(), input.content.data()); }
-  static inline NormalMessage read(char const *input) {
-    std::istringstream iss{ input };
-    NormalMessage message;
-    std::getline(iss, message.sender);
-    std::getline(iss, message.content);
-    return message;
-  }
 };
 
-template <typename Side> struct ChatService : ProxiedService<Side, ChatService> {
-  ProxiedAction<Side, NormalMessage> send{ "send" };
-  ProxiedBoardcast<Side, NormalMessage> recv{ "recv" };
-  ProxiedAction<Side, std::string> raw{ "raw" };
+inline void to_json(rpc::json &j, const NormalMessage &i) {
+  j["sender"]  = i.sender;
+  j["content"] = i.content;
+}
+
+inline void from_json(const rpc::json &j, NormalMessage &i) {
+  j.at("sender").get_to(i.sender);
+  j.at("content").get_to(i.content);
+}
+
+struct ChatService : Service {
+  Action<NormalMessage> send{ "send" };
+  Broadcast<NormalMessage> recv{ "recv" };
+  Action<std::string> raw{ "raw" };
 
   ChatService()
-      : ProxiedService<Side, ChatService>("chat") {
-    this->$(send);
-    this->$(recv);
-    this->$(raw);
+      : Service("chat") {
+    $(send);
+    $(recv);
+    $(raw);
   }
 };
 

@@ -70,7 +70,7 @@ SStaticHook(Local<Value>, _ZN2v87Context3NewEPNS_7IsolateEPNS_22ExtensionConfigu
 
 static patched::details::RegisterPatchInit pinit([] {
   using namespace api;
-  Locator<ScriptService<ServerSide>>()->emit >> [](EventData const &data) {
+  Locator<ScriptService>()->emit >> [](EventData const &data) {
     if (!Locator<ScriptApi::V8CoreInterface>()) return;
     auto &core = *Locator<ScriptApi::V8CoreInterface>();
     auto &iso  = V8Isolate[core];

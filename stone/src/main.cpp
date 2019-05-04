@@ -62,7 +62,7 @@ void hack(void *handle, char const *symbol) {
   PatchUtils::patchCallInstruction(ptr, (void *)(void (*)())[]{}, true);
 }
 
-LOAD_ENV(BUSNAME_SUFFIX, "default");
+LOAD_ENV(API_ENDPOINT, "ws+unix://data/api.socket");
 
 void initDependencies();
 
@@ -106,13 +106,14 @@ int main() {
   Log::info("StoneServer", "Loaded Minecraft library in %f sec.", float(clock() - loading_library) / CLOCKS_PER_SEC);
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
 
-  apid_init();
-  auto &srv_core [[maybe_unused]]      = Locator<CoreService<ServerSide>>().generate();
-  auto &srv_chat [[maybe_unused]]      = Locator<ChatService<ServerSide>>().generate();
-  auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService<ServerSide>>().generate();
-  auto &srv_command [[maybe_unused]]   = Locator<CommandService<ServerSide>>().generate();
-  auto &srv_script [[maybe_unused]]    = Locator<ScriptService<ServerSide>>().generate();
-  Log::addHook([&](auto level, auto tag, auto content) { Sync << [=, &srv_core] { srv_core.log << LogEntry{ tag, level, content }; }; });
+  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::wsio>(API_ENDPOINT));
+
+  auto &srv_core [[maybe_unused]]      = Locator<CoreService>().generate();
+  auto &srv_chat [[maybe_unused]]      = Locator<ChatService>().generate();
+  auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService>().generate();
+  auto &srv_command [[maybe_unused]]   = Locator<CommandService>().generate();
+  auto &srv_script [[maybe_unused]]    = Locator<ScriptService>().generate();
+  Log::addHook([&](auto level, auto tag, auto content) { srv_core.log << LogEntry{ tag, level, content }; });
 
   MinecraftUtils::initSymbolBindings(handle);
   Log::info("StoneServer", "Game version: %s", Common::getGameVersionStringNet().c_str());
@@ -138,7 +139,7 @@ int main() {
   Log::trace("StoneServer", "Loading server properties");
   auto &props = Locator<ServerProperties>().generate();
   props.load();
-  srv_core.config << props.config;
+  srv_core.config >> [cfg = props.config](auto) { return cfg; };
   Log::info("StoneServer", "Config: %s", props.config.c_str());
 
   Log::trace("StoneServer", "Setting up level settings");
@@ -232,12 +233,12 @@ int main() {
   v8::V8::InitializePlatform((v8::Platform *)&v8Platform);
   v8::V8::Initialize();
   Log::trace("StoneServer", "Initializing Server");
-  instance->initializeServer(minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(),
-                             props.motd.get(), levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers },
-                             props.onlineMode, {}, "normal", *mce::UUID::EMPTY, eventing, resourcePackRepo, ctm, *resourcePackManager,
-                             createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test", std::move(eduOptions), nullptr,
-                             [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
-                             [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
+  instance->initializeServer(
+      minecraftApp, whitelist.list, &permissionsFile, &pathmgr, idleTimeout, props.worldDir.get(), props.worldName.get(), props.motd.get(),
+      levelSettings, props.viewDistance, true, { props.port, props.portV6, props.maxPlayers }, props.onlineMode, {}, "normal", *mce::UUID::EMPTY,
+      eventing, resourcePackRepo, ctm, *resourcePackManager, createLevelStorageFunc, pathmgr.getWorldsPath(), nullptr, "boom", "test",
+      std::move(eduOptions), nullptr, [](mcpe::string const &s) { Log::debug("Minecraft", "Unloading level: %s", s.c_str()); },
+      [](mcpe::string const &s) { Log::debug("Minecraft", "Saving level: %s", s.c_str()); }, nullptr, nullptr);
   Locator<ServerInstance>() = instance;
   if (props.activateWhitelist) {
     Locator<Minecraft>()->activateWhitelist();
@@ -256,23 +257,23 @@ int main() {
   instance->startServerThread();
   Log::info("StoneServer", "Server is running (%f sec)", float(clock() - start_clock) / CLOCKS_PER_SEC);
 
-  std::signal(SIGINT, [](int) { apid_stop(); });
-  std::signal(SIGTERM, [](int) { apid_stop(); });
-  srv_core.stop >> [](auto) { apid_stop(); };
-  srv_core.ping >> [](auto, auto f) { f({}); };
-  srv_core.tps >> [](auto, auto f) { f(Locator<Tick>()->tps); };
-  srv_command.execute >> [](auto request, auto f) {
-    f(EvalInServerThread([&] {
+  std::signal(SIGINT, [](int) { endpoint()->stop(); });
+  std::signal(SIGTERM, [](int) { endpoint()->stop(); });
+  srv_core.stop >> [](auto) { endpoint()->stop(); };
+  srv_core.ping >> [](auto) { return Empty{}; };
+  srv_core.tps >> [](auto) { return Locator<Tick>()->tps; };
+  srv_command.execute >> [](auto request) {
+    return EvalInServerThread([&] {
       return patched::withCommandOutput([&] {
         auto commandOrigin = make_unique<ServerCommandOrigin>(request.sender, *Locator<ServerLevel>());
         Locator<MinecraftCommands>()->requestCommandExecution(std::move(commandOrigin), request.content, 4, true);
       });
-    }));
+    });
   };
 
   chdir((pathmgr.getWorldsPath().std() + props.worldDir.get()).c_str());
 
-  apid_start();
+  endpoint()->start();
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();

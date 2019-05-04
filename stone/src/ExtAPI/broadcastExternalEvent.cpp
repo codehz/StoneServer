@@ -19,7 +19,7 @@ static void broadcastExternalEventCallback(FunctionCallbackInfo<Value> const &in
   }
   auto identify = fromJS<std::string>(iso, info[0]);
   auto content  = fromJS<std::string>(iso, info[1]);
-  Locator<ScriptService<ServerSide>>()->broadcast << EventData{ identify, content };
+  Locator<ScriptService>()->broadcast << EventData{ identify, content };
 }
 
 static Register reg{ "registerComponent", "broadcastExternalEvent", &broadcastExternalEventCallback };

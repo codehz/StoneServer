@@ -5,47 +5,34 @@
 
 namespace api {
 
-template <bool reason = false> struct BlacklistOP {
-  std::string type, content;
+template <bool reason = false> struct BlacklistOP { std::string type, content; };
 
-  static inline Buffer write(BlacklistOP const &input) { return Buffer::format("%s\n%s", input.type.data(), input.content.data()); }
-  static inline BlacklistOP read(char const *input) {
-    std::istringstream iss{ input };
-    BlacklistOP op;
-    std::getline(iss, op.type);
-    std::getline(iss, op.content);
-    return op;
-  }
-};
+template <> struct BlacklistOP<true> { std::string type, content, reason; };
 
-template <> struct BlacklistOP<true> {
-  std::string type, content, reason;
+template <bool reason> inline void to_json(rpc::json &j, const BlacklistOP<reason> &i) {
+  j["type"]    = i.type;
+  j["content"] = i.content;
+  if constexpr (reason) j["reason"] = i.reason;
+}
 
-  static inline Buffer write(BlacklistOP const &input) {
-    return Buffer::format("%s\n%s\n%s", input.type.data(), input.content.data(), input.reason.data());
-  }
-  static inline BlacklistOP read(char const *input) {
-    std::istringstream iss{ input };
-    BlacklistOP op;
-    std::getline(iss, op.type);
-    std::getline(iss, op.content);
-    std::getline(iss, op.reason);
-    return op;
-  }
-};
+template <bool reason> inline void from_json(const rpc::json &j, BlacklistOP<reason> &i) {
+  j.at("type").get_to(i.type);
+  j.at("content").get_to(i.content);
+  if constexpr (reason) j.at("reason").get_to(i.reason);
+}
 
-template <typename Side> struct BlacklistService : ProxiedService<Side, BlacklistService> {
-  ProxiedAction<Side, BlacklistOP<true>> add{ "add" };
-  ProxiedAction<Side, BlacklistOP<false>> remove{ "remove" };
-  ProxiedAction<Side, BlacklistOP<true>> kick{ "kick" };
-  ProxiedMethod<Side, Empty, std::vector<BlacklistOP<true>>> fetch{ "fetch" };
+struct BlacklistService : Service {
+  Action<BlacklistOP<true>> add{ "add" };
+  Action<BlacklistOP<false>> remove{ "remove" };
+  Action<BlacklistOP<true>> kick{ "kick" };
+  Method<std::vector<BlacklistOP<true>>, Empty> fetch{ "fetch" };
 
   BlacklistService()
-      : ProxiedService<Side, BlacklistService>("blacklist") {
-    this->$(add);
-    this->$(remove);
-    this->$(kick);
-    this->$(fetch);
+      : Service("blacklist") {
+    $(add);
+    $(remove);
+    $(kick);
+    $(fetch);
   }
 };
 

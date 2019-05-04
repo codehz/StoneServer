@@ -1,464 +1,100 @@
 #pragma once
 
-#include <apid.h>
-#include <cstdarg>
-#include <cstring>
-#include <functional>
-#include <mutex>
-#include <sstream>
-#include <string>
-#include <type_traits>
-
-#ifndef APID_USE_LIBUV
-extern "C" {
-#include <ae.h>
-}
-#endif
+#include <rpcws.hpp>
 
 namespace api {
 
-template <typename F> inline F *copy_function(F f) {
-  if constexpr (std::is_function_v<F>)
-    return &f;
-  else
-    return new F(f);
+inline std::unique_ptr<rpcws::RPC> &endpoint() {
+  static std::unique_ptr<rpcws::RPC> instance;
+  return instance;
 }
 
-#ifndef APID_USE_LIBUV
-template <typename F> void SetTimeout(long long m, F f) {
-  static std::mutex mtx;
-  std::unique_lock lock{ mtx };
-  auto copied = copy_function(f);
-  auto loop   = (aeEventLoop *)apid_loop_handle();
-  aeCreateTimeEvent(loop, m,
-                    +[](aeEventLoop *loop, int fd, void *client, int mask) {
-                      std::unique_lock lock{ mtx };
-                      auto f = (F *)client;
-                      (*f)();
-                      aeDeleteTimeEvent(loop, fd);
-                    },
-                    copied,
-                    +[](aeEventLoop *loop, void *client) {
-                      if constexpr (!std::is_function_v<F>) delete (F *)client;
-                    });
-}
-
-inline static struct _Sync {
-  template <typename F> void operator<<(F f) { SetTimeout(0, f); }
-} Sync [[maybe_unused]];
-#endif
-
-struct Empty {};
-
-struct Buffer {
-  inline static constexpr char ZERO[1] = { 0 };
-  char *data;
-  operator char *() { return data; }
-  operator char const *() const { return data; }
-  explicit Buffer(char *data)
-      : data(data) {}
-  Buffer(Buffer &&rhs)
-      : data(rhs.data) {
-    rhs.data = nullptr;
-  }
-  Buffer(Buffer const &) = delete;
-  ~Buffer() {
-    if (data && data != ZERO) free(data);
-  }
-  static inline Buffer buildKeyEvent(std::string const &service, std::string const &name, std::string const &event) {
-    return format("%s:%s!%s", service.data(), name.data(), event.data());
-  }
-  static inline Buffer buildKeyName(std::string const &service, std::string const &name) { return format("%s:%s", service.data(), name.data()); }
-  static __attribute__((format(printf, 1, 2))) Buffer format(char const *format, ...) {
-    char *data;
-    va_list args;
-    va_start(args, format);
-    if (vasprintf(&data, format, args) == -1) __asm__("int3");
-    va_end(args);
-    return Buffer{ data };
-  }
-  static inline Buffer copy(char const *data) { return Buffer{ strdup(data) }; }
-  static inline Buffer copy(std::string const &content) { return Buffer{ strdup(content.data()) }; }
-};
-
-template <typename T> struct Serializble {
-  static inline auto write(T const &input) { return T::write(input); }
-  static inline T read(char const *input) { return T::read(input); }
-};
-
-template <> struct Serializble<Empty> {
-  static inline char const *write(Empty const &) { return Buffer::ZERO; }
-  static inline Empty read(char const *) { return {}; }
-};
-
-template <> struct Serializble<int> {
-  static inline Buffer write(int value) { return Buffer::format("%d", value); }
-  static inline int read(char const *data) { return atoi(data); }
-};
-
-template <> struct Serializble<float> {
-  static inline Buffer write(float value) { return Buffer::format("%f", value); }
-  static inline float read(char const *data) { return atof(data); }
-};
-
-template <> struct Serializble<std::string> {
-  static inline Buffer write(std::string const &input) { return Buffer::copy(input); }
-  static inline std::string read(char const *input) { return input; }
-};
-
-template <typename T> struct Serializble<std::vector<T>> {
-  static inline Buffer write(std::vector<T> const &input) {
-    std::ostringstream oss;
-    oss << input.size() << '\n';
-    for (auto &item : input) {
-      auto buf = Serializble<T>::write(item);
-      oss << strlen(buf) << '\n' << buf << '\n';
-    }
-    return Buffer::copy(oss.str());
-  }
-  static inline std::vector<T> read(char const *input) {
-    std::istringstream iss{ input };
-    std::string buffer;
-    std::getline(iss, buffer);
-    int len = atoi(buffer.c_str());
-    std::vector<T> ret;
-    ret.reserve(len);
-    for (int i = 0; i < len; i++) {
-      std::getline(iss, buffer);
-      int size = atoi(buffer.c_str());
-      Buffer temp{ (char *)malloc(size + 2) };
-      iss.read(temp, size + 1);
-      ret.emplace_back(Serializble<T>::read(temp));
-    }
-    return ret;
-  }
-};
-
-struct Named {
+class Named {
+protected:
   std::string name;
-  inline Named(std::string const &name)
+
+public:
+  Named(std::string_view name)
       : name(name) {}
 };
 
-template <typename Side, template <typename> typename Src> struct ProxiedService : Side::proxied_service {
-  ProxiedService(std::string const &name)
-      : Side::proxied_service(name) {}
-};
-template <typename Side, typename T> struct ProxiedAction : Side::template proxied_action<T> {
-  ProxiedAction(std::string const &name)
-      : Side::template proxied_action<T>(name) {}
-};
-template <typename Side, typename T, typename R> struct ProxiedMethod : Side::template proxied_method<T, R> {
-  ProxiedMethod(std::string const &name)
-      : Side::template proxied_method<T, R>(name) {}
-};
-template <typename Side, typename T> struct ProxiedProperty : Side::template proxied_property<T> {
-  ProxiedProperty(std::string const &name)
-      : Side::template proxied_property<T>(name) {}
-};
-template <typename Side, typename T> struct ProxiedBoardcast : Side::template proxied_broadcast<T> {
-  ProxiedBoardcast(std::string const &name)
-      : Side::template proxied_broadcast<T>(name) {}
-};
-template <typename Side, typename T> struct ProxiedPatternBoardcast : Side::template proxied_pattern_broadcast<T> {
-  ProxiedPatternBoardcast(std::string const &name)
-      : Side::template proxied_pattern_broadcast<T>(name) {}
-};
-template <typename Side, typename T> struct ProxiedSet : Side::template proxied_set<T> {
-  ProxiedSet(std::string const &name)
-      : Side::template proxied_set<T>(name) {}
-};
-template <typename Side, typename K, typename V> struct ProxiedHash : Side::template proxied_hash<K, V> {
-  ProxiedHash(std::string const &name)
-      : Side::template proxied_hash<K, V>(name) {}
-};
-
-template <typename T, typename ServiceRef> class CommonSet : public Named, public ServiceRef {
-  template <typename F> static void iterate_stub(bool done, char const *data, void *privdata) {
-    F *f = (F *)privdata;
-    (*f)(done, done ? T{} : Serializble<T>::read(data));
-    if constexpr (!std::is_function_v<F>)
-      if (done) delete f;
-  }
-  template <typename F> static void all_stub(int size, char const **vec, void *privdata) {
-    F *f = (F *)privdata;
-    std::vector<T> ret;
-    ret.reserve(size);
-    for (auto i = 0; i < size; i++) ret.emplace_back(Serializble<T>::read(vec[i]));
-    (*f)(ret);
-  }
-  template <typename F> static void contains_stub(bool value, void *privdata) {
-    F *f = (F *)privdata;
-    (*f)(value);
-    if constexpr (!std::is_function_v<F>) delete f;
-  }
-
-  template <typename F> static void on_clear_stub(char const *data, void *privdata) {
-    F *f = (F *)privdata;
-    (*f)();
-  }
-
-  template <typename F> static void events_stub(char const *data, void *privdata) {
-    F *f = (F *)privdata;
-    (*f)(Serializble<T>::read(data));
-  }
-
-  template <typename F> static void fproxy(long long number, void *privdata) {
-    F *f = (F *)privdata;
-    if (number) (*f)();
-    if constexpr (!std::is_function_v<F>) delete f;
-  }
-
+class Service : Named {
 public:
-  inline CommonSet(std::string const &name)
+  Service(std::string_view name)
       : Named(name) {}
 
-  inline void clear [[gnu::artificial]] () {
-    apid_publish(Buffer::buildKeyEvent(this->service->name, name, "clear"), "");
-    apid_set_clear(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name));
-  }
-  template <typename F> inline void on_clear(F f) {
-    apid_subscribe(on_clear_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "clear"));
-  }
-  inline void operator+= [[gnu::artificial]](T const &input) {
-    auto data = Serializble<T>::write(input);
-    apid_publish(Buffer::buildKeyEvent(this->service->name, name, "add"), data);
-    apid_set_add(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name), data);
-  }
-  template <typename F> inline void on_add(F f) {
-    apid_subscribe(events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "add"));
-  }
-  inline void operator-= [[gnu::artificial]](T const &input) {
-    auto data = Serializble<T>::write(input);
-    apid_publish(Buffer::buildKeyEvent(this->service->name, name, "remove"), data);
-    apid_set_remove(nullptr, nullptr, Buffer::buildKeyName(this->service->name, name), data);
-  }
-  template <typename F> inline void on_remove(F f) {
-    apid_subscribe(&events_stub<F>, copy_function(f), Buffer::buildKeyEvent(this->service->name, name, "remove"));
-  }
-  template <typename F> inline void iterate(F f) {
-    apid_set_iterate(&iterate_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name));
-  }
-  template <typename F> inline void all(F f) { apid_set_iterate(&all_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name)); }
-  template <typename F> inline void contains(T const &input, F f) {
-    apid_set_contains(&contains_stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<T>::write(input));
-  }
+protected:
+  template <typename T> void $(T &rhs) { rhs.$(this); }
+  template <typename R, typename T> friend class Method;
+  template <typename T> friend class Action;
+  template <typename T> friend class Broadcast;
 };
 
-template <typename K, typename V, typename ServiceRef> class CommonHash : public Named, public ServiceRef {
-  template <typename F> static void stub(bool flag, char const *data, void *privdata) {
-    F *f = (F *)privdata;
-    (*f)(flag, flag ? Serializble<V>::read(data) : V{});
-    if constexpr (!std::is_function_v<F>) delete f;
-  }
+template <typename R, typename T> class Method : Named {
+  std::function<R(T)> fn;
 
 public:
-  inline CommonHash(std::string const &name)
+  Method(std::string_view name)
       : Named(name) {}
 
-  inline void set(K const &key, V const &value) {
-    apid_hash_set(NULL, NULL, Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key), Serializble<V>::write(value));
+  void operator>>(std::function<R(T)> fn) { this->fn = fn; }
+
+protected:
+  void $(Service *service) {
+    endpoint()->reg(service->name + "." + name, [this](auto client, rpcws::json data) -> rpcws::json {
+      T input;
+      rpcws::json output;
+      nlohmann::from_json(data, input);
+      nlohmann::to_json(output, fn(input));
+      return output;
+    });
+  }
+  friend class Service;
+};
+
+template <typename T> class Action : Named {
+  std::function<void(T)> fn;
+
+public:
+  Action(std::string_view name)
+      : Named(name) {}
+
+  void operator>>(std::function<void(T)> fn) { this->fn = fn; }
+
+protected:
+  void $(Service *service) {
+    endpoint()->reg(service->name + "." + name, [this](auto client, rpcws::json data) -> rpcws::json {
+      T input;
+      nlohmann::from_json(data, input);
+      fn(input);
+      return nullptr;
+    });
+  }
+  friend class Service;
+};
+
+template <typename T> class Broadcast : Named {
+  std::string mixed;
+
+public:
+  Broadcast(std::string_view name)
+      : Named(name) {}
+
+  void operator<<(T input) {
+    rpcws::json output;
+    nlohmann::to_json(output, input);
+    endpoint()->emit(mixed, output);
   }
 
-  template <typename F> inline void get(K const &key, F f) {
-    apid_hash_get(&stub<F>, copy_function(f), Buffer::buildKeyName(this->service->name, name), Serializble<K>::write(key));
-  }
+protected:
+  void $(Service *service) { endpoint()->event(mixed = service->name + "." + name); }
+  friend class Service;
 };
 
-struct ServerSide {
-  class proxied_service : public Named {
-  public:
-    proxied_service(std::string const &name)
-        : Named(name) {}
+struct Empty {};
 
-  private:
-    template <typename T> static inline void apid_action_stub(char const *data, void *privdata) {
-      ProxiedAction<ServerSide, T> *target = (ProxiedAction<ServerSide, T> *)privdata;
-      target->invoke(Serializble<T>::read(data));
-    }
-    template <typename T, typename R> static inline void apid_method_stub(char const *data, apid_method_reply_ctx *reply) {
-      ProxiedMethod<ServerSide, T, R> *target = *(ProxiedMethod<ServerSide, T, R> **)reply;
-      target->invoke(Serializble<T>::read(data), [reply](R const &ret) { apid_method_reply(reply, Serializble<R>::write(ret)); });
-    }
+inline void to_json(rpc::json &j, const Empty &i) {}
 
-  protected:
-    template <typename T> inline void $(ProxiedAction<ServerSide, T> &action) {
-      apid_register_action(Buffer::buildKeyName(name, action.name), &apid_action_stub<T>, (void *)&action);
-    }
-    template <typename T, typename R> inline void $(ProxiedMethod<ServerSide, T, R> &method) {
-      apid_register_method(Buffer::buildKeyName(name, method.name), &apid_method_stub<T, R>, (void *)&method);
-    }
-    template <typename T> inline void $(ProxiedProperty<ServerSide, T> &prop) { prop.$(this); }
-    template <typename T> inline void $(ProxiedBoardcast<ServerSide, T> &broadcast) { broadcast.$(this); }
-    template <typename T> inline void $(ProxiedPatternBoardcast<ServerSide, T> &broadcast) { broadcast.$(this); }
-    template <typename T> inline void $(ProxiedSet<ServerSide, T> &set) { set.$(this); }
-    template <typename K, typename V> inline void $(ProxiedHash<ServerSide, K, V> &set) { set.$(this); }
-  };
-
-  template <typename T> class proxied_action : public Named {
-    std::function<void(T const &)> func;
-
-  public:
-    proxied_action(std::string const &name)
-        : Named(name) {}
-    inline void operator>>(std::function<void(T const &)> const &f) { func = f; }
-
-  private:
-    inline void invoke(T const &value) {
-      if (func) func(value);
-    }
-    friend class proxied_service;
-  };
-
-  template <typename T, typename R> class proxied_method : public Named {
-    std::function<void(T const &, std::function<void(R)> const &)> func;
-
-  public:
-    proxied_method(std::string const &name)
-        : Named(name) {}
-    inline void operator>>(std::function<void(T const &, std::function<void(R)> const &)> const &f) { func = f; }
-
-  private:
-    template <typename F> inline void invoke(T const &value, F const &cb) {
-      if (func)
-        func(value, cb);
-      else
-        cb({});
-    }
-    friend class proxied_service;
-  };
-
-  class service_ref {
-  protected:
-    proxied_service *service;
-
-  private:
-    inline void $(proxied_service *service) { this->service = service; }
-    friend class proxied_service;
-  };
-
-  template <typename T> class proxied_property : public Named, public service_ref {
-  public:
-    proxied_property(std::string const &name)
-        : Named(name) {}
-    inline T const &operator<<(T const &input) {
-      apid_kv_set(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
-      return input;
-    }
-  };
-
-  template <typename T> class proxied_broadcast : public Named, public service_ref {
-  public:
-    proxied_broadcast(std::string const &name)
-        : Named(name) {}
-    inline void operator<<(T const &input) { apid_publish(Buffer::buildKeyName(service->name, name), Serializble<T>::write(input)); }
-  };
-
-  template <typename T> class proxied_pattern_broadcast : public Named, public service_ref {
-  public:
-    proxied_pattern_broadcast(std::string const &name)
-        : Named(name) {}
-    inline void operator<<(T const &input) { apid_publish(Buffer::buildKeyName(service->name, input.build(name)), Serializble<T>::write(input)); }
-  };
-
-  template <typename T> using proxied_set              = CommonSet<T, service_ref>;
-  template <typename K, typename V> using proxied_hash = CommonHash<K, V, service_ref>;
-};
-
-struct ClientSide {
-  class proxied_service : public Named {
-  public:
-    proxied_service(std::string const &name)
-        : Named(name) {}
-
-  protected:
-    template <typename T> inline void $(T &target) { target.$(this); }
-  };
-
-  class service_ref {
-  protected:
-    proxied_service *service;
-
-  private:
-    inline void $(proxied_service *service) { this->service = service; }
-    friend class proxied_service;
-  };
-
-  template <typename T> class proxied_action : public Named, public service_ref {
-    template <typename F> static void stub(void *privdata) {
-      F *f = (F *)privdata;
-      (*f)();
-      if constexpr (!std::is_function_v<F>) delete f;
-    }
-
-  public:
-    proxied_action(std::string const &name)
-        : Named(name) {}
-    void operator()(T const &input) { apid_invoke(nullptr, nullptr, Buffer::buildKeyName(service->name, name), Serializble<T>::write(input)); }
-    template <typename F> void operator()(T const &input, F f) {
-      apid_invoke(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
-    }
-  };
-
-  template <typename T, typename R> class proxied_method : public Named, public service_ref {
-    template <typename F> static void stub(char const *data, void *privdata) {
-      F *f = (F *)privdata;
-      (*f)(Serializble<R>::read(data));
-      if constexpr (!std::is_function_v<F>) delete f;
-    }
-
-  public:
-    proxied_method(std::string const &name)
-        : Named(name) {}
-    template <typename F> void operator()(T const &input, F f) {
-      apid_invoke_method(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name), Serializble<T>::write(input));
-    }
-  };
-
-  template <typename T> class proxied_property : public Named, public service_ref {
-    template <typename F> static void stub(char const *data, void *privdata) {
-      F *f = (F *)privdata;
-      (*f)(Serializble<T>::read(data));
-      if constexpr (!std::is_function_v<F>) delete f;
-    }
-
-  public:
-    proxied_property(std::string const &name)
-        : Named(name) {}
-    template <typename F> void operator>>(F f) { apid_kv_get(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
-  };
-
-  template <typename T> class proxied_broadcast : public Named, public service_ref {
-    template <typename F> static void stub(char const *data, void *privdata) {
-      F *f = (F *)privdata;
-      (*f)(Serializble<T>::read(data));
-    }
-
-  public:
-    proxied_broadcast(std::string const &name)
-        : Named(name) {}
-    template <typename F> void operator>>(F f) { apid_subscribe(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, name)); }
-  };
-
-  template <typename T> class proxied_pattern_broadcast : public Named, public service_ref {
-    template <typename F> static void stub(char const *identify, char const *data, void *privdata) {
-      F *f = (F *)privdata;
-      (*f)(T::rebuild(identify, data));
-    }
-
-  public:
-    proxied_pattern_broadcast(std::string const &name)
-        : Named(name) {}
-    template <typename Filter, typename F> void operator()(Filter filter, F f) {
-      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name, filter)));
-    }
-    template <typename F> void operator>>(F f) {
-      apid_subscribe_pattern(&stub<F>, copy_function(f), Buffer::buildKeyName(service->name, T::build_pattern(name)));
-    }
-  };
-
-  template <typename T> using proxied_set              = CommonSet<T, service_ref>;
-  template <typename K, typename V> using proxied_hash = CommonHash<K, V, service_ref>;
-};
+inline void from_json(const rpc::json &j, Empty &i) {}
 
 } // namespace api
