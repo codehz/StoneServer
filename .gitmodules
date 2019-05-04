@@ -1,3 +1,3 @@
 [submodule "exts/wsrpc"]
 	path = exts/wsrpc
-	url = git@github.com:CodeHz/wsrpc
+	url = http://github.com/CodeHz/wsrpc
