@@ -1,3 +1,6 @@
 [submodule "exts/APID"]
 	path = exts/APID
 	url = https://github.com/CodeHz/APID.git
+[submodule "exts/wsrpc"]
+	path = exts/wsrpc
+	url = git@github.com:CodeHz/wsrpc
