@@ -1,19 +1,12 @@
 #pragma once
 
 #ifndef API_MODE
-#define API_MODE server
+#define API_MODE 0
 #endif
 
 #include <rpcws.hpp>
 
 namespace api {
-
-#if API_MODE == server
-
-inline std::unique_ptr<rpcws::RPC> &endpoint() {
-  static std::unique_ptr<rpcws::RPC> instance;
-  return instance;
-}
 
 class Named {
 protected:
@@ -35,6 +28,13 @@ protected:
   template <typename T> friend class Action;
   template <typename T> friend class Broadcast;
 };
+
+#if API_MODE == 0
+
+inline std::unique_ptr<rpcws::RPC> &endpoint() {
+  static std::unique_ptr<rpcws::RPC> instance;
+  return instance;
+}
 
 template <typename R, typename T> class Method : Named {
   std::function<R(T)> fn;
@@ -97,11 +97,78 @@ protected:
   friend class Service;
 };
 
+#else
+
+inline std::unique_ptr<rpcws::RPC::Client> &endpoint() {
+  static std::unique_ptr<rpcws::RPC::Client> instance;
+  return instance;
+}
+
+template <typename R, typename T> class Method : Named {
+  std::string mixed;
+
+public:
+  Method(std::string_view name)
+      : Named(name) {}
+
+  promise<R> operator()(T value) {
+    rpcws::json input;
+    nlohmann::to_json(input, value);
+    return endpoint()->call(mixed, input).then<R>([](auto output) {
+      R ret;
+      nlohmann::from_json(output, ret);
+      return ret;
+    });
+  }
+
+protected:
+  void $(Service *service) { mixed = service->name + "." + name; }
+  friend class Service;
+};
+
+template <typename T> class Action : Named {
+  std::string mixed;
+
+public:
+  Action(std::string_view name)
+      : Named(name) {}
+
+  void operator()(T value) {
+    rpcws::json input;
+    nlohmann::to_json(input, value);
+    endpoint()->notify(mixed, input);
+  }
+
+protected:
+  void $(Service *service) { mixed = service->name + "." + name; }
+  friend class Service;
+};
+
+template <typename T> class Broadcast : Named {
+  std::string mixed;
+
+public:
+  Broadcast(std::string_view name)
+      : Named(name) {}
+
+  promise<bool> operator>>(std::function<void(T)> fn) {
+    return endpoint()->on(mixed, [=](rpcws::json data) {
+      T ret;
+      nlohmann::from_json(ret, data);
+      fn(ret);
+    });
+  }
+
+protected:
+  void $(Service *service) { mixed = service->name + "." + name; }
+  friend class Service;
+};
+
 #endif
 
 struct Empty {};
 
-inline void to_json(rpc::json &j, const Empty &i) {}
+inline void to_json(rpc::json &j, const Empty &i) { j = rpc::json::array(); }
 
 inline void from_json(const rpc::json &j, Empty &i) {}
 
