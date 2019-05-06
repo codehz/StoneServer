@@ -1,8 +1,14 @@
 #pragma once
 
+#ifndef API_MODE
+#define API_MODE server
+#endif
+
 #include <rpcws.hpp>
 
 namespace api {
+
+#if API_MODE == server
 
 inline std::unique_ptr<rpcws::RPC> &endpoint() {
   static std::unique_ptr<rpcws::RPC> instance;
@@ -90,6 +96,8 @@ protected:
   void $(Service *service) { endpoint()->event(mixed = service->name + "." + name); }
   friend class Service;
 };
+
+#endif
 
 struct Empty {};
 
