@@ -106,7 +106,7 @@ int main() {
   Log::info("StoneServer", "Loaded Minecraft library in %f sec.", float(clock() - loading_library) / CLOCKS_PER_SEC);
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
 
-  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::wsio>(API_ENDPOINT));
+  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT));
 
   auto &srv_core [[maybe_unused]]      = Locator<CoreService>().generate();
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService>().generate();
