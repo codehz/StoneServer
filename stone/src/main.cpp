@@ -108,6 +108,8 @@ int main() {
 
   endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT));
 
+  if (getenv("UPSTART_JOB")) kill(getpid(), SIGSTOP);
+
   auto &srv_core [[maybe_unused]]      = Locator<CoreService>().generate();
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService>().generate();
   auto &srv_blacklist [[maybe_unused]] = Locator<BlacklistService>().generate();
