@@ -47,3 +47,7 @@ if (STONE_API_STANDALONE)
   add_dependencies(stone-cli rpc-websocket)
   add_dependencies(stone-log rpc-websocket)
 endif()
+
+install(TARGETS stone-ping RUNTIME DESTINATION bin)
+install(TARGETS stone-cli RUNTIME DESTINATION bin)
+install(TARGETS stone-log RUNTIME DESTINATION bin)
