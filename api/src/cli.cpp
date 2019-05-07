@@ -56,7 +56,7 @@ int main() {
           error = true;
           ready = true;
           cv.notify_all();
-        })();
+        });
   });
 
   worker.detach();
@@ -108,7 +108,7 @@ int main() {
           error = true;
           ready = true;
           cv.notify_all();
-        })();
+        });
     std::unique_lock lk{ mtx };
     cv.wait(lk, [&] { return ready; });
     if (error) return EXIT_FAILURE;

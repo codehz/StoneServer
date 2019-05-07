@@ -151,12 +151,12 @@ public:
   Broadcast(std::string_view name)
       : Named(name) {}
 
-  void operator>>(std::function<void(T)> fn) {
+  promise<bool> operator>>(std::function<void(T)> fn) {
     return endpoint()->on(mixed, [=](rpcws::json data) {
       T ret;
       nlohmann::from_json(data, ret);
       fn(ret);
-    })();
+    });
   }
 
 protected:

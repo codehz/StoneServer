@@ -39,5 +39,5 @@ int main() {
   endpoint()
       ->start()
       .then([&] { core.log >> [](auto entry) { std::cout << print_level(entry.level) << " " << entry.content << std::endl; }; })
-      .fail([&](auto) { endpoint()->stop(); })();
+      .fail([&](auto) { endpoint()->stop(); });
 }

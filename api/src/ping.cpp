@@ -21,12 +21,14 @@ int main() {
 
   endpoint()
       ->start()
-      .then([&] {
+      .then<promise<Empty>>([&] {
         std::cout << "connected!" << std::endl;
-        core.ping({}).then([](auto) {
-          std::cout << "pong!" << std::endl;
-          endpoint()->stop();
-        })();
+        return core.ping({});
       })
-      .fail([](std::exception const &ex) { std::cerr << typeid(ex).name() << ex.what() << std::endl; })();
+      .force()
+      .then([](auto) {
+        std::cout << "pong!" << std::endl;
+        endpoint()->stop();
+      })
+      .fail([](std::exception const &ex) { std::cerr << typeid(ex).name() << ex.what() << std::endl; });
 }
