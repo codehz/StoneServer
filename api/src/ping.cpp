@@ -25,7 +25,6 @@ int main() {
         std::cout << "connected!" << std::endl;
         return core.ping({});
       })
-      .force()
       .then([](auto) {
         std::cout << "pong!" << std::endl;
         endpoint()->stop();
