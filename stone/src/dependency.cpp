@@ -44,6 +44,15 @@ void initDependencies() {
       Log::info("PlayerList", "Player %s left  (uuid: %s, xuid: %s)", name.c_str(), uuid.c_str(), xuid.c_str());
       Locator<CoreService>()->player_left << PlayerInfo{ name, uuid, xuid };
     };
+
+    Locator<CoreService>()->online_players >> [](auto) {
+      std::vector<PlayerInfo> ret;
+      for (auto pplayer : Locator<PlayerList>()->set) {
+        auto [name, uuid, xuid] = PlayerBasicInfo(*pplayer);
+        ret.emplace_back(PlayerInfo{ name, uuid, xuid });
+      }
+      return ret;
+    };
   };
   Locator<Chat>() >> [](Chat &chat) {
     using namespace std::placeholders;
