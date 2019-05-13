@@ -29,5 +29,12 @@ int main() {
         std::cout << "pong!" << std::endl;
         endpoint()->stop();
       })
-      .fail([](std::exception const &ex) { std::cerr << typeid(ex).name() << ex.what() << std::endl; });
+      .fail([](std::exception_ptr ex) {
+        try {
+          if (ex) std::rethrow_exception(ex);
+        } catch (RemoteException const &ex) { std::cout << ex.full << std::endl; } catch (std::exception const &ex) {
+          std::cout << ex.what() << std::endl;
+        }
+        endpoint()->stop();
+      });
 }
