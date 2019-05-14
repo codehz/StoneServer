@@ -19,6 +19,7 @@ add_executable(stone
   "src/custom_command.hpp"
   "src/custom_command.h"
   "src/whitelist_mgr.hpp"
+  "src/blacklist_mgr.hpp"
   "src/patched.h"
   "src/patched.cpp"
   "src/patched/ServerLevelEventCoordinator.cpp"

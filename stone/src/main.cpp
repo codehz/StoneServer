@@ -52,6 +52,7 @@
 #include "stub_key_provider.h"
 #include "v8_platform.h"
 #include "whitelist_mgr.hpp"
+#include "blacklist_mgr.hpp"
 
 #include <stone/version.h>
 
@@ -172,8 +173,9 @@ int main() {
   pathmgr.setPackagePath(appPlatform->getPackagePath());
   pathmgr.setSettingsPath(pathmgr.getRootPath());
 
-  Log::trace("StoneServer", "Loading whitelist and operator list");
+  Log::trace("StoneServer", "Loading whitelist, blacklist and operator list");
   auto &whitelist = Locator<WhitelistManager>().generate(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/whitelist.json");
+  Locator<BlacklistManager>().generate(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/blacklist.json");
   PermissionsFile permissionsFile(pathmgr.getWorldsPath().std() + props.worldDir.get() + "/permissions.json");
 
   Log::trace("StoneServer", "Initializing resource loaders");
