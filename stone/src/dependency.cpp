@@ -7,6 +7,7 @@
 #include <stone-api/Chat.h>
 #include <stone-api/Core.h>
 
+#include "blacklist_mgr.hpp"
 #include "operators.h"
 #include "patched.h"
 #include "patched/HardcodedOffsets.h"
@@ -147,5 +148,7 @@ void initDependencies() {
       });
       return ret;
     };
+    service->save >> [&](auto) { Locator<BlacklistManager>()->save(); };
+    service->reload >> [&](auto) { Locator<BlacklistManager>()->reload(); };
   };
 }

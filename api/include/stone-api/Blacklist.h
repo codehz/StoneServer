@@ -38,6 +38,8 @@ struct BlacklistService : Service {
   Action<BlacklistOP<false>> remove{ "remove" };
   Action<BlacklistOP<true>> kick{ "kick" };
   Method<std::vector<BlacklistOP<true>>, Empty> fetch{ "fetch" };
+  Action<Empty> save{ "save" };
+  Action<Empty> reload{ "reload" };
 
   BlacklistService()
       : Service("blacklist") {
@@ -45,6 +47,8 @@ struct BlacklistService : Service {
     $(remove);
     $(kick);
     $(fetch);
+    $(save);
+    $(reload);
   }
 };
 
