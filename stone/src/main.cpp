@@ -291,6 +291,5 @@ int main() {
   MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
-  _exit(0);
   return 0;
 }
