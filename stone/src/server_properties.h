@@ -24,6 +24,8 @@ public:
   property<bool> experimentMode;
   property<bool> texturepackRequired;
   property<int> difficulty;
+  property<std::string> ip;
+  property<std::string> ipv6;
   property<int> port;
   property<int> portV6;
   property<int> maxPlayers;
@@ -52,6 +54,8 @@ public:
       , experimentMode(properties, "experiment-mode", false)
       , texturepackRequired(properties, "texturepack-required", false)
       , difficulty(properties, "difficulty", 0)
+      , ip(properties, "server-ip", "0.0.0.0")
+      , ipv6(properties, "server-ip-v6", "::")
       , port(properties, "server-port", 19132)
       , portV6(properties, "server-port-v6", 19133)
       , maxPlayers(properties, "max-players", 20)

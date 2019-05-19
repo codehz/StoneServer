@@ -28,6 +28,7 @@ add_executable(stone
   "src/patched/FlatWorldGeneratorOptions.cpp"
   "src/patched/TextPacket.cpp"
   "src/patched/Ability.cpp"
+  "src/patched/Bind.cpp"
   "src/patched/Common.cpp"
   "src/patched/ServerMetrics.cpp"
   "src/patched/SayCommand.cpp"
