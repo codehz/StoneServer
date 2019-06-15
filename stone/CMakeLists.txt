@@ -14,7 +14,6 @@ add_executable(stone
   "src/v8_platform.cpp"
   "src/stub_key_provider.h"
   "src/dependency.cpp"
-  "src/services.h"
   "src/operators.h"
   "src/custom_command.hpp"
   "src/custom_command.h"
