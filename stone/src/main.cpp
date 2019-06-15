@@ -44,15 +44,14 @@
 #include <csignal>
 #include <mutex>
 
+#include "blacklist_mgr.hpp"
 #include "patched.h"
 #include "patched/HardcodedOffsets.h"
 #include "server_minecraft_app.h"
 #include "server_properties.h"
-#include "services.h"
 #include "stub_key_provider.h"
 #include "v8_platform.h"
 #include "whitelist_mgr.hpp"
-#include "blacklist_mgr.hpp"
 
 #include <stone/version.h>
 

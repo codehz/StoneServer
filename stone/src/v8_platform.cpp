@@ -51,7 +51,7 @@ public:
       stop = true;
     }
     cv.notify_all();
-    thread.join();
+    thread.detach();
   }
 
   ~TaskRunner() { dispose(); }
