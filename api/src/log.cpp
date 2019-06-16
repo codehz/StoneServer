@@ -32,12 +32,16 @@ int main() {
   using namespace rpcws;
   using namespace api;
 
-  endpoint() = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT));
+  static const auto ep = std::make_shared<epoll>();
+  endpoint()           = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT, ep));
 
   CoreService core;
 
   endpoint()
       ->start()
       .then([&] { core.log >> [](auto entry) { std::cout << print_level(entry.level) << " " << entry.content << std::endl; }; })
-      .fail([&](auto) { endpoint()->stop(); });
+      .fail([&](auto) {
+        endpoint()->stop();
+        ep->shutdown();
+      });
 }

@@ -106,7 +106,8 @@ int main() {
   Log::info("StoneServer", "Loaded Minecraft library in %f sec.", float(clock() - loading_library) / CLOCKS_PER_SEC);
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
 
-  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT));
+  static const auto ep = std::make_shared<epoll>();
+  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT, ep));
 
   auto &srv_core [[maybe_unused]]      = Locator<CoreService>().generate();
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService>().generate();
@@ -258,9 +259,9 @@ int main() {
   instance->startServerThread();
   Log::info("StoneServer", "Server is running (%f sec)", float(clock() - start_clock) / CLOCKS_PER_SEC);
 
-  std::signal(SIGINT, [](int) { endpoint()->stop(); });
-  std::signal(SIGTERM, [](int) { endpoint()->stop(); });
-  srv_core.stop >> [](auto) { endpoint()->stop(); };
+  std::signal(SIGINT, [](int) { endpoint()->stop(); ep->shutdown(); });
+  std::signal(SIGTERM, [](int) { endpoint()->stop(); ep->shutdown(); });
+  srv_core.stop >> [](auto) { endpoint()->stop(); ep->shutdown(); };
   srv_core.ping >> [](auto) {
     Log::info("API", "PING!");
     return Empty{};
@@ -280,6 +281,7 @@ int main() {
   if (getenv("UPSTART_JOB")) kill(getpid(), SIGSTOP);
 
   endpoint()->start();
+  ep->wait();
 
   Log::info("StoneServer", "Server is stopping");
   patched::dest();

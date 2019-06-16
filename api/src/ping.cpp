@@ -15,7 +15,8 @@ int main() {
   using namespace rpcws;
   using namespace api;
 
-  endpoint() = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT));
+  static const auto ep = std::make_shared<epoll>();
+  endpoint()           = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT, ep));
 
   CoreService core;
 
@@ -28,6 +29,7 @@ int main() {
       .then([](auto) {
         std::cout << "pong!" << std::endl;
         endpoint()->stop();
+        ep->shutdown();
       })
       .fail([](std::exception_ptr ex) {
         try {
@@ -36,5 +38,7 @@ int main() {
           std::cout << ex.what() << std::endl;
         }
         endpoint()->stop();
+        ep->shutdown();
       });
+  ep->wait();
 }

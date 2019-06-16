@@ -32,7 +32,8 @@ int main() {
   using namespace rpcws;
   using namespace api;
 
-  endpoint() = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT));
+  static const auto ep = std::make_shared<epoll>();
+  endpoint() = std::make_unique<rpcws::RPC::Client>(std::make_unique<rpcws::client_wsio>(API_ENDPOINT, ep));
 
   CoreService core;
   CommandService command;
@@ -57,6 +58,7 @@ int main() {
           ready = true;
           cv.notify_all();
         });
+    ep->wait();
   });
 
   worker.detach();
