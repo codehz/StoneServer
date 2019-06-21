@@ -30,7 +30,6 @@ add_executable(stone
   "src/patched/Bind.cpp"
   "src/patched/Common.cpp"
   "src/patched/ServerMetrics.cpp"
-  "src/patched/SayCommand.cpp"
   "src/patched/Education.cpp"
   "src/patched/Encryption.cpp"
   "src/patched/ScriptEngine.cpp"
