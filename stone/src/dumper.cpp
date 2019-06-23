@@ -11,8 +11,7 @@ void dump_backtrace() {
   char **symbols    = backtrace_symbols(array, count);
   char *nameBuf     = (char *)malloc(256);
   size_t nameBufLen = 256;
-  printf("Backtrace elements: %i\n", count);
-  for (int i = 0; i < count; i++) {
+  for (int i = 2; i < count; i++) {
     if (symbols[i] == nullptr) {
       printf("#%i unk [0x%04x]\n", i, (int)array[i]);
       continue;
