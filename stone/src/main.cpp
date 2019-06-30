@@ -45,6 +45,7 @@
 #include <mutex>
 
 #include "blacklist_mgr.hpp"
+#include "dumper.h"
 #include "patched.h"
 #include "patched/HardcodedOffsets.h"
 #include "server_minecraft_app.h"
@@ -54,6 +55,8 @@
 #include "whitelist_mgr.hpp"
 
 #include <stone/version.h>
+
+#include <sys/signalfd.h>
 
 #define LOAD_ENV(env, def) static const auto env = GetEnvironmentVariableOrDefault(#env, def)
 
@@ -107,7 +110,7 @@ int main() {
   Log::debug("StoneServer", "Minecraft is at offset 0x%x", MinecraftUtils::getLibraryBase(handle));
 
   static const auto ep = std::make_shared<epoll>();
-  endpoint() = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT, ep));
+  endpoint()           = std::make_unique<rpcws::RPC>(std::make_unique<rpcws::server_wsio>(API_ENDPOINT, ep));
 
   auto &srv_core [[maybe_unused]]      = Locator<CoreService>().generate();
   auto &srv_chat [[maybe_unused]]      = Locator<ChatService>().generate();
@@ -259,9 +262,18 @@ int main() {
   instance->startServerThread();
   Log::info("StoneServer", "Server is running (%f sec)", float(clock() - start_clock) / CLOCKS_PER_SEC);
 
-  std::signal(SIGINT, [](int) { endpoint()->stop(); ep->shutdown(); });
-  std::signal(SIGTERM, [](int) { endpoint()->stop(); ep->shutdown(); });
-  srv_core.stop >> [](auto) { endpoint()->stop(); ep->shutdown(); };
+  std::signal(SIGINT, [](int) {
+    endpoint()->stop();
+    ep->shutdown();
+  });
+  std::signal(SIGTERM, [](int) {
+    endpoint()->stop();
+    ep->shutdown();
+  });
+  srv_core.stop >> [](auto) {
+    endpoint()->stop();
+    ep->shutdown();
+  };
   srv_core.ping >> [](auto) {
     Log::info("API", "PING!");
     return Empty{};
@@ -279,6 +291,12 @@ int main() {
   chdir((pathmgr.getWorldsPath().std() + props.worldDir.get()).c_str());
 
   if (getenv("UPSTART_JOB")) kill(getpid(), SIGSTOP);
+
+  {
+    signal(SIGUSR1, [](int) {
+      dump_backtrace();
+    });
+  }
 
   endpoint()->start();
   ep->wait();

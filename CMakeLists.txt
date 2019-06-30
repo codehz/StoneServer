@@ -16,10 +16,10 @@ add_library(build_version version/src/version.c)
 target_include_directories(build_version PUBLIC version/include)
 target_compile_definitions(build_version PRIVATE BUILD_VERSION=\"${VERSION}\")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -s")
+set(CMAKE_CXX_FLAGS_RELEASE "-Os -s -fvisibility=hidden")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -static-libstdc++ -Wno-odr -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -Wno-odr -g -rdynamic")
 
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
