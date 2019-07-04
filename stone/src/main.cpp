@@ -302,12 +302,12 @@ int main() {
   ep->wait();
 
   Log::info("StoneServer", "Server is stopping");
+  MinecraftUtils::workaroundShutdownCrash(handle);
   patched::dest();
   instance->leaveGameSync();
   delete instance;
   appPlatform->teardown();
 
-  MinecraftUtils::workaroundShutdownCrash(handle);
   Log::info("StoneServer", "Server stopped");
   Log::clearHooks();
   return 0;
