@@ -14,6 +14,11 @@
 #include <hybris/hook.h>
 #include <stdexcept>
 
+
+#include <cxxabi.h>
+#include <execinfo.h>
+#include <hybris/dlfcn.h>
+
 extern "C" {
 #include <hybris/jb/linker.h>
 }
@@ -158,13 +163,9 @@ void MinecraftUtils::initSymbolBindings(void* handle) {
 static void workerPoolDestroy(void* th) {
     Log::trace("Launcher", "WorkerPool-related class destroy %lu", (unsigned long) th);
 }
-static void v8Destroy(void* th) {
-    Log::trace("Launcher", "v8-related class destroy %lu", (unsigned long) th);
-}
+
 void MinecraftUtils::workaroundShutdownCrash(void* handle) {
     // this is an ugly hack to workaround the close app crashes MCPE causes
     unsigned int patchOff = (unsigned int) hybris_dlsym(handle, "_ZN19AppPlatform_androidD2Ev");
-    PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
-    patchOff = (unsigned int) hybris_dlsym(handle, "_ZN2v84base17ConditionVariable4WaitEPNS0_5MutexE");
     PatchUtils::patchCallInstruction((void*) patchOff, (void*) &workerPoolDestroy, true);
 }

@@ -21,11 +21,13 @@ void dump_backtrace() {
       if (hybris_dladdr(array[i], &symInfo)) {
         int status = 0;
         nameBuf    = abi::__cxa_demangle(symInfo.dli_sname, nameBuf, &nameBufLen, &status);
-        printf("#%i HYBRIS %s+%i in %s+0x%04x [0x%04x]\n", i, nameBuf, (unsigned int)array[i] - (unsigned int)symInfo.dli_saddr, symInfo.dli_fname,
-               (unsigned int)array[i] - (unsigned int)symInfo.dli_fbase, (int)array[i]);
+        printf("#%i HYBRIS %s(%s)+%i in %s+0x%04x [0x%04x]\n", i, nameBuf, symInfo.dli_sname,
+               (unsigned int)array[i] - (unsigned int)symInfo.dli_saddr, symInfo.dli_fname, (unsigned int)array[i] - (unsigned int)symInfo.dli_fbase,
+               (int)array[i]);
         continue;
       }
     }
     printf("#%i %s\n", i, symbols[i]);
   }
+  free(nameBuf);
 }
