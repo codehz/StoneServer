@@ -8,8 +8,7 @@ using namespace interface;
 using namespace patched;
 
 static void stopCallback(FunctionCallbackInfo<Value> const &info) {
-  auto ref = *Locator<std::shared_ptr<epoll>>();
-  ref->shutdown();
+  Locator<epoll>()->shutdown();
 }
 
 static Register reg{ "registerComponent", "stop", &stopCallback };
